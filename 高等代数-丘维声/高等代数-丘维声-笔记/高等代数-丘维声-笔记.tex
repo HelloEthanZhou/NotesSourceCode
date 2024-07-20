@@ -1,0 +1,2099 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{高等代数 - 丘维声 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\rank}{\text{rank}}        % 秩
+\newcommand{\tr}{\text{tr}}            % 迹
+\newcommand{\ee}[1]{\mathrm{e}^{#1}}
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+\begin{center}
+	
+	\large{感谢 \textbf{ 勇敢的 } 自己}
+	
+\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{特殊矩阵与特殊线性变换}
+
+\section{特殊矩阵}
+
+\subsection{对角矩阵}
+
+\begin{definition}{对角矩阵}
+	$$
+	\bs{D}=\begin{pmatrix}
+		d_1 & & \\
+		& \ddots & \\
+		& & d_n
+	\end{pmatrix}
+	$$
+\end{definition}
+
+\begin{proposition}{对角矩阵的乘法}
+	$$
+	\begin{pmatrix}
+		d_1 & & \\
+		& \ddots & \\
+		& & d_n
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{\alpha}_1 \\ \vdots \\ \bs{\alpha}_n
+	\end{pmatrix}
+	=\begin{pmatrix}
+		d_1\bs{\alpha}_1 \\ \vdots \\ d_n\bs{\alpha}_n
+	\end{pmatrix},\qquad 
+	\begin{pmatrix}
+		\bs{\alpha}_1 & \cdots & \bs{\alpha}_n
+	\end{pmatrix}
+	\begin{pmatrix}
+		d_1 & & \\
+		& \ddots & \\
+		& & d_n
+	\end{pmatrix}=
+	\begin{pmatrix}
+		d_1\bs{\alpha}_1 & \cdots & d_n\bs{\alpha}_n
+	\end{pmatrix}
+	$$
+\end{proposition}
+
+\begin{proposition}
+	对于对角矩阵$\bs{D}=\text{diag}(d_1,\cdots,d_n)$，如果对于任意$i\ne j$，成立$d_i\ne d_j$，那么若$\bs{A}\bs{D}=\bs{D}\bs{A}$，则$\bs{A}$​为对角矩阵。
+\end{proposition}
+
+\begin{definition}{数量矩阵}
+	$$
+	\lambda \bs{I}=\begin{pmatrix}
+		\lambda & & \\
+		& \ddots & \\
+		& & \lambda
+	\end{pmatrix}
+	$$
+\end{definition}
+
+\begin{proposition}
+	如果对于任意矩阵$\bs{A}$，成立$\bs{A}\bs{D}=\bs{D}\bs{A}$，那么存在$\lambda$，使得成立$\bs{D}=\lambda \bs{I}$。
+\end{proposition}
+
+\subsection{基本矩阵}
+
+\begin{definition}{基本矩阵}
+	称矩阵$\bs{A}$为基本矩阵，并记作$\bs{E}_{ij}$，如果对于任意$(m,n)\ne(i,j)$，成立$\bs{A}(m,n)=0$，且$\bs{A}(i,j)=1$​。
+\end{definition}
+
+\begin{proposition}{基本矩阵的乘法}
+	\begin{enumerate}
+		\item $\bs{E}_{ij}\bs{A}$相当于把$\bs{A}$的第$j$行搬到第$i$行的位置，而其余行全为零行。
+		\item $\bs{A}\bs{E}_{ij}$相当于把$\bs{A}$的第$i$列搬到第$j$列的位置，而其余列全为零列。
+	\end{enumerate}
+\end{proposition}
+
+\subsection{三角矩阵}
+
+\begin{definition}{三角矩阵}
+	\begin{enumerate}
+		\item 称方阵$\bs{A}$为上三角矩阵，如果对于任意$i>j$，成立$\bs{A}(i,j)=0$。
+		\item 称方阵$\bs{A}$为下三角矩阵，如果对于任意$i<j$，成立$\bs{A}(i,j)=0$​。
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}{三角矩阵的乘法}
+	上三角矩阵与上三角矩阵的积为上三角矩阵，下三角矩阵与下三角矩阵的积为下三角矩阵。
+\end{proposition}
+
+\subsection{对称矩阵}
+
+\begin{definition}{对称矩阵}
+	称矩阵$\bs{A}$为对称矩阵，如果$\bs{A}^T=\bs{A}$。
+\end{definition}
+
+\begin{definition}{斜对称矩阵}
+	称矩阵$\bs{A}$为斜对称矩阵，如果$\bs{A}+\bs{A}^T=\bs{O}$。
+\end{definition}
+
+\subsection{幂零矩阵}
+
+\begin{definition}{幂零矩阵}
+	称矩阵$\bs{A}$为幂零矩阵，如果存在$n\in\N^*$，使得成立$\bs{A}^n=\bs{O}$。
+\end{definition}
+
+\begin{definition}{幂零指数}
+	定义幂零矩阵$\bs{A}$的幂零指数为
+	$$
+	\min\{ n\in\N^*:\bs{A}^n=\bs{O} \}
+	$$
+\end{definition}
+
+\begin{proposition}{幂零矩阵与三角矩阵的关系}
+	对于三角矩阵$\bs{A}$，成立
+	$$
+	\bs{A}\text{ 为幂零矩阵}\iff
+	\bs{A}\text{ 的主对角元均为 }0
+	$$
+\end{proposition}
+
+\begin{proposition}{三角幂零矩阵的幂零指数}
+	对于$n$阶三角幂零矩阵，其幂零指数$\le n$​。
+\end{proposition}
+
+\begin{proposition}{幂零矩阵的特征值}
+	幂零矩阵的特征值为$0$。
+\end{proposition}
+
+\subsection{幂等矩阵}
+
+\begin{definition}{幂零矩阵}
+	称矩阵$\bs{A}$为幂零矩阵，如果存在$n\in\N^*$，使得成立$\bs{A}^n=\bs{A}$。
+\end{definition}
+
+\begin{proposition}{幂等矩阵的特征值}
+	幂等矩阵的特征值为$0$或$1$。
+\end{proposition}
+
+\subsection{循环位移矩阵}
+
+\begin{definition}{循环位移矩阵}
+	$$
+	\bs{C}=
+	\begin{pmatrix}
+		0 & 1 & 0 & 0 & \cdots & 0 & 0\\
+		0 & 0 & 1 & 0 & \cdots & 0 & 0\\
+		\vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+		0 & 0 & 0 & 0 & \cdots & 0 & 1\\
+		1 & 0 & 0 & 0 & \cdots & 0 & 0
+	\end{pmatrix}
+	$$
+\end{definition}
+
+\begin{proposition}{循环位移矩阵的乘法}
+	\begin{enumerate}
+		\item $\bs{C}\bs{A}$相当于把矩阵$\bs{A}$的行向上移一行，第一行换到最后一行。
+		\item $\bs{A}\bs{C}$相当于把矩阵$\bs{A}$​的列向右移一列，第一列换到最后一列。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+	$$
+	\sum_{k=0}^{n-1}\bs{C}^k=J
+	$$
+	其中$J$中元素均为$1$​​。特别的
+	$$
+	\bs{C}^0=\begin{pmatrix}
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+		0 & 0 & 1 & 0\\
+		0 & 0 & 0 & 1
+	\end{pmatrix},\qquad 
+	\bs{C}^1=\begin{pmatrix}
+		0 & 1 & 0 & 0\\
+		0 & 0 & 1 & 0\\
+		0 & 0 & 0 & 1\\
+		1 & 0 & 0 & 0
+	\end{pmatrix},\qquad 
+	\bs{C}^2=\begin{pmatrix}
+		0 & 0 & 1 & 0\\
+		0 & 0 & 0 & 1\\
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0
+	\end{pmatrix},\qquad 
+	\bs{C}^3=\begin{pmatrix}
+		0 & 0 & 0 & 1\\
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+		0 & 0 & 1 & 0
+	\end{pmatrix}
+	$$
+\end{proposition}
+
+\begin{proposition}{循环位移矩阵的特征值与特征向量}
+	$n$阶循环位移矩阵$\bs{C}$的特征值为$\omega^k$，其中$\omega$为$n$次单位原根，且$0\le k \le n-1$。特征值$\omega^k$对应的特征向量为%
+	$$
+	(1,\omega^k,\omega^{2k},\cdots,\omega^{(n-1)k})^T
+	$$
+\end{proposition}
+
+\subsection{循环矩阵}
+
+\begin{definition}{循环矩阵}
+	$$
+	\bs{A}=
+	\begin{pmatrix}
+		a_1 & a_2 & a_3 & \cdots & a_n\\
+		a_n & a_1 & a_2 & \cdots & a_{n-1}\\
+		\vdots & \vdots & \vdots & \ddots& \vdots\\
+		a_2 & a_3 & a_4 & \cdots & a_1\\
+	\end{pmatrix}
+	=a_1\bs{I}+a_2\bs{C}+a_3\bs{C}^2+\cdots+a_n\bs{C}^{n-1}
+	$$
+\end{definition}
+
+\begin{proposition}{循环矩阵的行列式}
+	$$
+	\begin{vmatrix}
+		a_1 & a_2 & a_3 & \cdots & a_n\\
+		a_n & a_1 & a_2 & \cdots & a_{n-1}\\
+		\vdots & \vdots & \vdots & \ddots& \vdots\\
+		a_2 & a_3 & a_4 & \cdots & a_1\\
+	\end{vmatrix}
+	=\prod_{k=0}^{n-1}f(\omega^k)
+	$$
+	其中%
+	$$
+	f(x)=a_1+a_2x+\cdots+a_nx^{n-1},\qquad \omega=\ee{i\frac{2\pi}{n}}
+	$$
+\end{proposition}
+
+\begin{proof}
+	\begin{align*}
+		\begin{vmatrix}
+			a_1 & a_2 & a_3 & \cdots & a_n\\
+			a_n & a_1 & a_2 & \cdots & a_{n-1}\\
+			\vdots & \vdots & \vdots & \ddots& \vdots\\
+			a_2 & a_3 & a_4 & \cdots & a_1\\
+		\end{vmatrix}
+		& = \begin{vmatrix}
+			a_1+a_2\omega^k+a_3(\omega^k)^2+\cdots+a_n(\omega^k)^{n-1} & a_2 & a_3 & \cdots & a_n\\
+			a_n+a_1\omega^k+a_2(\omega^k)^2+\cdots+a_{n-1}(\omega^k)^{n-1} & a_1 & a_2 & \cdots & a_{n-1}\\
+			\vdots & \vdots & \vdots & \ddots& \vdots\\
+			a_2+a_3\omega^k+a_4(\omega^k)^2+\cdots+a_1(\omega^k)^{n-1} & a_3 & a_4 & \cdots & a_1\\
+		\end{vmatrix}\\
+		& = \begin{vmatrix}
+			f(\omega^k) & a_2 & a_3 & \cdots & a_n\\
+			\omega^k f(\omega^k) & a_1 & a_2 & \cdots & a_{n-1}\\
+			\vdots & \vdots & \vdots & \ddots& \vdots\\
+			\omega^{k(n-1)}f(\omega^k) & a_3 & a_4 & \cdots & a_1\\
+		\end{vmatrix}\\
+		& = f(\omega^k)
+		\begin{vmatrix}
+			1 & a_2 & a_3 & \cdots & a_n\\
+			\omega^k & a_1 & a_2 & \cdots & a_{n-1}\\
+			\vdots & \vdots & \vdots & \ddots& \vdots\\
+			\omega^{k(n-1)} & a_3 & a_4 & \cdots & a_1\\
+		\end{vmatrix}
+	\end{align*}
+	从而原矩阵行列式含有因子$f(\omega^k)$。而原矩阵行列式中$a_1$的幂指数至多为$n$，且$a_1^n$的系数为$1$，因此
+	$$
+	\begin{vmatrix}
+		a_1 & a_2 & a_3 & \cdots & a_n\\
+		a_n & a_1 & a_2 & \cdots & a_{n-1}\\
+		\vdots & \vdots & \vdots & \ddots& \vdots\\
+		a_2 & a_3 & a_4 & \cdots & a_1\\
+	\end{vmatrix}
+	=\prod_{k=0}^{n-1}f(\omega^k)
+	$$
+\end{proof}
+
+\begin{proposition}{循环矩阵的特征值与特征向量}
+	$n$阶循环矩阵$\bs{A}$的特征值为$f(\omega^k)$，其中%
+	$$
+	f(x)=a_1+a_2x+\cdots+a_nx^{n-1},\qquad \omega=\ee{i\frac{2\pi}{n}},\qquad 
+	0\le k \le n-1
+	$$
+	特征值$f(\omega^k)$对应的特征向量为%
+	$$
+	(1,\omega^k,\omega^{2k},\cdots,\omega^{(n-1)k})^T
+	$$
+\end{proposition}
+
+\subsection{正交矩阵}
+
+\begin{definition}{正交矩阵}
+	称矩阵$Q$为正交矩阵，如果$Q^TQ=I$。
+\end{definition}
+
+\begin{proposition}{正交矩阵的特征值}
+	如果正交矩阵存在特征值，那么其特征值为$1$或$-1$。
+\end{proposition}
+
+\begin{definition}{正定矩阵}
+	称实对称矩阵$\bs{A}$为正定矩阵，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意实向量$\bs{x}$，成立$\bs{x}^T\bs{Ax}> 0$。
+		\item 特征值均为正实数。
+		\item 存在实可逆矩阵$\bs{C}$，使得成立$\bs{A}=\bs{C}^T\bs{C}$。
+		\item 存在且存在唯一实可逆矩阵$\bs{C}$，使得成立$\bs{A}=\bs{C}^2$。
+		\item 存在实列满秩矩阵$\bs{B}$，使得成立$\bs{A}=\bs{B}^T\bs{B}$。
+		\item 任意主子式为正。
+		\item 任意顺序主子式为正。
+	\end{enumerate}
+\end{definition}
+
+\section{特殊线性变换}
+
+\subsection{幂零变换}
+
+\begin{definition}{幂零变换}
+	对于域$F$上的线性空间$V$，称$V$上的线性变换$\mathscr{A}$为幂零变换，如果存在$n\in\N^*$，使得成立$\mathscr{A}^n=\mathscr{O}$。
+\end{definition}
+
+\begin{proposition}{幂零矩阵的极小多项式}
+	\begin{enumerate}
+		\item 对于域$F$上的线性空间$V$，$V$上的以$n$为幂零指数的幂零变换$\mathscr{A}$的极小多项式为$\lambda^n$。
+		\item 对于域$F$上的线性空间$V$，$V$上的线性变换$\mathscr{A}=\lambda_0\mathscr{I}+\mathscr{B}$的极小多项式为$(\lambda-\lambda_0)^n$，其中$\mathscr{B}$为幂零指数为$n$的幂零变换。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proposition}{幂零矩阵的对角化}
+	幂零矩阵不可对角化。
+\end{proposition}
+
+\subsection{幂等变换}
+
+\begin{definition}{幂等变换}
+	对于域$F$上的线性空间$V$，称$V$上的线性变换$\mathscr{A}$为幂等变换，使得成立$\mathscr{A}^2=\mathscr{A}$。
+\end{definition}
+
+\begin{proposition}{幂等矩阵的极小多项式}
+	对于域$F$上的线性空间$V$，$V$上的幂零变换$\mathscr{A}$的极小多项式为$\lambda^2-\lambda$或$\lambda$或$\lambda-1$。
+\end{proposition}
+
+\begin{proposition}{幂等矩阵的对角化}
+	幂等矩阵可对角化。
+\end{proposition}
+
+\subsection{对合变换}
+
+\begin{definition}{对合变换}
+	对于域$F$上的线性空间$V$，称$V$上的线性变换$\mathscr{A}$为对合变换，使得成立$\mathscr{A}^2=\mathscr{I}$。
+\end{definition}
+
+\begin{proposition}{对合矩阵的极小多项式}
+	对于域$F$上的线性空间$V$，$V$上的幂零变换$\mathscr{A}$的极小多项式为$\lambda^2-1$或$\lambda+1$或$\lambda-1$。
+\end{proposition}
+
+\begin{proposition}{对合矩阵的对角化}
+	对合矩阵可对角化。
+\end{proposition}
+
+\chapter{多项式环}
+
+\section{多项式环}
+
+\begin{definition}{多项式环}
+	定义整环$K$的多项式环为
+	$$
+	K[x]=\{ a_nx^n+\cdots+a_1x+a_0:a_k\in K,1\le k\le n,n\in\N^* \}
+	$$
+\end{definition}
+
+\section{整除关系}
+
+\begin{definition}{整除}
+	称多项式$g(x)\in K[x]$整除$f(x)\in K[x]$，并记作$g(x)\mid f(x)$，如果存在$h(x)\in K[x]$，使得成立$f(x)=g(x)h(x)$。
+\end{definition}
+
+\begin{definition}{相伴}
+	称多项式$f(x)\in K[x]$与$g(x)\in K[x]$相伴，并记作$f(x)\sim g(x)$，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $g(x)\mid f(x)$且$f(x)\mid g(x)$
+		\item 存在$c\in K^*$，使得成立$f(x)=cg(x)$。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{带余除法}
+	对于$f(x),g(x)\in K[x]$，如果$g(x)\ne 0$，那么存在且存在唯一$p(x),r(x)\in K[x]$，使得成立
+	$$
+	f(x)=p(x)g(x)+r(x),\qquad \deg (r(x))<\deg (g(x))
+	$$
+\end{theorem}
+
+\section{最大公因式}
+
+\begin{definition}{公因式}
+	称多项式$d(x)\in K[x]$为$f(x)\in K[x]$与$g(x)\in K[x]$的公因式，如果成立
+	$$
+	d(x)\mid f(x),\qquad d(x)\mid g(x)
+	$$
+\end{definition}
+
+\begin{definition}{最大公因式}
+	称$f(x)\in K[x]$与$g(x)\in K[x]$的公因式$d(x)\in K[x]$为最大公因式，如果对于其任意公因式$c(x)\in K[x]$，成立$c(x)\mid d(x)$。
+\end{definition}
+
+\begin{theorem}{最大公因式的存在唯一性}
+	$f(x)\in K[x]$与$g(x)\in K[x]$的首一公因式存在且存在唯一。
+\end{theorem}
+
+\begin{definition}{互素多项式}
+	称多项式$f(x)\in K[x]$与$g(x)\in K[x]$互素，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $(f(x),g(x))=1$。
+		\item 存在$a(x),b(x)\in K[x]$，使得成立$a(x)f(x)+b(x)g(x)=1$。
+	\end{enumerate}
+\end{definition}
+
+\section{不可约多项式}
+
+\begin{definition}{不可约多项式}
+	称非零且非零次多项式$p(x)\in K[x]$为不可约多项式，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 
+		$$
+		p(x)=f(x)g(x)\implies
+		f(x)\text{ 为零次多项式或 }g(x)\text{ 为零次多项式}
+		$$
+		\item 
+		$$
+		p(x)=f(x)g(x)\implies
+		p(x)\text{ 与 }f(x)\text{ 相伴或 }p(x)\text{ 与 }g(x)\text{ 相伴}
+		$$
+		\item 
+		$$
+		f(x)\in K[x]\implies
+		p(x)\mid f(x)\text{ 或 }(p(x),f(x))=1
+		$$
+		\item 
+		$$
+		p(x)\mid f(x)g(x)\implies
+		p(x)\mid f(x)\text{ 或 }p(x)\mid g(x)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{唯一因式分解定理}
+	对于任意非零且非零次多项式$f(x)\in K[x]$，存在且存在唯一不可约多项式$p_1(x),\cdots,p_n(x)$，使得成立
+	$$
+	f(x)=p_1(x)\cdots p_n(x)
+	$$
+\end{theorem}
+
+\section{重因式}
+
+\begin{definition}{重因式}
+	称不可约多项式$p(x)\in K[x]$为$f(x)\in K[x]$的$n$重因式，如果成立
+	$$
+	p^n(x)\mid f(x),\qquad 
+	p^{n+1}(x)\nmid f(x)
+	$$
+\end{definition}
+
+\begin{theorem}
+	如果不可约多项式$p(x)\in K[x]$为$f(x)\in K[x]$的$n$重因式，那么$p(x)$为$f'(x)$的$n-1$重因式。
+\end{theorem}
+
+\section{$\C$上的多项式}
+
+\begin{theorem}{Bezout定理}
+	$$
+	x-a\mid f(x)\iff f(a)=0
+	$$
+\end{theorem}
+
+\begin{theorem}{代数基本定理}
+	$\C$上的非零次多项式存在复根。
+\end{theorem}
+
+\begin{theorem}{$\C$上的多项式唯一因式分解定理}
+	$\C$上的多项式可唯一分解为一次因式的积。
+\end{theorem}
+
+\section{$\R$上的多项式}
+
+\begin{theorem}{复根成对定理}
+	对于实多项式$f(x)\in \R[x]$，如果$a\in \C$为$f(x)$的根，那么$\overline{a}$亦为其根。
+\end{theorem}
+
+\begin{theorem}
+	对于复多项式$f(x)=a_nx^n+\cdots+a_1x+a_0\in\C[x]$，令
+	$$
+	M=\max\{ |a_{n-1}|,\cdots,|a_0| \}
+	$$
+	那么对于任意$z\in\C$，成立
+	$$
+	|z|\ge 1+\frac{M}{|a_n|}
+	\implies
+	|f(z)|>0
+	$$
+\end{theorem}
+
+\section{$\Q$上的多项式}
+
+\begin{definition}{本原多项式}
+	称整系数多项式$f(x)=a_nx^n+\cdots+a_1x+a_0\in\Z[x]$为本原多项式，如果成立
+	$$
+	(a_n,\cdots,a_0)=1
+	$$
+\end{definition}
+
+\begin{theorem}
+	对于本原多项式$f(x)$与$g(x)$，成立
+	$$
+	f(x)\text{ 与 }g(x)\text{ 在 }\Q[x]\text{ 中相伴}
+	\iff 
+	f(x)=\pm g(x)
+	$$
+\end{theorem}
+
+\begin{theorem}{Gauss引理}
+	两本原多项式的积为本原多项式。
+\end{theorem}
+
+\begin{proof}
+	对于本原多项式
+	\begin{align*}
+		& f(x)=a_nx^n+\cdots+a_1x+a_0\\
+		& g(x)=b_mx^m+\cdots+b_1x+b_0
+	\end{align*}
+	记
+	$$
+	h(x)=f(x)g(x)
+	=\sum_{k=0}^{m+n}\sum_{i+j=k}a_ib_j x^k
+	=\sum_{k=0}^{m+n}c_{k} x^k
+	$$
+	如果$h(x)$不为本原多项式，那么存在素数$p$，使得成立
+	$$
+	p\mid c_k,\qquad 0\le k \le m+n
+	$$
+	由于$f(x)$不为本原多项式，那么存在$0\le n_0 \le n$，使得成立
+	$$
+	p\mid a_0,\qquad 
+	p\mid a_{n_0-1},\qquad 
+	p\nmid a_{n_0}
+	$$
+	由于$g(x)$不为本原多项式，那么存在$0\le m_0 \le m$，使得成立
+	$$
+	p\mid b_0,\qquad 
+	p\mid b_{m_0-1},\qquad 
+	p\nmid b_{m_0}
+	$$
+	因此考察$c_{m_0+n_0}$，成立$p\mid a_{n_0}b_{m_0}$。矛盾！进而$h(x)$为本原多项式。
+\end{proof}
+
+\begin{theorem}
+	对于整系数多项式$f(x)=a_nx^n+\cdots+a_1x+a_0\in\Z[x]$，成立
+	$$
+	f(q/p)=0,(p,q)=1\implies
+	p\mid a_n,q\mid a_0
+	$$
+\end{theorem}
+
+\begin{theorem}{Eisenstein判别法}
+	对于整系数多项式$f(x)=a_nx^n+\cdots+a_1x+a_0\in\Z[x]$，如果存在素数$p$，使得成立
+	$$
+	p\mid a_k,(0\le k <n),\qquad 
+	p\nmid a_n,\qquad 
+	p^2\nmid a_0
+	$$
+	那么$f(x)$在$\Q$上不可约。
+\end{theorem}
+
+\chapter{矩阵的特征}
+
+\section{矩阵的特征}
+
+\subsection{秩}
+
+\begin{proposition}{Sylvester秩不等式}{Sylvester秩不等式}
+	对于$m\times r$阶矩阵$\bs{A}$与$r\times n$阶矩阵$\bs{B}$，成立
+	$$
+	\rank(\bs{A})+\rank(\bs{B})-r\le
+	\rank(\bs{AB})\le\min\{ \rank(\bs{A}),\rank(\bs{B}) \}
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于右边，容易知道$\bs{AB}$的列向量可由$\bs{A}$的列向量线性表出，$\bs{AB}$的行向量可由$\bs{B}$的行向量线性表出，从而
+	$$
+	\rank(\bs{AB})\le\min\{ \rank(\bs{A}),\rank(\bs{B}) \}
+	$$
+	
+	对于左式，由命题\ref{pro:分块矩阵的秩}%
+	$$
+	r+\rank(\bs{AB})
+	=\rank\begin{pmatrix}
+		\bs{I}_r & \bs{O}\\
+		\bs{O} & \bs{AB}
+	\end{pmatrix}
+	$$
+	由于%
+	$$
+	\begin{pmatrix}
+		\bs{I}_r & \bs{O}\\
+		\bs{A} & \bs{I}_m
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{I}_r & \bs{O}\\
+		\bs{O} & \bs{AB}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{B} & \bs{I}_r\\
+		-\bs{I}_n & \bs{O}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{B} & \bs{I}_r\\
+		\bs{O} & \bs{A}
+	\end{pmatrix}
+	$$
+	那么由命题\ref{pro:分块矩阵的秩}%
+	$$
+	\rank\begin{pmatrix}
+		\bs{I}_r & \bs{O}\\
+		\bs{O} & \bs{AB}
+	\end{pmatrix}
+	=\rank\begin{pmatrix}
+		\bs{B} & \bs{I}_r\\
+		\bs{O} & \bs{A}
+	\end{pmatrix}
+	\ge\rank(\bs{A})+\rank(\bs{B})
+	$$
+	进而%
+	$$
+	\rank(\bs{A})+\rank(\bs{B})-r\le
+	\rank(\bs{AB})
+	$$
+\end{proof}
+
+\begin{proposition}{和的秩}
+	$$
+	\rank(\bs{A}+\bs{B})\le\rank(\bs{A})+\rank(\bs{B})
+	$$
+\end{proposition}
+
+\begin{proof}
+	令$\bs{A}$和$\bs{B}$的列向量分别为
+	$$
+	\bs{\alpha}_1,\cdots,\bs{\alpha}_n;\qquad 
+	\bs{\beta}_1,\cdots,\bs{\beta}_n
+	$$
+	那么$\bs{A}+\bs{B}$的列向量分别为
+	$$
+	\bs{\alpha}_1+\bs{\beta}_1,\cdots,\bs{\alpha}_n+\bs{\beta}_n
+	$$
+	记$\rank(\bs{A})=r$，$\rank(\bs{B})=s$，$\bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r}$为$\bs{\alpha}_1,\cdots,\bs{\alpha}_n$的基，$\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s}$为$\bs{\beta}_1,\cdots,\bs{\beta}_n$的基，那么$\bs{\alpha}_1+\bs{\beta}_1,\cdots,\bs{\alpha}_n+\bs{\beta}_n$可由$\bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r},\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s}$线性表出，因此%
+	$$
+	\rank\{ \bs{\alpha}_1+\bs{\beta}_1,\cdots,\bs{\alpha}_n+\bs{\beta}_n \}
+	\le\rank\{ \bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r},\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s} \}
+	=r+s
+	$$
+	进而
+	$$
+	\rank(\bs{A}+\bs{B})\le\rank(\bs{A})+\rank(\bs{B})
+	$$
+\end{proof}
+
+\begin{proposition}{分块矩阵的秩}{分块矩阵的秩}
+	\begin{enumerate}
+		\item 
+		$$
+		\max\{ \rank(\bs{A}),\rank(\bs{B}) \}
+		\le \rank(\bs{A} , \bs{B})
+		\le \rank(\bs{A})+\rank(\bs{B})
+		$$
+		\item 
+		$$
+		\rank\begin{pmatrix}
+			\bs{A} & \bs{O}\\
+			\bs{O} & \bs{B}
+		\end{pmatrix}
+		= \rank(\bs{A})+\rank(\bs{B})
+		$$
+		\item 
+		$$
+		\rank\begin{pmatrix}
+			\bs{A} & \bs{C}\\
+			\bs{O} & \bs{B}
+		\end{pmatrix}
+		\ge \rank(\bs{A})+\rank(\bs{B})
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	对于1的左边，这几乎是是显然的！事实上，$\bs{A}$与$\bs{B}$的列向量均可由$(\bs{A},\bs{B})$线性表出，因此%
+	$$
+	\max\{ \rank(\bs{A}),\rank(\bs{B}) \}
+	\le \rank(\bs{A} , \bs{B})
+	$$
+	
+	对于1的右边，令$\bs{A}$和$\bs{B}$的列向量分别为
+	$$
+	\bs{\alpha}_1,\cdots,\bs{\alpha}_m;\qquad 
+	\bs{\beta}_1,\cdots,\bs{\beta}_n
+	$$
+	那么$(\bs{A},\bs{B})$的列向量分别为
+	$$
+	\bs{\alpha}_1,\cdots,\bs{\alpha}_m,
+	\bs{\beta}_1,\cdots,\bs{\beta}_n
+	$$
+	记$\rank(\bs{A})=r$，$\rank(\bs{B})=s$，$\bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r}$为$\bs{\alpha}_1,\cdots,\bs{\alpha}_m$的基，$\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s}$为$\bs{\beta}_1,\cdots,\bs{\beta}_n$的基，那么$\bs{\alpha}_1,\cdots,\bs{\alpha}_m,
+	\bs{\beta}_1,\cdots,\bs{\beta}_n$可由$\bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r},\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s}$线性表出，因此%
+	$$
+	\rank\{ \bs{\alpha}_1,\cdots,\bs{\alpha}_m,
+	\bs{\beta}_1,\cdots,\bs{\beta}_n \}
+	\le\rank\{ \bs{\alpha}_{i_1},\cdots,\bs{\alpha}_{i_r},\bs{\beta}_{j_1},\cdots,\bs{\beta}_{j_s} \}
+	=r+s
+	$$
+	进而
+	$$
+	\rank(\bs{A} , \bs{B})
+	\le \rank(\bs{A})+\rank(\bs{B})
+	$$
+	
+	对于2，记$\rank(\bs{A})=r$，$\rank(\bs{B})=s$，那么存在可逆矩阵$\bs{P}_1,\bs{Q}_1,\bs{P}_2,\bs{Q}_2$，使得成立%
+	$$
+	\bs{P}_1\bs{A}\bs{Q}_1=\begin{pmatrix}
+		\bs{I}_r & \bs{O}\\
+		\bs{O} & \bs{O}
+	\end{pmatrix},\qquad
+	\bs{P}_2\bs{B}\bs{Q}_2=\begin{pmatrix}
+		\bs{I}_s & \bs{O}\\
+		\bs{O} & \bs{O}
+	\end{pmatrix}
+	$$
+	因此%
+	$$
+	\begin{pmatrix}
+		\bs{P}_1 & \bs{O}\\
+		\bs{O} & \bs{P}_2
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{A} & \bs{O}\\
+		\bs{O} & \bs{B}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{Q}_1 & \bs{O}\\
+		\bs{O} & \bs{Q}_2
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{P}_1\bs{A}\bs{Q}_1 & \bs{O}\\
+		\bs{O} & \bs{P}_2\bs{B}\bs{Q}_2
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{I}_r &  &  & \\
+		& \bs{O} & &\\
+		& & \bs{I}_s &\\
+		& & & \bs{O}
+	\end{pmatrix}
+	$$
+	那么
+	$$
+	\rank\begin{pmatrix}
+		\bs{A} & \bs{O}\\
+		\bs{O} & \bs{B}
+	\end{pmatrix}
+	= \rank\begin{pmatrix}
+		\bs{I}_r &  &  & \\
+		& \bs{O} & &\\
+		& & \bs{I}_s &\\
+		& & & \bs{O}
+	\end{pmatrix}
+	= r + s
+	=\rank(\bs{A})+\rank(\bs{B})
+	$$
+	
+	对于3，记$\rank(\bs{A})=r$，$\rank(\bs{B})=s$，那么$\bs{A}$存在$r$阶子式$\det(\bs{A}_0)\ne 0$，$\bs{B}$存在$s$阶子式$\det(\bs{B}_0)\ne 0$。从而$\begin{pmatrix}\bs{A} & \bs{C}\\\bs{O} & \bs{B}\end{pmatrix}$存在$r+s$阶子式%
+	$$
+	\det\begin{pmatrix}
+		\bs{A}_0 & \bs{C}_0\\
+		\bs{O} & \bs{B}_0
+	\end{pmatrix}
+	=\det(\bs{A}_0)\det(\bs{B}_0)\ne 0
+	$$
+	从而%
+	$$
+	\rank\begin{pmatrix}
+		\bs{A} & \bs{C}\\
+		\bs{O} & \bs{B}
+	\end{pmatrix}
+	\ge r+s=\rank(\bs{A})+\rank(\bs{B})
+	$$
+\end{proof}
+
+\begin{proposition}
+	$$
+	\rank(\bs{A}^T\bs{A})
+	=\rank(\bs{A})
+	$$
+\end{proposition}
+
+\begin{proof}
+	如果$\bs{\xi}$为$\bs{Ax}=\bs{0}$的解，那么$\bs{A\xi}=\bs{0}$，因此$(\bs{A}^T\bs{A})\bs{\xi}=\bs{0}$，进而$\bs{\xi}$为$(\bs{A}^T\bs{A})\bs{x}=\bs{0}$的解。
+	
+	如果$\bs{\xi}$为$(\bs{A}^T\bs{A})\bs{x}=\bs{0}$的解，那么$(\bs{A}^T\bs{A})\bs{\xi}=\bs{0}$，从而$\bs{\xi}^T\bs{A}^T\bs{A}\bs{\xi}=\bs{0}$，因此$(\bs{A\xi})^T\bs{A\xi}=\bs{0}$，进而$\bs{A\xi}=\bs{0}$，即$\bs{\xi}$为$\bs{Ax}=\bs{0}$的解。
+	
+	由此$\bs{Ax}=\bs{0}$与$(\bs{A}^T\bs{A})\bs{x}=\bs{0}$解空间相同；特别的，解空间的秩相同，即%
+	$$
+	n-\rank(\bs{A})=n-\rank(\bs{A}^T\bs{A})
+	$$
+	进而
+	$$
+	\rank(\bs{A}^T\bs{A})
+	=\rank(\bs{A})
+	$$
+\end{proof}
+
+\begin{proposition}
+	对于矩阵$m\times n$阶矩阵$\bs{A}$，成立%
+	$$
+	\rank(\bs{A})=r\iff
+	\text{存在}m\times r\text{阶列满秩矩阵}\bs{B}\text{与}r\times n\text{阶行满秩矩阵}\bs{C},\text{使得成立}\bs{A}=\bs{BC}
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于必要性，如果$\rank(\bs{A})=r$，存在可逆矩阵$\bs{P}$与$\bs{Q}$，使得成立
+	$$
+	\bs{A}
+	=\bs{P}\begin{pmatrix}
+		\bs{I}_r & \bs{0}\\
+		\bs{0} & \bs{0}
+	\end{pmatrix}\bs{Q}
+	=\begin{pmatrix}
+		\bs{P}_{r} & \bs{P}_{m-r}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{I}_r & \bs{0}\\
+		\bs{0} & \bs{0}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{Q}_{r} \\ \bs{Q}_{n-r}
+	\end{pmatrix}
+	=\bs{P}_r\bs{Q}_r
+	$$
+	由于$\bs{P}$与$\bs{Q}$可逆，那么$\rank(\bs{P}_r)=\rank(\bs{Q}_r)=r$，因此$\bs{P}_r$为$m\times r$阶列满秩矩阵，$\bs{Q}_r$为$r\times n$阶行满秩矩阵，从而$\bs{A}=\bs{P}_r\bs{Q}_r$。
+	
+	对于充分性，令$\bs{A}=\bs{BC}$，其中$\bs{B}$为$m\times r$阶列满秩矩阵，$\bs{B}$为$r\times n$阶行满秩矩阵。由命题\ref{pro:Sylvester秩不等式}%
+	$$
+	r=
+	\rank(\bs{B})+\rank(\bs{C})-r
+	\le
+	\rank(\bs{BC})
+	=
+	\le\min\{ \rank(\bs{B}),\rank(\bs{C}) \}
+	=r
+	$$
+	因此$\rank(\bs{A})=\rank(\bs{BC})=r$。
+\end{proof}
+
+\subsection{行列式}
+
+\begin{proposition}{积的行列式}{积的行列式}
+	$$
+	\det(\bs{AB})=\det(\bs{A})\det(\bs{B})
+	$$
+\end{proposition}
+
+\begin{proposition}{分块矩阵的行列式}
+	\begin{enumerate}
+		\item $$
+		\det\begin{pmatrix}
+			\bs{A} & \bs{O}\\
+			\bs{C} & \bs{B}
+		\end{pmatrix}
+		=\det(\bs{A})\det(\bs{B})
+		$$
+		\item $$
+		\det\begin{pmatrix}
+			\bs{I} & \bs{B}\\
+			\bs{A} & \bs{I}
+		\end{pmatrix}
+		=\det(\bs{I}-\bs{AB})
+		=\det(\bs{I}-\bs{BA})
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	对于2，由于%
+	$$
+	\begin{pmatrix}
+		\bs{I} & \bs{O}\\
+		-\bs{A} & \bs{I}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{O} & \bs{I}-\bs{AB}
+	\end{pmatrix},\qquad \begin{pmatrix}
+		\bs{I} & -\bs{B}\\
+		\bs{O} & \bs{I}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{I}-\bs{BA} & \bs{O}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	$$
+	命题\ref{pro:积的行列式}
+	$$
+	\det\begin{pmatrix}
+		\bs{I} & \bs{O}\\
+		-\bs{A} & \bs{I}
+	\end{pmatrix}
+	\det\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	=\det\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{O} & \bs{I}-\bs{AB}
+	\end{pmatrix},\quad \det\begin{pmatrix}
+		\bs{I} & -\bs{B}\\
+		\bs{O} & \bs{I}
+	\end{pmatrix}
+	\det\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	=\det\begin{pmatrix}
+		\bs{I}-\bs{BA} & \bs{O}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	$$
+	由1
+	$$
+	\det\begin{pmatrix}
+		\bs{I} & \bs{B}\\
+		\bs{A} & \bs{I}
+	\end{pmatrix}
+	=\det(\bs{I}-\bs{AB})
+	=\det(\bs{I}-\bs{BA})
+	$$
+\end{proof}
+
+\subsection{迹}
+
+\begin{definition}{迹}
+	定义$n$阶矩阵$\bs{A}$的迹为
+	$$
+	\tr(\bs{A})=\sum_{k=1}^{n}a_{kk}
+	$$
+\end{definition}
+
+\begin{proposition}{迹的性质}
+	\begin{enumerate}
+		\item $\tr(\bs{A}+\bs{B})=\tr(\bs{A})+\tr(\bs{B})$
+		\item $\tr(k\bs{A})=k\tr(\bs{A})$
+		\item $\tr(\bs{AB})=\tr(\bs{BA})$
+	\end{enumerate}
+\end{proposition}
+
+\section{矩阵与矩阵的关系}
+
+\subsection{相抵}
+
+\begin{definition}{相抵矩阵}
+	称矩阵$\bs{A}$与$\bs{B}$相抵，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 存在可逆矩阵$\bs{P}$与$\bs{Q}$，使得成立$\bs{A}=\bs{PBQ}$。
+		\item $\rank(A)=\rank(B)$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	如果矩阵$\bs{A}$的秩为$r$，那么存在可逆矩阵$\bs{P}$与$\bs{Q}$，使得成立
+	$$
+	\bs{A}=\bs{P}\begin{pmatrix}
+		\bs{I}_r & \bs{0}\\
+		\bs{0} & \bs{0}
+	\end{pmatrix}\bs{Q}
+	$$
+\end{theorem}
+
+\begin{proposition}{相抵矩阵不变量}
+	\begin{enumerate}
+		\item 秩：如果矩阵$\bs{A}$与$\bs{B}$相抵，那么$\rank(A)=\rank(B)$。
+	\end{enumerate}
+\end{proposition}
+
+\subsection{相似}
+
+\begin{definition}{相似矩阵}
+	称矩阵$\bs{A}$与$\bs{B}$相抵，如果存在可逆矩阵$\bs{P}$，使得成立$\bs{P}^{-1}\bs{AP}=\bs{B}$。
+\end{definition}
+
+\begin{proposition}{相似矩阵不变量}
+	\begin{enumerate}
+		\item 秩：如果矩阵$\bs{A}$与$\bs{B}$相似，那么$\rank(A)=\rank(B)$。
+		\item 行列式：如果矩阵$\bs{A}$与$\bs{B}$相似，那么$\det(A)=\det(B)$。
+		\item 迹：如果矩阵$\bs{A}$与$\bs{B}$相似，那么$\tr(A)=\tr(B)$。
+		\item 极小多项式：如果矩阵$\bs{A}$与$\bs{B}$相似，那么$\bs{A}$与$\bs{B}$具有相同的极小多项式。
+	\end{enumerate}
+\end{proposition}
+
+\subsection{合同}
+
+\begin{definition}{合同矩阵}
+	称矩阵$\bs{A}$与$\bs{B}$合同，如果存在矩阵$\bs{P}$，使得成立$\bs{P}^{T}\bs{AP}=\bs{B}$。
+\end{definition}
+
+\section{特征值与特征向量}
+
+\begin{definition}{特征值与特征向量}
+	对于$n$阶矩阵$\bs{A}$，如果存在$\lambda$以及非零向量$\bs{\xi}$，使得成立
+	$$
+	\bs{A\xi}=\lambda\bs{\xi}
+	$$
+	那么称$\lambda$为$\bs{A}$的{\bf 特征值}，$\bs{\xi}$为$\bs{A}$的相应于$\lambda$的{\bf 特征向量}。
+\end{definition}
+
+\begin{definition}{特征多项式}
+	定义$n$阶矩阵$\bs{A}$的特征多项式为
+	$$
+	f(\lambda)=|\lambda \bs{I}_n-\bs{A}|
+	$$
+\end{definition}
+
+\begin{definition}{特征子空间}
+	定义矩阵$\bs{A}$关于特征值$\lambda$的特征子空间为
+	$$
+	V_\lambda(\bs{A})=\{ \bs{x}\in K^{n}:\bs{A x}=\lambda\bs{x} \}
+	$$
+\end{definition}
+
+\begin{definition}{代数重数}
+	定义$n$阶矩阵$\bs{A}$的特征值$\lambda$的代数重数为其特征多项式$f(\lambda)=|\lambda\bs{I}_n-\bs{A}|$的根重数。
+\end{definition}
+
+\begin{definition}{几何重数}
+	定义$n$阶矩阵$\bs{A}\in K^{n\times n}$的特征值$\lambda$的几何重数为其特征子空间的维数$\dim(V_\lambda(\bs{A}))$。
+\end{definition}
+
+\begin{theorem}
+	矩阵的特征值的代数重数不小于几何重数。
+\end{theorem}
+
+\begin{proof}
+	对于$n$阶矩阵$\bs{A}$的特征值$\lambda$，记$r=\dim(V_\lambda(\bs{A}))=\rank(\lambda \bs{I}_n-\bs{A})$，取其特征子空间$V_\lambda(\bs{A})$的基$\bs{\xi}_1,\cdots,\bs{\xi}_r$，将其扩充为全空间的基
+	$$
+	\bs{P}=(\bs{\xi}_1,\cdots,\bs{\xi}_r,\bs{\eta}_1,\cdots, \bs{\eta}_{n-r} )
+	$$
+	那么$\bs{P}$为$n$阶可逆矩阵，且
+	\begin{align*}
+		\bs{P}^{-1}\bs{AP}
+		& = \bs{P}^{-1}(\bs{A}\bs{\xi}_1,\cdots,\bs{A}\bs{\xi}_r,\bs{A}\bs{\eta}_1,\cdots, \bs{A}\bs{\eta}_{n-r} )\\
+		& = (\lambda\bs{P}^{-1}\bs{\xi}_1,\cdots, \lambda\bs{P}^{-1}\bs{\xi}_r, \bs{P}^{-1}\bs{A}\bs{\eta}_1,\bs{A}\cdots, \bs{P}^{-1}\bs{\eta}_{n-r} )
+	\end{align*}
+	由于
+	$$
+	\bs{I}_n=\bs{P}^{-1}\bs{P}
+	=(\bs{P}^{-1}\bs{\xi}_1,\cdots,\bs{P}^{-1}\bs{\xi}_r,\bs{P}^{-1}\bs{\eta}_1,\cdots, \bs{P}^{-1}\bs{\eta}_{n-r} )
+	$$
+	那么
+	$$
+	\varepsilon_1=\bs{P}^{-1}\bs{\xi}_1\qquad
+	\cdots\qquad 
+	\varepsilon_r=\bs{P}^{-1}\bs{\xi}_r
+	$$
+	从而
+	\begin{align*}
+		\bs{P}^{-1}\bs{AP}
+		& = (\lambda \varepsilon_1,\cdots, \lambda \varepsilon_r, \bs{P}^{-1}\bs{A}\bs{\eta}_1,\bs{A}\cdots, \bs{P}^{-1}\bs{\eta}_{n-r} )\\
+		& = \begin{pmatrix}
+			\lambda \bs{I}_r & \bs{B}\\
+			\bs{0} & \bs{C}
+		\end{pmatrix}
+	\end{align*}
+	由于相似矩阵的特征多项式相同，那么
+	\begin{align*}
+		|x\bs{I}_n-\bs{A}|
+		& = \begin{vmatrix}
+			(x-\lambda)\bs{I}_r & -\bs{B}\\
+			\bs{0} & x\bs{I}_{n-r}-\bs{C}
+		\end{vmatrix}\\
+		& = |(x-\lambda)\bs{I}_r||x\bs{I}_{n-r}-\bs{C}|\\
+		& = (x-\lambda)^r|x\bs{I}_{n-r}-\bs{C}|
+	\end{align*}
+	从而$\lambda$的代数重数不小于$r$，即其代数重数不小于几何重数。
+\end{proof}
+
+\begin{theorem}
+	矩阵$\bs{A}$的特征方程的复根之和为其迹，之积为其行列式。
+\end{theorem}
+
+\begin{theorem}
+	对于矩阵$\bs{A}$的互异特征值$\lambda_1,\cdots,\lambda_r$，如果对于任意$1\le k \le r$，$\bs{\xi}_{1}^{(k)},\cdots,\bs{\xi}_{s_k}^{(k)}$为相应于$\lambda_k$的线性无关的特征向量，那么向量组
+	$$
+	\{ \bs{\xi}_{j}^{(i)}:1\le i \le r,1\le j \le s_i \}
+	$$
+	线性无关。
+\end{theorem}
+
+\section{矩阵对角化}
+
+\subsection{矩阵对角化}
+
+\begin{definition}{可对角化矩阵}
+	称$n$阶矩阵$\bs{A}$可对角化，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 存在对角矩阵$\bs{D}$与可逆矩阵$\bs{P}$，使得成立
+		$$
+		\bs{P}^{-1}\bs{AP}=\bs{D}
+		$$
+		\item $\bs{A}$存在$n$个线性无关的特征向量。
+		\item 对于$\bs{A}$的特征方程的任意复根$\lambda$，成立$\lambda\in K$，且其几何重数等于代数重数。
+		\item 对于其特征值$\lambda_1,\cdots,\lambda_r$，成立
+		$$
+		\dim V_{\lambda_1}(\bs{A})+\cdots+\dim V_{\lambda_r}(\bs{A})=n
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：如果矩阵$\bs{A}$可对角化为$\bs{D}$，那么存在可逆矩阵$\bs{P}$，使得成立
+	$$
+	\bs{P}^{-1}\bs{AP}=\bs{D}
+	$$
+	记
+	$$
+	\bs{D}=\begin{pmatrix}
+		\lambda_1 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix},\qquad 
+	\bs{P}=(\bs{\xi}_1,\cdots,\bs{\xi}_n)
+	$$
+	那么
+	$$
+	\bs{A}(\bs{\xi}_1,\cdots,\bs{\xi}_n)=
+	(\bs{\xi}_1,\cdots,\bs{\xi}_n)
+	\begin{pmatrix}
+		\lambda_1 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix}
+	$$
+	即
+	$$
+	\bs{A\xi}_k=\lambda_k\bs{\xi}_k,\qquad 1\le  k\le n
+	$$
+	由于$\bs{P}$为可逆矩阵，那么$\bs{\xi}_1,\cdots,\bs{\xi}_n$线性无关，进而$\bs{A}$存在$n$个线性无关的特征向量。
+	
+	$2\implies 1$：如果$\bs{A}$存在$n$个线性无关的特征向量，即
+	$$
+	\bs{A\xi}_k=\lambda_k\xi_k,\qquad 1\le  k\le n
+	$$
+	那么令
+	$$
+	\bs{D}=\begin{pmatrix}
+		\lambda_1 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix},\qquad 
+	\bs{P}=(\bs{\xi}_1,\cdots,\bs{\xi}_n)
+	$$
+	因此
+	$$
+	\bs{P}^{-1}\bs{AP}=\bs{D}
+	$$
+	进而$\bs{A}$可对角化为$\bs{D}$。
+\end{proof}
+
+\begin{theorem}{矩阵可对角化的充分条件}
+	如果$n$阶矩阵$\bs{A}$存在$n$个不同的特征值，那么$\bs{A}$可对角化。
+\end{theorem}
+
+\subsection{实对称矩阵对角化}
+
+\begin{theorem}
+	实对称矩阵的特征值均为实数。
+\end{theorem}
+
+\begin{theorem}
+	实对称矩阵对应于不同特征值的特征向量正交。
+\end{theorem}
+
+\begin{theorem}
+	对于$n$阶实对称矩阵$\bs{S}\in \R^{n\times n}$，存在$n$个实特征值$\lambda_1,\cdots,\lambda_n\in\R$，以及相应的$n$个相互正交的单位特征向量$\bs{q}_1,\cdots,\bs{q}_n\in\R^n$，令
+	$$
+	\Lambda=\begin{pmatrix}
+		\lambda_1 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix},\qquad 
+	\bs{Q}=(\bs{q}_1,\cdots,\bs{q}_n)
+	$$
+	那么$\bs{Q}$为正交矩阵，且
+	$$
+	\bs{S}=\bs{Q\Lambda Q}^T
+	$$
+\end{theorem}
+
+\begin{proof}
+	对$n$作数学归纳法。当$n=1$时，命题显然成立。
+	
+	假设对于$n-1$阶实对称矩阵命题成立，那么对于$n$阶矩阵$\bs{A}$，由于其存在实特征值$\lambda_1$，记其对应的实单位特征向量为$\bs{q}_1$。将$\bs{q}_1$扩充为$\R^n$的单位正交基$\bs{q}_1,\cdots,\bs{q}_n$。记
+	$$
+	\bs{Q}_1=(\bs{q}_1,\cdots,\bs{q}_n)
+	$$
+	那么$\bs{Q}_1$为$n$阶正交矩阵，且
+	$$
+	\bs{Q}_1^{-1}\bs{AQ}
+	=\bs{Q}_1^{-1}(\bs{Aq}_1,\cdots,\bs{Aq}_n)
+	=(\lambda_1\bs{Q}_1^{-1}\bs{q}_1,\bs{Q}_1^{-1}\bs{Aq}_2,\cdots,\bs{Q}_1^{-1}\bs{Aq}_n)
+	$$
+	由于$\bs{Q}_1^{-1}\bs{Q}=\bs{I}_n$，那么$\bs{Q}_1^{-1}\bs{q}_1=\bs{\varepsilon}_1$，从而
+	$$
+	\bs{Q}_1^{-1}\bs{AQ}_1=\begin{pmatrix}
+		\lambda_1 & \bs{\alpha}\\
+		\bs{0} & \bs{B}
+	\end{pmatrix}
+	$$
+	由于$\bs{A}$为实对称矩阵，那么$\bs{Q}_1^{-1}\bs{AQ}$为实对称矩阵，从而$\bs{\alpha}=\bs{0}$，且$\bs{B}$为$n-1$阶实对称矩阵。由归纳假设，存在$n-1$阶正交矩阵$\bs{Q}_2$，使得成立
+	$$
+	\bs{Q}_2^{-1}\bs{BQ}_2=\begin{pmatrix}
+		\lambda_2 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix}
+	$$
+	令
+	$$
+	\bs{Q}=\bs{Q}_1\begin{pmatrix}
+		1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2
+	\end{pmatrix}
+	$$
+	从而$\bs{Q}$为正交矩阵，且
+	$$
+	\bs{Q}^{-1}\bs{AQ}
+	=\begin{pmatrix}
+		1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2^{-1}
+	\end{pmatrix}\bs{Q}_1^{-1}\bs{AQ}_1
+	\begin{pmatrix}
+		1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2
+	\end{pmatrix}
+	=\begin{pmatrix}
+		1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2^{-1}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\lambda_1 & \bs{0}\\
+		\bs{0} & \bs{B}
+	\end{pmatrix}
+	\begin{pmatrix}
+		1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\lambda_1 & \bs{0}\\
+		\bs{0} & \bs{Q}_2^{-1}\bs{BQ}_2
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\lambda_1 & & \\
+		& \ddots & \\
+		& & \lambda_n
+	\end{pmatrix}
+	$$
+	由数学归纳法，命题得证！
+\end{proof}
+
+\section{Hamilton-Cayley定理}
+
+\begin{theorem}{Hamilton-Cayley定理}
+	对于$n$阶矩阵$\bs{A}$，如果$f(\lambda)$为其特征多项式，那么$f(\bs{A})=\bs{O}$。
+\end{theorem}
+
+\begin{proof}
+	令$\bs{B}(\lambda)$为$\lambda$-矩阵$\lambda \bs{I}_n-\bs{A}$的伴随矩阵，$f(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+\cdots+a_1\lambda+a_0$，则%
+	\begin{gather*}\label{Hamilton-Cayley定理式1}
+		\bs{B}(\lambda)(\lambda \bs{I}_n-\bs{A})
+		=|\lambda \bs{I}_n-\bs{A}|\bs{I}_n
+		=f(\lambda)\bs{I}_n
+		=\lambda^n\bs{I}_n+a_{n-1}\lambda^{n-1}\bs{I}_n+\cdots+a_1\lambda\bs{I}_n+a_0\bs{I}_n\tag{*}
+	\end{gather*}
+	由于$\bs{B}(\lambda)$的元素为$\lambda \bs{I}_n-\bs{A}$的元素的代数余子式，因此$\bs{B}(\lambda)$的元素均为次数$\le n-1$的多项式，从而$\bs{B}(\lambda)$可表示为
+	$$
+	\bs{B}(\lambda)
+	=\lambda^{n-1}\bs{B}_{n-1}+\cdots+\lambda \bs{B}_1+\bs{B}_0
+	$$
+	其中诸$\bs{B}_k$均为$n$阶矩阵，进而
+	\begin{align*}\label{Hamilton-Cayley定理式2}
+		\bs{B}(\lambda)(\lambda \bs{I}_n-\bs{A})
+		& = (\lambda^{n-1}\bs{B}_{n-1}+\cdots+\lambda \bs{B}_1+\bs{B}_0)(\lambda)(\lambda \bs{I}_n-\bs{A})\\
+		& = \lambda^n\bs{B}_{n-1}+\lambda^{n-1}(\bs{B}_{n-2}-\bs{B}_{n-1}\bs{A})+\cdots+\lambda(\bs{B}_0-\bs{B}_1\bs{A})-\bs{B}_0\bs{A}
+		\tag{**}
+	\end{align*}
+	对比(\ref{Hamilton-Cayley定理式1})与(\ref{Hamilton-Cayley定理式2})可得
+	$$
+	\begin{cases}
+		\bs{B}_{n-1}=\bs{I}_n\\
+		\bs{B}_{n-2}-\bs{B}_{n-1}\bs{A}=a_{n-1}\bs{I}_{n}\\
+		\qquad\vdots\\
+		\bs{B}_{0}-\bs{B}_{1}\bs{A}=a_{1}\bs{I}_{n}\\
+		-\bs{B}_{0}\bs{A}=a_{0}\bs{I}_{n}\\
+	\end{cases}
+	$$
+	因此
+	$$
+	\begin{cases}
+		\bs{B}_{n-1}\bs{A}^{n}=\bs{A}^{n}\\
+		\bs{B}_{n-2}\bs{A}^{n-1}-\bs{B}_{n-1}\bs{A}^{n}=a_{n-1}\bs{A}^{n-1}\\
+		\qquad\vdots\\
+		\bs{B}_{0}\bs{A}-\bs{B}_{1}\bs{A}^2=a_{1}\bs{A}\\
+		-\bs{B}_{0}\bs{A}=a_{0}\bs{I}_{n}\\
+	\end{cases}
+	$$
+	作和可得$f(\bs{A})=\bs{O}$。
+\end{proof}
+
+\chapter{线性方程}
+
+\section{线性方程解的判定与结构}
+
+\textbf{齐次线性方程解的判定与结构：}对于线性方程
+$$
+\bs{Ax}=\bs{0}
+$$
+其中$\bs{A}$为$m\times n$矩阵，$\rank(\bs{A})=r$。解的判定如下
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccccc}
+		\toprule
+		秩 & 最简方程 & 可解性 & 主变元 & 自由变元 \\
+		\midrule
+		$r=n$ & $\begin{pmatrix}\bs{I}_r\\\bs{0}\end{pmatrix}\bs{x}=\bs{0}$ & 零解 & $r$ & $n-r=0$ \\
+		$r<n$ & $\begin{pmatrix}\bs{I}_r&F\\\bs{0}&\bs{0}\end{pmatrix}\begin{pmatrix}\bs{x}_r\\\bs{x}_f\end{pmatrix}=\begin{pmatrix}\bs{b}_r\\\bs{0}\end{pmatrix}$ & 无穷多解 & $r$ & $n-r$ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+解的结构如下
+\begin{enumerate}
+	\item $r=n$：解唯一，$\bs{x}=\bs{0}$。
+	\item $r<n$：基础解系为矩阵
+	$$
+	\begin{pmatrix}
+		-\bs{F}\\
+		\bs{I}_{n-r}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{\eta}_1&\cdots&\bs{\eta}_{n-r}
+	\end{pmatrix}
+	$$
+	的列向量，因此方程的解为
+	$$
+	\bs{x}=k_1\bs{\eta}_1+\cdots+k_{n-r}\bs{\eta}_{n-r}
+	$$
+\end{enumerate}
+
+\textbf{非齐次线性方程解的判定与结构：}对于线性方程
+$$
+\bs{Ax}=\bs{b}
+$$
+其中$\bs{A}$为$m\times n$矩阵，$\rank(\bs{A})=r$，$\rank(\bs{A},\bs{b})=\overline{r}$。。解的判定如下
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccccc}
+		\toprule
+		秩 & 最简方程 & 可解性 & 主变元 & 自由变元 \\
+		\midrule
+		$r=\overline{r}=n$ & $\begin{pmatrix}\bs{I}_r\\\bs{0}\end{pmatrix}\bs{x}=\begin{pmatrix}\bs{b}_r\\\bs{0}\end{pmatrix}$ & 唯一解 & $r$ & $n-r=0$ \\
+		$r=\overline{r}<n$ & $\begin{pmatrix}\bs{I}_r&\bs{F}\\\bs{0}&\bs{0}\end{pmatrix}\begin{pmatrix}\bs{x}_r\\\bs{x}_f\end{pmatrix}=\begin{pmatrix}\bs{b}_r\\\bs{0}\end{pmatrix}$ & 无穷多解 & $r$ & $n-r$ \\
+		$r<\overline{r}$ & $\begin{pmatrix}\bs{I}_r&\bs{F}\\\bs{0}&\bs{0}\end{pmatrix}\begin{pmatrix}\bs{x}_r\\\bs{x}_f\end{pmatrix}=\begin{pmatrix}\bs{b}_r\\\bs{I}_{m-r}\end{pmatrix}$ & 无解 & & \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+解的结构如下
+\begin{enumerate}
+	\item $r=\overline{r}=n$：解唯一，$\bs{x}=\bs{b}_r$。
+	\item $r=\overline{r}<n$：特解为
+	$$
+	\bs{x}_p=
+	\begin{pmatrix}
+		\bs{b}_r\\
+		\bs{0}
+	\end{pmatrix}
+	$$
+	基础解系为矩阵
+	$$
+	\begin{pmatrix}
+		-\bs{F}\\
+		\bs{I}_{n-r}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\bs{\eta}_1&\cdots&\bs{\eta}_{n-r}
+	\end{pmatrix}
+	$$
+	的列向量，因此方程的解为
+	$$
+	\bs{x}=\bs{x}_p+k_1\bs{\eta}_1+\cdots+k_{n-r}\bs{\eta}_{n-r}
+	$$
+\end{enumerate}
+
+\section{广义逆矩阵}
+
+\subsection{广义逆矩阵}
+
+\begin{definition}{广义逆矩阵}
+	称矩阵$\bs{A}^-\in K^{n\times m}$为$\bs{A}\in K^{m\times n}$的广义逆矩阵，如果$\bs{AA}^-\bs{A}=\bs{A}$。
+\end{definition}
+
+\begin{theorem}
+	对于矩阵$\bs{A}\in K^{m\times n}$，如果$\rank(A)=r$，且可逆矩阵$\bs{P}\in K^{m\times m}$与$\bs{Q}\in K^{n\times n}$成立
+	$$
+	\bs{A}=\bs{P}\begin{pmatrix}
+		\bs{I}_r & \bs{0}\\
+		\bs{0} & \bs{0}
+	\end{pmatrix}\bs{Q}
+	$$
+	那么对于任意矩阵$\bs{B}\in K^{r\times (m-r)},\bs{C}\in K^{(n-r)\times r},\bs{D}\in K^{(n-r)\times (m-r)}$，矩阵
+	$$
+	\bs{Q}^{-1}\begin{pmatrix}
+		\bs{I}_r & \bs{B}\\
+		\bs{C} & \bs{D}
+	\end{pmatrix}\bs{P}^{-1}
+	$$
+	均为$\bs{A}$的广义逆矩阵。
+\end{theorem}
+
+\subsection{线性方程的解的结构}
+
+\begin{theorem}{非齐次线性方程的相容性定理}
+	对于非齐次线性方程$\bs{Ax}=\bs{b}$，成立
+	$$
+	\exists\bs{x},\bs{Ax}=\bs{b}\iff
+	\bs{b}=\bs{AA}^-\bs{b}
+	$$
+\end{theorem}
+
+\begin{proof}
+	对于必要性，如果存在$\bs{x}$，使得成立$\bs{Ax}=\bs{b}$，那么
+	$$
+	\bs{b}=\bs{Ax}=\bs{AA}^-\bs{Ax}=\bs{AA}^-\bs{b}
+	$$
+	
+	对于充分性，如果$\bs{b}=\bs{AA}^-\bs{b}$，那么$\bs{A}^-\bs{b}$为$\bs{Ax}=\bs{b}$的解。
+\end{proof}
+
+\begin{theorem}{非齐次线性方程的解的结构定理}
+	如果非齐次线性方程$\bs{Ax}=\bs{b}$存在解，那么其通解为
+	$$
+	\bs{x}=\bs{A}^-\bs{b}
+	$$
+	其中$\bs{A}^-$为$\bs{A}$的任意广义逆矩阵。
+\end{theorem}
+
+\begin{theorem}{齐次线性方程的解的结构定理}
+	齐次线性方程$\bs{Ax}=\bs{0}$的通解为
+	$$
+	\bs{x}=(\bs{I}-\bs{A}^-\bs{A})\bs{\zeta}
+	$$
+	其中$\bs{A}^-$为$\bs{A}$的任意广义逆矩阵，且$\bs{\zeta}$为任意向量。
+\end{theorem}
+
+\begin{proof}
+	对于任意向量$\bs{\zeta}$，由于
+	$$
+	\bs{A}(\bs{I}-\bs{A}^-\bs{A})\bs{\zeta}
+	=(\bs{A}-\bs{AA}^-\bs{A})\bs{\zeta}
+	=(\bs{A}-\bs{A})\bs{\zeta}
+	=\bs{0}
+	$$
+	那么$(\bs{I}-\bs{A}^-\bs{A})\bs{\zeta}$为$\bs{Ax}=\bs{0}$的解。
+	
+	如果$\zeta$为$\bs{Ax}=\bs{0}$的解，那么
+	$$
+	(\bs{I}-\bs{A}^-\bs{A})\bs{\zeta}
+	=\bs{\zeta}-\bs{A}^-\bs{A}\bs{\zeta}
+	=\bs{\zeta}
+	$$
+\end{proof}
+
+\begin{corollary}
+	如果非齐次线性方程$\bs{Ax}=\bs{b}$存在解，那么其通解为
+	$$
+	\bs{x}=\bs{A}^-\bs{b}+(\bs{I}-\bs{A}^-\bs{A})\bs{\zeta}
+	$$
+	其中$\bs{A}^-$为$\bs{A}$的给定广义逆矩阵，且$\bs{\zeta}$为任意向量。
+\end{corollary}
+
+\chapter{二次型}
+
+\section{二次型}
+
+\begin{definition}{二次型}
+	定义数域$K$上的$n$元二次型为
+	$$
+	\bs{x}^T\bs{Ax}
+	$$
+	其中$\bs{x}=(x_1,\cdots,x_n)^T\in K^n$且$\bs{A}\in K^{n\times n}$为对称矩阵。
+\end{definition}
+
+\begin{definition}{等价二次型}
+	称数域$K$上的二次型$\bs{x}^T\bs{Ax}$与$\bs{y}^T\bs{By}$等价，如果$\bs{A}$与$\bs{B}$合同。
+\end{definition}
+
+\section{标准形与规范形}
+
+\begin{definition}{标准形}
+	称数域$K$上的二次型$\bs{y}^T\bs{Dy}$为$\bs{x}^T\bs{Ax}$的标准形，如果$\bs{D}$为对角矩阵，且$\bs{A}$与$\bs{D}$合同。
+\end{definition}
+
+\begin{definition}{规范形}
+	称数域$K$上的二次型$\bs{y}^T\bs{Dy}$为$\bs{x}^T\bs{Ax}$的标准形，如果$\bs{D}$为对角元素为$\pm1$或$0$的对角矩阵，且$\bs{A}$与$\bs{D}$合同。
+\end{definition}
+
+\begin{definition}{正惯性系数与负惯性系数}
+	定义实二次型的规范形的系数为$1$的元素的个数为其正惯性系数，系数为$-1$的元素的个数为其负惯性系数。
+\end{definition}
+
+\begin{theorem}{惯性定理}
+	二次型的规范形唯一。
+\end{theorem}
+
+\chapter{线性映射}
+
+\section{线性映射与矩阵表示}
+
+\begin{definition}{线性映射}
+	对于域$F$上的线性空间$V$与$W$，称映射$\mathscr{A}:V\to W$为线性映射，如果对于任意$\bs{\alpha},\bs{\beta}\in V$与$k\in F$，成立%
+	$$
+	\mathscr{A}(\bs{\alpha}+\bs{\beta})=\mathscr{A}(\bs{\alpha})+\mathscr{A}(\bs{\beta}),\qquad
+	\mathscr{A}(k\bs{\alpha})=k\mathscr{A}(\bs{\alpha})
+	$$
+\end{definition}
+
+\begin{definition}{线性映射的矩阵表示}
+	对于域$F$上的$n$维线性空间$V$和$m$维线性空间$W$，取$V$的基$\bs{\varepsilon}_1,\cdots,\bs{\varepsilon}_n$，与$W$的基$\bs{\eta}_1,\cdots,\bs{\eta}_m$，那么%
+	$$
+	\mathscr{A}(\bs{\varepsilon}_1,\cdots,\bs{\varepsilon}_n)
+	=(\bs{\eta}_1,\cdots,\bs{\eta}_m)\begin{pmatrix}
+		a_{11} & \cdots & a_{1n}\\
+		\vdots & \ddots & \vdots\\
+		a_{m1} & \cdots & a_{mn}
+	\end{pmatrix}
+	$$
+\end{definition}
+
+\section{核与像}
+
+\begin{definition}{核}
+	对于域$F$上的线性空间$V$与$W$，定义线性映射$\mathscr{A}:V\to W$d的核为%
+	$$
+	\ker\mathscr{A}=\{ \bs{\alpha}\in V:\mathscr{A}(\bs{\alpha})=\bs{0} \}
+	$$
+\end{definition}
+
+\begin{definition}{像}
+	对于域$F$上的线性空间$V$与$W$，定义线性映射$\mathscr{A}:V\to W$d的像为%
+	$$
+	\im\mathscr{A}=\{ \mathscr{A}(\bs{\alpha})\in W:\bs{\alpha}\in V \}
+	$$
+\end{definition}
+
+\begin{proposition}{核与像的性质}
+	\begin{enumerate}
+		\item 核与像均为子空间。
+		\item $\mathscr{A}$为单射$\iff\ker\mathscr{A}=\{ \bs{0} \}$
+		\item $\mathscr{A}$为满射$\iff\im\mathscr{A}=W$
+		\item （同构定理）$V/\ker\mathscr{A}\cong\im\mathscr{A}$
+		\item （维数公式）若$\dim(V)<\infty$，则$\dim(\ker\mathscr{A})+\dim(\im\mathscr{A})=\dim(V)$。
+		\item 若$\dim(V)<\infty$，则$\mathscr{A}$为单射$\iff$$\mathscr{A}$为满射。
+	\end{enumerate}
+\end{proposition}
+
+\section{投影映射}
+
+\begin{definition}{投影映射}
+	对于域$F$上的线性空间$V$的互补的子空间$U$与$W$，定义$V$在$U$上的投影$\mathscr{P}_U:V\to V$为如下之一。
+	\begin{enumerate}
+		\item 
+		\begin{align*}
+			\mathscr{P}_U:\begin{aligned}[t]
+				V &\longrightarrow V\\
+				\bs{\alpha} &\longmapsto \bs{\beta},\qquad \text{其中}\bs{\alpha}=\bs{\beta}+\bs{\gamma},(\bs{\beta},\bs{\gamma})\in U\times W
+			\end{aligned}
+		\end{align*}
+		\item $\mathscr{P}_U:V\to V$为线性映射，且%
+		$$
+		\mathscr{P}_U(x)=\begin{cases}
+			\bs{\alpha},\qquad & \bs{\alpha}\in U\\
+			\bs{0},\qquad & \bs{\alpha}\in W
+		\end{cases}
+		$$
+		\item $\mathscr{P}_U:V\to V$为线性映射，且$\mathscr{P}_U^2=\mathscr{P}_U$。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item 对于域$F$上的线性空间$V$的互补的子空间$U$与$W$，成立%
+		$$
+		\mathscr{P}_U^2=\mathscr{P}_U,\qquad
+		\mathscr{P}_W^2=\mathscr{P}_W,\qquad
+		\mathscr{P}_U\mathscr{P}_W=\mathscr{P}_W\mathscr{P}_U=\mathscr{O},\qquad 
+		\mathscr{P}_U+\mathscr{P}_W=\mathscr{I}
+		$$
+		\item 对于域$F$上的线性空间$V$的线性变换$\mathscr{A}$与$\mathscr{B}$，如果
+		$$
+		\mathscr{A}^2=\mathscr{A},\qquad
+		\mathscr{B}^2=\mathscr{B},\qquad
+		\mathscr{A}\mathscr{B}=\mathscr{B}\mathscr{A}=\mathscr{O},\qquad 
+		\mathscr{A}+\mathscr{B}=\mathscr{I}
+		$$
+		那么%
+		$$
+		V=\im \mathscr{A}\oplus \im\mathscr{B},\qquad 
+		\mathscr{A}=\mathscr{P}_{\im \mathscr{A}},\qquad
+		\mathscr{B}=\mathscr{P}_{\im \mathscr{B}} 
+		$$
+		\item 对于域$F$上的线性空间$V$上的幂等变换$\mathscr{A}$，成立%
+		$$
+		V=\ker\mathscr{A}\oplus\im\mathscr{A},\qquad 
+		\mathscr{A}=\mathscr{P}_{\im\mathscr{A}}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\section{特征值与特征向量}
+
+\begin{definition}{特征值}
+	对于域$F$上的线性空间$V$，称$\lambda\in F$为$V$上的线性变换$\mathscr{A}$的特征值，如果存在非零向量$\bs{\xi}\in V$，使得成立
+	$$
+	\mathscr{A}(\bs{\xi})=\lambda\bs{\xi}
+	$$
+\end{definition}
+
+\begin{definition}{特征多项式}
+	对于域$F$上的$n$维线性空间$V$，称$V$上的线性变换$\mathscr{A}$的特征多项式为其在$V$的基下的矩阵的特征多项式。
+\end{definition}
+
+\begin{definition}{特征子空间}
+	对于域$F$上的线性空间$V$，定义$V$上的线性变换$\mathscr{A}$关于特征值$\lambda\in K$的特征子空间为
+	$$
+	V_\lambda(\mathscr{A})=\{ \bs{\alpha}\in V:\mathscr{A}(\bs{\alpha})=\lambda\bs{\alpha} \}
+	$$
+\end{definition}
+
+\begin{definition}{可对角化线性变换}
+	对于域$F$上的$n$维线性空间$V$，称$V$上的线性变换$\mathscr{A}$可对角化，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 存在$V$的基，使$\mathscr{A}$在该基下的矩阵维对角矩阵。
+		\item $\mathscr{A}$存在$n$个线性无关的特征向量。
+		\item $\mathscr{A}$的特征多项式可在$F[\lambda]$中分解为%
+		$$
+		(\lambda-\lambda_1)^{n_1}\cdots(\lambda-\lambda_r)^{n_r}
+		$$
+		且诸特征值$\lambda_k$的几何重数与代数重数相等。
+		\item 对于其特征值$\lambda_1,\cdots,\lambda_r$，成立
+		$$
+		\dim (V_{\lambda_1}(\mathscr{A}))+\cdots+\dim (V_{\lambda_r}(\mathscr{A}))=n
+		$$
+		\item 对于其特征值$\lambda_1,\cdots,\lambda_r$，成立
+		$$
+		V=V_{\lambda_1}(\mathscr{A})\oplus\cdots\oplus V_{\lambda_r}(\mathscr{A})
+		$$
+		\item $\mathscr{A}$的极小多项式可在$F[\lambda]$中分解为互异一次因式的积。
+	\end{enumerate}
+\end{definition}
+
+\section{不变子空间}
+
+\begin{definition}{不变子空间}
+	对于域$F$上的线性空间$V$，称$V$的子空间$W$为$V$上的线性变换$\mathscr{A}$的不变子空间，并简称为$\mathscr{A}$-子空间，如果%
+	$$
+	\mathscr{A}(W)\sub W
+	$$
+\end{definition}
+
+\begin{proposition}{不变子空间的性质}
+	\begin{enumerate}
+		\item 核与像以及特征子空间均为$\mathscr{A}$-子空间。
+		\item $\mathscr{A}$-子空间的和与交仍为$\mathscr{A}$-子空间。
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item 对于域$F$上的$n$维线性空间$V$，$\mathscr{A}$为$V$上的线性变换，$W$为$V$的非平凡$\mathscr{A}$-子空间，取$W$的基$\bs{\alpha}_1,\cdots,\bs{\alpha}_r$，扩充为$V$的基$\bs{\alpha}_1,\cdots,\bs{\alpha}_n$，则$\mathscr{A}$在此基下的矩阵$\bs{A}$为分块上三角矩阵%
+		$$
+		\bs{A}=\begin{pmatrix}
+			\bs{A}_1 & \bs{A}_3\\
+			\bs{O} & \bs{A}_2
+		\end{pmatrix}
+		$$
+		其中$\bs{A}_1$为$\mathscr{A}|_{W}$在$W$的基$\bs{\alpha}_1,\cdots,\bs{\alpha}_r$下的矩阵，$\bs{A}_2$为$\mathscr{A}$诱导的商空间$V/W$上的线性变换$\tilde{\mathscr{A}}$在$V/W$的基$\bs{\alpha}_{r+1}+W,\cdots,\bs{\alpha}_{n}+W$下的矩阵。同时，若$\mathscr{A},\mathscr{A}|_W,\tilde{\mathscr{A}}$的特征多项式分别为$f(\lambda),f_1(\lambda),f_2(\lambda)$，则$f(\lambda)=f_1(\lambda)f_2(\lambda)$。
+		\item 对于域$F$上的$n$维线性空间$V$，$\mathscr{A}$为$V$上的线性变换，如果$\mathscr{A}$在$V$的基$\bs{\alpha}_1,\cdots,\bs{\alpha}_n$下的矩阵$\bs{A}$为分块上三角矩阵%
+		$$
+		\bs{A}=\begin{pmatrix}
+			\bs{A}_1 & \bs{A}_3\\
+			\bs{O} & \bs{A}_2
+		\end{pmatrix}
+		$$
+		那么$W=\text{span}\{ \bs{\alpha}_1,\cdots,\bs{\alpha}_r \}$为$V$的非平凡$\mathscr{A}$-子空间，且$\bs{A}_1$为$\mathscr{A}|_{W}$在$W$的基$\bs{\alpha}_1,\cdots,\bs{\alpha}_r$下的矩阵。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	对于域$F$上的$n$维线性空间$V$，$\mathscr{A}$为$V$上的线性变换，则$\mathscr{A}$在$V$的基下的矩阵为分块对角矩阵%
+	$$
+	\begin{pmatrix}
+		\bs{A}_1 & & \\
+		& \ddots & \\
+		& & \bs{A}_r
+	\end{pmatrix}
+	$$
+	当且仅当$V$可分解为非平凡$\mathscr{A}$-子空间的直和$V=W_1\oplus \cdots\oplus W_r$，且$A_k$为$\mathscr{A}|_{W_k}$的基下的矩阵。
+\end{theorem}
+
+\begin{theorem}
+	对于域$F$上的线性空间$V$，$\mathscr{A}$为$V$上的线性变换，如果在$F[x]$中成立%
+	$$
+	f(x)=f_1(x)\cdots f_r(x)
+	$$
+	其中$f_1(x),\cdots,f_r(x)$两两互素，那么%
+	$$
+	\ker f(\mathscr{A})=\ker f_1(\mathscr{A})\oplus \cdots\oplus \ker f_r(\mathscr{A})
+	$$
+\end{theorem}
+
+\begin{definition}{零化多项式}
+	对于域$F$上的线性空间$V$，称多项式$f(x)\in F[x]$为$V$上的线性变换$\mathscr{A}$的零化多项式，如果$f(\mathscr{A})=\mathscr{O}$。
+\end{definition}
+
+\begin{theorem}{Hamilton-Cayley定理}
+	对于域$F$上的线性空间$V$，$V$上的线性变换$\mathscr{A}$的特征多项式为其零化多项式。
+\end{theorem}
+
+\begin{theorem}{根子空间分解}
+	如果域$F$上的线性空间$V$的线性变换$\mathscr{A}$的特征多项式$f(x)$在$F[x]$中可分解为%
+	$$
+	f(x)=p_1^{r_1}(x)\cdots p_s^{r_s}(x)
+	$$
+	其中$p_1(x),\cdots, p_s(x)$为不互相同的首一不可约多项式，那么%
+	$$
+	V=\ker(p_1^{r_1}(\mathscr{A}))\oplus\cdots\oplus \ker(p_s^{r_s}(\mathscr{A}))
+	$$
+\end{theorem}
+
+\section{极小多项式}
+
+\begin{definition}{极小多项式}
+	称线性变换的零化多项式全体中次数最小的首一多项式为极小多项式。
+\end{definition}
+
+\begin{proposition}{极小多项式的性质}
+	\begin{enumerate}
+		\item 极小多项式存在且存在唯一。
+		\item 极小多项式为零化多项式的因子。
+		\item 在有限维空间下，极小多项式与特征多项式存在相同根，但重数可能不同。
+		\item 极小多项式在域扩张下不变。
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+	对于域$F$上的线性空间$V$，$\mathscr{A}$为$V$上的线性变换，如果$V$可作非平凡$\mathscr{A}$-子空间分解%
+	$$
+	V=W_1\oplus \cdots \oplus W_n
+	$$
+	那么$\mathscr{A}$的极小多项式$m(\lambda)$为%
+	$$
+	m(\lambda)=[m_1(\lambda),\cdots,m_n(\lambda)]
+	$$
+	其中$m_k(\lambda)$为$\mathscr{A}|_{W_k}$的极小多项式。
+\end{theorem}
+
+\section{Jordan对角化}
+
+\begin{definition}{Jordan矩阵}
+	\begin{enumerate}
+		\item Jordan块：
+		$$
+		\bs{J}_n(\lambda)=\begin{pmatrix}
+			\lambda & 1 & 0 & \cdots & 0 & 0 & 0 \\
+			0 & \lambda & 1 & 0 & \cdots & 0 & 0 \\
+			0 & 0 & \lambda & \cdots & 0 & 0 \\
+			\vdots & \vdots & \vdots & & \vdots & \vdots & \vdots \\
+			0 & 0 & 0 & \cdots & \lambda & 1 & 0 \\
+			0 & 0 & 0 & \cdots & 0 & \lambda & 1 \\
+			0 & 0 & 0 & \cdots & 0 & 0 & \lambda
+		\end{pmatrix}
+		$$
+		\item 称由Jordan块构成的分块对角矩阵为Jordan矩阵。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Jordan矩阵的极小多项式}
+	\begin{enumerate}
+		\item Jordan块$\bs{J}_n(\lambda_0)$的极小多项式为$(\lambda-\lambda_0)^n$。
+		\item Jordan矩阵$\text{diag}(\bs{J}_{n_1}(\lambda_1),\cdots,\bs{J}_{n_r}(\lambda_r))$的极小多项式为%
+		$$
+		(\lambda-\lambda_1)^{n_1}\cdots(\lambda-\lambda_r)^{n_r}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Jordan矩阵的对角化}
+	\begin{enumerate}
+		\item 如果$n\ge 2$，那么Jordan块$\bs{J}_n(\lambda)$不可对角化。
+		\item 包含级数$\ge 2$的Jordan块的Jordan矩阵不可对角化。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{矩阵的Jordan化}
+	对于域$F$上的线性空间$V$，$\mathscr{A}$为$V$上的线性变换，如果$\mathscr{A}$的极小多项式在$F[\lambda]$可分解为%
+	$$
+	m(\lambda)=(\lambda-\lambda_1)^{n_1}\cdots(\lambda-\lambda_r)^{n_r}
+	$$
+	那么存在$V$的基，使得成立
+	\begin{enumerate}
+		\item $\mathscr{A}$在该基下的矩阵$\bs{A}$为Jordan矩阵；
+		\item $\bs{A}$的主对角元为$\mathscr{A}$的特征值全体；
+		\item 特征值$\lambda_k$在主对角线上出现的次数为$\lambda_k$的代数重数；
+		\item 主对角元为$\lambda_k$的Jordan块的综述$N_k$为
+		$$
+		N_k=n-\rank(\mathscr{A}-\lambda_k\mathscr{I})
+		$$
+		\item $t$级Jordan块$\bs{J}_t(\lambda_k)$的个数$N_k(t)$为%
+		$$
+		N_k(t)=\rank((\mathscr{A}-\lambda_k\mathscr{I})^{t+1})+\rank((\mathscr{A}-\lambda_k\mathscr{I})^{t-1})-2\rank((\mathscr{A}-\lambda_k\mathscr{I})^{t})
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\chapter{度量线性空间}
+
+\section{双线性函数}
+
+\begin{definition}{双线性函数}
+	对于域$F$上的线性空间$V$，称$f:V\times V\to F$为双线性函数，如果对于任意$\bs{\alpha},\bs{\beta},\bs{\gamma}\in V$与$k\in F$，成立
+	\begin{align*}
+		& f(\bs{\alpha}+\bs{\beta},\bs{\gamma})
+		=f(\bs{\alpha},\bs{\beta})+f(\bs{\beta},\bs{\gamma}),\qquad
+		f(k\bs{\alpha},\beta)=kf(\bs{\alpha},\bs{\beta})\\
+		& f(\bs{\alpha},\bs{\beta}+\bs{\gamma})
+		=f(\bs{\alpha},\bs{\gamma})+f(\bs{\alpha},\bs{\gamma}),\qquad
+		f(\bs{\alpha},k\beta)=kf(\bs{\alpha},\bs{\beta})
+	\end{align*}
+\end{definition}
+
+\begin{definition}{双线性函数的矩阵表达}
+	对于域$F$上的线性空间$V$，$f:V\times V\to F$为双线性函数，$\bs{\varepsilon}_1,\cdots,\bs{\varepsilon}_n$为$V$的基，那么$f$的矩阵为%
+	$$
+	\bs{A}=\begin{pmatrix}
+		f(\bs{\alpha}_1,\bs{\alpha}_1) & \cdots & f(\bs{\alpha}_1,\bs{\alpha}_n)\\
+		\vdots & \ddots & \vdots\\
+		f(\bs{\alpha}_n,\bs{\alpha}_1) & \cdots & f(\bs{\alpha}_n,\bs{\alpha}_n)
+	\end{pmatrix}
+	$$
+\end{definition}
+
+\begin{remark}
+	双线性函数在不同基下的矩阵互为合同矩阵。
+\end{remark}
+
+\begin{definition}{矩阵秩与秩}
+	\begin{enumerate}
+		\item 称双线性函数在基下的矩阵的秩为其矩阵秩，记作$\rank_m(f)$。
+		\item 称$V^*$的子空间%
+		$$
+		\langle f|_{\{\bs{\alpha}\}\times V},f|_{V\times\{\bs{\beta}\}}:\bs{\alpha},\bs{\beta}\in V \rangle
+		$$
+		为$f$的秩，记作$\rank(f)$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{左根与右根}
+	\begin{enumerate}
+		\item 对于域$F$上的线性空间$V$，定义双线性函数$f:V\times V\to F$的左根与右根分别如下
+		\begin{align*}
+			& \text{rad}_L(V)=\{ \bs{\alpha}\in V:f(\bs{\alpha},\bs{\beta})=0,\forall\bs{\beta}\in V \} \\
+			& \text{rad}_R(V)=\{ \bs{\beta}\in V:f(\bs{\alpha},\bs{\beta})=0,\forall\bs{\alpha}\in V \}
+		\end{align*}
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{非退化双线性函数}
+	对于域$F$上的线性空间$V$，称双线性函数$f:V\times V\to F$为非退化双线性函数，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $\text{rad}_L(V)=\text{rad}_R(V)=\{ \bs{0} \}$
+		\item 若$\dim(V)=n$，则$\rank_m(f)=n$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{对称双线性函数与反称双线性函数}
+	\begin{enumerate}
+		\item 对于域$F$上的线性空间$V$，称双线性函数$f:V\times V\to F$为对称双线性函数，如果成立如下命题之一。
+		\begin{enumerate}
+			\item $f(\bs{\alpha},\bs{\beta})=f(\bs{\beta},\bs{\alpha})$
+			\item $f$的矩阵为对称矩阵。
+		\end{enumerate}
+		\item 对于域$F$上的线性空间$V$，称双线性函数$f:V\times V\to F$为反称双线性函数，如果成立如下命题之一。
+		\begin{enumerate}
+			\item $f(\bs{\alpha},\bs{\beta})+f(\bs{\beta},\bs{\alpha})=0$
+			\item $f$的矩阵为反称矩阵。
+		\end{enumerate}
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{二次函数}
+	对于域$F$上的线性空间$V$，称函数$q:V\to F$为二次函数，如果存在对称双线性函数$f:V\times V\to F$，使得对于任意$\bs{\alpha}\in V$，成立
+	$$
+	q(\bs{\alpha})=f(\bs{\alpha},\bs{\alpha})
+	$$
+\end{definition}
+
+\section{Euclid空间}
+
+\begin{definition}{Euclid空间}
+	对于实数域$\R$上的线性空间$V$，称$(V,(\cdot,\cdot))$为Euclid空间，如果内积$(\cdot,\cdot):V\times V\to\R$成立如下命题。
+	\begin{enumerate}
+		\item 正定性：$(\bs{\alpha},\bs{\alpha})\ge 0$，当且仅当$\bs{\alpha}=\bs{0}$时等号成立。
+		\item 对称性：$(\bs{\alpha},\bs{\beta})=(\bs{\beta},\bs{\alpha})$
+		\item 线性性：$(\bs{\alpha}+\bs{\beta},\bs{\gamma})=(\bs{\alpha},\bs{\beta})+f(\bs{\beta},\bs{\gamma}),(k\bs{\alpha},\beta)=k(\bs{\alpha},\bs{\beta})$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{范数}
+	对于Euclid空间$(V,(\cdot,\cdot))$，定义$\bs{\alpha}\in V$的范数为$\|\bs{\alpha}\|=\sqrt{(\bs{\alpha},\bs{\alpha})}$。
+\end{definition}
+
+\begin{theorem}{Schwarz不等式}
+	$$
+	|(\bs{\alpha},\bs{\beta})|\le\|\bs{\alpha}\|\|\bs{\beta}\|
+	$$
+\end{theorem}
+
+\section{正交变换与对称变换}
+
+\begin{definition}{正交变换}
+	对于Euclid空间$(V,(\cdot,\cdot))$，称映射$\mathscr{A}:V\to V$为正交变换，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $(\mathscr{\bs{\alpha}},\mathscr{A}(\bs{\beta}))=(\bs{\alpha},\bs{\beta})$
+		\item $\|\mathscr{\bs{\alpha}}\|=\|\bs{\alpha}\|$
+		\item $\mathscr{A}$在标准正交基下的矩阵为正交矩阵。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{对称变换}
+	对于Euclid空间$(V,(\cdot,\cdot))$，称映射$\mathscr{A}:V\to V$为对称变换，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $(\mathscr{\bs{\alpha}},\bs{\beta})=(\bs{\alpha},\mathscr{A}(\bs{\beta}))$
+		\item $\mathscr{A}$在标准正交基下的矩阵为对称矩阵。
+	\end{enumerate}
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+\end{document}
