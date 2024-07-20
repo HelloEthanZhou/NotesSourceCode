@@ -1,0 +1,1400 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{常微分方程 - 丁同仁 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\ee}[1]{\mathrm{e}^{#1}}           % 微分d
+\newcommand{\rank}{\text{rank}}        % 秩
+\newcommand{\tr}{\text{tr}}            % 迹
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+\begin{center}
+	
+	\large{感谢 \textbf{ 勇敢的 } 自己}
+	
+\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{微分方程的解}
+
+\section{初等积分法}
+
+\subsection{恰当方程}
+
+\begin{definition}{恰当方程}
+	称一阶微分方程
+	$$
+	P(x,y)\mathrm{d}{x} +Q(x,y)\mathrm{d}{y} =0
+	$$
+	为恰当方程或全微分方程，如果存在一个可微函数$\Phi(x,y)$，使得成立
+	$$
+	\mathrm{d}{\Phi(x,y)}=P(x,y)\mathrm{d}{x} +Q(x,y)\mathrm{d}{y}
+	$$
+\end{definition}
+
+\begin{theorem}{Green定理}
+	设函数$P(x,y)$和$Q(x,y)$在区域
+	$$
+	R:\qquad 
+	|x-x_0|<r_x,\qquad |y-y_0|<r_y
+	$$
+	上连续，且具有连续的一阶偏导数，则一阶微分方程
+	$$
+	P(x,y)\mathrm{d}{x} +Q(x,y)\mathrm{d}{y} =0
+	$$
+	为恰当方程的充分必要条件为恒等式
+	$$
+	\frac{\partial P}{\partial y}(x,y)\equiv\frac{\partial Q}{\partial x}(x,y)
+	$$
+	在$R$内成立。
+\end{theorem}
+
+\begin{theorem}{恰当方程的通解}
+	恰当方程
+	$$
+	P(x,y)\mathrm{d}{x} +Q(x,y)\mathrm{d}{y} =0
+	$$
+	的通解为
+	$$
+	\Phi(x,y)=\int_{x_0}^{x}P(x,y_0)\mathrm{d}x+\int_{y_0}^{y}Q(x,y)\mathrm{d} y
+	$$
+	或
+	$$
+	\Phi(x,y)=\int_{y_0}^{y}P(x_0,y)\mathrm{d}y+\int_{x_0}^{x}Q(x,y)\mathrm{d}x
+	$$
+	其中$(x_0,y_0)$为任意取定的一点。
+\end{theorem}
+
+\subsection{变量分离方程}
+
+\begin{theorem}{变量分离方程的通解}
+	微分方程
+	$$
+	P(x)\dd x+Q(y)\dd y=0
+	$$
+	的通解为
+	$$
+	\int P(x)\mathrm{d} x +\int Q(y)\mathrm{d} y =C,\qquad C\in \R
+	$$
+\end{theorem}
+
+\subsection{一阶线性方程}
+
+\begin{definition}{一阶线性方程}
+	称微分方程
+	$$
+	\frac{\mathrm{d} y}{\mathrm{d} x}+p(x)y=q(x)
+	$$
+	为一阶线性方程，其中$p(x)$和$q(x)$在$(a,b)$上连续。
+\end{definition}
+
+\begin{theorem}{一阶线性方程的通解}
+	一阶线性方程
+	$$
+	\frac{\mathrm{d} y}{\mathrm{d} x}+p(x)y=q(x)
+	$$
+	的通解为
+	$$
+	y=\exp\left(-\int p(x)\mathrm{d} x\right)\left(C+\int q(x)\exp\left(\int p(x)\mathrm{d} x\right)\mathrm{d} x\right),\qquad C\in \R
+	$$
+	特别的，初值问题%
+	$$
+	\frac{\mathrm{d}{y}}{\mathrm{d}{x}}+p(x)y=q(x),\qquad
+	y(x_0)=y_0
+	$$
+	的解为
+	$$
+	y=\exp\left(-\int_{x_0}^{x}{p(t)\mathrm{d}{t}}\right)\left(y_0+\int_{x_0}^{x}{q(s)\exp\left(\int_{x_0}^{s}{p(t)\mathrm{d}{t}}\right)\mathrm{d}{s}}\right)
+	$$
+	或
+	$$
+	y=y_{0}\exp\left(-\int_{x_0}^{x}{p(t)\mathrm{d}{t}}\right)+\int_{x_0}^{x}{q(s)\exp\left(-\int_{s}^{x}{p(t)\mathrm{d}{t}}\right)\mathrm{d}{s}}
+	$$
+\end{theorem}
+
+\begin{theorem}{积分因子法}
+	方程
+	$$
+	\frac{\mathrm{d} y}{\mathrm{d} x}+p(x)y=q(x)
+	$$
+	改写为对称形式
+	\[ \mathrm{d} y+p(x)y\mathrm{d} x=q(x)\mathrm{d} x \]
+	两侧与因子$\displaystyle \exp\left(\int p(x)\mathrm{d} x\right)$作积，整理得
+	\[ \dd\left(y\exp\left(\int{p(x)\mathrm{d}{x}}\right)\right)=\mathrm{d}\left({\int{q(x)\exp\left(\int{p(x)\mathrm{d}{x}}\right)\mathrm{d}{x}}}\right)
+	 \]
+	两侧积分，便可得到解
+	$$
+	y=\exp\left(-\int p(x)\mathrm{d} x\right)\left(C+\int q(x)\exp\left(\int p(x)\mathrm{d} x\right)\mathrm{d} x\right),\qquad C\in \R
+	$$
+\end{theorem}
+
+\begin{theorem}{常数变易法}
+	设方程
+	$$
+	\frac{\mathrm{d}{y}}{\mathrm{d}{x}}+p(x)y=q(x)
+	$$
+	的解为%
+	$$
+	y=C(x)\exp\left(-\int{p(x)\mathrm{d}{x}}\right)
+	$$
+	代入原方程得%
+	$$
+	C'(x)=q(x)\exp\left(\int{p(x)\mathrm{d}{x}}\right)
+	$$
+	因此%
+	$$
+	C(x)=\int q(x)\exp\left(\int{p(x)\mathrm{d}{x}}\right)\dd x+C,\qquad C\in\R
+	$$
+	进而可得到解
+	$$
+	y=\exp\left(-\int p(x)\mathrm{d} x\right)
+	\left(C+\int q(x)\exp\left(\int p(x)\mathrm{d} x\right)\mathrm{d} x\right),\qquad C\in \R
+	$$
+\end{theorem}
+
+\subsection{齐次方程}
+
+\begin{theorem}
+	对于齐次方程
+	$$
+	\frac{\dd y}{\dd x}=\varphi\left(\frac{y}{x}\right)
+	$$
+	令$z=y/x$，可求得通解。
+\end{theorem}
+
+\subsection{Bernoulli方程}
+
+\begin{theorem}
+	对于Bernoulli方程
+	$$
+	\frac{\mathrm{d}{y}}{\mathrm{d}{x}}+p(x)y=q(x)y^n,\qquad n\neq0,1
+	$$
+	令$z=y^{1-n}$，可求得通解。
+\end{theorem}
+
+\subsection{Riccati方程}
+
+\begin{theorem}
+	对于Riccati方程
+	$$
+	\frac{\mathrm{d}{y}}{\mathrm{d}{x}}=p(x)y^2+q(x)y+r(x)
+	$$
+	若已知特解为$y=\varphi(x)$，则令$z=y-\varphi$，可求得通解。
+\end{theorem}
+
+\section{一阶隐式微分方程}
+
+\subsection{微分法}
+
+若微分方程
+$$
+F\left(x,y,\frac{\mathrm{d}y}{\mathrm{d}x}\right)=0
+$$
+可解出
+$$
+y=f(x,p)
+$$
+这里$p=\dd y/\dd x$。设$f$连续可微，则方程$y=f(x,p)$对$x$进行微分，可得到
+$$
+(f_x'(x,p)-p)\mathrm{d}x+f_p'(x,p)\mathrm{d}p=0
+$$
+此为关于$x$和$p$的显式方程。
+
+\begin{enumerate}
+	\item 若得到方程
+	$$
+	(f_x^{\prime}(x,p)-p)\mathrm{d}x+f_p^{\prime}(x,p)\mathrm{d}p=0
+	$$
+	的通解$p=u(x,C)$，那么方程$y=f(x,p)$的通解为$y=f(x,u(x,C))$。
+	\item 若方程
+	$$
+	(f_x^{\prime}(x,p)-p)\mathrm{d}x+f_p^{\prime}(x,p)\mathrm{d}p=0
+	$$
+	含有特解$p=w(x)$，则方程$y=f(x,p)$含有特解$y=f(x,w(x))$。
+	\item 若得到方程
+	$$
+	(f_x^{\prime}(x,p)-p)\mathrm{d}x+f_p^{\prime}(x,p)\mathrm{d}p=0
+	$$
+	的通解$x=v(p,C)$，那么方程$y=f(x,p)$的通解为%
+	$$
+	\begin{cases}
+		x=v(p,C)\\
+		y=f(v(p,C),p)
+	\end{cases}
+	\qquad p\text{为参数}
+	$$
+	\item 若方程
+	$$
+	(f_x^{\prime}(x,p)-p)\mathrm{d}x+f_p^{\prime}(x,p)\mathrm{d}p=0
+	$$
+	含有特解$x=z(p)$，则方程$y=f(x,p)$含有特解%
+	$$
+	\begin{cases}
+		x=z(p)\\
+		y=f(z(p),p)
+	\end{cases}
+	\qquad p\text{为参数}
+	$$
+\end{enumerate}
+
+\subsection{参数法}
+
+对于一阶隐式微分方程
+$$
+F\left(x,y,\frac{\mathrm{d}y}{\mathrm{d}x}\right)=0
+$$
+若其参数表达式为
+$$
+x=f(u,v),\qquad y=g(u,v),\qquad \frac{\mathrm{d}y}{\mathrm{d}x}=h(u,v)
+$$
+其中$u$和$v$为参数，则有
+$$
+(h(u,v)f_u^{\prime}(u,v)-g_u^{\prime}(u,v))\mathrm{d}u+(h(u,v)f_v^{\prime}(u,v)-g_v^{\prime}(u,v))\mathrm{d}v=0
+$$
+若求得方程
+$$
+(h(u,v)f_u^{\prime}(u,v)-g_u^{\prime}(u,v))\mathrm{d}u+(h(u,v)f_v^{\prime}(u,v)-g_v^{\prime}(u,v))\mathrm{d}v=0
+$$
+的通解$v=w(u,C)$，则可得到原方程的通解
+$$
+\begin{cases}x=f(u,w(u,C))\\y=g(u,w(u,C))\end{cases}
+$$
+
+\section{线性微分方程}
+
+\subsection{一般理论}
+
+\begin{theorem}{存在唯一性定理}
+	对于$n$阶线性微分方程初值问题
+	$$
+	\frac{\mathrm{d}\bs{y}}{\mathrm{d}x}=\bs{A}(x)\bs{y}+\bs{f}(x),\qquad 
+	\bs{y}(x_0)=\bs{y}_0
+	$$
+	如果$n$阶系数矩阵函数$\bs{A}(x)$和右端函数$\bs{f}(x)$在开区间$(a,b)$上连续，那么其解$\bs{y}=\bs{y}(x)$在开区间$(a,b)$上存在且存在唯一。
+\end{theorem}
+
+\begin{definition}{基本解矩阵}
+	$n$阶线性微分方程
+	$$
+	\frac{\mathrm{d}\bs{y}}{\mathrm{d}x}=\bs{A}(x)\bs{y}+\bs{f}(x)
+	$$
+	存在$n$个线性无关的解%
+	$$
+	\bs{y}_1(x)=\left(\begin{matrix}y_{11}(x)\\\vdots\\y_{n1}(x)\end{matrix}\right)\qquad 
+	\cdots\qquad 
+	\bs{y}_n(x)=\left(\begin{matrix}y_{1n}(x)\\\vdots\\y_{nn}(x)\end{matrix}\right)
+	$$
+	构成微分方程的基本解矩阵
+	$$
+	\bs{\Phi}(x)=\begin{pmatrix}
+		y_{11}(x)&\cdots&y_{1n}(x)\\
+		\vdots&\ddots&\vdots\\
+		y_{n1}(x)&\cdots&y_{nn}(x)
+	\end{pmatrix}
+	$$
+	由此原方程的通解为
+	$$
+	\bs{y}(x)=\bs{\Phi}(x)\bs{c},\qquad \bs{c}\in\R^n
+	$$
+\end{definition}
+
+\begin{definition}{Wronsky行列式}
+	函数
+	$$
+	\bs{y}_1(x)=\left(\begin{matrix}y_{11}(x)\\\vdots\\y_{n1}(x)\end{matrix}\right)\qquad 
+	\cdots\qquad 
+	\bs{y}_n(x)=\left(\begin{matrix}y_{1n}(x)\\\vdots\\y_{nn}(x)\end{matrix}\right)
+	$$
+	的Wronsky行列式为%
+	$$
+	W(x)=\begin{vmatrix}
+		y_{11}(x)&\cdots&y_{1n}(x)\\
+		\vdots&\ddots&\vdots\\
+		y_{n1}(x)&\cdots&y_{nn}(x)
+	\end{vmatrix}
+	$$
+\end{definition}
+
+\begin{proposition}{Wronsky行列式的性质}
+	如果函数
+	$$
+	\bs{y}_1(x)=\left(\begin{matrix}y_{11}(x)\\\vdots\\y_{n1}(x)\end{matrix}\right)\qquad 
+	\cdots\qquad 
+	\bs{y}_n(x)=\left(\begin{matrix}y_{1n}(x)\\\vdots\\y_{nn}(x)\end{matrix}\right)
+	$$
+	线性相关，那么其Wronsky行列式恒为$0$，即
+	$$
+	W(x)=\begin{vmatrix}
+		y_{11}(x)&\cdots&y_{1n}(x)\\
+		\vdots&\ddots&\vdots\\
+		y_{n1}(x)&\cdots&y_{nn}(x)
+	\end{vmatrix}\equiv0
+	$$
+\end{proposition}
+
+\begin{theorem}{Liouville公式}
+	如果
+	$$
+	\bs{\Phi}(x)=\left(\begin{matrix}
+		y_{11}(x)&\cdots&y_{1n}(x)\\
+		\vdots&\ddots&\vdots\\
+		y_{n1}(x)&\cdots&y_{nn}(x)
+	\end{matrix}\right)
+	$$
+	为齐次线性微分方程
+	$$
+	\frac{\mathrm{d}\bs{y}}{\mathrm{d}x}=\bs{A}(x)\bs{y}
+	$$
+	的基本解矩阵，那么其Wronsky行列式$W(x)=|\bs{\Phi}(x)|$成立
+	$$
+	W(x)=W(x_0)\exp\left(\int_{x_0}^{x}{\text{tr}(\bs{A}(x))\mathrm{d}x}\right),\qquad a<x<b
+	$$
+	其中$a<x_0<b$。
+\end{theorem}
+
+\begin{theorem}{常数变易法}
+	如果$\bs{\Phi}(x)$是齐次线性微分方程
+	$$
+	\frac{\mathrm{d}\bs{y}}{\mathrm{d}x}=\bs{A}(x)\bs{y}
+	$$
+	的基本解矩阵，那么微分方程
+	$$
+	\frac{\mathrm{d}\bs{y}}{\mathrm{d}x}=\bs{A}(x)\bs{y}+\bs{f}(x)
+	$$
+	在区间$a<x<b$上的通解可表示为
+	$$
+	\bs{y}=\bs{\Phi}(x)\left(\bs{c}+\int_{x_0}^{x}{\Phi^{-1}(s)\bs{f}(s)\mathrm{d}s}\right),\qquad \bs{c}\in\R^n
+	$$
+	且微分方程满足初值条件$\bs{y}(x_0)=\bs{y}_0$的解为
+	$$
+	\bs{y}=\bs{\Phi}(x)\Phi^{-1}(x_0)\bs{y}_0+\bs{\Phi}(x)\int_{x_0}^{x}{\Phi^{-1}(s)\bs{f}(s)\mathrm{d}s}
+	$$
+\end{theorem}
+
+\subsection{常系数线性微分方程}
+
+\begin{theorem}{常系数线性微分方程}
+	常系数线性微分方程%
+	$$
+	\frac{\dd \bs{y}}{\dd x}=\bs{A}\bs{y}
+	$$
+	的基本解矩阵为%
+	$$
+	\bs{\Phi}(x)=\ee{\bs{A}x}
+	$$
+	若$\bs{A}$可对角化为$\bs{A}=\bs{Q\Lambda Q}^{-1}$，则
+	$$
+	\bs{\Phi}(x)=\bs{Q}\ee{\bs{\Lambda}x}\bs{Q}^{-1}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	如果$y=\varphi(x)$是二阶齐次线性方程
+	$$
+	y''+p(x)y'+q(x)y=0
+	$$
+	的非零解，其中$p(x)$和$q(x)$是区间$a<x<b$上的连续函数，那么微分方程的通解为
+	$$
+	y=\varphi(x)\left(C_1+C_2\int_{x_0}^{x}{\frac{1}{\varphi^2(x)}\exp\left(-\int_{x_0}^{s}{p(t)\mathrm{d}t}\right)\mathrm{d}s}\right),\qquad C_1,C_2\in\R
+	$$
+\end{theorem}
+
+\begin{theorem}{常系数齐次线性方程}
+	如果常系数齐次线性方程
+	$$
+	y^{(n)}+a_1y^{(n-1)}+\cdots+a_{n-1}y^{\prime}+a_ny=0
+	$$
+	的特征方程
+	$$
+	\lambda^n+a_1\lambda^{n-1}+\cdots+a_{n-1}\lambda+a_n=0
+	$$
+	在复数域$\C$中共有$r$个互不相同的根$\lambda_1,\cdots,\lambda_r$，且对应的重数分别为$n_1,\cdots,n_r$，满足$n_1+\cdots+n_r=n$，那么函数组
+	$$
+	\begin{cases}
+		\mathrm{e}^{\lambda_1 x},
+		\qquad 
+		x\mathrm{e}^{\lambda_1 x},
+		\qquad
+		\cdots,
+		\qquad 
+		x^{n_1-1}\mathrm{e}^{\lambda_1 x}\\
+		\cdots\\
+		\mathrm{e}^{\lambda_r x},\qquad
+		x\mathrm{e}^{\lambda_r x},\qquad
+		\cdots,\qquad
+		x^{n_r-1}\mathrm{e}^{\lambda_r x}
+	\end{cases}
+	$$
+	是齐次微分方程的一个基本解组。
+\end{theorem}
+
+\begin{theorem}{常系数非齐次线性方程}
+	对于常系数非齐次线性方程
+	$$
+	y^{(n)}+a_1y^{(n-1)}+\cdots+a_{n-1}y^{\prime}+a_ny=f(x)
+	$$
+	其特解$\varphi^*(x)$如下。
+	\begin{enumerate}
+		\item $f(x)=P_n(x)\mathrm{e}^{\lambda x}$：
+		$$
+		\varphi^*(x)=x^k Q_n(x)\mathrm{e}^{\lambda x}
+		$$
+		其中$P_n(x)$和$Q_n(x)$为$n$次多项式，$k\in \N$为特征方程
+		$$
+		\lambda^n+a_1\lambda^{n-1}+\cdots+a_{n-1}\lambda+a_n=0
+		$$
+		的特征根中$\lambda$的重数。
+		\item $f(x)=(A_m(x)\cos(\omega x)+B_n(x)\sin(\omega x))\mathrm{e}^{\lambda x}$：
+		$$
+		\varphi^*(x)=x^k(P_l(x)\cos(\omega x)+Q_l\sin(\omega x))\mathrm{e}^{\lambda x}
+		$$
+		其中$A_m(x)$和$B_n(x)$分别为关于$x$的$m$和$n$次多项式，$P_l(x)$和$Q_l(x)$为的$l$次多项式且$l=\max(m,n)$，$k\in \N$为特征方程
+		$$
+		\lambda^n+a_1\lambda^{n-1}+\cdots+a_{n-1}\lambda+a_n=0
+		$$
+		的特征根中$\lambda+i\omega$的重数。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Euler方程}
+	对于Euler方程%
+	$$
+	x^ny^{(n)}+a_1x^{n-1}y^{(n-1)}+\cdots+a_ny=f(x)
+	$$
+	令$x=\ee{t}$，那么%
+	$$
+	x^n\frac{\dd^n y}{\dd t^n}
+	=\prod_{k=0}^{n-1}\left(\frac{\dd}{\dd t}-k\right)y
+	$$
+\end{theorem}
+
+\section{幂级数解法}
+
+\subsection{Cauchy定理}
+
+\begin{definition}{解析函数}
+	称函数$f(x,y)$在区域$G\in{\R}^2$内为解析的，如果对于$G$内的任意一点$(x_0,y_0)$，存在正常数$a$和$b$，使得函数$f(x,y)$在区域
+	$$
+	|x-x_0|\le a,\qquad
+	|y-y_0|\le b
+	$$
+	内可以展成$(x-x_0)$和$(y-y_0)$的收敛幂级数
+	$$
+	f(x,y)=\sum_{i,j=0}^{\infty}{a_{ij}(x-x_0)^i(y-y_0)^j}
+	$$
+\end{definition}
+
+\begin{theorem}{Cauchy定理}
+	如果函数$f(x,y)$在矩形区域$R:|x-x_0|\le\alpha,|y-y_0|\le\beta$上可以展开成$(x-x_0)$和$(y-y_0)$的收敛幂级数
+	$$
+	f(x,y)=\sum_{i,j=0}^{\infty}{a_{ij}(x-x_0)^i(y-y_0)^j}
+	$$
+	则初值问题
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	在$x_0$点的邻域$|x-x_0|\le\rho$内存在且存在唯一解析解$y=y(x)$，其中
+	$$
+	\rho=a(1-\mathrm{e}^{-\frac{b}{2aM}}),\qquad 
+	M\le|a_{ij}|a^ib^j
+	$$
+\end{theorem}
+
+\subsection{幂级数解法}
+
+\begin{theorem}{幂级数解法}
+	微分方程
+	$$
+	y^{\prime\prime}+p(x)y^{\prime}+q(x)y=0
+	$$
+	中的系数函数$p(x)$和$q(x)$在区间$|x-x_0|<r$可以展成$(x-x_0)$的收敛幂级数，则微分方程在区间$|x-x_0|<r$存在收敛的幂级数解
+	$$
+	y=\sum_{n=0}^{\infty}{C_n(x-x_0)^n}
+	$$
+	其中$C_0$和$C_1$为任意常数，而当$n\ge2$时$C_n$可以通过递推公式确定。
+\end{theorem}
+
+\chapter{常微分方程四大定理}
+
+\section{存在与存在唯一性定理}
+
+\subsection{Peano存在定理}
+
+\begin{theorem}{Asscoli引理}
+	对于$[a,b]$上的函数族$\mathscr{F}$，如果$\mathscr{F}$在$[a,b]$上一致有界且等度连续，那么存在函数序列$\{f_n(x)\}_{n=1}^{\infty}\sub\mathscr{F}$，使得$f_n(x)$在$[a,b]$上一致收敛。
+\end{theorem}
+
+\begin{theorem}{Peano存在定理}
+	对于初值问题
+	\begin{equation*}
+		\frac{\dd y}{\dd x}=f(x,y),\qquad 
+		y(x_0)=y_0
+		\label{Peano存在定理的初值问题}
+		\tag{*}
+	\end{equation*}
+	如果$f(x,y)$在矩形区域
+	$$
+	R:\qquad 
+	|x-x_0|\le a,\qquad 
+	|y-y_0|\le b
+	$$
+	内连续，那么原初值问题在区间$[x_0-h,x_0+h]$内存在解，其中
+	$$
+	h=\min{\left\{a,b/M\right\}},\qquad 
+	M>\max_{(x,y)\in{R}}{|f(x,y)|}
+	$$
+\end{theorem}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 构造Euler折线%
+		$$
+		\varphi_n(x)=y_0+\sum_{k=0}^{-s+1}f(x_k,y_k)(x_{k-1}-x_k)+f(x_{-s},y_{-s})(x-x_{-s})
+		$$
+		\item 证明Euler序列$y=\varphi_n(x)$存在一致收敛子列，不妨仍记为$y=\varphi_n(x)$。
+		\item 证明Euler序列$y=\varphi_n(x)$成立%
+		$$
+		\varphi_n(x)=y_0+\int_{x_0}^{x}f(x,\varphi_n(x))\dd x+\delta_n(x)
+		$$
+		其中$\delta_n(x)\to 0$。
+		\item Euler序列$y=\varphi_n(x)$的极限$y=\varphi(x)$为初值问题(\ref{Peano存在定理的初值问题})的解。
+	\end{enumerate}
+\end{proof}
+
+\begin{note}
+	不可去掉“$f(x,y)$连续”的条件，例如：对于
+	$$
+	f(x,y)=\begin{cases}
+		0,\qquad & x\ne 0\\
+		1,\qquad & x=0
+	\end{cases}
+	$$
+	初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y),\qquad 
+	y(0)=0
+	$$
+	不存在解。事实上，如果$y(x)$可导，那么其导函数不存在第一类间断点。
+\end{note}
+
+\subsection{Picard存在唯一性定理}
+
+\begin{theorem}{Picard存在唯一性定理}
+	对于初值问题
+	\begin{equation*}
+		\frac{\dd y}{\dd x}=f(x,y),\qquad 
+		y(x_0)=y_0
+		\label{Picard存在唯一性定理的初值问题}
+		\tag{1}
+	\end{equation*}
+	如果$f(x,y)$在矩形区域
+	$$
+	R:\qquad 
+	|x-x_0|\le a,\qquad 
+	|y-y_0|\le b
+	$$
+	内连续，且对$y$成立以$L$为Lipschitz系数的Lipschitz条件，那么初值问题(\ref{Picard存在唯一性定理的初值问题})在区间$I=[x_0-h,x_0+h]$内存在且存在唯一解，其中
+	$$
+	h=\min{\left\{a,\frac{b}{M}\right\}},\qquad 
+	M>\max_{(x,y)\in{R}}{|f(x,y)|}
+	$$
+\end{theorem}
+
+\begin{proof}
+	{\bf 经典证明：}
+	\begin{enumerate}
+		\item 初值问题(\ref{Picard存在唯一性定理的初值问题})$\iff$积分方程
+		\begin{equation*}
+			y=y_0+\int_{x_0}^{x}f(x,y)\dd x
+			\label{Picard存在唯一性定理的初值问题的积分形式}
+			\tag{2}
+		\end{equation*}
+		事实上，一方面，若$y=y(x),x\in I$为初值问题(\ref{Picard存在唯一性定理的初值问题})的解，则%
+		$$
+		y'(x)=f(x,y(x)),\qquad y(x_0)=y_0,\qquad x\in I
+		$$
+		由此积分%
+		$$
+		y(x)=y_0+\int_{x_0}^{x}f(x,y(x))\dd x,\qquad x\in I
+		$$
+		因此$y=y(x),x\in I$为积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})的解。
+		
+		另一方面，若$y=y(x),x\in I$为积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})的解，则
+		$$
+		y(x)=y_0+\int_{x_0}^{x}f(x,y(x))\dd x,\qquad x\in I
+		$$
+		由此微分
+		$$
+		y'(x)=f(x,y(x)),\qquad y(x_0)=y_0,\qquad x\in I
+		$$
+		因此$y=y(x),x\in I$为初值问题(\ref{Picard存在唯一性定理的初值问题})的解。
+		\item 迭代构造Picard序列
+		\begin{equation*}
+			y_{n+1}(x)=y_0+\int_{x_0}^{x}f(x,y_n(x))\dd x,\qquad y_0(x)=y_0,\qquad x\in I
+			\label{Picard序列}
+			\tag{3}
+		\end{equation*}
+		由归纳法证明：Picard序列$y=y_n(x)$在$I$上连续，且成立不等式%
+		$$
+		|y_n(x)-y_0|\le M|x-x_0|
+		$$
+		\begin{enumerate}
+			\item 当$n=0$时，由于$f(x,y_0(x))=f(x,y_0)$为$I$上的连续函数，因此%
+			$$
+			y_{1}(x)=y_0+\int_{x_0}^{x}f(x,y_0(x))\dd x
+			$$
+			在$I$上连续可微，且成立
+			\begin{equation*}
+				|y_1(x)-y_0|=
+				\left| \int_{x_0}^{x}f(x,y_0(x))\dd x \right|
+				\le \int_{x_0}^{x}|f(x,y_0(x))|\dd x
+				\le M|x-x_0|
+				\label{Picard序列的第一式}
+				\tag{4}
+			\end{equation*}
+			从而在$I$上成立$|y_1(x)-y_0|\le Mh\le b$。
+			\item 假设$y=y_k(x)$在$I$上连续，且成立不等式%
+			$$
+			|y_k(x)-y_0|\le M|x-x_0|
+			$$
+			则%
+			$$
+			y_{k+1}(x)=y_0+\int_{x_0}^{x}f(x,y_k(x))\dd x
+			$$
+			在$I$上连续可微，且成立
+			$$
+			|y_{k+1}(x)-y_0|=
+			\left| \int_{x_0}^{x}f(x,y_k(x))\dd x \right|
+			\le \int_{x_0}^{x}|f(x,y_k(x))|\dd x
+			\le M|x-x_0|
+			$$
+			从而在$I$上成立$|y_{k+1}(x)-y_0|\le Mh\le b$。
+		\end{enumerate}
+		\item 证明：Picard序列$y=y_n(x)$在$I$一致收敛于积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})的解。
+		
+		注意到，序列$y_n(x)$的收敛性$\iff$级数
+		\begin{equation*}
+			\sum_{n=1}^{\infty}(y_{n+1}(x)-y_n(x))
+			\label{Picard序列的级数}
+			\tag{5}
+		\end{equation*}
+		的收敛性。下面证明：级数(\ref{Picard序列的级数})在$I$上一致收敛。为此，我们归纳证明不等式：
+		\begin{equation*}
+			|y_{n+1}(x)-y_n(x)|\le\frac{M}{L}\frac{(L|x-x_0|)^{n+1}}{(n+1)!},\qquad x\in I
+			\label{Picard序列的不等式}
+			\tag{6}
+		\end{equation*}
+		\begin{enumerate}
+			\item 当$n=0$时，(\ref{Picard序列的第一式})$\implies$(\ref{Picard序列的不等式})。
+			\item 假设当$n=k$时成立(\ref{Picard序列的不等式})，则先由(\ref{Picard序列})推出%
+			$$
+			|y_{k+2}(x)-y_{k+1}(x)|
+			=\left|\int_{x_0}^{x}(f(x,y_{k+1}(x))-f(x,y_k(x)))\dd x\right|
+			$$
+			然后利用Lipschitz条件与归纳假设，可得
+			\begin{align*}
+				|y_{k+2}(x)-y_{k+1}(x)|
+				& \le \left|\int_{x_0}^{x}L|y_{k+1}(x)-y_k(x)|\dd x\right| \\
+				& \le M \left| \int_{x_0}^{x}\frac{(L|x-x_0|)^{k+1}}{(k+1)!}\dd x \right| \\
+				& = \frac{M}{L}\frac{(L|x-x_0|)^{k+2}}{(k+2)!}
+			\end{align*}
+			因此当$n=k+1$时，成立(\ref{Picard序列的不等式})。
+		\end{enumerate}
+		由归纳假设，成立(\ref{Picard序列的不等式})。
+		
+		显然，不等式(\ref{Picard序列的不等式})蕴含级数(\ref{Picard序列的级数})在$I$上一致收敛，因此Picard序列$y=y_n(x)$在$I$上一致收敛，因此极限函数%
+		$$
+		\varphi(x)=\lim_{n\to\infty}y_n(x),\qquad x\in I
+		$$
+		在区间$I$上连续。由$f(x,y)$的连续性与Picard序列$y=y_n(x)$的一致连续性，在(\ref{Picard序列})中令$n\to\infty$可得%
+		$$
+		\varphi(x)=y_0+\int_{x_0}^{x}f(x,\varphi(x))\dd x,\qquad x\in I
+		$$
+		因此$y=\varphi(x)$为积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})在$I$上的解。
+		\item 最后证明唯一性。假设积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})在$I$上存在两个解$y=\varphi(x)$与$y=\psi(x)$，则由积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})，可得%
+		$$
+		\varphi(x)-\psi(x)
+		=\int_{x_0}^{x}(f(x,\varphi(x))-f(x,\psi(x)))\dd x
+		$$
+		由Lipschitz条件
+		\begin{equation*}
+			|\varphi(x)-\psi(x)|
+			\le L\int_{x_0}^{x}|u(x)-v(x)|\dd x
+			\label{存在唯一性的唯一性}
+			\tag{7}
+		\end{equation*}
+		取$|u(x)-v(x)|$在$I$上的上界$K$，则由(\ref{存在唯一性的唯一性})
+		$$
+		|\varphi(x)-\psi(x)|
+		\le LK|x-x_0|
+		$$
+		代入(\ref{存在唯一性的唯一性})
+		$$
+		|\varphi(x)-\psi(x)|
+		\le K\frac{(L|x-x_0|)^2}{2}
+		$$
+		由归纳法%
+		$$
+		|\varphi(x)-\psi(x)|
+		\le K\frac{(L|x-x_0|)^n}{n!}
+		$$
+		令$n\to\infty$，则$\varphi(x)=\psi(x)$。进而说明积分方程(\ref{Picard存在唯一性定理的初值问题的积分形式})在$I$上的解唯一。
+	\end{enumerate}
+\end{proof}
+
+\begin{theorem}{Picard存在唯一性定理}
+	对于初值问题
+	\begin{equation*}
+		\frac{\dd y}{\dd x}=f(x,y),\qquad 
+		y(x_0)=y_0
+		\label{Picard存在唯一性定理的初值问题问题}
+		\tag{*}
+	\end{equation*}
+	如果$f(x,y)$在带形区域
+	$$
+	R:\qquad 
+	|x-x_0|\le \delta,\qquad 
+	y\in\R
+	$$
+	内连续，且对$y$成立以$L$为Lipschitz系数的Lipschitz条件，那么初值问题(\ref{Picard存在唯一性定理的初值问题问题})在区间$I=[x_0-h,x_0+h]$内存在且存在唯一连续解，其中$0<h<\min\{ \delta,1/L \}$。
+\end{theorem}
+
+\begin{proof}
+	{\bf 压缩映像原理：}考虑连续函数空间$C(I)$，构造算子
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C(I) &\longrightarrow C(I)\\
+			\varphi &\longmapsto T_\varphi,\text{其中}T_\varphi(x)=y_0+\int_{x_0}^{x}f(t,\varphi(t))\dd t
+		\end{aligned}
+	\end{align*}
+	容易知道$y=\varphi(x)$为初值问题(\ref{Picard存在唯一性定理的初值问题问题})的连续解$\iff \varphi$为$T$的不动点。由于$f(x,y)$对$y$成立以$L$为Lipschitz系数的Lipschitz条件，那么
+	\begin{align*}
+		\| T(\varphi)-T(\psi) \|
+		& = \sup_{x\in I}|(T(\varphi)-T(\psi))(x)| \\
+		& = \sup_{|x-x_0|\le h}\left| \int_{x_0}^{x}(f(t,\varphi(t))-f(t,\psi(t)))\dd t \right| \\
+		& \le \sup_{|x-x_0|\le h} \int_{x_0}^{x}|f(t,\varphi(t))-f(t,\psi(t))|\dd t \\
+		& \le \sup_{|x-x_0|\le h} \int_{x_0}^{x}L|\varphi(t)-\psi(t)|\dd t \\
+		& \le \sup_{|x-x_0|\le h} \int_{x_0}^{x}L\|\varphi-\psi\|\dd t \\
+		& = \sup_{|x-x_0|\le h} (x-x_0)L\|\varphi-\psi\| \\
+		& = Lh\|\varphi-\psi\|
+	\end{align*}
+	而$Lh<1$，从而$T$为压缩映射，由压缩映像原理，$T$存在且存在唯一不动点，进而值问题(\ref{Picard存在唯一性定理的初值问题问题})在区间$I$内存在且存在唯一连续解。
+\end{proof}
+
+\begin{note}
+	“$f(x,y)$对$y$成立Lipschitz条件”仅为充分条件，例如对于初值问题
+	$$
+	\frac{\dd y}{\dd x}=\sqrt{|y|},\qquad 
+	y(0)=0
+	$$
+	函数$f(x,y)=\sqrt{|y|}$在$y$的任意邻域内不成立Lipschitz条件，但原初值问题存在且存在唯一解
+	$$
+	y=\begin{cases}
+		x^2/4,\qquad & x\ge 0\\
+		-x^2/4,\qquad & x<0
+	\end{cases}
+	$$
+\end{note}
+
+\begin{definition}{Osgood条件}
+	称连续函数$f(x)$成立Osgood条件，如果存在函数$F(r)$，使得成立
+	$$
+	F(r)>0,(r>0),\qquad 
+	F(0)=0,\qquad 
+	\int_{0}^{1}\frac{\dd r}{F(r)}=+\infty
+	$$
+	且对于任意$x,y$，成立
+	$$
+	|f(x)-f(y)|\le F(|x-y|)
+	$$
+\end{definition}
+
+\begin{theorem}{Osgood定理}
+	对于初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	如果$f(x,y)$在矩形区域
+	$$
+	R:\qquad 
+	|x-x_0|\le a,\qquad 
+	|y-y_0|\le b
+	$$
+	内连续，且对$y$成立Osgood条件，那么原初值问题在区间$[x_0-h,x_0+h]$内存在且存在唯一解，其中
+	$$
+	h=\min{\left\{a,\frac{b}{M}\right\}},\qquad 
+	M>\max_{(x,y)\in{R}}{|f(x,y)|}
+	$$
+\end{theorem}
+
+\section{解的延伸定理}
+
+\subsection{解的延伸定理}
+
+\begin{theorem}{解的延伸定理}
+	如果$f(x,y)$在区域$G$内连续，那么对于任意$(x_0,y_0)\in G$，初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	的积分曲线$\Gamma$延伸至$G$的边界。
+\end{theorem}
+
+\begin{theorem}
+	如果函数$f(x,y)$在连通开集
+	$$
+	S:\qquad \alpha <x< \beta,\qquad -\infty <y< +\infty
+	$$
+	内连续，而且满足不等式
+	$$
+	|f(x,y)|\le A(x)|y|+B(x)
+	$$
+	其中$A(x)\ge 0$和$B(x)\ge 0$在区间$\alpha <x< \beta$连续，那么对于任意$(x_0,y_0)\in S$，初值问题
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	的解区间$\alpha <x< \beta$为最大存在区间。
+\end{theorem}
+
+\subsection{比较定理}
+
+\begin{theorem}{第一比较定理}
+	设函数$f(x,y)$与$F(x,y)$都在连通开集$G$内连续且满足不等式
+	$$
+	f(x,y)<F(x,y),\qquad (x,y)\in G
+	$$
+	又设函数$y=\varphi(x)$与$y=\Phi(x)$在区间$a<x<b$上分别是初值问题
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	与
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=F(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	的解，其中$(x_0,y_0)\in G$，则有
+	$$
+	\begin{cases}
+		\varphi(x)<\Phi(x),x_0<x<b\\
+		\varphi(x)>\Phi(x),a<x<x_0
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{theorem}{第二比较定理}
+	设函数$f(x,y)$与$F(x,y)$都在平面区域$G$内连续且满足不等式
+	$$
+	f(x,y)<F(x,y),\qquad (x,y)\in G
+	$$
+	又设函数$y=\varphi(x)$与$y=\Phi(x)$在区间$a<x<b$上分别是初值问题
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	与
+	$$
+	\frac{\mathrm{d}y}{\mathrm{d}x}=F(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	的解，其中$(x_0,y_0)\in G$，并且$y=\varphi(x)$是初值问题
+	$$
+	\begin{cases}
+		\frac{\mathrm{d}y}{\mathrm{d}x}=f(x,y)\\
+		y(x_0)=y_0
+	\end{cases}
+	$$
+	的右行最小解和左行最大解，或者$y=\Phi(x)$是初值问题
+	$$
+	\begin{cases}
+		\frac{\mathrm{d}y}{\mathrm{d}x}=F(x,y)\\
+		y(x_0)=y_0
+	\end{cases}
+	$$
+	的右行最小解和左行最大解，则有如下比较关系
+	$$
+	\begin{cases}
+		\varphi(x)\le\Phi(x),x_0\le x<b\\
+		\varphi(x)\ge\Phi(x),a<x\le x_0
+	\end{cases}
+	$$
+\end{theorem}
+
+\section{解对初值和参数的连续依赖性}
+
+对于一般的微分方程初值问题
+$$
+\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+y(x_0)=y_0
+$$
+可作线性变换$x'=x-x_0$与$y'=y-y_0$，那么上述初值问题化为
+$$
+\frac{\dd y'}{\dd x'}=f(x',y',\lambda),\qquad 
+y'(0)=0
+$$
+因此本节对于探究解对初值和参数的连续依赖性，仅考虑初值问题
+$$
+\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+y(0)=0
+$$
+
+\begin{definition}{解对初值和参数的连续依赖性}
+	考虑初值问题%
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(x_0)=y_0
+	$$
+	记其解为$y=\varphi(x,x_0,y_0,\lambda)$。所谓解对初值和参数的连续依赖性，就是$\varphi$对于$x_0,y_0,\lambda$的连续性。
+\end{definition}
+
+\begin{theorem}{解对初值和参数的连续依赖性}
+	如果函数$f(x,y,\lambda)$在矩形区域%
+	$$
+	R:\qquad 
+	|x|\le a,\qquad 
+	|y|\le b,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上连续，且对于$y$满足Lipschitz条件，那么微分方程初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(0)=0
+	$$
+	的解$y=\varphi(x,\lambda)$在矩形区域%
+	$$
+	D:\qquad 
+	|x|\le h,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上是连续的，其中%
+	$$
+	h=\min\{ a,b/M \},\qquad 
+	M\ge \max_{(x,y,\lambda)\in G}|f(x,y,\lambda)|
+	$$
+\end{theorem}
+
+\section{解对初值和参数的连续可微性}
+
+对于一般的微分方程初值问题
+$$
+\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+y(x_0)=y_0
+$$
+可作线性变换$x'=x-x_0$与$y'=y-y_0$，那么上述初值问题化为
+$$
+\frac{\dd y'}{\dd x'}=f(x',y',\lambda),\qquad 
+y'(0)=0
+$$
+因此本节对于探究解对初值和参数的连续可微性，仅考虑初值问题
+$$
+\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+y(0)=0
+$$
+
+\begin{definition}{解对初值和参数的连续可微性}
+	考虑初值问题%
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(x_0)=y_0
+	$$
+	记其解为$y=\varphi(x,x_0,y_0,\lambda)$。所谓解对初值和参数的连续可微性，就是$\varphi$对于$x_0,y_0,\lambda$的连续可微性。
+\end{definition}
+
+\begin{theorem}{解对初值和参数的连续可微性}
+	如果函数$f(x,y,\lambda)$在矩形区域%
+	$$
+	R:\qquad 
+	|x|\le a,\qquad 
+	|y|\le b,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上连续，且对于$y$与$\lambda$存在连续偏微商，那么微分方程初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(0)=0
+	$$
+	的解$y=\varphi(x,\lambda)$在矩形区域%
+	$$
+	D:\qquad 
+	|x|\le h,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上是连续可微的，其中%
+	$$
+	h=\min\{ a,b/M \},\qquad 
+	M\ge \max_{(x,y,\lambda)\in G}|f(x,y,\lambda)|
+	$$
+\end{theorem}
+
+\section{四大定理总结}
+
+\begin{theorem}{Picard存在唯一性定理}
+	对于初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	如果$f(x,y)$在矩形区域
+	$$
+	R:\qquad 
+	|x-x_0|\le a,\qquad 
+	|y-y_0|\le b
+	$$
+	内连续，且对$y$成立Lipschitz条件，那么原初值问题在区间$[x_0-h,x_0+h]$内存在且存在唯一解，其中
+	$$
+	h=\min{\left\{a,b/M\right\}},\qquad 
+	M>\max_{(x,y)\in{R}}{|f(x,y)|}
+	$$
+\end{theorem}
+
+\begin{theorem}{解的延伸定理}
+	如果$f(x,y)$在区域$G$内连续，那么对于任意$(x_0,y_0)\in G$，初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y),\qquad 
+	y(x_0)=y_0
+	$$
+	的积分曲线$\Gamma$延伸至$G$的边界。
+\end{theorem}
+
+\begin{theorem}{解对初值和参数的连续依赖性}
+	如果函数$f(x,y,\lambda)$在矩形区域%
+	$$
+	R:\qquad 
+	|x|\le a,\qquad 
+	|y|\le b,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上连续，且对于$y$满足Lipschitz条件，那么微分方程初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(0)=0
+	$$
+	的解$y=\varphi(x,\lambda)$在矩形区域%
+	$$
+	D:\qquad 
+	|x|\le h,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上是连续的，其中%
+	$$
+	h=\min\{ a,b/M \},\qquad 
+	M\ge \max_{(x,y,\lambda)\in G}|f(x,y,\lambda)|
+	$$
+\end{theorem}
+
+\begin{theorem}{解对初值和参数的连续可微性}
+	如果函数$f(x,y,\lambda)$在矩形区域%
+	$$
+	R:\qquad 
+	|x|\le a,\qquad 
+	|y|\le b,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上连续，且对于$y$与$\lambda$存在连续偏微商，那么微分方程初值问题
+	$$
+	\frac{\dd y}{\dd x}=f(x,y,\lambda),\qquad 
+	y(0)=0
+	$$
+	的解$y=\varphi(x,\lambda)$在矩形区域%
+	$$
+	D:\qquad 
+	|x|\le h,\qquad 
+	|\lambda-\lambda_0|\le c
+	$$
+	上是连续可微的，其中%
+	$$
+	h=\min\{ a,b/M \},\qquad 
+	M\ge \max_{(x,y,\lambda)\in G}|f(x,y,\lambda)|
+	$$
+\end{theorem}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cc}
+		\toprule
+		\textbf{条件} & \textbf{结论} \\
+		\midrule
+		连续性 & 存在解 \\
+		连续性 & 解延伸至边界 \\
+		连续性+Lipschitz条件 & 存在且存在唯一解 \\
+		连续性+Lipschitz条件 & 解对初值与参数连续 \\
+		连续性+连续可偏微商 & 解对初值与参数连续可微 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Lyapunov稳定性}
+
+\begin{definition}{Lyapunov稳定性}
+	对于微分方程%
+	$$
+	\frac{\dd \bs{x}}{\dd t}=f(\bs{x},t)
+	$$
+	其中$f(\bs{x},t)$对于$\bs{x}\in \Omega\sub\R^n$与$t\in\R$连续，且对于$\bs{x}$成立Lipschitz条件，称其在$[t_0,\infty)$上存在定义的解$\bs{x}=\bs{\varphi}(t)$成立Lyapunov稳定性，如果对于任意$\varepsilon>0$，存在$\delta>0$，使得对于任意成立%
+	$$
+	|\bs{x}_0-\bs{\varphi}(t_0)|<\delta
+	$$
+	的$\bs{x}_0\in\R^n$，原微分方程以$\bs{x}(t_0)=\bs{x}_0$为初值的解$\bs{x}=\bs{\varphi}(t,t_0,\bs{x}_0)$在$[t_0,\infty)$上存在定义，且对于任意$t\ge t_0$，成立
+	$$
+	|\bs{\varphi}(t,t_0,\bs{x}_0)-\bs{\varphi}(t)|<\varepsilon
+	$$
+\end{definition}
+
+\begin{definition}{Lyapunov渐进稳定性}
+	对于微分方程%
+	$$
+	\frac{\dd \bs{x}}{\dd t}=f(\bs{x},t)
+	$$
+	其中$f(\bs{x},t)$对于$\bs{x}\in \Omega\sub\R^n$与$t\in\R$连续，且对于$\bs{x}$成立Lipschitz条件，称其存在Lyapunov稳定性的解$\bs{x}=\bs{\varphi}(t)$成立Lyapunov渐进稳定性，如果存在$\delta>0$，使得对于任意成立%
+	$$
+	|\bs{x}_0-\bs{\varphi}(t_0)|<\delta
+	$$
+	的$\bs{x}_0\in\R^n$，原微分方程以$\bs{x}(t_0)=\bs{x}_0$为初值的解$\bs{x}=\bs{\varphi}(t,t_0,\bs{x}_0)$在$[t_0,\infty)$上存在定义，且成立%
+	$$
+	\lim_{t\to+\infty}|\bs{\varphi}(t,t_0,\bs{x}_0)-\bs{\varphi}(t)|=0
+	$$
+\end{definition}
+
+\section{奇解与包络}
+
+\subsection{奇解}
+
+\begin{definition}{奇解}
+	称一阶微分方程
+	$$
+	F\left(x,y,\frac{\mathrm{d}y}{\mathrm{d}x}\right)=0
+	$$
+	的特解
+	$$
+	\Gamma:\qquad y=\varphi(x),\qquad x\in I
+	$$
+	为奇解，如果对于任意$(x_0,y_0)\in \Gamma$，以及$(x_0,y_0)$的任意邻域内微分方程
+	$$
+	F\left(x,y,\frac{\mathrm{d}y}{\mathrm{d}x}\right)=0
+	$$
+	存在不同于$\Gamma$的解，使得其在$(x_0,y_0)$处与$\Gamma$相切。
+\end{definition}
+
+\begin{theorem}{奇解存在的必要条件}
+	设函数$F(x,y,p)$对$(x,y,p)\in G$是连续的，而且对$y$和$p$有连续的偏微商$F_y^{\prime}$和$F_p^{\prime}$。若函数$y=\varphi(x),x\in J$是微分方程
+	$$
+	F(x,y,\frac{\mathrm{d}y}{\mathrm{d}x})=0
+	$$
+	的一个奇解，并且$(x,\varphi(x),\varphi^{\prime}(x))\in G$，则奇解$y=\varphi(x)$满足$p$-判别式
+	$$
+	\begin{cases}F(x,y,p)=0\\F_p^{\prime}(x,y,p)=0\end{cases}
+	$$
+	若从方程组中消去$p$，可得到方程
+	$$
+	\Delta(x,y)=0
+	$$
+	由此决定的曲线为微分方程
+	$$
+	F(x,y,\frac{\mathrm{d}y}{\mathrm{d}x})=0
+	$$
+	的$p$-判别曲线。因此，原微分方程的奇解是一条$p$-判别曲线。
+\end{theorem}
+
+\begin{note}
+	需要注意的是，由$p$-判别式
+	$$
+	\begin{cases}F(x,y,p)=0\\F_p^{\prime}(x,y,p)=0\end{cases}
+	$$
+	所确定的函数$y=\psi(x)$不一定是相应微分方程的解；即使是解，也不一定是奇解。这是因为，在联立方程组时，参数$p$丧失了与$x$和$y$的关系，而成为了一个独立的变量。事实上由$p$-判别式求得的$y=\psi(x)$和$p=p(x)$，一定要满足$\frac{\mathrm{d}y}{\mathrm{d}x}=p$，只有这样，函数$y=\psi(x)$才是微分方程的解，但未必是奇解。
+\end{note}
+
+\begin{theorem}{奇解存在的充分条件}
+	设函数$F(x,y,p)$对$(x,y,p)\in G$是二阶连续可微的，且由微分方程
+	$$
+	F\left(x,y,\frac{\mathrm{d}y}{\mathrm{d}x}\right)=0
+	$$
+	的$p$-判别式
+	$$
+	\begin{cases}F(x,y,p)=0\\F_p^{\prime}(x,y,p)=0\end{cases}
+	$$
+	所确定的函数$y=\psi(x),x\in J$为微分方程的解。若满足条件
+	$$
+	\begin{cases}F_y^{\prime}(x,\psi(x),\psi^{\prime}(x))\ne 0\\F_{pp}^{\prime\prime}(x,\psi(x),\psi^{\prime}(x))\ne 0\\F_p^{\prime}(x,\psi(x),\psi^{\prime}(x))=0\end{cases}
+	$$
+	对于任意$x\in J$成立，则$y=\psi(x)$是微分方程的奇解。
+\end{theorem}
+
+\begin{note}
+	奇解存在的充分条件中的
+	$$
+	\begin{cases}F_y^{\prime}(x,\psi(x),\psi^{\prime}(x))\ne 0\\F_{pp}^{\prime\prime}(x,\psi(x),\psi^{\prime}(x))\ne 0\\F_p^{\prime}(x,\psi(x),\psi^{\prime}(x))=0\end{cases}
+	$$
+	中的三个条件缺一不可，如
+	$$
+	(\frac{\mathrm{d}y}{\mathrm{d}x})^2=y^2,\qquad 
+	\sin(y\frac{\mathrm{d}y}{\mathrm{d}x})=y,\qquad 
+	y=2x+\frac{\mathrm{d}y}{\mathrm{d}x}-\frac{1}{3}(\frac{\mathrm{d}y}{\mathrm{d}x})^3
+	$$
+\end{note}
+
+\subsection{包络}
+
+\begin{definition}{包络}
+	对于单参数$C$的曲线族
+	$$
+	K(C):\qquad V(x,y,C)=0
+	$$
+	其中函数$V(x,y,C)$对于$(x,y,C)\in D$是连续可微的。称连续可微的曲线$\Gamma$为曲线族$K(C):V(x,y,C)=0$的包络，如果对于任一点$P\in\Gamma$，在曲线族$K(C):V(x,y,C)=0$中存在曲线$K(C_0)$经过$P$点并在该点与$\Gamma$相切，同时$K(C_0)$在$P$点的某一邻域内不同于$\Gamma$。
+\end{definition}
+
+\begin{theorem}{奇解是通解的包络}
+	设微分方程
+	$$
+	F(x,y,\frac{\mathrm{d}y}{\mathrm{d}x})=0
+	$$
+	有通积分为
+	$$
+	U(x,y,C)=0
+	$$
+	又设积分曲线族$U(x,y,C)=0$有包络为
+	$$
+	\Gamma:y=\varphi(x),x\in J
+	$$
+	则包络$\Gamma:y=\varphi(x),x\in J$是微分方程的奇解。
+\end{theorem}
+
+\begin{theorem}{包络存在的必要条件}
+	设$\Gamma$是曲线族
+	$$
+	K(C):V(x,y,C)=0
+	$$
+	的一支包络，则其满足如下的$C-$判别式
+	$$
+	\begin{cases}V(x,y,C)=0\\V_C^{\prime}(x,y,C)=0\end{cases}
+	$$
+	或消去$C$，得到关系式
+	$$
+	\Omega(x,y)=0
+	$$
+\end{theorem}
+
+\begin{theorem}{包络存在的充分条件}
+	设由曲线族
+	$$
+	K(C):V(x,y,C)=0
+	$$
+	的$C-$判别式
+	$$
+	\begin{cases}V(x,y,C)=0\\V_C^{\prime}(x,y,C)=0\end{cases}
+	$$
+	确定一支连续可微且不含于族$K(C):V(x,y,C)=0$的曲线
+	$$
+	\Lambda:\begin{cases}x=\varphi(C)\\y=\psi(C)\end{cases},C\in J
+	$$
+	且满足非蜕化性条件
+	$$
+	(\phi^{\prime}(C),\psi^{\prime}(C))\ne(0,0)\\(V_x^{\prime}(\varphi(C),\psi(C),C),V_y^{\prime}(\varphi(C),\psi(C),C))\ne(0,0)
+	$$
+	则曲线$\Lambda$是曲线族$K(C):V(x,y,C)=0$的一支包络。
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+\end{document}
