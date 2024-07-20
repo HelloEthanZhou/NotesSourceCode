@@ -1,0 +1,2719 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{微分几何 - 梅向明 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref, listings, romannum}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\DD}{\mathrm{D}}           % 微分D
+\newcommand{\pll}{\kern 0.56em/\kern -0.8em /\kern 0.56em} % 平行
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+	\begin{center}
+		
+		\large{感谢 \textbf{ 勇敢的 } 自己}
+		
+	\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+
+\chapter{曲线论}
+
+\section{向量函数}
+
+\begin{definition}{向量函数}
+	对于点集$G\sub\R^n$，定义的向量函数为
+	\begin{align*}
+		\bs{r} : \begin{aligned}[t]
+			G & \longrightarrow \R^m\\
+			t & \longmapsto (f_1(t),\cdots,f_m(t))
+		\end{aligned}
+	\end{align*}
+	其中对于任意$1\le k\le m$，$f_k:\R^n\to\R$为函数。特别的，当$n=1$时，称之为$\R^m$上的向量函数。
+\end{definition}
+
+\begin{definition}{向量的数量积/内积}
+	对于$\R^n$上的向量$\bs{x}$与$\bs{y}$，定义其数量积/内积为
+	$$
+	\bs{x}\cdot \bs{y}=\sum_{k=1}^{n}x_ky_k
+	$$
+	其中
+	$$
+	\bs{x}=(x_1,\cdots,x_n),\qquad
+	\bs{y}=(y_1,\cdots,y_n)
+	$$
+\end{definition}
+
+\begin{definition}{向量的向量积/外积}
+	对于$\R^3$上的向量$\bs{x}=(x_1,x_2,x_3)$与$\bs{y}=(y_1,y_2,y_3)$，定义其向量积/外积为
+	$$
+	\bs{x}\times \bs{y}=\begin{vmatrix}
+		\bs{i} & \bs{j} & \bs{k}\\
+		x_1 & x_2 & x_3\\
+		y_1 & y_2 & y_3
+	\end{vmatrix}
+	$$
+\end{definition}
+
+\begin{definition}{向量的向量积/外积}
+	对于$\R^3$上的向量$\bs{x},\bs{y},\bs{z}$，定义其混合积为
+	$$
+	(\bs{x},\bs{y},\bs{z})=\bs{x}\times \bs{y}\cdot \bs{z}
+	$$
+\end{definition}
+
+\begin{definition}{模}
+	定义$\R^n$上的向量$\bs{x}$的模为
+	$$
+	|\bs{x}|=\sqrt{\bs{x}\cdot \bs{x}}
+	$$
+\end{definition}
+
+\subsection{向量函数的极限}
+
+\begin{definition}{向量函数的极限}
+	\begin{enumerate}
+		\item 称向量函数$\bs{r}$在$t_0$处的极限为向量$\bs{a}$，并记作
+		$$
+		\lim_{t\to t_0}\bs{r}(t)=\bs{a}
+		$$
+		如果对于任意$\varepsilon>0$，存在$\delta>0$，使得成立
+		$$
+		0<|t-t_0|<\delta\implies |\bs{r}(t)-\bs{a}|<\varepsilon
+		$$
+		\item 称$\R^n$上的向量函数$\bs{r}=(f_1,\cdots,f_m)$在$t_0$处的极限为向量$(a_1,\cdots,a_m)$，如果对于任意$1\le k \le n$，成立
+		$$
+		\lim_{t\to t_0}f(t)=a_k
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}{向量函数极限的性质}
+	对于向量函数$\bs{r},\bs{s}$，以及函数$\lambda:\R\to\R$，如果
+	$$
+	\lim_{t\to t_0}\bs{r}(t)=\bs{a},\qquad
+	\lim_{t\to t_0}\bs{s}(t)=\bs{b},\qquad
+	\lim_{t\to t_0}\lambda(t)=\mu
+	$$
+	那么成立如下命题。
+	\begin{enumerate}
+		\item 
+		$$
+		\lim_{t\to t_0}\bs{r}(t)\pm\bs{s}(t)=\bs{a}\pm\bs{b}
+		$$
+		\item 
+		$$
+		\lim_{t\to t_0}\lambda(t)\bs{r}(t)=\mu\bs{a}
+		$$
+		\item 
+		$$
+		\lim_{t\to t_0}\bs{r}(t)\cdot\bs{s}(t)=\bs{a}\cdot\bs{b}
+		$$
+		\item 若$n=3$，则
+		$$
+		\lim_{t\to t_0}\bs{r}(t)\times\bs{s}(t)=\bs{a}\times\bs{b}
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\subsection{向量函数的连续性}
+
+\begin{definition}{向量函数的连续性}
+	称向量函数$\bs{r}$在$t_0$处连续，如果
+	$$
+	\lim_{t\to t_0}\bs{r}(t)=\bs{r}(t_0)
+	$$
+\end{definition}
+
+\begin{proposition}{向量函数连续性的性质}
+	对于向量函数$\bs{r},\bs{s}$，以及函数$\lambda:\R\to\R$，如果$\bs{r},\bs{s}$以及$\lambda$均在$t\in G$处连续，那么向量函数$\bs{r}\pm\bs{s},\lambda \bs{r},\bs{r}\times\bs{s}$与函数$\bs{r}\cdot\bs{s}$均在$t$处连续。
+\end{proposition}
+
+\subsection{向量函数的微商}
+
+\begin{definition}{向量函数的可微性}
+	\begin{enumerate}
+		\item 称向量函数$\bs{r}$在$t_0$处可微，如果存在极限
+		$$
+		\lim_{t\to t_0}\frac{\bs{r}(t)-\bs{r}(t_0)}{t-t_0}
+		$$
+		\item 称$\R^n$上的向量函数$\bs{r}=(f_1,\cdots,f_n)$在$t_0$处可微，如果对于任意$1\le k \le n$，存在极限
+		$$
+		\lim_{t\to t_0}\frac{f(t)-f(t_0)}{t-t_0}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{向量函数的微商}{向量函数的微商}
+	如果向量函数$\bs{r}$在$t_0$处可微，那么定义其在$t_0$处的微商为
+	$$
+	\frac{\dd \bs{r}}{\dd t}\bigg|_{t=t_0}
+	=\bs{r}'(t_0)
+	=\lim_{t\to t_0}\frac{\bs{r}(t)-\bs{r}(t_0)}{t-t_0}
+	$$
+\end{definition}
+
+\begin{proposition}{向量函数可微性的性质}
+	对于向量函数$\bs{r},\bs{s},\bs{t}$，以及函数$\lambda:\R\to\R$，如果$\bs{r},\bs{s},\bs{t}$以及$\lambda$均可微，那么向量函数$\bs{r}\pm\bs{s},\lambda \bs{r},\bs{r}\times\bs{s}$与函数$\bs{r}\cdot\bs{s},(\bs{r},\bs{s},\bs{t})$均可微，且成立
+	\begin{align*}
+		& (\bs{r}\pm\bs{s})'=\bs{r}'\pm\bs{s}'\\
+		& (\lambda \bs{r})'=\lambda \bs{r}'\\
+		& (\bs{r}\times\bs{s})'=\bs{r}'\times\bs{s}+\bs{r}\times\bs{s}'\\
+		& (\bs{r}\cdot\bs{s})'=\bs{r}'\cdot\bs{s}+\bs{r}\cdot\bs{s}'\\
+		& (\bs{r},\bs{s},\bs{t})'=(\bs{r}',\bs{s},\bs{t})+(\bs{r},\bs{s}',\bs{t})+(\bs{r},\bs{s},\bs{t}')\\
+		& \left(\frac{\bs{r}}{\bs{s}}\right)=\frac{\bs{r}'\bs{s}-\bs{r}\bs{s}'}{\bs{s}^2}
+	\end{align*}
+\end{proposition}
+
+\subsection{向量函数的Taylor公式}
+
+\begin{theorem}{向量函数的Taylor公式}{向量函数的Taylor公式}
+	如果向量函数$\bs{r}$为$n+1$次可微函数，那么成立Taylor展式
+	$$
+	\bs{r}(t)
+	=\sum_{k=0}^{n}\frac{(t-t_0)^k}{k!}\bs{r}^{(k)}(t_0)
+	+\frac{(t-t_0)^{n+1}}{(n+1)!}(\bs{r}^{(n+1)}(t_0)+\bs{\varepsilon}(t))
+	$$
+	其中
+	$$
+	\lim_{t\to t_0}\bs{\varepsilon}(t)=\bs{0}
+	$$
+	特别的，如果$\bs{r}$为无限次可微函数，那么成立Taylor展式
+	$$
+	\bs{r}(t)
+	=\sum_{n=0}^{\infty}\frac{(t-t_0)^n}{n!}\bs{r}^{(n)}(t_0)
+	$$
+\end{theorem}
+
+\subsection{向量函数的积分}
+
+\begin{definition}{向量函数的可积性}
+	称$\R^n$上的向量函数$\bs{r}=(f_1,\cdots,f_n)$在$[a,b]$上可积，如果对于任意$1\le k \le n$，函数$f_k$在$[a,b]$上可积，且成立
+	$$
+	\int_a^b \bs{r}=
+	\left(\int_a^b f_1,\cdots,\int_a^b f_n\right)
+	$$
+\end{definition}
+
+\begin{proposition}{向量函数可积性的性质}
+	对于向量函数$\bs{r}$，如果$\bs{r}$在$[a,b]$上连续，那么$\bs{r}$在$[a,b]$上可积，且成立
+	\begin{enumerate}
+		\item 若$a<c<b$，则
+		$$
+		\int_a^b \bs{r}=\int_a^c \bs{r}+\int_c^b \bs{r}
+		$$
+		\item 若$\R^n$上的向量函数$\bs{s}$在$[a,b]$上可积，则
+		$$
+		\int_a^b \bs{r}+\bs{s}=\int_a^b \bs{r}+\int_a^b \bs{s}
+		$$
+		\item 若$\lambda\in \R$，则
+		$$
+		\int_a^b \lambda\bs{r}=\lambda \int_a^b \bs{r}
+		$$
+		\item 若$\bs{\lambda}\in \R^n$，则
+		$$
+		\int_a^b \bs{\lambda}\cdot \bs{r}=\bs{\lambda}\cdot \int_a^b \bs{r}
+		$$
+		\item 若$\bs{\lambda}\in \R^n$，则
+		$$
+		\int_a^b \bs{\lambda}\times \bs{r}=\bs{\lambda}\times \int_a^b \bs{r}
+		$$
+		\item 
+		$$
+		\frac{\dd}{\dd t}\int_a^t \bs{r}=\bs{r}(t)
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{lemma}{}{常向量的微商}
+	对于可微向量函数$\bs{r}$，成立
+	$$
+	\bs{r}\equiv\text{常向量}
+	\iff 
+	\bs{r}'\equiv \bs{0}
+	$$
+\end{lemma}
+
+\begin{proof}
+	必要性由微商定义\ref{def:向量函数的微商}得出。充分性由向量函数的Taylor公式\ref{thm:向量函数的Taylor公式}得出。
+\end{proof}
+
+\begin{theorem}{}{模恒定的充要条件}
+	对于可微向量函数$\bs{r}$，成立
+	$$
+	|\bs{r}|\equiv \text{常数}\iff \bs{r}\cdot \bs{r}'\equiv 0
+	$$
+\end{theorem}
+
+\begin{proof}
+	$$
+	|\bs{r}|\equiv \text{常数}
+	\iff \bs{r}\cdot \bs{r}\equiv \text{常数}
+	\iff \frac{\dd}{\dd t}\bs{r}\cdot \bs{r}\equiv 0
+	\iff 2\bs{r}\cdot \bs{r}'\equiv 0
+	\iff\bs{r}\cdot \bs{r}'\equiv 0
+	$$
+\end{proof}
+
+\begin{theorem}
+	对于$\R^3$上的可微向量函数$\bs{r}$，成立
+	$$
+	\exists\lambda:\R\to\R\text{与常向量}\bs{e},\bs{r}=\lambda \bs{e}\iff \bs{r}\times \bs{r}'\equiv \bs{0}
+	$$
+\end{theorem}
+
+\begin{proof}
+	对于必要性，如果存在$\lambda:\R\to\R$与常向量$\bs{e}$，使得成立$\bs{r}=\lambda\bs{e}$，那么此时$\bs{r}'=\lambda'\bs{e}$，进而
+	$$
+	\lambda\bs{e}\times \lambda'\bs{e}=(\lambda\lambda')\bs{e}\times\bs{e}=\bs{0}
+	$$
+	
+	对于充分性，令$\bs{r}=\lambda\bs{e}$，其中$|\bs{e}|\equiv1$，此时
+	$$
+	\bs{r}'=\lambda'\bs{e}+\lambda\bs{e}'
+	$$
+	因此
+	$$
+	\bs{r}\times \bs{r}'
+	=\lambda\bs{e}\times (\lambda'\bs{e}+\lambda\bs{e}')
+	=\lambda^2\bs{e}\times\bs{e}'
+	\equiv\bs{0}\implies 
+	\bs{e}\times\bs{e}'\equiv\bs{0}
+	$$
+	又由于$|\bs{e}|\equiv1$，那么由定理\ref{thm:模恒定的充要条件}，$\bs{e}\cdot\bs{e}=0$，因此$\bs{e}$为常向量。
+\end{proof}
+
+\begin{theorem}
+	对于$\R^3$上的二次可微向量函数$\bs{r}$，成立
+	$$
+	\exists\text{常向量}\bs{e},\bs{r}\cdot\bs{e}=0\iff (\bs{r},\bs{r}',\bs{r}'')\equiv \bs{0}
+	$$
+\end{theorem}
+
+\begin{definition}{旋转速度}
+	定义可微向量函数$\bs{r}$在$t_0$处的旋转速度为
+	$$
+	\lim_{t\to t_0}\left|\frac{\arccos\frac{\bs{r}(t)\cdot\bs{r}(t_0)}{|\bs{r}(t)||\bs{r}(t_0)|}}{t-t_0}\right|
+	$$
+\end{definition}
+
+\begin{theorem}
+	可微单位向量函数$\bs{r}$的旋转速度函数为$|\bs{r}'|$。
+\end{theorem}
+
+\begin{proof}
+	考察$\bs{r}$在$t_0$处的旋转速度为
+	$$
+	\lim_{t\to t_0}\left|\frac{\arccos \bs{r}(t)\cdot\bs{r}(t_0)}{t-t_0}\right|
+	$$
+	记$\theta(t)=\arccos \bs{r}(t)\cdot\bs{r}(t_0)$，那么
+	$$
+	|\bs{r}(t)-\bs{r}(t_0)|=2\sin\frac{\theta(t)}{2}
+	$$
+	因此
+	\begin{align*}
+		\lim_{t\to t_0}\left|\frac{\arccos \bs{r}(t)\cdot\bs{r}(t_0)}{t-t_0}\right|
+		& = \lim_{t\to t_0}\frac{|\bs{r}(t)-\bs{r}(t_0)|}{|t-t_0|}\cdot
+		\lim_{t\to t_0}\frac{|\arccos \bs{r}(t)\cdot\bs{r}(t_0)|}{|\bs{r}(t)-\bs{r}(t_0)|}\\
+		& = |\bs{r}'(t_0)|\lim_{t\to t_0}\left|\frac{\theta(t)}{2\sin\frac{\theta(t)}{2}}\right|\\
+		& = |\bs{r}'(t_0)|
+	\end{align*}
+	由$t_0$的任意性，$\bs{r}$的旋转速度函数为$|\bs{r}'|$。
+\end{proof}
+
+\section{曲线}
+
+\subsection{曲线的定义}
+
+\begin{definition}{简单曲线段}
+	称同胚映射$[0,1]\to\R^3$的像为简单曲线段。
+\end{definition}
+
+\begin{definition}{参数方程}
+	$$
+	\begin{cases}
+		x=x(t)\\
+		y=y(t)\\
+		z=z(t)
+	\end{cases}\qquad 
+	a<t<b
+	$$
+\end{definition}
+
+\begin{example}
+	开圆弧：
+	$$
+	\begin{cases}
+		x=a\cos t\\
+		y=a\sin t
+	\end{cases}\qquad 
+	0<t<2\pi
+	$$
+\end{example}
+
+\begin{example}
+	开椭圆弧：
+	$$
+	\begin{cases}
+		x=a\cos t\\
+		y=b\sin t
+	\end{cases}\qquad 
+	0<t<2\pi
+	$$
+\end{example}
+
+\begin{example}
+	圆柱螺线：
+	$$
+	\begin{cases}
+		x=a\cos t\\
+		y=a\sin t\\
+		z=bt
+	\end{cases}\qquad 
+	t\in\R
+	$$
+\end{example}
+
+\begin{example}
+	双曲螺线：
+	$$
+	\begin{cases}
+		x=a\cosh t\\
+		y=a\sinh t\\
+		z=at
+	\end{cases}\qquad 
+	t\in\R
+	$$
+\end{example}
+
+\subsection{光滑曲线}
+
+\begin{definition}{光滑曲线}
+	称曲线$\bs{r}$为光滑曲线，如果其连续可微。
+\end{definition}
+
+\begin{definition}{$C^n$类曲线}
+	称曲线$\bs{r}$为$C^n$类曲线，如果其$n$阶连续可微；特别的，称曲线$\bs{r}$为$C^\infty$类曲线，如果其无穷阶连续可微。
+\end{definition}
+
+\begin{definition}{正则点}
+	称$t$为光滑曲线$\bs{r}$的正则点，如果$\bs{r}'(t)\ne\bs{0}$。
+\end{definition}
+
+\begin{definition}{正则曲线}
+	称光滑曲线$\bs{r}$为正则曲线，如果其任意一点均为正则点。
+\end{definition}
+
+\subsection{曲线的切线和法平面}
+
+\begin{definition}{切线}
+	定义光滑曲线$\bs{r}$在正则点$t$的切线为向量$\bs{r}'(t)$，切线参数方程为
+	$$
+	\bs{p}-\bs{r}(t)=\lambda\bs{r}'(t)\qquad 
+	\text{或}\qquad
+	\begin{cases}
+		X-x(t)=\lambda x'(t)\\
+		Y-y(t)=\lambda y'(t)\\
+		Z-z(t)=\lambda z'(t)
+	\end{cases},\quad \lambda\in\R
+	$$
+	坐标方程为
+	$$
+	\frac{X-x(t)}{x'(t)}
+	=\frac{Y-y(t)}{y'(t)}
+	=\frac{Z-z(t)}{z'(t)}
+	$$
+\end{definition}
+
+\begin{definition}{法平面}
+	定义光滑曲线$\bs{r}$在正则点$t$的法平面方程为
+	$$
+	(\bs{p}-\bs{r}(t))\cdot\bs{r}'(t)=0\qquad 
+	\text{或}\qquad
+	x'(t)(X-x(t))+y'(t)(Y-y(t))+z'(t)(Z-z(t))=0
+	$$
+\end{definition}
+
+\subsection{曲线弧}
+
+\begin{theorem}
+	光滑曲线$\bs{r}$的弧长为
+	$$
+	l=\int_a^b |\bs{r}'|=\int_a^b \sqrt{x'^2+y'^2+z'^2}
+	$$
+\end{theorem}
+
+\begin{definition}{曲线的自然参数表示}
+	对于光滑曲线$\bs{r}$，定义
+	$$
+	s(t)=\int_a^t |\bs{r}'|
+	$$
+	此时
+	$$
+	\frac{\dd s}{\dd t}=|\bs{r}'|>0
+	$$
+	由隐函数定理，存在$s(t)$的反函数$t(s)$，因此得到以自然参数$s$的曲线方程$\bs{r}=\bs{r}(s)$。
+\end{definition}
+
+\begin{proposition}
+	$$
+	\dd s = |\bs{r}'(t)|\dd t,\qquad 
+	\dd s^2=\bs{r}'^2\dd t^2=\dd \bs{r}^2,\qquad 
+	\dd s^2=\dd x^2+\dd y^2+\dd z^2,\qquad
+	|\dot{\bs{r}}|=\left|\frac{\dd \bs{r}}{\dd s}\right|=1
+	$$
+\end{proposition}
+
+\begin{theorem}
+	对于光滑曲线$\bs{r}=\bs{r}(t)$，如果$s$为自然参数，那么
+	$$
+	t\text{ 为自然参数}\iff \exists c\in\R, t=\pm s+c
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于光滑曲线$\bs{r}=\bs{r}(s)$，成立
+	$$
+	s\text{ 为自然参数}\iff \left|\frac{\dd \bs{r}}{\dd s}\right|=1
+	$$
+\end{theorem}
+
+\begin{example}
+	圆柱螺线
+	$$
+	\begin{cases}
+		x=a\cos t\\
+		y=a\sin t\\
+		z=bt
+	\end{cases}\qquad 
+	t\in\R
+	$$
+	的自然参数为
+	$$
+	t=\frac{s}{\sqrt{a^2+b^2}}
+	$$
+\end{example}
+
+\begin{example}
+	双曲螺线
+	$$
+	\begin{cases}
+		x=a\cosh t\\
+		y=a\sinh t\\
+		z=at
+	\end{cases}\qquad 
+	t\in\R
+	$$
+	的自然参数为
+	$$
+	s=\sqrt{2}a\sinh t
+	$$
+\end{example}
+
+\section{空间曲线}
+
+\subsection{空间曲线的密切平面}
+
+\begin{definition}{密切平面}
+	定义二阶连续可微曲线$\bs{r}$在$t$处的密切平面为
+	$$
+	(\bs{p}-\bs{r}(t),\bs{r}'(t),\bs{r}''(t))=0
+	\qquad\text{或}\qquad
+	\begin{vmatrix}
+		X-x(t) & Y-y(t) & Z-z(t)\\
+		x'(t) & y'(t) & z'(t)\\
+		x''(t) & y''(t) & z''(t)
+	\end{vmatrix}=0
+	$$
+\end{definition}
+
+\subsection{空间曲线的基本三棱形}
+
+\begin{definition}{单位切向量,主法向量,副法向量}
+	对于二阶连续可微的曲线$\bs{r}$，分别定义单位切向量，主法向量，副法向量如下
+	$$
+	\bs{\alpha}=\frac{\bs{r}'}{|\bs{r}'|},\qquad
+	\bs{\beta}=\bs{\gamma}\times\bs{\alpha}=\frac{(\bs{r}'\cdot\bs{r}')\bs{r}''-(\bs{r}'\cdot\bs{r}'')\bs{r}'}{|\bs{r}'||\bs{r}'\times \bs{r}''|},\qquad
+	\bs{\gamma}=\frac{\bs{r}'\times \bs{r}''}{|\bs{r}'\times \bs{r}''|}
+	$$
+	
+	特别的，若以自然参数表示曲线$\bs{r}=\bs{r}(s)$，则单位切向量，主法向量，副法向量如下
+	$$
+	\bs{\alpha}=\dot{\bs{r}},\qquad 
+	\bs{\beta}=\frac{\dot{\bs{\alpha}}}{|\dot{\bs{\alpha}}|},\qquad 
+	\bs{\gamma}=\bs{\alpha}\times\bs{\beta}
+	$$
+\end{definition}
+
+\begin{definition}{密切平面,法平面,从切平面}
+	对于二阶连续可微的曲线$\bs{r}$，定义密切平面为以$\bs{\gamma}$为法向的平面，方程为
+	$$
+	(\bs{p}-\bs{r},\bs{r}',\bs{r}'')=0
+	$$
+	法平面为以$\bs{\alpha}$为法向的平面，方程为
+	$$
+	(\bs{p}-\bs{r})\cdot \bs{r}'=0
+	$$
+	从切平面为以$\bs{\beta}$为法向的平面，方程为
+	$$
+	(\bs{p}-\bs{r})\cdot \bs{r}''=0
+	$$
+\end{definition}
+
+
+\begin{definition}{切线,主法线,副法线}
+	对于二阶连续可微的曲线$\bs{r}$，定义切线为
+	$$
+	\begin{cases}
+		(\bs{p}-\bs{r},\bs{r}',\bs{r}'')=0\\
+		(\bs{p}-\bs{r})\cdot \bs{r}''=0
+	\end{cases}
+	$$
+	主法线为
+	$$
+	\begin{cases}
+		(\bs{p}-\bs{r},\bs{r}',\bs{r}'')=0\\
+		(\bs{p}-\bs{r})\cdot \bs{r}'=0
+	\end{cases}
+	$$
+	副法线为
+	$$
+	\begin{cases}
+		(\bs{p}-\bs{r})\cdot \bs{r}'=0\\
+		(\bs{p}-\bs{r})\cdot \bs{r}''=0
+	\end{cases}
+	$$
+\end{definition}
+
+\begin{definition}{Frenet标架}
+	称两两正交的单位向量$\bs{\alpha},\bs{\beta},\bs{\gamma}$为Frenet标架。
+\end{definition}
+
+\begin{definition}{基本三棱形}
+	称单位切向量，主法向量，副法向量密切平面，法平面，从切平面为基本三棱形。
+\end{definition}
+
+\subsection{空间曲线的曲率,挠率与Frenet公式}
+
+\begin{definition}{曲率}
+	定义二阶连续可微的曲线$\bs{r}$的曲率函数为
+	$$
+	k=\frac{|\bs{r}'\times\bs{r}''|}{|\bs{r}'|^3}
+	$$
+	
+	特别的，若以自然参数表示曲线$\bs{r}=\bs{r}(s)$，则曲率函数为
+	$$
+	k=|\dot{\bs{\alpha}}|
+	$$
+\end{definition}
+
+\begin{definition}{挠率}
+	定义三阶连续可微的曲线$\bs{r}$的挠率函数为
+	$$
+	\tau=\frac{(\bs{r}',\bs{r}'',\bs{r}''')}{|\bs{r}'\times\bs{r}''|^2}
+	$$
+	
+	特别的，若以自然参数表示曲线$\bs{r}=\bs{r}(s)$，则挠率函数为
+	$$
+	\tau=\begin{cases}
+		|\dot{\bs{\gamma}}|,\qquad & \bs{\gamma}'\text{与}\bs{\beta}\text{异向}\\
+		-|\dot{\bs{\gamma}}|,\qquad & \bs{\gamma}'\text{与}\bs{\beta}\text{同向}
+	\end{cases}
+	$$
+\end{definition}
+
+\begin{definition}{曲率圆,曲率中心,曲率半径}
+	曲线$\bs{r}=\bs{r}(s)$在$s$处的曲率圆的曲率中心为
+	$$
+	\bs{r}^*(s)=\bs{r}(s)+\frac{1}{k}\bs{\beta}
+	$$
+	曲率半径为$1/k$。
+\end{definition}
+
+\begin{theorem}{Frenet公式}{Frenet公式}
+	对于二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$，成立
+	$$
+	\begin{cases}
+		\dot{\bs{\alpha}}=k\bs{\beta}\\
+		\dot{\bs{\beta}}=-k\bs{\alpha}+\tau\bs{\gamma}\\
+		\dot{\bs{\gamma}}=-\tau\bs{\beta}
+	\end{cases}
+	\qquad 
+	\text{或}
+	\qquad
+	\begin{pmatrix}
+		\dot{\bs{\alpha}}\\\dot{\bs{\beta}}\\\dot{\bs{\gamma}}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		0 & k & 0 \\
+		-k & 0 & \tau\\
+		0 & -\tau & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{\alpha}\\\bs{\beta}\\\bs{\gamma}
+	\end{pmatrix}
+	$$
+\end{theorem}
+
+\begin{lstlisting}[language = Mathematica]
+	(* 使用 Mathematica 求解 Frenet 系统参数 *)
+	x[t_] := Cos[t]
+	y[t_] := Sin[t]
+	z[t_] := t
+	curve[t_] := {x[t], y[t], z[t]}
+	{{\[Kappa], \[Tau]}, {\[Alpha], \[Beta], \[Gamma]}} = 
+	FrenetSerretSystem[curve[t], t] // Simplify
+\end{lstlisting}
+
+\subsection{空间曲线在一点邻近的结构}
+
+\begin{theorem}{空间曲线在一点的邻近点}
+	对于三阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$，成立
+	$$
+	\bs{r}(s+\Delta s)-\bs{r}(s)
+	=\Delta s\bs{\alpha}
+	+\frac{1}{2}k(\Delta s)^2\bs{\beta}
+	+\frac{1}{6}k\tau(\Delta s)^3\bs{\gamma}
+	$$
+	建立新坐标系$\{ \bs{r}(s):\bs{\alpha},\bs{\beta},\bs{\gamma} \}$，从而$\bs{r}(s)$的邻近点$\bs{r}(s+\Delta s)$坐标为
+	$$
+	(\xi,\eta,\zeta)
+	=\left(\Delta s,\frac{1}{2}k(\Delta s)^2,\frac{1}{6}k\tau(\Delta s)^3\right)
+	$$
+	若以$\Delta s$为参数，那么该坐标表示曲线$\bs{r}=\bs(r)(s)$在$\bs{r}(s)$邻近的近似方程。
+	\begin{enumerate}
+		\item 近似曲线在法平面$\xi=0$的投影为
+		$$
+		\zeta^2=\frac{2\tau^2}{9k}\eta^3
+		$$
+		\item 近似曲线在从切平面$\eta=0$的投影为
+		$$
+		\zeta=\frac{1}{2}k\tau\xi^3
+		$$
+		\item 近似曲线在密切平面$\zeta=0$的投影为
+		$$
+		\eta=\frac{1}{2}k\xi^2
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{空间曲线论的基本定理}
+
+\begin{definition}{自然方程}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$的自然方程为
+	$$
+	k=k(s),\qquad 
+	\tau=\tau(s)
+	$$
+\end{definition}
+
+\begin{theorem}{空间曲线论的基本定理}{空间曲线论的基本定理}
+	对于闭区间$[s_0,t]$上的连续函数$\varphi(s)>0$与$\psi(s)$，存在且存在唯一空间曲线$\bs{r}=\bs{r}(s)$，使得$s$为其自然参数，且$\varphi(s)$为其曲率，$\psi(s)$为其挠率。
+\end{theorem}
+
+\subsection{一般螺线}
+
+\begin{definition}{直线}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$为直线，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 参数表示：存在常向量$\bs{a}$与$\bs{b}$，使得成立
+		$$
+		\bs{r}(s)=\bs{a}s+\bs{b}
+		$$
+		\item 切向量的微商为零向量：
+		$$
+		\ddot{\bs{r}}=\dot{\bs{\alpha}}=\bs{0}
+		$$
+		\item 曲率为零：
+		$$
+		k=0
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$$
+	\bs{r}=\bs{a}s+\bs{b}
+	\iff
+	\ddot{\bs{r}}=\bs{0}
+	\iff 
+	\dot{\bs{\alpha}}=\bs{0}
+	\iff
+	|\ddot{\bs{r}}|=0
+	\iff
+	k=0
+	$$
+\end{proof}
+
+\begin{definition}{平面曲线}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$为平面曲线，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 切线与固定方向垂直：存在非零常向量$\bs{p}$，使得成立
+		$$
+		\bs{\alpha}\cdot \bs{p}=0
+		$$
+		\item 挠率为零：
+		$$
+		\tau=0
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{圆周}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$为圆周，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $\bs{r}$为平面曲线，且存在常向量$\bs{a}$与常数$r$，使得成立
+		$$
+		|\bs{r}-\bs{a}|=r
+		$$
+		\item 曲率为正常数，挠率为零：存在常数$r$，使得成立
+		$$
+		k=\frac{1}{r},\qquad \tau=0
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{圆柱螺线}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$为圆柱螺线，如果其曲率与挠率均为非零常数。
+\end{definition}
+
+\begin{definition}{一般螺线}
+	称二阶连续可微且以自然参数表示的曲线$\bs{r}=\bs{r}(s)$为一般螺线，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 切线与固定方向成固定角：存在单位常向量$\bs{p}$与常数$\omega$，使得成立
+		$$
+		\bs{\alpha}\cdot\bs{p}\equiv\cos\omega
+		$$
+		\item 主法线与固定方向垂直：存在非零常向量$\bs{p}$，使得成立
+		$$
+		\bs{\beta}\cdot\bs{p}\equiv 0
+		$$
+		\item 副法线与固定方向成固定角：存在单位常向量$\bs{p}$与常数$\omega$，使得成立
+		$$
+		\bs{\gamma}\cdot\bs{p}\equiv\cos\omega
+		$$
+		\item 曲率与挠率成定比：存在常数$a$，使得成立
+		$$
+		\frac{k}{\tau}=a
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	一般螺线的方程为
+	$$
+	\bs{r}(s)=(x(s),y(s),s\cos\omega)
+	$$
+\end{theorem}
+
+\section{平面上的特殊曲线}
+
+\begin{definition}{悬链线}
+	悬链线方程$y=y(x)$满足微分方程
+	$$
+	ay''=\sqrt{1+y'^2},\qquad 
+	y(0)=a,\qquad 
+	y'(0)=0
+	$$
+	悬链线方程$y=y(x)$为
+	$$
+	y=a\cosh\frac{x}{a}
+	$$
+\end{definition}
+
+\begin{definition}{旋轮线}
+	$$
+	\begin{cases}
+		x=a(\theta-\sin\theta)\\
+		y=a(1-\cos\theta)
+	\end{cases},\qquad \theta\text{ 为参数}
+	$$
+\end{definition}
+
+\begin{definition}{内旋轮线}
+	$$
+	\begin{cases}
+		x=(R-r)\cos\theta+r\cos\frac{R-r}{r}\theta\\
+		y=(R-r)\sin\theta-r\sin\frac{R-r}{r}\theta
+	\end{cases},\qquad \theta\text{ 为参数}
+	$$
+\end{definition}
+
+\begin{definition}{外旋轮线}
+	$$
+	\begin{cases}
+		x=(R+r)\cos\theta-r\cos\frac{R+r}{r}\theta\\
+		y=(R+r)\sin\theta-r\sin\frac{R+r}{r}\theta
+	\end{cases},\qquad \theta\text{ 为参数}
+	$$
+\end{definition}
+
+\chapter{曲面论}
+
+\section{曲面的概念}
+
+\subsection{简单曲面及其参数表示}
+
+\begin{definition}{Jordan曲线}
+	称$J\sub\R^2$为Jordan曲线，如果其同胚与单位圆周$S^1$。
+\end{definition}
+
+\begin{theorem}{Jordan曲线定理}
+	如果$J$为$E^2$上的Jordan曲线，那么$E^2\setminus J$存在且仅存在两个连通分支，且其均以$J$为边界。
+\end{theorem}
+
+\begin{definition}{初等区域}
+	称同胚映射$D^2\to\R^2$的像为初等区域，其中%
+	$$
+	D^2=\{ (x,y)\in\R^2:x^2+y^2<1 \}
+	$$
+\end{definition}
+
+\begin{definition}{简单曲面}
+	称同胚映射$D^2\to\R^3$的像为简单曲面，其中%
+	$$
+	D^2=\{ (x,y)\in\R^2:x^2+y^2<1 \}
+	$$
+\end{definition}
+
+\begin{definition}{简单曲面的参数表示}
+	$$
+	\begin{cases}
+		x=x(u,v)\\
+		y=y(u,v)\\
+		z=z(u,z)
+	\end{cases},\qquad (u,v)\in G
+	$$
+\end{definition}
+
+\begin{definition}{参数变换}
+	对于曲面$\bs{r}=\bs{r}(u,v)$，称
+	$$
+	u=u(\overline{u},\overline{v}),\qquad 
+	v=v(\overline{u},\overline{v})
+	$$
+	为参数变换，如果函数$u(u,v)$与$v(u,v)$连续，且存在连续偏导数，同时
+	$$
+	\begin{vmatrix}
+		\frac{\partial u}{\partial \overline{u}} & \frac{\partial v}{\partial \overline{u}}\\
+		\frac{\partial u}{\partial \overline{v}} & \frac{\partial v}{\partial \overline{v}}
+	\end{vmatrix}\ne 0
+	$$
+\end{definition}
+
+\begin{example}
+	圆柱面：
+	$$
+	\begin{cases}
+		x=R\cos\theta\\
+		y=R\sin\theta\\
+		z=z
+	\end{cases},\qquad (\theta,z)\in [0,2\pi]\times \R
+	$$
+\end{example}
+
+\begin{example}
+	球面：
+	$$
+	\begin{cases}
+		x=R\cos\theta\cos\varphi\\
+		y=R\sin\theta\sin\varphi\\
+		z=R\sin\theta
+	\end{cases},\qquad (\theta,\varphi)\in [-\pi/2,\pi/2]\times [0,2\pi]
+	$$
+\end{example}
+
+\begin{example}
+	旋转曲面：
+	$$
+	\begin{cases}
+		x=\varphi(t)\cos\theta\\
+		y=\varphi(t)\sin\theta\\
+		z=\psi(t)
+	\end{cases},\qquad (\theta,z)\in [0,2\pi]\times \R
+	$$
+\end{example}
+
+\begin{definition}{坐标曲线}
+	称曲面$\bs{r}(u,v)$关于$v_0$的$u$-曲线为$\bs{r}(u,v_0)$，关于$u_0$的$v$-曲线为$\bs{r}(u_0,v)$
+\end{definition}
+
+\begin{definition}{曲纹坐标网}
+	定义曲面$\bs{r}(u,v)$的曲纹坐标网为$u$-曲线族与$v$-曲线族。
+\end{definition}
+
+\subsection{光滑曲面、曲面的切平面与法线}
+
+\begin{definition}{光滑曲面}
+	称光滑曲线$\bs{r}$为光滑曲线，如果其连续可微。
+\end{definition}
+
+\begin{definition}{$C^n$类曲面}
+	称曲面$\bs{r}$为$C^n$类曲面，如果其$n$阶连续可微。
+\end{definition}
+
+\begin{definition}{正则点}
+	称$(u_0,v_0)$为光滑曲面$\bs{r}$的正则点，如果$\bs{r}_u\times \bs{r}_v$在$(u_0,v_0)$处不为$\bs{0}$。
+\end{definition}
+
+\begin{definition}{正规坐标网}
+	称曲面$\bs{r}(u,v)$的$u$-曲线族与$v$-曲线族为正规坐标网，如果任意$(u_0,v_0)$存在且存在唯一$u$-曲线与$v$-曲线，且其不相切。
+\end{definition}
+
+\begin{definition}{切平面}
+	定义光滑曲面$\bs{r}$在正则点$(u,v)$的切平面方程为%
+	$$
+	(\bs{p}-\bs{r}(u,v),\bs{r}_u(u,v),\bs{r}_v(u,v))=0
+	$$
+	其坐标形式为%
+	$$
+	\begin{vmatrix}
+		X-x(u,v) & Y-y(u,v) & Z-z(u,v)\\
+		x_u(u,v) & y_u(u,v) & z_u(u,v)\\
+		x_v(u,v) & y_v(u,v) & z_v(u,v)
+	\end{vmatrix}
+	$$
+\end{definition}
+
+\begin{definition}{法向量}
+	定义光滑曲面$\bs{r}$的法向量为$\bs{r}_u\times\bs{r}_v$，单位法向量为%
+	$$
+	\bs{n}=\frac{\bs{r}_u\times\bs{r}_v}{|\bs{r}_u\times\bs{r}_v|}
+	$$
+\end{definition}
+
+\begin{definition}{法线}
+	定义光滑曲面$\bs{r}$切线为向量$\bs{r}'(t)$，切线参数方程为
+	$$
+	\bs{p}-\bs{r}=\lambda\bs{r}_u\times\bs{r}_v,\qquad
+	\lambda\in\R
+	$$
+	坐标方程为
+	$$
+	\frac{X-x(u,v)}{\begin{vmatrix}
+			y_u(u,v) & z_u(u,v)\\
+			y_v(u,v) & z_v(u,v)
+	\end{vmatrix}}
+	=\frac{Y-y(u,v)}{\begin{vmatrix}
+			z_u(u,v) & x_u(u,v)\\
+			z_v(u,v) & x_v(u,v)
+	\end{vmatrix}}
+	=\frac{Z-z(u,v)}{\begin{vmatrix}
+			x_u(u,v) & y_u(u,v)\\
+			x_v(u,v) & y_v(u,v)
+	\end{vmatrix}}
+	$$
+\end{definition}
+
+\begin{theorem}
+	对于曲面$\bs{r}$，如果作参数变换%
+	$$
+	u=u(\overline{u},\overline{v}),\qquad 
+	v=v(\overline{u},\overline{v})
+	$$
+	那么%
+	$$
+	\begin{pmatrix}
+		\bs{r}_{\overline{u}}\\
+		\bs{r}_{\overline{v}}
+	\end{pmatrix}
+	=\begin{pmatrix}
+		\frac{\partial u}{\partial \overline{u}} & \frac{\partial v}{\partial \overline{u}}\\
+		\frac{\partial u}{\partial \overline{v}} & \frac{\partial v}{\partial \overline{v}}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\bs{r}_{u}\\
+		\bs{r}_{u}
+	\end{pmatrix}
+	$$
+	进而%
+	$$
+	\bs{r}_{\overline{u}}\times\bs{r}_{\overline{v}}=\begin{vmatrix}
+		\frac{\partial u}{\partial \overline{u}} & \frac{\partial v}{\partial \overline{u}}\\
+		\frac{\partial u}{\partial \overline{v}} & \frac{\partial v}{\partial \overline{v}}
+	\end{vmatrix}\bs{r}_u\times\bs{r}_v
+	$$
+\end{theorem}
+
+\subsection{曲面上的曲线族与曲线网}
+
+对于光滑曲面$S$：%
+$$
+\bs{r}=\bs{r}(u,v)
+$$
+曲面$ S $上一曲线的方程为%
+$$
+u=u(t),\qquad 
+v=v(t)
+$$
+或%
+$$
+\bs{r}=\bs{r}(u(t),v(t))=\bs{r}(t)
+$$
+消去$t$，可得曲面上曲线方程的其他形式%
+$$
+u=\varphi(v)
+$$
+或%
+$$
+v=\psi(u)
+$$
+或%
+$$
+f(u,v)=0
+$$
+
+线性微分方程%
+$$
+A(u,v)\dd u+B(u,v)\dd v=0
+$$
+的解曲线为%
+$$
+u=\varphi(v,C)
+$$
+其中$C$为待定参数，于是该微分方程表示曲面上的一族曲线。
+
+二阶微分方程%
+$$
+A(u,v)\dd u^2+2B(u,v)\dd u \dd v+C(u,v)\dd v^2=0
+$$
+其中$B^2>AC$表示曲面上的两族曲线。
+
+\section{曲面的第一基本形式}
+
+\subsection{曲面的第一基本形式}
+
+\begin{definition}{曲面的第一基本形式与第一类基本量}
+	定义曲面
+	$$
+	S:\quad \bs{r}=\bs{r}(u,v)
+	$$
+	的第一基本形式为%
+	$$
+	{\rm\Romannum{1}}
+	\dd \bs{r}^2
+	=E\dd u^2+2F\dd u\dd v+G\dd v^2=
+	\begin{pmatrix}
+		\dd u & \dd v
+	\end{pmatrix}
+	\begin{pmatrix}
+		E & F\\
+		F & G
+	\end{pmatrix}
+	\begin{pmatrix}
+		\dd u \\ \dd v
+	\end{pmatrix}
+	$$
+	其中%
+	$$
+	E=\bs{r}_u\cdot\bs{r}_u,\qquad 
+	F=\bs{r}_u\cdot\bs{r}_v,\qquad 
+	G=\bs{r}_v\cdot\bs{r}_v
+	$$
+	称为曲面$S$的第一类基本量。
+\end{definition}
+
+\begin{lstlisting}[language = Mathematica]
+	(* 使用 Mathematica 求解曲面的第一类基本量 *)
+	(* 定义曲面的第一类基本量 *)
+	FirstFundamentalFormCoefficients[r_, {u_, v_}] := Module[{
+	du = \!\(\*SubscriptBox[\(\[PartialD]\), \(u\)]r\), 
+	dv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]r\)}, 
+	{du . du, du . dv, dv . dv}]
+	(* 定义曲面 *)
+	r[u_, v_] := {u Cos[v], u Sin[v], a*v}
+	(* 计算曲面的第一类基本量 *)
+	FirstFundamentalFormCoefficients[r[u, v], {u, v}] // Simplify
+\end{lstlisting}
+
+\subsection{曲面上曲线的长}
+
+\begin{theorem}{曲面上曲线的长}
+	曲面
+	$$
+	S:\quad \bs{r}=\bs{r}(u,v)
+	$$
+	上的曲线
+	$$
+	u=u(t),\qquad 
+	v=v(t)
+	$$
+	在$[a,b]$间的长为%
+	$$
+	\int_{a}^{b}\sqrt{E(u'(t))^2+2Fu'(t)v'(t)+G(v'(t))^2}\dd t
+	$$
+\end{theorem}
+
+\subsection{曲面上两方向的交角}
+
+\begin{definition}{曲面上的方向}
+	定义曲面$\bs{r}=\bs{r}(u,v)$上的方向为%
+	$$
+	\dd \bs{r}=\bs{r}_u\dd u+\bs{r}_v\dd v
+	$$
+\end{definition}
+
+\begin{theorem}{曲面上的方向的交角}
+	曲面$\bs{r}=\bs{r}(u,v)$上的方向$\dd \bs{r}$与$\delta\bs{r}$的交角为%
+	$$
+	\cos\theta
+	=\frac{\dd\bs{r}}{|\dd\bs{r}|}\cdot\frac{\delta\bs{r}}{|\delta\bs{r}|}
+	=\frac{E\dd u\delta u+F(\dd u\delta v+\dd v\delta u)+G(\dd v\delta v)}{\sqrt{E\dd u^2+2F\dd u\dd v+G\dd v^2}\sqrt{E\delta u^2+2F\delta u\delta v+G\delta v^2}}
+	$$
+\end{theorem}
+
+\begin{corollary}{曲面上坐标曲线的交角}
+	曲面$\bs{r}=\bs{r}(u,v)$上的坐标曲线$u$-曲线与$v$-曲线的交角为%
+	$$
+	\cos\omega=\frac{\bs{r}_u}{|\bs{r}_u|}\cdot\frac{\bs{r}_v}{|\bs{r}_v|}=\frac{F}{\sqrt{EG}}
+	$$
+\end{corollary}
+
+\subsection{正交曲线族与正交轨线}
+
+\begin{theorem}
+	曲面$\bs{r}=\bs{r}(u,v)$上两族曲线%
+	$$
+	A\dd u+B\dd v=0,\qquad 
+	C\delta u+D\delta v=0
+	$$
+	正交的充分必要条件是
+	$$
+	EBD-F(AD+BC)+GAC=0
+	$$
+\end{theorem}
+
+\begin{theorem}
+	曲面$\bs{r}=\bs{r}(u,v)$上与曲线族%
+	$$
+	A\dd u+B\dd v=0
+	$$
+	正交的曲线族的微分方程为%
+	$$
+	\frac{\delta v}{\delta u}
+	=-\frac{BE-AF}{BF-AG}
+	$$
+\end{theorem}
+
+\subsection{曲面域的面积}
+
+\begin{theorem}{曲面域的面积}
+	曲面$\bs{r}=\bs{r}(u,v)$在区域$D$上的面积为%
+	$$
+	\iint\limits_{D}\sqrt{EG-F^2}\dd u\dd v
+	$$
+\end{theorem}
+
+\subsection{等距变换}
+
+\begin{theorem}{曲面变换}
+	对于曲面%
+	$$
+	S:\bs{r}=\bs{r}(u,v),\qquad 
+	\overline{S}:\overline{\bs{r}}=\overline{\bs{r}}(\overline{u},\overline{v})
+	$$
+	称%
+	$$
+	\overline{u}=\overline{u}(u,v),\qquad 
+	\overline{v}=\overline{v}(u,v)
+	$$
+	$S$到$\overline{S}$的变换，如果函数$\overline{u}(u,v)$与$\overline{v}(u,v)$连续，且存在连续偏导数，同时
+	$$
+	\begin{vmatrix}
+		\frac{\partial \overline{u}}{\partial u} & \frac{\partial \overline{u}}{\partial v}\\
+		\frac{\partial \overline{v}}{\partial u} & \frac{\partial \overline{v}}{\partial v}
+	\end{vmatrix}\ne 0
+	$$
+\end{theorem}
+
+\begin{definition}{等距变换}
+	称曲面间的变换为等距变换，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 保持曲面上任意曲线的长不变。
+		\item 存在参数变换，使其第一基本形式相同。
+	\end{enumerate}
+\end{definition}
+
+\subsection{保角变换}
+
+\begin{definition}{保角变换}
+	称曲面间的变换为保角变换，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 保持曲面上任意曲线间的夹角不变。
+		\item 其第一基本形式成比例。
+	\end{enumerate}
+\end{definition}
+
+\section{曲面的第二基本形式}
+
+\subsection{曲面的第二基本形式}
+
+\begin{definition}{曲面的第二基本形式}
+	定义曲面
+	$$
+	S:\quad \bs{r}=\bs{r}(u,v)
+	$$
+	的第二基本形式为%
+	$$
+	{\rm\Romannum{2}}
+	=\bs{n}\cdot\dd^2\bs{r}
+	=L\dd u^2+2M\dd u\dd v+N\dd v^2=
+	\begin{pmatrix}
+		\dd u & \dd v
+	\end{pmatrix}
+	\begin{pmatrix}
+		L & M\\
+		M & N
+	\end{pmatrix}
+	\begin{pmatrix}
+		\dd u \\ \dd v
+	\end{pmatrix}
+	$$
+	其中%
+	$$
+	L=\bs{r}_{uu}\cdot\bs{n}=\frac{(\bs{r}_{uu},\bs{r}_u,\bs{r}_v)}{\sqrt{EG-F^2}},\qquad 
+	M=\bs{r}_{uv}\cdot\bs{n}=\frac{(\bs{r}_{uv},\bs{r}_u,\bs{r}_v)}{\sqrt{EG-F^2}},\qquad 
+	N=\bs{r}_{vv}\cdot\bs{n}=\frac{(\bs{r}_{vv},\bs{r}_u,\bs{r}_v)}{\sqrt{EG-F^2}}
+	$$
+	称为曲面$S$的第二类基本量。
+\end{definition}
+
+\begin{lstlisting}[language = Mathematica]
+	(* 使用 Mathematica 求解曲面的第二类基本量 *)
+	(* 定义曲面的第二类基本量 *)
+	SecondFundamentalFormCoefficients[r_List, {u_, v_}] := Module[{
+		du = \!\(\*SubscriptBox[\(\[PartialD]\), \(u\)]r\), 
+		dv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]r\), 
+		dudu, dudv, dvdv}, 
+	dudu = \!\(\*SubscriptBox[\(\[PartialD]\), \(u\)]du\); 
+	dudv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]du\); 
+	dvdv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]dv\); 
+	{Det[{dudu, du, dv}], Det[{dudv, du, dv}], Det[{dvdv, du, dv}]}/Sqrt[du . du dv . dv - (du . dv)^2]]
+	(* 定义曲面 *)
+	r[u_, v_] := {u, v, a (u^2 + v^2)}
+	(* 计算曲面的第二类基本量 *)
+	SecondFundamentalFormCoefficients[r[u, v], {u, v}] // Simplify
+\end{lstlisting}
+
+\subsection{曲面上曲线的曲率}
+
+\begin{definition}{法截面}
+	定义曲面
+	$$
+	S:\quad \bs{r}=\bs{r}(u,v)
+	$$
+	在$P$点处的法截面为其方向$(\dd)=\dd u:\dd v$与其法方向$\bs{n}$所确定的平面。
+\end{definition}
+
+\begin{definition}{法截线}
+	称曲面与法截面的交线为法截线。
+\end{definition}
+
+\begin{definition}{法曲率}
+	定义曲面的法曲率为%
+	$$
+	k_n=\frac{{\rm\Romannum{2}}}{{\rm\Romannum{1}}}
+	$$
+\end{definition}
+
+\begin{theorem}{Meusnier定理}
+	曲面曲线$(C)$在点$P$处的曲率中心$C$为与曲线$(C)$具有共同切线的法截线$(C_0)$上同一点$P$处的曲率中心$C_0$在曲线$(C)$的密切平面上的投影。
+\end{theorem}
+
+\subsection{Dupin指标线}
+
+\begin{definition}{Dupin指标线}
+	定义曲面$\bs{r}=\bs{r}(u,v)$的Dupin指标线在仿射标架$\{ P,\bs{r}_u,\bs{r}_v \}$下的方程为%
+	$$
+	x\bs{r}_u+y\bs{r}_v=\frac{1}{\sqrt{|k_n|}}\frac{\dd \bs{r}}{|\dd \bs{r}|}
+	$$
+	即%
+	$$
+	|Lx^2+2Mxy+Ny^2|=1
+	$$
+\end{definition}
+
+平面上的点$P$由其Dupin指标线进行分类：
+\begin{enumerate}
+	\item 如果$LN>M^2$，那么$P$称为曲面的椭圆点，此时Dupin指标线为椭圆。
+	\item 如果$LN<M^2$，那么$P$称为曲面的双曲点，此时Dupin指标线为共轭双曲线。
+	\item 如果$LN=M^2$，那么$P$称为曲面的抛物点，此时Dupin指标线为抛物线。
+\end{enumerate}
+
+\subsection{曲面的渐进方向和共轭方向}
+
+\subsubsection{曲面的渐进方向}
+
+\begin{definition}{渐进方向}
+	如果$P$点为曲面的双曲点，那么其Dupin指标线存在渐近线，那么其渐近线满足方程%
+	$$
+	L\dd u^2+2M\dd u\dd v+N\dd v^2=0
+	$$
+\end{definition}
+
+\begin{definition}{渐进曲线}
+	称曲面上的曲线为渐进曲线，如果其上任意一点的切方向均为渐进方向。渐进曲线的微分方程为
+	$$
+	L\dd u^2+2M\dd u\dd v+N\dd v^2=0
+	$$
+\end{definition}
+
+\begin{theorem}
+	曲面上的一条曲线为渐进曲线当且仅当其为一条直线或其密切平面为曲面的切平面。
+\end{theorem}
+
+\begin{definition}{渐进网}
+	如果曲面上的点均为双曲点，那么曲面上存在两族渐进曲线，称之为曲面上的渐进网。
+\end{definition}
+
+\begin{proposition}
+	曲面的曲纹坐标网为渐进网的充分必要条件是%
+	$$
+	L=N=0
+	$$
+\end{proposition}
+
+\subsubsection{曲面的共轭方向}
+
+\begin{definition}{共轭方向}
+	称曲面上某点的两个方向$(\dd)$和$(\delta)$为共轭方向，如果包含该方向的直线为该点的Dupin指标线的共轭直径。
+\end{definition}
+
+\begin{theorem}
+	曲面上某点的两个方向$(\dd)$和$(\delta)$为共轭方向的充分必要条件为%
+	$$
+	L\dd u\delta u+M(\dd u\delta v+\dd v\delta u)+N\dd v\delta v=0
+	$$
+\end{theorem}
+
+\begin{definition}{共轭网}
+	称曲面上的两族曲线为共轭网，如果对于曲面上任意一点，此两族曲线的两条曲线的切方向均为共轭方向。
+\end{definition}
+
+\begin{proposition}
+	曲面的曲纹坐标网为共轭网的充分必要条件是%
+	$$
+	M=0
+	$$
+\end{proposition}
+
+\subsection{曲面的主方向和曲率线}
+
+\begin{definition}{主方向}
+	称曲面上某点的两个方向为主方向，如果其既正交又共轭。
+\end{definition}
+
+\begin{theorem}
+	曲面上某点的两个方向$(\dd)$和$(\delta)$为主方向的充分必要条件为%
+	$$
+	\begin{cases}
+		E\dd u\delta u+F(\dd u\delta v+\dd v\delta u)+G\dd v\delta v=0\\
+		L\dd u\delta u+M(\dd u\delta v+\dd v\delta u)+N\dd v\delta v=0
+	\end{cases}
+	$$
+	消去$\delta u,\delta v$%
+	$$
+	\begin{vmatrix}
+		\dd v^2 & -\dd u\dd v & \dd u^2\\
+		E & F & G\\
+		L & M & N
+	\end{vmatrix}=0
+	$$
+	即
+	$$
+	(EM-FL)\dd u^2+(EN-GL)\dd u\dd v+(FN-GM)\dd v^2=0
+	$$
+	因此除%
+	$$
+	\frac{E}{L}=\frac{F}{M}=\frac{G}{N}
+	$$
+	外，该二次方程从存在两个不相等的实根。
+\end{theorem}
+
+\begin{definition}{脐点}
+	称曲面上的点为脐点，如果成立%
+	$$
+	\frac{E}{L}=\frac{F}{M}=\frac{G}{N}
+	$$
+\end{definition}
+
+\begin{definition}{平点}
+	称曲面上的脐点为平点，如果成立%
+	$$
+	L=M=N=0
+	$$
+\end{definition}
+
+\begin{definition}{圆点}
+	称曲面上的脐点为圆点，如果不成立%
+	$$
+	L=M=N=0
+	$$
+\end{definition}
+
+\begin{theorem}{Rodrigues定理}
+	对于曲面$\bs{r}$上某点的方向$(\dd)$，成立%
+	$$
+	(\dd )\text{ 为主方向}
+	\iff
+	{\rm\Romannum{1}}\dd\bs{n}
+	+{\rm\Romannum{2}}\dd\bs{r}=\bs{0}
+	$$
+\end{theorem}
+
+\begin{definition}{曲率线}
+	称曲面上的曲线为曲率线，如果其任意一点的切方向均为主方向。
+\end{definition}
+
+\begin{definition}{曲率线网}
+	称曲面上的两族曲率线为曲率线网，其方程为%
+	$$
+	\begin{vmatrix}
+		\dd v^2 & -\dd u\dd v & \dd u^2\\
+		E & F & G\\
+		L & M & N
+	\end{vmatrix}=0
+	$$
+\end{definition}
+
+\begin{proposition}
+	曲面的曲纹坐标网为曲率线网的充分必要条件是%
+	$$
+	F=M=0
+	$$
+\end{proposition}
+
+\subsection{曲面的主曲率、Gauss曲率与平均曲率}
+
+\begin{definition}{主曲率}
+	称曲面上某点主方向上的法曲率$k_N$为此点的主曲率，其计算公式为
+	$$
+	\begin{vmatrix}
+		L-k_NE & M-k_NF\\
+		M-k_NF & N-k_NG
+	\end{vmatrix}=0
+	$$
+	即%
+	$$
+	(EG-F^2)k_N^2-(LG-2MF+NE)k_N+(LN-M^2)=0
+	$$
+	特别的，沿$u$-曲线方向对应的主曲率为%
+	$$
+	k_1=\frac{L}{E}
+	$$
+	沿$v$-曲线方向对应的主曲率为%
+	$$
+	k_2=\frac{N}{G}
+	$$
+\end{definition}
+
+\begin{theorem}{Euler公式}
+	对于方向$(d)$与$u$-曲线的夹角为$\theta$，那么%
+	$$
+	\cos^2\theta=\frac{E\dd u^2}{E\dd u^2+G\dd v^2},\qquad 
+	\sin^2\theta=\frac{G\dd v^2}{E\dd u^2+G\dd v^2}
+	$$
+	由于%
+	$$
+	k_n=\frac{\rm\Romannum{2}}{\rm\Romannum{1}}=\frac{L\dd u^2+N\dd v^2}{E\dd u^2+G\dd v^2}
+	$$
+	那么%
+	$$
+	k_n=k_1\cos^2\theta+k_2\sin^2\theta
+	$$
+\end{theorem}
+
+\begin{proposition}
+	曲面上非脐点的点的主曲率为曲面在该点所有方向的发曲率中的最大值和最小值。
+\end{proposition}
+
+\begin{definition}{Gauss曲率}
+	对于曲面某点的主曲率为$k_1,k_2$，称其积$K=k_1k_2$为该点的Gauss曲率，换言之%
+	$$
+	K=k_1k_2=\frac{LN-M^2}{EG-F^2}
+	$$
+\end{definition}
+
+\begin{definition}{平均曲率}
+	对于曲面某点的主曲率为$k_1,k_2$，称其算术平均$H=(k_1+k_2)/2$为该点的平均曲率，换言之%
+	$$
+	H=\frac{k_1+k_2}{2}=\frac{LG-2MF+NE}{2(EG-F^2)}
+	$$
+\end{definition}
+
+\begin{lstlisting}[language = Mathematica]
+	(* 使用 Mathematica 求解曲面的Gauss曲率 *)
+	(* 定义曲面的Gauss曲率 *)
+	GaussianCurvature[x_List, {u_, v_}] /; Length[x] == 3 := 
+	Module[{
+		du = \!\(\*SubscriptBox[\(\[PartialD]\), \(u\)]x\), 
+		dv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]x\)}, 
+	Simplify[(
+	Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(u, u\)]x\), du, dv}] 
+	Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(v, v\)]x\), du, dv}] 
+	- Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(u, v\)]x\), du, dv}]^2)
+	/(du . du dv . dv - (du . dv)^2)^2]]
+	(* 定义曲面 *)
+	r[u_, v_] := {u Cos[v], u Sin[v], a*v}
+	(* 计算曲面的Gauss曲率 *)
+	GaussianCurvature[r[u, v], {u, v}] // Simplify
+\end{lstlisting}
+
+\begin{lstlisting}[language = Mathematica]
+	(* 使用 Mathematica 求解曲面的平均曲率 *)
+	(* 定义曲面的平均曲率 *)
+	MeanCurvature[x_, {u_, v_}] := Module[{
+		du = \!\(\*SubscriptBox[\(\[PartialD]\), \(u\)]x\), 
+		dv = \!\(\*SubscriptBox[\(\[PartialD]\), \(v\)]x\)}, 
+	Simplify[(
+	Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(u, u\)]x\), du, dv}] dv . dv 
+	- 2 Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(u, v\)]x\), du, dv}] du . dv 
+	+ Det[{\!\(\*SubscriptBox[\(\[PartialD]\), \(v, v\)]x\), du, dv}] du . du)
+	/(2 (du . du dv . dv - (du . dv)^2)^(3/2))]]
+	(* 定义曲面 *)
+	r[u_, v_] := {u Cos[v], u Sin[v], a*v}
+	(* 计算曲面的平均曲率 *)
+	MeanCurvature[r[u, v], {u, v}] // Simplify
+\end{lstlisting}
+
+\subsection{曲面在一点邻近的结构}
+
+对于正则曲面$S:\bs{r}=\bs{r}(u,v)$
+\begin{enumerate}
+	\item 若点$P$处$K>0$，则称点$P$为椭圆点。
+	\item 若点$P$处$K<0$，则称点$P$为双曲点。
+	\item 若点$P$处$K=0$，则称点$P$为抛物点。
+\end{enumerate}
+
+\subsection{Gauss曲率的几何意义}
+
+\subsubsection{Gauss映射与Weingarten变换}
+
+\begin{definition}{Gauss映射}
+	对于曲面$S:\bs{r}=\bs{r}(u,v)$，与单位球面$\partial B_3$，定义Gauss映射为
+	\begin{align*}
+		g:\begin{aligned}[t]
+			S &\longrightarrow \partial B_3\\
+			\bs{r} &\longmapsto \bs{n}=\frac{\bs{r}_u\times\bs{r}_v}{|\bs{r}_u\times\bs{r}_v|}
+		\end{aligned}
+	\end{align*}
+	诱导切映射
+	\begin{align*}
+		g_*(\dd\bs{r})=\dd\bs{n}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{Weingarten变换}
+	定义曲面$S:\bs{r}=\bs{r}(u,v)$的Weingarten变换为%
+	$$
+	W(\dd\bs{r})=-\dd\bs{n}
+	$$
+\end{definition}
+
+\begin{proposition}{Weingarten变换的性质}
+	\begin{align*}
+		& W(\bs{r}_u\dd u+\bs{r}_v\dd v)=-(\bs{n}_u\dd u+\bs{n}_v\dd v)\\
+		& W(\lambda\bs{r}_u+\mu\bs{r}_v)=-(\lambda\bs{n}_u+\mu\bs{n}_v)\\
+		& W(\bs{r}_u)=-\bs{n}_u,\qquad W(\bs{r}_v)=-\bs{n}_v\\
+		& {\rm\Romannum{2}}=-\dd\bs{n}\cdot\dd\bs{r}=W(\dd\bs{r})\cdot\dd\bs{r}
+	\end{align*}
+\end{proposition}
+
+\begin{proposition}{Weingarten变换的对称性}
+	Weingarten变换为对称变换，换言之
+	$$
+	\dd\bs{r}\cdot W(\delta\bs{r})
+	=\delta\bs{r}\cdot W(\dd\bs{r})
+	$$
+\end{proposition}
+
+\begin{theorem}
+	$$
+	W(x\bs{r}_u+y\bs{r}_v)=\lambda(x\bs{r}_u+y\bs{r}_v)
+	\iff
+	\begin{pmatrix}
+		L & M\\
+		M & N
+	\end{pmatrix}
+	\begin{pmatrix}
+		x\\y
+	\end{pmatrix}
+	=\lambda\begin{pmatrix}
+		E & F\\
+		F & G
+	\end{pmatrix}
+	\begin{pmatrix}
+		x\\y
+	\end{pmatrix}
+	$$
+\end{theorem}
+
+\begin{corollary}
+	\begin{enumerate}
+		\item Weingarten变换的特征值就是是法曲率，相应的特征向量为法曲率对应的方向。进一步Weingarten变换的特征值是主曲率。
+		\item Weingarten变换有两个不同特征值时，有两个不同主曲率和主方向。
+		\item Weingarten变换有两个相同的特征值时，任意方向均为主方向，法曲率为常数，且此时第二基本量与第一基本量成比例，即此时对应的曲面上的点为脐点。
+		\item %
+		$$
+		K=k_1k_2=\det(W),\qquad 
+		H=\frac{k_1+k_2}{2}=\frac{\text{tr}(W)}{2}
+		$$
+	\end{enumerate}
+\end{corollary}
+
+\subsubsection{曲面的第三形式}
+
+\begin{definition}{曲面的第三形式}
+	定义曲面
+	$$
+	S:\quad \bs{r}=\bs{r}(u,v)
+	$$
+	的第三基本形式为%
+	$$
+	{\rm\Romannum{3}}
+	=\dd\bs{n}^2
+	=e\dd u^2+2f\dd u\dd v+g\dd v^2=
+	\begin{pmatrix}
+		\dd u & \dd v
+	\end{pmatrix}
+	\begin{pmatrix}
+		e & f\\
+		f & g
+	\end{pmatrix}
+	\begin{pmatrix}
+		\dd u \\ \dd v
+	\end{pmatrix}
+	$$
+	其中%
+	$$
+	e=\bs{n}_u\cdot\bs{n}_u,\qquad
+	f=\bs{n}_u\cdot\bs{n}_v,\qquad \\
+	g=\bs{n}_v\cdot\bs{n}_v
+	$$
+	称为曲面$S$的第三类基本量。
+\end{definition}
+
+\begin{theorem}{三类基本量间的联系}
+	$$
+	{\rm\Romannum{3}}-2H{\rm\Romannum{2}}+K{\rm\Romannum{1}}=0
+	$$
+\end{theorem}
+
+\begin{proposition}
+	记曲面上$P$点的邻域为$\sigma$，对应与单位球面上的邻域为$\sigma^*$，那么%
+	$$
+	|K|=\lim_{\sigma\to P}\frac{\sigma^*\text{ 的面积}}{\sigma\text{ 的面积}}
+	$$
+\end{proposition}
+
+\section{直纹面与可展曲面}
+
+\subsection{直纹面}
+
+\begin{definition}{直纹面}
+	称由单参数直线族的轨迹形成的曲面称为直纹面，参数表示为%
+	$$
+	\bs{r}(u,v)=\bs{a}(u)+v\bs{b}(u)
+	$$
+\end{definition}
+
+\begin{definition}{腰点}
+	定义直纹面
+	$$
+	\bs{r}(u,v)=\bs{a}(u)+v\bs{b}(u)
+	$$
+	的腰点为%
+	$$
+	\text{r}=\bs{a}(u)-\frac{\bs{a}'(u)\cdot\bs{b}'(u)}{(\bs{b}'(u))^2}\bs{b}(u)
+	$$
+\end{definition}
+
+\subsection{可展曲面}
+
+\begin{definition}{可展曲面}
+	称直纹面
+	$$
+	\bs{r}=\bs{a}(u)+v\bs{b}(u)
+	$$
+	为可展曲面，如果$(\bs{a}',\bs{b},\bs{b}')=0$。
+\end{definition}
+
+\begin{theorem}{可展区面的刻画}
+	\begin{enumerate}
+		\item 可展区面或为柱面，或为锥面，或为曲线的切线曲面。
+		\item 曲面为可展曲面当且仅当曲面为单参数平面族的包络。
+		\item 曲面为可展曲面当且仅当它的Gauss曲率为$0$。
+		\item 可展曲面局部上可以与平面成等距对应。
+	\end{enumerate}
+\end{theorem}
+
+\subsection{包络}
+
+\begin{definition}{包络}
+	称曲面$S$为曲面族$\{S_\lambda\}_{\lambda\in\Lambda}$的包络，如果成立如下命题。
+	\begin{enumerate}
+		\item 对于任意$P\in S$，存在$S_\lambda\in \{S_\lambda\}_{\lambda\in\Lambda}$，使得$P\in S\cap S_\lambda$，且$S$与$S_\lambda$在$P$点处存在相同切平面。
+		\item 对于任意$S_\lambda\in \{S_\lambda\}_{\lambda\in\Lambda}$，存在点$P\in S\cap S_\lambda$，使得$S$与$S_\lambda$在$P$点处存在相同切平面。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{包络的必要条件}
+	如果曲面族
+	$$
+	S_\lambda:F(x,y,z,\lambda)=0,\qquad \lambda\in\Lambda
+	$$
+	存在包络$S$，那么$S$成立%
+	$$
+	\begin{cases}
+		F(x,y,z,\lambda)=0\\
+		F_\lambda(x,y,z,\lambda)=0
+	\end{cases}
+	$$
+	消去$\lambda$，可得曲面族$\{S_\lambda\}_{\lambda\in\Lambda}$的判别曲面$\varphi(x,y,z)=0$。
+	
+	若曲面族和包络上的点都是正则的，则判别曲面就是包络。
+\end{theorem}
+
+\begin{definition}{特征线}
+	对于曲面族$\{S_\lambda\}_{\lambda\in\Lambda}$，称与其包络$S$与曲线族中曲面$S_{\lambda_0}$相切的曲线为特征线。
+\end{definition}
+
+\begin{theorem}
+	曲面上的曲线是曲率线当且仅当沿此曲线的曲面的法线组成一可展曲面。
+\end{theorem}
+
+\subsection{线汇}
+
+\begin{definition}{线汇}
+	称由双参数直线族的轨迹形成的曲面称为线汇，参数表示为%
+	$$
+	\bs{r}(u,v)=\bs{a}(u,v)+\lambda\bs{b}(u,v)
+	$$
+\end{definition}
+
+\begin{definition}{焦曲面}
+	定义线汇
+	$$
+	\bs{r}(u,v)=\bs{a}(u,v)+\lambda\bs{b}(u,v)
+	$$
+	的焦曲面为
+	$$
+	A\dd u^2+B\dd u\dd v+C\dd v^2=0
+	$$
+	其中%
+	$$
+	A=(\bs{a}_u,\bs{b},\bs{b}_u),\qquad 
+	B=(\bs{a}_u,\bs{b},\bs{b}_v),\qquad
+	C=(\bs{a}_v,\bs{b},\bs{b}_v)
+	$$
+\end{definition}
+
+\section{曲面论的基本定理}
+
+本节采用新的符号
+\begin{gather*}
+	u=u^1,\qquad v=u^2\\
+	\bs{r}_u=\bs{r}_1,\qquad \bs{r}_v=\bs{r}_2\\
+	\bs{r}_{uu}=\bs{r}_{11},\qquad 
+	\bs{r}_{uv}=\bs{r}_{12},\qquad 
+	\bs{r}_{vu}=\bs{r}_{21},\qquad 
+	\bs{r}_{vv}=\bs{r}_{2}\\
+	E=\bs{r}_1\cdot\bs{r}_1=g_{11},\qquad 
+	F=\bs{r}_1\cdot\bs{r}_2=g_{12}=g_{21},\qquad 
+	G=\bs{r}_2\cdot\bs{r}_2=g_{2}\\
+	EG-F^2=\begin{vmatrix}
+		g_{11} & g_{12}\\
+		g_{21} & g_{22}
+	\end{vmatrix}=g\\
+	L=\bs{r}_{11}\cdot \bs{n}=L_{11},\qquad 
+	M=\bs{r}_{12}\cdot \bs{n}=L_{12}=L_{21},\qquad 
+	N=\bs{r}_{2}\cdot \bs{n}=L_{22}
+\end{gather*}
+
+\subsection{曲面的基本方程}
+
+\begin{definition}{Gauss方程}
+	称曲面%
+	$$
+	S:\qquad \bs{r}=\bs{r}(u^1,u^2)
+	$$
+	的Gauss方程为%
+	$$
+	\begin{cases}
+		\bs{r}_{11}=\Gamma_{11}^{1}\bs{r}_1+\Gamma_{11}^{2}\bs{r}_2+L_{11}\bs{n}\\
+		\bs{r}_{12}=\Gamma_{12}^{1}\bs{r}_1+\Gamma_{12}^{2}\bs{r}_2+L_{12}\bs{n}\\
+		\bs{r}_{21}=\Gamma_{21}^{1}\bs{r}_1+\Gamma_{21}^{2}\bs{r}_2+L_{21}\bs{n}\\
+		\bs{r}_{22}=\Gamma_{22}^{1}\bs{r}_1+\Gamma_{22}^{2}\bs{r}_2+L_{22}\bs{n}
+	\end{cases}
+	$$
+	其中
+	\begin{align*}
+		& \Gamma_{11}^{1}=\frac{GE_u-F(2F_u-E_v)}{2(EG-F^2)},
+		&& \Gamma_{11}^{2}=\frac{E(2F_u-E_v)-FE_u}{2(EG-F^2)}\\
+		& \Gamma_{12}^{1}=\frac{GE_v-FG_u}{2(EG-F^2)},
+		&&\Gamma_{12}^{2}=\frac{GE_u-FG_v}{2(EG-F^2)}\\
+		& \Gamma_{22}^{1}=\frac{G(2F_v-G_u)-FG_v}{2(EG-F^2)},
+		&& \Gamma_{22}^{2}=\frac{EG_v-F(2F_v-G_u)}{2(EG-F^2)}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{Weingarten方程}
+	称曲面%
+	$$
+	S:\qquad \bs{r}=\bs{r}(u^1,u^2)
+	$$
+	的Weingarten方程为
+	$$
+	\begin{cases}
+		\bs{n}_1=\mu_1^1\bs{r}_1+\mu_1^2\bs{r}_2\\
+		\bs{n}_2=\mu_2^1\bs{r}_1+\mu_2^2\bs{r}_2
+	\end{cases}
+	$$
+	其中
+	\begin{align*}
+		& \mu_1^1=\frac{-LG+MF}{EG-F^2},\qquad
+		\mu_1^2=\frac{LF-ME}{EG-F^2}\\
+		& \mu_2^1=\frac{NF-MG}{EG-F^2},\qquad
+		\;\;\mu_2^2=\frac{-NE+MF}{EG-F^2}
+	\end{align*}
+\end{definition}
+
+\subsection{曲面的第二类Christoffel符号，Riemann曲率张量与Gauss-Codazzi-Mainardi公式}
+
+\begin{definition}{第二类Christoffel符号}
+	对于曲面%
+	$$
+	S:\qquad \bs{r}=\bs{r}(u^1,u^2)
+	$$
+	定义其第二类Christoffel符号为
+	\begin{align*}
+		& \Gamma_{11}^{1}=\frac{GE_u-F(2F_u-E_v)}{2(EG-F^2)},
+		&& \Gamma_{11}^{2}=\frac{E(2F_u-E_v)-FE_u}{2(EG-F^2)}\\
+		& \Gamma_{12}^{1}=\frac{GE_v-FG_u}{2(EG-F^2)},
+		&&\Gamma_{12}^{2}=\frac{GE_u-FG_v}{2(EG-F^2)}\\
+		& \Gamma_{22}^{1}=\frac{G(2F_v-G_u)-FG_v}{2(EG-F^2)},
+		&& \Gamma_{22}^{2}=\frac{EG_v-F(2F_v-G_u)}{2(EG-F^2)}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{Riemann曲率张量}
+	对于曲面%
+	$$
+	S:\qquad \bs{r}=\bs{r}(u^1,u^2)
+	$$
+	定义其Riemann曲率张量为%
+	$$
+	R_{ijk}^{l}=\frac{\partial\Gamma_{ij}^{l}}{\partial u^k}-\frac{\partial\Gamma_{ik}^{l}}{\partial u^j}
+	+\sum_{p=1}^{2}\left(\Gamma_{ij}^p\Gamma_{pk}^{l}-\Gamma_{ik}^{p}\Gamma_{pj}^{l}\right),\qquad 
+	i,j,k,l=1,2
+	$$
+	再定义其另一种Riemann曲率张量为%
+	$$
+	R_{mijk}=\sum_{l=1}^{2}g_{ml}R_{ijk}^l
+	$$
+\end{definition}
+
+\begin{proposition}
+	曲面的Riemann曲率张量成立
+	\begin{align*}
+		& R_{ijk}^l+R_{ikj}^l=0,\qquad R_{ijj}^l=0\\
+		& R_{ijk}^l+R_{jki}^l+R_{kij}^l=0\\
+		& R_{mijk}+R_{imjk}=0,\qquad R_{mmjk}=0\\
+		& R_{mijk}+R_{mikj}=0,\qquad R_{mijj}=0\\
+		& R_{mijk}=R_{jkmi}\\
+		& R_{mijk}+R_{mjki}+R_{mkij}=0
+	\end{align*}
+\end{proposition}
+
+\begin{theorem}{Gauss公式}
+	$$
+	R_{mijk}=L_{ij}L_{mk}-L_{ik}L_{mj}
+	$$
+\end{theorem}
+
+\begin{corollary}
+	$$
+	K=-\frac{R_{1212}}{g}
+	$$
+\end{corollary}
+
+\begin{theorem}{Codazzi-Mainardi公式}
+	$$
+	\frac{\partial L_{ij}}{\partial u^k}
+	-\frac{\partial L_{ik}}{\partial u^j}
+	=\sum_{l=1}^{2}\left(\Gamma_{ik}^{l}L_{lj}-\Gamma_{ij}^lL_{lk}\right)
+	$$
+\end{theorem}
+
+\subsection{曲面论的基本定理}
+
+\begin{theorem}{曲面论的基本定理}
+	对于二次形式
+	\begin{align*}
+		& {\rm\Romannum{1}}
+		\dd \bs{r}^2
+		=E\dd u^2+2F\dd u\dd v+G\dd v^2
+		=\sum_{i,j=1}^{2}g_{ij}\dd u^i\dd u^j\\
+		& {\rm\Romannum{2}}
+		=\bs{n}\cdot\dd^2\bs{r}
+		=L\dd u^2+2M\dd u\dd v+N\dd v^2
+		=\sum_{i,j=1}^{2}L_{ij}\dd u^i\dd u^j
+	\end{align*}
+	其中$\rm\Romannum{1}$为正定二次形式，如果$\rm\Romannum{1}$与$\rm\Romannum{2}$的系数$g_{ij}$与$L_{ij}$成立$g_{12}=g_{21},L_{12}=L_{21}$，且成立Gauss-Codazzi-Mainardi公式，那么存在且存在唯一曲面，使其第一形式与第二形式分别为$\rm\Romannum{1}$与$\rm\Romannum{2}$。
+\end{theorem}
+
+\section{曲面上的测地线}
+
+\subsection{曲面上曲线的测地曲率}
+
+对于曲面%
+$$
+S:\qquad \bs{r}=\bs{r}(u^1,u^2)
+$$
+上的曲线%
+$$
+(C):\qquad \begin{cases}
+	u^1=u^1(s)\\
+	u^2=u^2(s)
+\end{cases}
+$$
+令$\bs{\alpha}$为$(C)$的单位切向量，$\bs{\beta}$为$(C)$的主法向量，$\bs{\gamma}$为$(C)$的副法向量，$\bs{n}$为$S$的单位法向量，$\theta=\langle \bs{\beta},\bs{n}\rangle$，那么曲面$S$在切方向$\bs{\alpha}$上的法曲率为%
+$$
+k_n=k\cos\theta=k\bs{\beta}\cdot\bs{n}=\ddot{\bs{r}}\cdot\bs{n}
+$$
+令$\bs{\varepsilon}=\bs{n}\times\bs{\alpha}$，则$\bs{\alpha},\bs{\varepsilon},\bs{n}$为相互正交的单位向量，并构成右手系。
+
+\begin{definition}{测地曲率}
+	称曲线$(C)$的测地曲率为曲率向量$\ddot{\bs{r}}=k\bs{\beta}$在$\bs{\varepsilon}$上的投影%
+	$$
+	k_g
+	=\ddot{\bs{r}}\cdot\bs{\varepsilon}
+	=k\bs{\beta}\cdot\bs{\varepsilon}
+	=k(\bs{\beta},\bs{n},\bs{\alpha})
+	=k\bs{\gamma}\cdot\bs{n}
+	=\pm k\sin\theta
+	$$
+\end{definition}
+
+\begin{proposition}
+	$$
+	k^2=k_g^2+k_n^2
+	$$
+\end{proposition}
+
+\begin{proposition}{测地曲率的几何意义}
+	曲面$S$上的曲线$(C)$的测地曲率的绝对值为$(C)$在$S$的切平面上的正投影曲线$(C^*)$的曲率。
+\end{proposition}
+
+\begin{proposition}{测地曲率的一般计算公式}
+	$$
+	k_g=\sqrt{g}
+	\left(
+		\frac{\dd u^1}{\dd s}
+			\left(
+				\frac{\dd ^2 u^2}{\dd s^2}+\sum_{i,j=1}^{2}\Gamma_{ij}^2\frac{\dd u^i}{\dd s}\frac{\dd u^j}{\dd s}
+			\right)
+			-\frac{\dd u^2}{\dd s}
+			\left(
+				\frac{\dd ^2 u^1}{\dd s^2}+\sum_{i,j=1}^{2}\Gamma_{ij}^1\frac{\dd u^i}{\dd s}\frac{\dd u^j}{\dd s}
+			\right)
+	\right)
+	$$
+\end{proposition}
+
+\subsection{曲面上的测地线}
+
+\begin{definition}{测地线}
+	称曲面上的曲线为测地线，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 曲线上上任意一点的测地曲率均为$0$。
+		\item 除曲率为$0$的点以外，曲线的主法线重合与曲面的法线。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	过曲面上任意一点，给定曲面的切方向，则存在且存在唯一一条测地线切于此方向。
+\end{theorem}
+
+\subsection{曲面上的半测地坐标网}
+
+\begin{definition}{半测地坐标网}
+	称曲面上的坐标网为半测地坐标网，如果其中一族为测地线，另一族为这族测地线的正交轨线。
+\end{definition}
+
+\begin{proposition}
+	给出曲面上一条曲线，总存在半测地坐标网，其非测地坐标曲线族中包含该曲线。
+\end{proposition}
+
+\subsection{曲面上测地线的短程性}
+
+\begin{theorem}{曲面上测地线的短程性}
+	若给出曲面上充分小邻域内的两点$P$和$Q$，则过$P,Q$两点在小邻域内的测地线段是连接$P,Q$两点的曲面上的曲线中弧长最短的曲线。
+\end{theorem}
+
+\subsection{Gauss-Bonnet公式}
+
+\begin{theorem}{Gauss-Bonnet公式}
+	对于曲面$S$上由$n$条光滑曲线段所围成的单连通曲面域$G$，$\partial G$为曲面多边形，$S$的Gauss曲率和测地曲率分别为$K$和$k_g$，$\partial G$的第$k$个内角的角度为$\alpha_k$，那么
+	$$
+	\iint\limits_{G}K\dd\sigma+\int_{\partial G}k_g\dd s+\sum_{k=1}^{n}(\pi-\alpha_k)=2\pi
+	$$
+\end{theorem}
+
+\begin{corollary}
+	\begin{enumerate}
+		\item 若$\partial G$为光滑曲线，则
+		$$
+		\iint\limits_{G}K\dd\sigma+\int_{\partial G}k_g\dd s=2\pi
+		$$
+		\item 若$\partial G$由测地线组成，则
+		$$
+		\iint\limits_{G}K\dd\sigma+\sum_{k=1}^{n}(\pi-\alpha_k)=2\pi
+		$$
+		\item 若$\partial G$为测地三角形，则
+		$$
+		\iint\limits_{G}K\dd\sigma=\alpha_1+\alpha_2+\alpha_3-\pi
+		$$
+	\end{enumerate}
+\end{corollary}
+
+\subsection{曲面上向量的平行移动}
+
+\begin{definition}{绝对微分}
+	对于曲面$S$上的曲线
+	$$
+	(C):\qquad
+	u^1=u^1(t),\qquad
+	u^2=u^2(t)
+	$$
+	向量$\bs{a}$为$(C)$的切向量，称$\bs{a}$的绝对微分为%
+	$$
+	\DD\bs{a}=\dd \bs{a}-(\bs{n}\cdot\dd\bs{a})\bs{n}
+	$$
+\end{definition}
+
+\begin{definition}{Levi-Civita平行}
+	称曲面$S$上的曲线
+	$$
+	(C):\qquad
+	u^1=u^1(t),\qquad
+	u^2=u^2(t)
+	$$
+	的切向量$\bs{a}$为$(C)$沿曲线$(C)$平行，如果$\DD\bs{a}=0$。
+\end{definition}
+
+\begin{theorem}
+	如果$\bs{x},\bs{y}$为曲面上沿曲线$(C)$的平行向量场，那么$\bs{x}\cdot\bs{y}$为常数。
+\end{theorem}
+
+\begin{corollary}
+	Levi-Citiva平移保持内积
+\end{corollary}
+
+\begin{corollary}
+	曲面上的平行移动保持切向量的长度不变；保持两切向量的夹角不变。
+\end{corollary}
+
+我们还可以用作图法来解释这一性质。
+
+沿曲面曲线$(C)$作曲面的切平面，所有这些切平面构成一个单参数平面族，其包络是可展曲面，即可展为平面。显然曲线$(C)$及曲线$(C)$的切平面上的切向量在此可展曲面上。当把这一可展曲面展为平面时，曲线$(C)$展为平面曲线，切向量展为平面上的向量。由于曲面上的平行移动在等距变换下仍是平行移动而平面上Levi-Civita的平行移动就是普通意义下的欧式平行移动（这是因为对于平面而言，其切平面就是自身，自身上的向量在平面的法向没有分量），故曲面上的平行移动保持向量的长度和夹角不变。因此，在展为平面之后，在平面上按照通常的欧式平移进行平移向量，然后再按照上述过程的逆过程还原回去，就可得到曲面上的切向量沿曲线平行移动的作图法。
+
+\begin{remark}
+	曲面上Levi-Citiva平行是平面上的欧式平行的推广。
+\end{remark}
+
+\begin{definition}{测地曲率}
+	测地曲率是单位切向量的绝对微分在切平面上的投影。
+\end{definition}
+
+\begin{remark}
+	绝对微分是平面普通微分在曲面上的推广
+\end{remark}
+
+\begin{theorem}
+	曲线$(C)$为测地线的充要条件是其切向量在曲面上沿曲线$(C)$自身是平行的。
+\end{theorem}
+
+\begin{remark}
+	直线是平面上切方向平行的线，而测地线是曲面上切方向平行的线。
+\end{remark}
+
+\begin{remark}
+	如果要沿测地线平行移动一向量，只要在移动过程中始终保持这个向量与测地线交于定角即可得到。平面上的直线显然也具有这个性质。
+\end{remark}
+
+\subsection{极小曲面}
+
+\begin{definition}{极小曲面}
+	对于光滑闭曲线$(C)$，称以$(C)$为边界的曲面$S$为极小曲面，如果$S$为以$(C)$为边界的曲面全体中面积最小的。
+\end{definition}
+
+\begin{theorem}
+	极小曲面的平均曲率为零。
+\end{theorem}
+
+极小曲面问题在1866年由Plateau提出。1930年J.Douglas和T.Rado分别独立地证明了极小曲面问题的存在性，但其解中可能存在孤立奇点。1970年，R.Osserman证明了极小曲面问题的解不存在奇点。
+
+\section{常Gauss曲率的曲面}
+
+\subsection{常Gauss曲率的曲面}
+
+在曲面%
+$$
+S:\qquad
+\bs{r}=\bs{r}(u,v)
+$$
+上选一条测地线作为$v$-曲线：$u=0$；再取与其正交的测地线族作为$u$-曲线，测地线族的正交轨线作为$v$-曲线，对于这样的半测地坐标网，曲面的第一基本性质简化为%
+$$
+{\rm\Romannum{1}}
+=\dd u^2+ G(u,v)\dd v^2
+$$
+其中$G(0,v)=1$，$G_u(0,v)=0$。
+
+对于半测地坐标网，曲面的Gauss曲率为%
+$$
+K=-\frac{1}{\sqrt{G}}\frac{\partial^2 \sqrt{G}}{\partial u^2}
+$$
+设$S$的Gauss曲率为常数，则得微分方程%
+$$
+\frac{\partial^2\sqrt{G}}{\partial u^2}+K\sqrt{G}=0
+$$
+由初值条件$G(0,v)=1$，$G_u(0,v)=0$可分为如下不同情形。
+
+\begin{enumerate}
+	\item $K>0$：微分方程为%
+	$$
+	\sqrt{G}=A(v)\cos\sqrt{K}u+B(v)\sin\sqrt{K}u
+	$$
+	由初值条件$A(v)=1,B(v)=0$，那么
+	$$
+	{\rm\Romannum{1}}
+	=\dd u^2+ \cos^2(\sqrt{K}u)\dd v^2
+	$$
+	\item $K=0$：此时$\sqrt{G}=1$，那么
+	$$
+	{\rm\Romannum{1}}
+	=\dd u^2+ \dd v^2
+	$$
+	\item $K<0$：此时
+	$$
+	{\rm\Romannum{1}}
+	=\dd u^2+ \cosh^2(\sqrt{-K}u)\dd v^2
+	$$
+\end{enumerate}
+
+\subsection{伪球面}
+
+\begin{definition}{曳物线}
+	称曲线$(C)$为曳物线，$z$轴为其渐近线，如果其上任意一点的切向上介于切点与$z$轴之间的线段始终保持定长。
+\end{definition}
+
+\begin{theorem}{曳物线的参数方程}
+	$x-z$平面上以$z$轴为渐近线的曳物线方程为
+	$$
+	\begin{cases}
+		x=a\sin t\\
+		z=\pm a\left(\ln\tan\frac{t}{2}+\cos t\right)
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{definition}{伪球面}
+	$x-z$平面上以$z$轴为渐近线的曳物线绕$z$轴旋转所得曲面称为伪球面，其参数方程为%
+	$$
+	\begin{cases}
+		x = a\sin t\cos\theta\\
+		y = a\sin t\sin\theta\\
+		z=\pm a\left(\ln\tan\frac{t}{2}+\cos t\right)
+	\end{cases}
+	$$
+\end{definition}
+
+伪球面
+$$
+\begin{cases}
+	x = a\sin t\cos\theta\\
+	y = a\sin t\sin\theta\\
+	z=\pm a\left(\ln\tan\frac{t}{2}+\cos t\right)
+\end{cases}
+$$
+的第一基本形式为
+$$
+{\rm\Romannum{1}}
+=a^2\cot^2t\dd t^2+a^2\sin^2 t\dd\theta^2
+$$
+令$\dd u=a\cot t\dd t$，取$u=a\ln\sin t,v=a\theta$，那么%
+$$
+{\rm\Romannum{1}}
+=\dd u^2+\mathrm{e}^{\frac{2u}{a}}\dd v^2
+$$
+其Gauss曲率为%
+$$
+K=-\frac{(\sqrt{G})_{uu}}{\sqrt{G}},\qquad
+\sqrt{G}=\mathrm{e}^{\frac{u}{a}}
+$$
+
+\begin{theorem}
+	有相同常高斯曲率的曲面局部上可以建立等距对应。
+\end{theorem}
+
+\begin{corollary}
+	伪球面与平面可以建立保角变换。
+\end{corollary}
+
+\chapter{外微分形式与活动标架}
+
+\section{外微分形式}
+
+\subsection{Grassmann代数}
+
+设$V$为$\R$上的$n$维向量空间，其基为$\bs{e}_1,\cdots,\bs{e}_n$，形式的作如下元素
+\begin{align*}
+	& \bs{e}_i,&& 1\le i\le n\\
+	& \bs{e}_i\wedge \bs{e}_j,&& 1\le i <j \le n\\
+	& \bs{e}_i\wedge \bs{e}_j\wedge \bs{e}_k,&& 1\le i <j<k \le n\\
+	& \cdots\\
+	& \bs{e}_1\wedge \bs{e}_2\wedge\cdots \wedge \bs{e}_n
+\end{align*}
+连同$\R$中的单位元$1$，共有%
+$$
+1+C_n^1+C_n^2+\cdots+C_n^n=2^n
+$$
+个元素。用此$2^n$个元素作基，作$\R^n$上的$2^n$维向量空间$G(V)$。其中以$C_n^p$个元素%
+$$
+\bs{e}_{i_1}\wedge \bs{e}_{i_2}\wedge \cdots\wedge \bs{e}_{i_p},\qquad 1\le i_1<i_2<\cdots<i_p\le n
+$$
+为基的$\R$上的向量空间记为$V^p$，这是$G(V)$的子空间，其中的元素称为$G(V)$的$p$次齐次元素，可表示为%
+$$
+\sum_{1\le i_1<i_2<\cdots<i_p\le n}a_{i_1,\cdots,i_p}\bs{e}_{i_1}\wedge \bs{e}_{i_2}\wedge \cdots\wedge \bs{e}_{i_p},\qquad 
+a_{i_1,\cdots,i_p}\in\R
+$$
+为方便起见，将$\R$记作$V^0$，将$V$记作$V^1$，于是$G(V)$中的任意元素$\bs{w}$可唯一表示为%
+$$
+\bs{w}=\bs{w}_0+\bs{w}_1+\cdots+\bs{w}_n,\qquad 
+\bs{w}_k\in V^p,1\le k \le n
+$$
+于是%
+$$
+G(V)=V^0\oplus V^1\oplus \cdots\oplus V^n
+$$
+注意到%
+$$
+V^n\cong\R
+$$
+
+\begin{definition}{Grassmann代数}
+	定义$G(V)$上的外乘$\wedge$，使得满足
+	\begin{align*}
+		& \bs{e}_i\wedge \bs{e}_j=-\bs{e}_j\wedge \bs{e}_i\\
+		& (\bs{e}_{i_1}\wedge\cdots\wedge \bs{e}_{i_p})\wedge(\bs{e}_{j_1}\wedge\cdots\wedge \bs{e}_{j_q})=\bs{e}_{i_1}\wedge\cdots\wedge \bs{e}_{i_p}\wedge\bs{e}_{j_1}\wedge\cdots\wedge \bs{e}_{j_q}\\
+		& (\bs{x}\wedge\bs{y})\wedge\bs{z}=\bs{x}\wedge(\bs{y}\wedge\bs{z})\\
+		& (\lambda\bs{x})\wedge\bs{y}=\lambda(\bs{x}\wedge\bs{y})\\
+		& \bs{x}\wedge(\lambda\bs{y})=\lambda(\bs{x}\wedge\bs{y})\\
+		& \bs{x}\wedge(\bs{y}+\bs{z})=\bs{x}\wedge\bs{y}+\bs{x}\wedge\bs{z}\\
+		& (\bs{x}+\bs{y})\wedge\bs{z}=\bs{x}\wedge\bs{z}+\bs{y}\wedge\bs{z}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item 对于任意$\bs{x}\in V^1$，成立%
+		$$
+		\bs{x}\wedge\bs{x}=\bs{0}
+		$$
+		\item 对于$\bs{x}\in V^p$与$\bs{x}\in V^q$，成立%
+		$$
+		\bs{x}\wedge\bs{y}=(-1)^{pq}\bs{y}\wedge\bs{x}
+		$$
+		\item 对于$\bs{x}_1,\cdots,\bs{x}_m\in V^1$，将其表示为%
+		$$
+		\begin{pmatrix}
+			\bs{x}_1\\\vdots\\\bs{x}_m
+		\end{pmatrix}
+		=\begin{pmatrix}
+			a_{11} & \cdots & a_{1n}\\
+			\vdots & \ddots & \vdots\\
+			a_{m1} & \cdots & a_{mn}
+		\end{pmatrix}
+		\begin{pmatrix}
+			\bs{e}_1\\\vdots\\\bs{e}_n
+		\end{pmatrix}
+		$$
+		那么%
+		$$
+		\bs{x}_1\wedge\cdots\wedge\bs{x}_m
+		=\sum_{1\le i_1<\cdots<i_m\le n}
+		\begin{vmatrix}
+			a_{1,i_1} & \cdots & a_{1,i_m}\\
+			\vdots & \ddots & \vdots\\
+			a_{m,i_1} & \cdots & a_{m,i_m}
+		\end{vmatrix}
+		\bs{e}_{i_1}\wedge\cdots\wedge\bs{e}_{i_m}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{外微分形式}
+
+在上一小节中，如果把向量空间$V$的系数域$\R$换成交换环$K$，那么$V$称为环$K$上的\textbf{模}。类似于上一小节，从环$K$的模$V$可作模$G(V)$，且可类似引入外乘。
+
+设$K$为开集$U\sub\R^n$上全体$C^\infty$-函数所构成的环，再设$\R^n$中坐标为$(x^1,\cdots,x^n)$，系数为$U$上的$C^\infty$-函数环，以$(\dd x^1,\cdots,\dd x^n)$为基的模为$V$，然后作$K$上的模%
+$$
+G(V)=V^0\oplus\cdots\oplus V^n
+$$
+其中%
+$$
+V^0=K\cong V^n,\qquad V^1=V
+$$
+$V^p$中元素可表示为%
+$$
+\omega_p=\sum_{1\le i_1<\cdots<i_p}a_{i_1,\cdots,i_p}(x^1,\cdots,x^n)\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_p}
+$$
+其中$1\le p \le n$，称之为$U$上的\textbf{$p$次外形式}。特别的，$V^1=V$中的元素可表示为%
+$$
+\omega_1=\sum_{i=1}^{n}a_i(x^1,\cdots,x^n)\dd x^{i}
+$$
+称之为$U$上的\textbf{$1$次外形式}，又称为\textbf{Pfaff形式}。
+
+每一个Pfaff形式
+$$
+\omega_1=\sum_{i=1}^{n}a_i\dd x^{i}
+=a_1\dd x^{1}+\cdots+a_n\dd x^{n}
+$$
+对应向量$\bs{a}=(a_1,\cdots,a_n)$。称一组Pfaff形式为\textbf{线性无关的}，如果其对应的向量在$U$中每一点均为线性无关的。
+
+\begin{example}
+	对于$n=1$，如果$\R$中的坐标为$x$，那么
+	\begin{enumerate}
+		\item $0$次形式为$\omega_0=f(x)$。
+		\item $1$次形式为$\omega_1=\varphi(x)\dd x$。
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	对于$n=2$，如果$\R^2$中的坐标为$(x,y)$，那么
+	\begin{enumerate}
+		\item $0$次形式为$\omega_0=f(x,y)$。
+		\item $1$次形式为$\omega_1=P(x,y)\dd x+Q(x,y)\dd y$。
+		\item $2$次形式为$\omega_2=\varphi(x,y)\dd x\wedge\dd y$。
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	对于$n=3$，如果$\R^3$中的坐标为$(x,y,z)$，那么
+	\begin{enumerate}
+		\item $0$次形式为$\omega_0=f(x,y,z)$。
+		\item $1$次形式为$\omega_1=P(x,y,z)\dd x+Q(x,y,z)\dd y+R(x,y,z)\dd z$。
+		\item $2$次形式为$\omega_2=P(x,y,z)\dd y\wedge \dd z+Q(x,y,z)\dd z\wedge \dd x+R(x,y,z)\dd x\wedge \dd y$。
+		\item $3$次形式为$\omega_3=\varphi(x,y)\dd x\wedge\dd y\wedge \dd z$。
+	\end{enumerate}
+\end{example}
+
+\begin{theorem}{Cartan引理}
+	对于$U$上两族线性无关的Pfaff形式$f_1,\cdots,f_p$与$g_1,\cdots,g_p$，其中$1\le p \le n$，如果%
+	$$
+	f_1\wedge g_1+\cdots+f_p\wedge g_p=0
+	$$
+	那么存函数族$a_{ij}\sub C^\infty(U)$，使得成立%
+	$$
+	g_i=\sum_{j=1}^{p}a_{ij}f_j,\qquad 1\le i \le p
+	$$
+	并且%
+	$$
+	a_{ij}=a_{ji},\qquad \le i,j \le p
+	$$
+\end{theorem}
+
+\begin{corollary}
+	对于$U$上的两个Pfaff形式$f$与$g$，如果$f\wedge g=0$，那么存在$a\in C^\infty(U)$，使得成立$g=af$。
+\end{corollary}
+
+在外形式模$G(V)$中引入微分运算，称为\textbf{外微分}，称模$G(V)$的元素为$U$上的\textbf{外微分形式}，$V^p$的元素称为\textbf{$p$次外微分形式}，简称为\textbf{$p$-形式}。
+
+\begin{definition}{外微分}
+	外微分为映射%
+	$$
+	\dd:V^p\to V^{p+1}
+	$$
+	对于$\omega_p\in V^p$%
+	$$
+	\omega_p=\sum_{1\le i_1<\cdots<i_p}a_{i_1,\cdots,i_p}(x^1,\cdots,x^n)\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_p}
+	$$
+	定义%
+	\begin{align*}
+		\dd\omega_p
+		& = \sum_{1\le i_1<\cdots<i_p}\dd a_{i_1,\cdots,i_p}\wedge\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_p}\\
+		& = \sum_{1\le i_1<\cdots<i_p}\sum_{i=1}^{n}\frac{\partial a_{i_1,\cdots,i_p}}{\partial x^i}\dd x^i\wedge\dd x^{i_1}\wedge\cdots\wedge\dd x^{i_p}
+	\end{align*}
+	延拓为映射
+	$$
+	\dd:G(V)\to G(V)
+	$$
+	对于$\omega\in G(V)$%
+	$$
+	\omega=\omega_0+\cdots+\omega_n,\qquad \omega_p\in V^p,0\le p \le n
+	$$
+	定义%
+	$$
+	\dd\omega=\dd\omega_0+\cdots+\dd\omega_n
+	$$
+\end{definition}
+
+\begin{example}
+	对于$n=1$，如果$\R$中的坐标为$x$，那么
+	\begin{enumerate}
+		\item $0$次形式$\omega_0=f(x)$的外微分为%
+		$$
+		\dd\omega_0=f'(x)\dd x
+		$$
+		\item $1$次形式$\omega_1=\varphi(x)\dd x$的外微分为%
+		$$
+		\dd\omega_1=\varphi'(x)\dd x\wedge\dd x=0
+		$$
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	对于$n=2$，如果$\R^2$中的坐标为$(x,y)$，那么
+	\begin{enumerate}
+		\item $0$次形式$\omega_0=f(x,y)$的外微分为%
+		$$
+		\dd\omega_0=f_x\dd x+f_y\dd y
+		$$
+		\item $1$次形式$\omega_1=P(x,y)\dd x+Q(x,y)\dd y$的外微分为%
+		$$
+		\dd\omega_1
+		=(P_x\dd x+P_y\dd y)\wedge \dd x+(Q_x\dd x+Q_y\dd y)\wedge\dd y
+		=(Q_x-P_y)\dd x\wedge y
+		$$
+		\item $2$次形式$\omega_2=\varphi(x,y)\dd x\wedge\dd y$的外微分为%
+		$$
+		\dd\omega_2
+		=(\varphi_x\dd x+\varphi_y\dd y)\wedge\dd x\wedge\dd y=0
+		$$
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	对于$n=3$，如果$\R^3$中的坐标为$(x,y,z)$，那么
+	\begin{enumerate}
+		\item $0$次形式$\omega_0=f(x,y,z)$的外微分为%
+		$$
+		\dd\omega_0=f_x\dd x+f_y\dd y+f_z\dd z
+		$$
+		\item $1$次形式$\omega_1=P(x,y,z)\dd x+Q(x,y,z)\dd y+R(x,y,z)\dd z$的外微分为
+		\begin{align*}
+			\dd\omega_1
+			& = (P_x\dd x+P_y\dd y+P_z\dd z)\wedge x
+			+(Q_x\dd x+Q_y\dd y+Q_z\dd z)\wedge y
+			+(R_x\dd x+R_y\dd y+R_z\dd z)\wedge z\\
+			& = (R_y-Q_z)\dd y\wedge \dd z
+			+(P_z-R_x)\dd z\wedge \dd x
+			+(Q_x-P_y)\dd x\wedge \dd y
+		\end{align*}
+		\item $2$次形式$\omega_2=P(x,y,z)\dd y\wedge \dd z+Q(x,y,z)\dd z\wedge \dd x+R(x,y,z)\dd x\wedge \dd y$的外微分为
+		\begin{align*}
+			\dd\omega_2
+			& = (P_x\dd x+P_y\dd y+P_z\dd z)\dd y\wedge \dd z
+			+(Q_x\dd x+Q_y\dd y+Q_z\dd z)\dd z\wedge \dd x
+			+(R_x\dd x+R_y\dd y+R_z\dd z)\dd x\wedge \dd y\\
+			& = (P_x+Q_y+R_z)\dd x\wedge \dd y \wedge \dd z
+		\end{align*}
+		\item $3$次形式$\omega_3=\varphi(x,y)\dd x\wedge\dd y\wedge \dd z$的外微分为%
+		$$
+		\dd\omega_3
+		=(\varphi_x\dd x+\varphi_y\dd y+\varphi_z\dd z)\wedge\dd x\wedge\dd y\wedge \dd z=0
+		$$
+	\end{enumerate}
+\end{example}
+
+\begin{theorem}{Stokes公式}
+	对于$p$维区域$\Omega\sub\R^n$，$\partial \Omega$存在诱导定向，如果$\omega$为$\Omega$上的$(p-1)$-形式，那么%
+	$$
+	\int_{\partial\Omega}\omega=\int_\Omega\dd\omega
+	$$
+\end{theorem}
+
+\begin{theorem}{Poincaré引理}
+	对于$\omega\in G(V)$，成立%
+	$$
+	\dd(\dd\omega)=0
+	$$
+\end{theorem}
+
+\begin{theorem}{Poincaré引理}
+	对于$\omega_p\in V^p$与$\omega_q\in V^q$，成立%
+	$$
+	\dd(\omega_p\wedge\omega_q)
+	=\dd\omega_p\wedge\omega_q+(-1)^p\omega_p\wedge\dd\omega_q
+	$$
+\end{theorem}
+
+\subsection{Frobenius定理}
+
+\begin{definition}{Frobenius条件}
+	称$U$上的Pfaff形式$\omega^l$成立Frobenius条件，如果存在$U$上的Pfaff形式$f_k^l$，使得成立%
+	$$
+	\dd\omega^l=\sum_{k=1}^{p}f_k^l\wedge \omega^k
+	$$
+\end{definition}
+
+\begin{theorem}{Frobenius定理}
+	设$\R^{n+p}$的坐标为$x^1,\cdots,x^n,y^1,\cdots,y^p$，$U$为$\R^{n+p}$中开集，$\omega^{l}$为$U$上的$p$个Pfaff形式，其中$1\le l \le p$，那么Pfaff方程%
+	$$
+	\omega^l=\sum_{k=1}^{n}\psi_k^l(\bs{x},\bs{y})\dd x^k+\sum_{k=1}^{p}\psi_{n+k}^l(\bs{x},\bs{y})\dd y^k=0,
+	\det(\psi_{n+k}^l)\ne 0,
+	\qquad
+	1\le l \le p
+	$$
+	完全可积$\iff$Pfaff性质$\omega^{l}$成立Frobenius条件。
+\end{theorem}
+
+\section{活动标架}
+
+\subsection{合同变换群}
+
+\begin{definition}{空间合同变换}
+	称映射$T:\R^3\to\R^3$为空间合同变换，如果对于任意$\bs{x},\bs{y}\in\R^3$，成立%
+	$$
+	\|T(\bs{x})-T(\bs{y})\|
+	=\|\bs{x}-\bs{y}\|
+	$$
+\end{definition}
+
+\begin{definition}{三种空间合同变换}
+	\begin{enumerate}
+		\item 旋转：$T(\bs{x})=\bs{A}\bs{x}$，其中$|\bs{A}|=1$且$\bs{A}$为正交矩阵。
+		\item 平移：$T(\bs{x})=\bs{x}+\bs{a}$，其中$\bs{a}$为常向量。
+		\item 反射：$T(x,y,z)=(x,y,-z)$。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{空间合同变换}
+	如果映射$T:\R^3\to\R^3$为空间合同变换，那么存在且存在唯一正交矩阵$\bs{A}$与常向量$\bs{a}$，使得成立%
+	$$
+	T(\bs{x})=\bs{A}\bs{x}+\bs{a},\qquad
+	\bs{x}\in\R^3
+	$$
+\end{theorem}
+
+\begin{definition}{空间合同变换群}
+	$\R^3$中合同变换全体构成群。
+\end{definition}
+
+\subsection{活动标架}
+
+\begin{definition}{标架}
+	称$\{ \bs{r};\bs{e}_1,\bs{e}_2,\bs{e}_3\}$为$\R^3$的标架，如果$\bs{r}=\overrightarrow{OO'}$，$\bs{e}_1,\bs{e}_2,\bs{e}_3$为以$O'$为起点的两两正交的单位向量。
+\end{definition}
+
+\begin{remark}
+	标架与合同变换构成一一对应。
+\end{remark}
+
+\begin{definition}{活动标架}
+	称标架$\{ \bs{r};\bs{e}_1,\bs{e}_2,\bs{e}_3 \}$为活动标架，如果$\bs{r},\bs{e}_1,\bs{e}_2,\bs{e}_3$为$p\le 6$个参数$u^1,\cdots,u^p$的无穷阶连续可微函数。
+\end{definition}
+
+\begin{definition}{活动标架的微分}
+	$$
+	\begin{cases}
+		\dd\bs{r}=\sum_{k=1}^{3}\omega^k(\bs{u},\dd\bs{u})\bs{e}_k\\
+		\dd\bs{e}_1=\sum_{k=1}^{3}\omega^k_1(\bs{u},\dd\bs{u})\bs{e}_k\\
+		\dd\bs{e}_2=\sum_{k=1}^{3}\omega^k_2(\bs{u},\dd\bs{u})\bs{e}_k\\
+		\dd\bs{e}_3=\sum_{k=1}^{3}\omega^k_3(\bs{u},\dd\bs{u})\bs{e}_k
+	\end{cases}
+	$$
+	其中$\omega^k(\bs{u},\dd\bs{u}),\omega^k_1(\bs{u},\dd\bs{u}),\omega^k_2(\bs{u},\dd\bs{u}),\omega^k_3(\bs{u},\dd\bs{u})$为$\dd u^1,\cdots,\dd u^p$的Pfaff形式。
+\end{definition}
+
+\begin{theorem}{活动标架的结构方程}
+	$$
+	\begin{cases}
+		\omega_i^j+\omega_i^j=0,\qquad & i,j=1,2,3\\
+		\dd\omega^i=\sum_{j=1}^{3}\omega^j\wedge\omega_j^i,\qquad & i,j=1,2,3\\
+		\dd\omega^j_i=\sum_{k=1}^{3}\omega^k_i\wedge\omega_k^j,\qquad & i,j=1,2,3
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{theorem}{活动标架的基本定理}
+	给出$p\le 6$参数的$u^1,\cdots,u^p$的六个Pfaff形式%
+	\begin{align*}
+		& \omega^1(\bs{u},\dd\bs{u}),\omega^2(\bs{u},\dd\bs{u}),\omega^3(\bs{u},\dd\bs{u})\\
+		& \omega_1^2(\bs{u},\dd\bs{u}),\omega_2^3(\bs{u},\dd\bs{u}),\omega_3^1(\bs{u},\dd\bs{u})
+	\end{align*}
+\end{theorem}
+
+\end{document}

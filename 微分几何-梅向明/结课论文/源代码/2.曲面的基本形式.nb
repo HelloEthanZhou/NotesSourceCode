@@ -1,0 +1,207 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      6852,        199]
+NotebookOptionsPosition[      6487,        184]
+NotebookOutlinePosition[      6898,        201]
+CellTagsIndexPosition[      6855,        198]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "(*", " ", 
+   "\:5b9a\:4e49\:66f2\:9762\:7684\:7b2c\:4e00\:7c7b\:57fa\:672c\:91cf", " ", 
+   "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"FirstFundamentalFormCoefficients", "[", 
+     RowBox[{"r_", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", " ", "v_"}], "}"}]}], "]"}], " ", ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\n", "   ", 
+       RowBox[{
+        RowBox[{"du", " ", "=", " ", 
+         RowBox[{
+          SubscriptBox["\[PartialD]", "u"], "r"}]}], ",", " ", "\n", "   ", 
+        RowBox[{"dv", " ", "=", " ", 
+         RowBox[{
+          SubscriptBox["\[PartialD]", "v"], "r"}]}]}], "}"}], ",", " ", "\n", 
+      "  ", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"du", " ", ".", " ", "du"}], ",", " ", 
+        RowBox[{"du", " ", ".", " ", "dv"}], ",", " ", 
+        RowBox[{"dv", " ", ".", " ", "dv"}]}], "}"}]}], "]"}]}], "\n", "\n", 
+   RowBox[{
+   "(*", " ", 
+    "\:5b9a\:4e49\:66f2\:9762\:7684\:7b2c\:4e8c\:7c7b\:57fa\:672c\:91cf", " ",
+     "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"SecondFundamentalFormCoefficients", "[", 
+     RowBox[{"r_List", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"u_", ",", " ", "v_"}], "}"}]}], "]"}], " ", ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "\n", "   ", 
+       RowBox[{
+        RowBox[{"du", " ", "=", " ", 
+         RowBox[{
+          SubscriptBox["\[PartialD]", "u"], "r"}]}], ",", " ", "\n", "   ", 
+        RowBox[{"dv", " ", "=", " ", 
+         RowBox[{
+          SubscriptBox["\[PartialD]", "v"], "r"}]}], ",", " ", "\n", "   ", 
+        "dudu", ",", " ", "dudv", ",", " ", "dvdv"}], "}"}], ",", " ", "\n", 
+      "  ", 
+      RowBox[{
+       RowBox[{"dudu", " ", "=", " ", 
+        RowBox[{
+         SubscriptBox["\[PartialD]", "u"], "du"}]}], ";", " ", "\n", "  ", 
+       RowBox[{"dudv", " ", "=", " ", 
+        RowBox[{
+         SubscriptBox["\[PartialD]", "v"], "du"}]}], ";", " ", "\n", "  ", 
+       RowBox[{"dvdv", " ", "=", " ", 
+        RowBox[{
+         SubscriptBox["\[PartialD]", "v"], "dv"}]}], ";", " ", "\n", "  ", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Det", "[", 
+           RowBox[{"{", 
+            RowBox[{"dudu", ",", " ", "du", ",", " ", "dv"}], "}"}], "]"}], 
+          ",", " ", 
+          RowBox[{"Det", "[", 
+           RowBox[{"{", 
+            RowBox[{"dudv", ",", " ", "du", ",", " ", "dv"}], "}"}], "]"}], 
+          ",", " ", 
+          RowBox[{"Det", "[", 
+           RowBox[{"{", 
+            RowBox[{"dvdv", ",", " ", "du", ",", " ", "dv"}], "}"}], "]"}]}], 
+         "}"}], "/", "\n", "   ", 
+        RowBox[{"Sqrt", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"du", " ", ".", " ", "du"}], " ", 
+           RowBox[{"dv", " ", ".", " ", "dv"}]}], " ", "-", " ", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"du", " ", ".", " ", "dv"}], ")"}], "^", "2"}]}], 
+         "]"}]}]}]}], "]"}]}], "\n", "\n", 
+   RowBox[{
+   "(*", " ", "\:6c42\:89e3\:7403\:9762\:7684\:57fa\:672c\:5f62\:5f0f", " ", 
+    "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"r", "[", 
+     RowBox[{"\[CurlyPhi]_", ",", " ", "\[Theta]_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\[Rho]", " ", 
+       RowBox[{"Cos", "[", "\[Theta]", "]"}], " ", 
+       RowBox[{"Cos", "[", "\[CurlyPhi]", "]"}]}], ",", " ", 
+      RowBox[{"\[Rho]", " ", 
+       RowBox[{"Cos", "[", "\[Theta]", "]"}], " ", 
+       RowBox[{"Sin", "[", "\[CurlyPhi]", "]"}]}], ",", " ", 
+      RowBox[{"\[Rho]", " ", 
+       RowBox[{"Sin", "[", "\[Theta]", "]"}]}]}], "}"}]}], "\n", 
+   RowBox[{
+   "(*", " ", 
+    "\:8ba1\:7b97\:7403\:9762\:7684\:7b2c\:4e00\:7c7b\:57fa\:672c\:91cf", " ",
+     "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"FirstFundamentalFormCoefficients", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{"r", "[", 
+       RowBox[{"\[CurlyPhi]", ",", " ", "\[Theta]"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"\[CurlyPhi]", ",", " ", "\[Theta]"}], "}"}]}], "]"}], " ", "//",
+     " ", "Simplify"}], "\n", 
+   RowBox[{
+   "(*", " ", 
+    "\:8ba1\:7b97\:7403\:9762\:7684\:7b2c\:4e8c\:7c7b\:57fa\:672c\:91cf", " ",
+     "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"SecondFundamentalFormCoefficients", "[", "\n", "  ", 
+     RowBox[{
+      RowBox[{"r", "[", 
+       RowBox[{"\[CurlyPhi]", ",", " ", "\[Theta]"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"\[CurlyPhi]", ",", " ", "\[Theta]"}], "}"}]}], "]"}], " ", "//",
+     " ", "Simplify"}], "\n", "\n", 
+   RowBox[{
+   "(*", " ", "\:6c42\:89e3\:6b63\:87ba\:9762\:7684\:57fa\:672c\:5f62\:5f0f", 
+    " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"r", "[", 
+     RowBox[{"u_", ",", " ", "v_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"u", " ", 
+       RowBox[{"Cos", "[", "v", "]"}]}], ",", " ", 
+      RowBox[{"u", " ", 
+       RowBox[{"Sin", "[", "v", "]"}]}], ",", " ", 
+      RowBox[{"a", " ", "v"}]}], "}"}]}], "\n", 
+   RowBox[{
+   "(*", " ", 
+    "\:8ba1\:7b97\:6b63\:87ba\:9762\:7684\:7b2c\:4e00\:7c7b\:57fa\:672c\:91cf\
+", " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"FirstFundamentalFormCoefficients", "[", 
+     RowBox[{
+      RowBox[{"r", "[", 
+       RowBox[{"u", ",", " ", "v"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"u", ",", " ", "v"}], "}"}]}], "]"}], " ", "//", " ", 
+    "Simplify"}], "\n", 
+   RowBox[{
+   "(*", " ", 
+    "\:8ba1\:7b97\:6b63\:87ba\:9762\:7684\:7b2c\:4e8c\:7c7b\:57fa\:672c\:91cf\
+", " ", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"SecondFundamentalFormCoefficients", "[", 
+     RowBox[{
+      RowBox[{"r", "[", 
+       RowBox[{"u", ",", " ", "v"}], "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"u", ",", " ", "v"}], "}"}]}], "]"}], " ", "//", " ", 
+    "Simplify"}]}]}]], "Input",
+ CellChangeTimes->{{3.92547046808181*^9, 
+  3.92547046808181*^9}},ExpressionUUID->"5665de83-d8e3-4b26-87e4-\
+721a51df8afc"]
+},
+WindowSize->{1269, 757},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (2021\:5e7412\:67082\
+\:65e5)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"4140aa01-cc5e-4e66-a276-4298c515077e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 5925, 162, 779, "Input",ExpressionUUID->"5665de83-d8e3-4b26-87e4-721a51df8afc"]
+}
+]
+*)
+

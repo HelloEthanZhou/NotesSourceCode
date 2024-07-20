@@ -1,0 +1,156 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5789,        148]
+NotebookOptionsPosition[      5266,        129]
+NotebookOutlinePosition[      5707,        147]
+CellTagsIndexPosition[      5664,        144]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "(*", " ", 
+   "\:4f7f\:7528Manipulate\:521b\:5efa\:4ea4\:4e92\:5f0f\:7ed8\:56fe", " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"Manipulate", "[", 
+   RowBox[{
+    RowBox[{"ParametricPlot3D", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"x", ",", "y", ",", 
+        RowBox[{
+         FractionBox[
+          SuperscriptBox["x", "2"], 
+          SuperscriptBox["a", "2"]], "-", 
+         FractionBox[
+          SuperscriptBox["y", "2"], 
+          SuperscriptBox["b", "2"]]}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", 
+        RowBox[{"-", "max"}], ",", "max"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"y", ",", 
+        RowBox[{"-", "max"}], ",", "max"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"PlotStyle", "\[Rule]", "Orange"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"PlotRange", "\[Rule]", "All"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"AxesLabel", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"\"\<x\>\"", ",", "\"\<y\>\"", ",", "\"\<z\>\""}], "}"}]}], 
+      ",", "\[IndentingNewLine]", 
+      RowBox[{"ViewPoint", "->", 
+       RowBox[{"{", 
+        RowBox[{"2.4", ",", "1.3", ",", "2"}], "}"}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ImageSize", "->", 
+       RowBox[{"Scaled", "[", "0.25", "]"}]}]}], "]"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", "3"}], "}"}], ",", "1", ",", "5"}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"b", ",", "3"}], "}"}], ",", "1", ",", "5"}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"max", ",", "5"}], "}"}], ",", "0", ",", "10"}], "}"}]}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.925454649188424*^9, 3.9254546741103115`*^9}, {
+  3.9254549057828865`*^9, 3.9254549106512203`*^9}, {3.9254549880690355`*^9, 
+  3.925455068532445*^9}, {3.925455105018985*^9, 3.925455114673643*^9}, {
+  3.9255155649338827`*^9, 3.9255155654872684`*^9}, {3.925543266007656*^9, 
+  3.925543276078062*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"8ff13083-e84e-4963-8f35-83def5046b4b"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`a$$ = 2.875, $CellContext`b$$ = 
+    3, $CellContext`max$$ = 5, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"\:65e0\:6807\:9898\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`a$$], 3}, 1, 5}, {{
+       Hold[$CellContext`b$$], 3}, 1, 5}, {{
+       Hold[$CellContext`max$$], 5}, 0, 10}}, Typeset`size$$ = {
+    266.425, {130., 136.425}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`a$$ = 3, $CellContext`b$$ = 
+        3, $CellContext`max$$ = 5}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> 
+      ParametricPlot3D[{$CellContext`x, $CellContext`y, \
+$CellContext`x^2/$CellContext`a$$^2 - $CellContext`y^2/$CellContext`b$$^2}, \
+{$CellContext`x, -$CellContext`max$$, $CellContext`max$$}, {$CellContext`y, \
+-$CellContext`max$$, $CellContext`max$$}, PlotStyle -> Orange, PlotRange -> 
+        All, AxesLabel -> {"x", "y", "z"}, ViewPoint -> {2.4, 1.3, 2}, 
+        ImageSize -> Scaled[0.25]], 
+      "Specifications" :> {{{$CellContext`a$$, 3}, 1, 
+         5}, {{$CellContext`b$$, 3}, 1, 5}, {{$CellContext`max$$, 5}, 0, 10}},
+       "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{336., {215.77424324816093`, 223.22575675183907`}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.925454641990901*^9, 3.925454651659278*^9}, 
+   3.92545471790759*^9, {3.925455045358425*^9, 3.9254550699804115`*^9}, {
+   3.9254551084947124`*^9, 3.9254551166015615`*^9}, 3.925515497285882*^9, 
+   3.9255156427577915`*^9, 3.9255432814881277`*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"6c954c1b-6781-464b-95c0-bdad70482041"]
+}, Open  ]]
+},
+WindowSize->{1269, 757},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>1.3 Inherited,
+FrontEndVersion->"13.0 for Microsoft Windows (64-bit) (2021\:5e7412\:67082\
+\:65e5)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"353bb3e9-c674-4485-bed3-a2639f4f2f29"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 2190, 56, 426, "Input",ExpressionUUID->"8ff13083-e84e-4963-8f35-83def5046b4b"],
+Cell[2773, 80, 2477, 46, 463, "Output",ExpressionUUID->"6c954c1b-6781-464b-95c0-bdad70482041"]
+}, Open  ]]
+}
+]
+*)
+
