@@ -1,0 +1,531 @@
+\documentclass[lang = cn, scheme = chinese]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+
+
+%% 1.封面设置
+
+\title{2021级泛函分析期末试题}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\begin{document}
+	
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{}
+
+\begin{proposition}
+	证明：存在且存在唯一$f\in C[a,b]$，使得对于任意$a\le x \le b$，成立
+	$$
+	f(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+	$$
+	其中$\varphi\in C[a,b]$且$K\in C[a,b]^2$，同时
+	$$
+	|\mu||a-b|M<1,\qquad 
+	M=\max_{a\le x,y\le b}|K(x,y)|
+	$$
+\end{proposition}
+
+\begin{proof}
+	构造映射
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[a,b]&\longrightarrow C[a,b]\\
+			f&\longmapsto F,\text{ 其中 }F(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		\|T(f)-T(g)\|
+		=&\sup_{x\in[a,b]}|(T(f))(x)-(T(g))(x)|\\
+		=&|\mu|\sup_{x\in[a,b]}\left| \int_a^bK(x,y)(f(y)-g(y))\mathrm{d}y \right|\\
+		\le & |\mu|\sup_{x\in[a,b]}\int_a^b|K(x,y)||f(y)-g(y)|\mathrm{d}y\\
+		\le & |\mu||a-b|M\sup_{x\in[a,b]}|f(x)-g(x)|\\
+		=& |\mu||a-b|M\|f-g\|
+	\end{align*}
+	而$|\mu||a-b|M<1$，那么$T$为压缩映射，由压缩映像原理，存在且存在唯一$f\in C[a,b]$，使得成立$T(f)=f$​，因此成立Fredholm积分方程
+	$$
+	f(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+	$$
+\end{proof}
+
+\chapter{}
+
+\begin{proposition}{}{2.1}
+	已知$\left\{ \frac{1}{\sqrt{2\pi}},\frac{1}{\sqrt{\pi}}\sin nx,\frac{1}{\sqrt{\pi}}\cos nx \right\}_{n=1}^{\infty}$为$L^2[-\pi,\pi]$的正规正交基，定义函数
+	\begin{align*}
+		f:\begin{aligned}[t]
+			[-\pi,\pi]&\longrightarrow \R\\
+			x&\longmapsto |x|
+		\end{aligned}
+	\end{align*}
+	
+	计算
+	$$
+	\left(f(x),\frac{1}{\sqrt{2\pi}}\right),\qquad 
+	\left(f(x),\frac{1}{\sqrt{\pi}}\sin nx\right),\qquad 
+	\left(f(x),\frac{1}{\sqrt{\pi}}\cos nx\right)
+	$$
+	其中$n\in\N^*$。
+\end{proposition}
+
+\begin{proof}
+	\begin{align*}
+		&\left(f(x),\frac{1}{\sqrt{2\pi}}\right)=\frac{\pi\sqrt{2\pi}}{2}\\
+		&\left(f(x),\frac{1}{\sqrt{\pi}}\sin nx\right)=0\\
+		&\left(f(x),\frac{1}{\sqrt{\pi}}\cos nx\right)=\begin{cases}
+			\displaystyle-\frac{4}{\sqrt{\pi}n^2},\qquad & n\text{ 为奇}\\
+			0,\qquad & \text{ 为偶}
+		\end{cases}
+	\end{align*}
+\end{proof}
+
+\begin{proposition}{}{2.2}
+	证明：
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6}
+	$$
+\end{proposition}
+
+\begin{proof}
+	由试题\ref{pro:2.1}
+	$$
+	f(x)=\frac{\pi}{2}-\frac{4}{\pi}\sum_{n=1}^{\infty}\frac{\cos(2n-1)x}{(2n-1)^2}
+	$$
+	取$x=0$，那么
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{(2n-1)^2}=\frac{\pi^2}{8}
+	$$
+	因此
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^2}
+	=\sum_{n=1}^{\infty}\frac{1}{(2n-1)^2}+\sum_{n=1}^{\infty}\frac{1}{(2n)^2}
+	=\frac{\pi^2}{8}+\frac{1}{4}\sum_{n=1}^{\infty}\frac{1}{n^2}
+	$$
+	进而
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6}
+	$$
+\end{proof}
+
+\begin{proposition}
+	证明：
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^4}=\frac{\pi^4}{90}
+	$$
+\end{proposition}
+
+\begin{proof}
+	（法一）由试题\ref{pro:2.1}
+	$$
+	f(x)=\frac{\pi\sqrt{2\pi}}{2}\cdot\frac{1}{\sqrt{2\pi}}+\sum_{n=1}^{\infty}\frac{-4}{\sqrt{\pi}(2n-1)^2}\cdot\frac{1}{\sqrt{\pi}}\cos (2n-1)x
+	$$
+	由Parseval公式
+	$$
+	\|f\|^2=\frac{\pi^3}{2}+\sum_{n=1}^{\infty}\frac{16}{\pi(2n-1)^4}
+	$$
+	而$\|f\|^2=2\pi^3/3$​，因此
+	$$
+	\frac{\pi^3}{2}+\sum_{n=1}^{\infty}\frac{16}{\pi(2n-1)^4}=\frac{2\pi^3}{3}
+	$$
+	那么
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{(2n-1)^4}=\frac{\pi^4}{96}
+	$$
+	因此
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^4}
+	=\sum_{n=1}^{\infty}\frac{1}{(2n-1)^4}+\sum_{n=1}^{\infty}\frac{1}{(2n)^4}
+	=\frac{\pi^4}{96}+\frac{1}{16}\sum_{n=1}^{\infty}\frac{1}{n^4}
+	$$
+	进而
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^4}=\frac{\pi^4}{90}\\
+	$$
+	
+	（法二）定义函数
+	\begin{align*}
+		g:\begin{aligned}[t]
+			[-\pi,\pi]&\longrightarrow \R\\
+			x&\longmapsto |x|^3
+		\end{aligned}
+	\end{align*}
+	将$g$展开为Fourier级数
+	$$
+	g(x)=\frac{\pi^3}{4}
+	+\sum_{n=1}^{\infty}\frac{3\pi}{2n^2}\cos{2nx}
+	+\sum_{n=1}^{\infty}\frac{6\pi}{(2n-1)^2}\cos{(2n-1)x}
+	+\sum_{n=1}^{\infty}\frac{24}{\pi(2n-1)^4}\cos(2n-1)x
+	$$
+	取$x=0$​，那么
+	$$
+	\frac{\pi^3}{4}
+	+\sum_{n=1}^{\infty}\frac{3\pi}{2n^2}
+	-\sum_{n=1}^{\infty}\frac{6\pi}{(2n-1)^2}
+	+\sum_{n=1}^{\infty}\frac{24}{\pi(2n-1)^4}=0
+	$$
+	由试题\ref{pro:2.2}
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{(2n-1)^2}=\frac{\pi^2}{8},\qquad \sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6}
+	$$
+	代入，可得
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{(2n-1)^4}=\frac{\pi^4}{96}
+	$$
+	因此
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^4}
+	=\sum_{n=1}^{\infty}\frac{1}{(2n-1)^4}+\sum_{n=1}^{\infty}\frac{1}{(2n)^4}
+	=\frac{\pi^4}{96}+\frac{1}{16}\sum_{n=1}^{\infty}\frac{1}{n^4}
+	$$
+	进而
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{n^4}=\frac{\pi^4}{90}\\
+	$$
+\end{proof}
+
+\chapter{}
+
+\begin{proposition}
+	对于Hilbert空间$\mathcal{H}$上的线性算子$T:\mathcal{H}\to\mathcal{H}$，如果对于任意$x,y\in\mathcal{H}$，成立$(T(x),y)=(x,T(y))$，那么$T$为有界算子。
+\end{proposition}
+
+\begin{proof}
+	（法一）对于任意$y\in\mathcal{H}$，构造线性泛函
+	\begin{align*}
+		f_y:\begin{aligned}[t]
+			\mathcal{H}&\longrightarrow \C\\
+			x&\longmapsto (x,T(y))
+		\end{aligned}
+	\end{align*}
+	由Scharz不等式
+	$$
+	\|f_y\|=\sup_{\|x\|=1}|f_y(x)|=\sup_{\|x\|=1}|(x,T(y))|\le \sup_{\|x\|=1}\|x\|\|T(y)\|=\|T(y)\|
+	$$
+	因此$f_y\in\mathcal{H}^*$。由Frechet-Riesz表现定理，成立$\|f_y\|=\|T(y)\|$。由于对于任意$x\in\mathcal{H}$，由Scharz不等式
+	$$
+	\sup_{\|y\|=1}|f_y(x)|
+	=\sup_{\|y\|=1}|(x,T(y))|
+	=\sup_{\|y\|=1}|(T(x),y)|
+	\le\sup_{\|y\|=1}\|T(x)\|\|y\|
+	=\|T(x)\|<\infty
+	$$
+	因此由一致有界原理，成立$\displaystyle\sup_{\|y\|=1}\|f_y\|<\infty$，因此
+	$$
+	\|T\|=\sup_{\|y\|=1}\|T(y)\|=\sup_{\|y\|=1}\|f_y\|<\infty
+	$$
+	进而$T$为有界算子。
+	
+	（法二）任取$\{x_n\}_{n=1}^{\infty}\sub X$，使得成立
+	$$
+	\lim_{n\to\infty}x_n=x,\qquad 
+	\lim_{n\to\infty}T(x_n)=y
+	$$
+	那么对于任意$z\in\mathcal{H}$以及$n\in\N^*$，成立
+	$$
+	(T(x_n),z)=(x_n,T(z))
+	$$
+	由内积的连续性
+	$$
+	(y,z)=(x,T(z))=(T(x),z)
+	$$
+	进而$T(x)=y$，因此$T$为闭算子。由闭图形定理，$T$为有界算子。
+\end{proof}
+
+\chapter{}
+
+\begin{definition}
+	对于有限测度的可测集合$E$，定义
+	$$
+	S(E)=\left\{ \text{ 几乎处处有限的可测函数 }f:E\to\R \right\},\qquad 
+	d(f,g)=\int_E \frac{|f-g|}{1+|f-g|}
+	$$
+\end{definition}
+
+\begin{lemma}{}{引理11}
+	$$
+	\frac{|x+y|}{1+|x+y|}\le\frac{|x|}{1+|x|}+\frac{|y|}{1+|y|},\qquad x,y\in\C
+	$$
+\end{lemma}
+
+\begin{proof}
+	构造函数
+	$$
+	f(x)=\frac{x}{1+x},\qquad x\in[0,\infty)
+	$$
+	由于$f$在$[0,\infty)$上单调递增，那么由三角不等式$|x+y|\le |x|+|y|$，可得
+	$$
+	\frac{|x+y|}{1+|x+y|}
+	= f(|x+y|)
+	\le f(|x|+|y|)
+	= \frac{|x|+|y|}{1+|x|+|y|}
+	\le \frac{|x|}{1+|x|}+\frac{|y|}{1+|y|}
+	$$
+\end{proof}
+
+\begin{proposition}
+	$S(E)$空间为度量空间。
+\end{proposition}
+
+\begin{proof}
+	仅证明三角不等式，由引理\ref{lem:引理11}
+	\begin{align*}
+		d(f,h)
+		& = \int_a^b\frac{|f-h|}{1+|f-h|}\\
+		& = \int_a^b\frac{|(f-g)+(g-h)|}{1+|(f-g)+(g-h)|}\\
+		& \le \int_a^b \left( \frac{|f-g|}{1+|f-g|}+\frac{|g-h|}{1+|g-h|} \right)\\
+		& = \int_a^b\frac{|f-g|}{1+|f-g|}+\int_a^b\frac{|g-h|}{1+|g-h|}\\
+		& = d(f,g)+d(g,h)
+	\end{align*}
+\end{proof}
+
+\begin{proposition}
+	在$S(E)$，成立
+	$$
+	\{f_n\}_{n=1}^{\infty}\text{依度量}d\text{收敛于}f\iff \{f_n\}_{n=1}^{\infty}\text{依测度收敛于}f
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于必要性，任取$\{f_n\}_{n=1}^{\infty}\sub S(E)$，使得成立$\{f_n\}_{n=1}^{\infty}$依度量$d$收敛于$f\in S(E)$。任取$\varepsilon>0$，记
+	$$
+	E_n=E[|f_n-f|\ge \varepsilon]
+	$$
+	由引理\ref{lem:引理11}
+	\begin{align*}
+		d(f_n,f)
+		& = \int_a^b\frac{|f_n-f|}{1+|f_n-f|}\\
+		& \ge \int_{E_n}\frac{|f_n-f|}{1+|f_n-f|}\\
+		& \ge \int_{E_n}\frac{\varepsilon}{1+\varepsilon}\\
+		& = m(E_n)\frac{\varepsilon}{1+\varepsilon}
+	\end{align*}
+	从而$m(E_n)\to 0$，因此$\{f_n\}_{n=1}^{\infty}$依测度收敛于$f$。
+	
+	对于充分性，任取$\{f_n\}_{n=1}^{\infty}\sub S(E)$，使得成立$\{f_n\}_{n=1}^{\infty}$依测度收敛于$f\in S(E)$，那么$\{ f_n-f \}_{n=1}^{\infty}$依测度收敛于$0$，而
+	$$
+	\frac{|f_n-f|}{1+|f_n-f|}\le |f_n-f|
+	$$
+	那么函数序列
+	$$
+	\left\{ \frac{|f_n-f|}{1+|f_n-f|}\right\}_{n=1}^{\infty}
+	$$
+	依测度收敛于$0$。又由于
+	$$
+	\frac{|f_n-f|}{1+|f_n-f|}\le 1
+	$$
+	那么由Lebesgue控制收敛定理，成立
+	$$
+	d(f_n,f)=\int_a^b\frac{|f_n-f|}{1+|f_n-f|}\to0
+	$$
+	因此$\{f_n\}_{n=1}^{\infty}$依度量$d$收敛于$f$。
+\end{proof}
+
+\chapter{}
+
+\begin{proposition}
+	对于Hilbert空间$\mathcal{H}$上的有界共轭双线性泛函$f:\mathcal{H}\times \mathcal{H}\to\C$，存在且存在唯一有界线性算子$T:\mathcal{H}\to\mathcal{H}$，使得成立$\|T\|=\|f\|$，且对于任意$x,y\in \mathcal{H}$，成立$f(x,y)=(T(x),y)$。
+\end{proposition}
+
+\begin{proof}
+	由Frechet-Riesz表现定理，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in\mathcal{H}$与$\varphi\in \mathcal{H}^*$，成立$\varphi(x)=(x,\tau(\varphi))$。
+	
+	定义映射
+	\begin{align*}
+		\pi:\begin{aligned}[t]
+			\mathcal{H}&\longrightarrow \mathcal{H}^*\\
+			x&\longmapsto \varphi_x,\text{ 其中 }\varphi_x(y)=\overline{f(x,y)}
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		&(\pi(x+y))(z)=\overline{f(x+y,z)}=\overline{f(x,z)}+\overline{f(x,z)}=\varphi_{x}(z)+\varphi_{y}(z)=(\pi(x))(z)+(\pi(y))(z)\\
+		&(\pi(\lambda x))(y)=\varphi_{\lambda x}(y)=\overline{f(\lambda x,y)}=\overline{\lambda f(x,y)}=\overline{\lambda}\varphi_{x}(y)=\overline{\lambda}(\pi(x))(y)
+	\end{align*}
+	那么
+	$$
+	\pi(x+y)=\pi(x)+\pi(y),\qquad 
+	\pi(\lambda x)=\overline{\lambda}\pi(x)
+	$$
+	
+	定义映射
+	$$
+	T=\tau\circ \pi:\mathcal{H}\to \mathcal{H}
+	$$
+	那么
+	$$
+	f(x,y)=\overline{\varphi_x(y)}=\overline{(y,\tau(\varphi_x))}=\overline{(y,(\tau\circ \pi)(x))}=\overline{(y,T(x))}=(T(x),y)
+	$$
+	由于
+	\begin{align*}
+		&T(x+y)=(\tau\circ \pi)(x+y)=\tau(\pi(x))+\tau(\pi(y))=(\tau\circ \pi)(x)+(\tau\circ \pi)(y)=T(x)+T(y)\\
+		&T(\lambda x)=(\tau\circ \pi)(\lambda x)=\tau(\pi(\lambda x))=\tau(\overline{\lambda }\pi(x))=\lambda \tau(\pi(x))=\lambda (\tau\circ \pi)(x)=\lambda T(x)
+	\end{align*}
+	那么$T$为线性算子。
+	
+	由Frechet-Riesz表现定理的推论
+	\begin{align*}
+		\|T\| = & \sup_{\|x\|\le 1}\|T(x)\|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|f(x,y)|\\
+		= & \|f\|
+	\end{align*}
+	因此$T$为有界线性算子。
+	
+	如果存在有界线性算子$S:\mathcal{H}\to\mathcal{H}$，使得对于任意$x,y\in \mathcal{H}$，成立$f(x,y)=(S(x),y)$，那么
+	$$
+	((T-S)(x),y)=(T(x),y)-(S(x),y)=f(x,y)-f(x,y)=0
+	$$
+	进而$T=S$，进而$T$为唯一的。
+\end{proof}
+
+\chapter{}
+
+\begin{proposition}
+	证明：存在保范线性双射
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			(l^p)^*&\longrightarrow l^q\\
+			f&\longmapsto \{a_n\}_{n=1}^{\infty}
+		\end{aligned}
+	\end{align*}
+	使得成立
+	\begin{align*}
+		f:\begin{aligned}[t]
+			l^p&\longrightarrow \C\\
+			\{x_n\}_{n=1}^{\infty}&\longmapsto \sum_{n=1}^{\infty}a_nx_n
+		\end{aligned}
+	\end{align*}
+	其中$1\le p<\infty$，且$\frac{1}{p}+\frac{1}{q}=1$。
+\end{proposition}
+
+\begin{proof}
+	任取$f\in (l^1)^*$。考察$l^1$空间的正规正交基$\{e_n\}_{n=1}^{\infty}$，其中$e_n=\{0,\cdots,0,\underset{\text{第}n\text{个}}{1},0,0,\cdots\}$，对于任意$\{x_n\}_{n=1}^{\infty}\in l^1$，成立
+	$$
+	\{x_n\}_{n=1}^{\infty}=\sum_{n=1}^{\infty}x_ne_n
+	$$
+	该级数在$l^1$中收敛，因此
+	$$
+	f(\{x_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}x_nf(e_n)
+	$$
+	由于$\|e_n\|=1$，那么$|f(e_n)|\le \|f\|$。令
+	$$
+	a_n=f(e_n),\qquad n\in\N^*
+	$$
+	那么$\{a_n\}_{n=1}^{\infty}$为由$f$决定的有界数列，进而
+	$$
+	f(\{x_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}a_nx_n
+	$$
+	
+	当$p=1$时，一方面
+	$$
+	\|f\|\le\sup_{n\in\N^*}|a_n|
+	$$
+	另一方面
+	$$
+	|f(\{x_n\}_{n=1}^{\infty})|
+	\le \sum_{n=1}^{\infty}|a_n||x_n|
+	\le \sup_{n\in\N^*}|a_n|\sum_{n=1}^{\infty}|x_n|
+	= \sup_{n\in\N^*}|a_n|\| \{x_n\}_{n=1}^{\infty} \|
+	\implies 
+	\|f\|\le \sup_{n\in\N^*}|a_n|
+	$$
+	综合两方面
+	$$
+	\|f\|=\sup_{n\in\N^*}|a_n|
+	$$
+	
+	当$1< p <\infty$时，令
+	$$
+	y_{k}^{(n)}=\begin{cases}
+		|a_k|^{q-1}\text{sgn}(a_k),\qquad & k\le n\\
+		0,\qquad & k>n
+	\end{cases}
+	$$
+	那么
+	$$
+	f(\{y_k^{(n)}\}_{k=1}^{\infty})=\sum_{k=1}^{n}|a_k|^q
+	$$
+	而
+	$$
+	f(\{y_k^{(n)}\}_{k=1}^{\infty})
+	\le \|f\|\| \{y_k^{(n)}\}_{k=1}^{\infty} \|_p
+	= \|f\|\left(\sum_{k=1}^{\infty}|y_k^{(n)}|^p\right)^{1/p}
+	= \|f\|\left(\sum_{k=1}^{n}|a_k|^q\right)^{1/p}
+	$$
+	因此
+	$$
+	\left(\sum_{k=1}^{n}|a_k|^q\right)^{1/q}\le \|f\|
+	$$
+	令$n\to\infty$
+	$$
+	\left(\sum_{n=1}^{\infty}|a_n|^q\right)^{1/q}\le \|f\|
+	$$
+	因此$\{a_n\}_{n=1}^{\infty}\in l^q$，且
+	$$
+	\|f\|\ge \| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+	由Hölder不等式
+	$$
+	|f(\{x_n\}_{n=1}^{\infty})|
+	\le \sum_{n=1}^{\infty}|a_n||x_n|
+	\le \|\{a_n\}_{n=1}^{\infty}\|_q \|\{x_n\}_{n=1}^{\infty}\|_p \implies
+	\|f\|\le \| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+	从而
+	$$
+	\|f\|=\| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+\end{proof}
+	
+\end{document}

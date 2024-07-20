@@ -1,0 +1,6202 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{泛函分析 - 江泽坚 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref, centernot, physics}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\dis}{\displaystyle}
+\newcommand{\toD}{\xlongrightarrow{\mathscr{D}}}
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+	\begin{center}
+	
+		\large{由衷感谢 \textbf{ 胡前锋 } 老师对于本课程的帮助}
+	
+	\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{度量线性空间}
+
+\section{良序定理，Zorn引理}
+
+\subsection{良序定理}
+
+\begin{definition}{有序集}
+	称$\mathscr{A}$为有序集，如果$\mathscr{A}$中任意两个元素间存在先后次序，记$a$在$b$之先为$a\prec b$，且
+	\begin{enumerate}
+		\item 如果$a$在$b$之先，那么$b$不在$a$之先。
+		\item 如果$a$在$b$之先，$b$在$c$之先，那么$a$在$c$之先。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{良序集}
+	称有序集$\mathscr{A}$为良序的，如果对于任意非空子集$\mathscr{L}\sub \mathscr{A}$，存在$\alpha_0\in\mathscr{L}$，使得对于任意$\alpha\in \mathscr{L}$，成立$\alpha_0\prec \alpha$。
+\end{definition}
+
+\begin{theorem}{超限归纳法}
+	对于良序集$\mathscr{A}$，如果$P(\alpha_0)$为真，其中，且若$P(\alpha)$对于任意满足$\alpha_0\prec \alpha \prec \beta$的$\alpha$成立，则$P(\beta)$成立，那么$P(\alpha)$对于任意$\alpha\in\mathscr{A}$为真。
+\end{theorem}
+
+\subsection{Zorn引理}
+
+\begin{definition}{部分有序集}
+	对于有序集$\mathscr{X}$，称$\mathscr{X}$为部分有序集，如果在某些元素对$(a,b)\in\mathscr{X}\times\mathscr{X}$存在二元关系$a\prec b$，且满足
+	\begin{enumerate}
+		\item $a\prec a$
+		\item $a\prec b\text{且}b\prec a\implies a=b$
+		\item $a\prec b\text{且}b\prec c\implies a\prec c$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{完全有序集}
+	对于有序集$\mathscr{X}$，称$\mathscr{X}$为完全有序集，如果对于任意$(a,b)\in\mathscr{X}\times\mathscr{X}$存在二元关系$a\prec b$或$b\prec a$，且满足
+	\begin{enumerate}
+		\item $a\prec a$
+		\item $a\prec b\text{且}b\prec a\implies a=b$
+		\item $a\prec b\text{且}b\prec c\implies a\prec c$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{部分有序集的上界}
+	对于部分有序集$\mathscr{X}$，以及非空子集$\mathscr{L}\sub\mathscr{X}$，称$p\in\mathscr{X}$为$\mathscr{L}$的上界，如果对于任意$x\in\mathscr{L}$，成立$x\prec p$。
+\end{definition}
+
+\begin{definition}{部分有序集的极大元}
+	对于部分有序集$\mathscr{X}$，称$m$为$\mathscr{X}$的极大元，如果对于任意$x\in\mathscr{X}$，成立
+	$$
+	m\prec x\implies m=x
+	$$
+\end{definition}
+
+\begin{theorem}{Zorn引理}{Zorn引理}
+	对于非空部分有序集$\mathscr{X}$，如果对于任意完全有序子集$\mathscr{Y}\sub\mathscr{X}$，存在$x\in\mathscr{X}$，使得$x$为$\mathscr{Y}$的上界，那么$\mathscr{X}$存在极大元。
+\end{theorem}
+
+\section{线性空间，Hamel基}
+
+\subsection{线性空间}
+
+\begin{definition}{线性空间}
+	称$(X,+,\;\cdot\;)$为复数域$\C$上的线性空间，如果加法运算$+:X\times X\to X$和数乘运算$\cdot:\C\times X\to X$满足如下性质。
+	\begin{enumerate}
+		\item 加法单位元：存在$0\in X$，使得对于任意$x\in V$，成立$0+x=x+0=x$。
+		\item 数乘单位元：存在$1\in \C$，使得对于任意$x\in X$，成立$1x=x$。
+		\item 加法逆元：对于任意$x\in X$，存在$y\in X$，使得成立$x+y=y+x=0$。
+		\item 加法交换律：$x+y=y+x$
+		\item  加法结合律：$x+(y+z)=(x+y)+z$
+		\item 数乘结合律：$\lambda(\mu  x)=(\lambda\mu) x$
+		\item  数乘左分配律：$(\lambda+\mu) x=\lambda  x+\mu x$
+		\item 数乘右分配律：$\lambda(x+y)=\lambda  x+\lambda y$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{线性子空间}
+	称线性空间中的子集为线性子空间，如果其对于加法和数乘运算封闭。
+\end{definition}
+
+\begin{definition}{直和}
+	对于线性空间$X$上的线性子空间$M,N\sub X$，称$M+N$为直和，并记作$M\oplus N$，如果满足如下命题之一。
+	\begin{enumerate}
+		\item $M\cap N=\{0\}$
+		\item 对于任意$x\in M+N$，存在且存在唯一$(m,n)\in M\times N$，使得成立$x=m+n$。
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：如果$M\cap N=\{0\}$，那么任取$x\in M+N$，那么存在$(m,n)\in M\times N$，使得成立$x=m+n$。如果存在$(m',n')\in M\times N$，使得成立$x=m'+n'$，因此
+	$$
+	m+n=m'+n'\implies m-m'=n'-n\in M\cap N\iff m-m'=n'-n=0\iff m=m,n'=n
+	$$
+	因此存在且存在唯一$(m,n)\in M\times N$，使得成立$x=m+n$。
+	
+	$2\implies 1$：如果对于任意$x\in M+N$，存在且存在唯一$(m,n)\in M\times N$，使得成立$x=m+n$，那么任取$x\in M\cap N$，由于
+	$$
+	x=x+0=0+x\implies x=0
+	$$
+	那么$M\cap N=\{0\}$。
+\end{proof}
+
+\begin{definition}{代数补}
+	对于线性空间$X$上的线性子空间$M,N\sub X$，称$M$与$N$互为代数补，如果$X=M\oplus N$。
+\end{definition}
+
+\begin{theorem}
+	对于有限维线性空间$X$上的线性子空间$M,N\sub X$，如果$X=M\oplus N$，那么$\dim X=\dim M+\dim N$。
+\end{theorem}
+
+\begin{proof}
+	记$M$的基为$\{ x_k \}_{k=1}^{m}$，$N$的基为$\{ y_k \}_{k=1}^{n}$。由于$X=M+N$，那么$\{ x_k \}_{k=1}^{m}\cup \{ y_k \}_{k=1}^{n}$的张成空间为$X$。又因为$M\cap N=\{0\}$，那么$\{ x_k \}_{k=1}^{m}\cup \{ y_k \}_{k=1}^{n}$线性无关，因此$\{ x_k \}_{k=1}^{m}\cup \{ y_k \}_{k=1}^{n}$为$X$的基，进而
+	$$
+	\dim X=m+n=\dim M+\dim N
+	$$
+\end{proof}
+
+\subsection{Hamel基}
+
+\begin{definition}{Hamel基}
+	称子集$H\sub X$为线性空间$X$的Hamel基，如果$H$线性无关，且$\mathrm{Sp}(H)=X$。
+\end{definition}
+
+\begin{note}
+	\begin{itemize}
+		\item 有限维线性空间的基即为Hamel基。
+		\item 无限维Banach空间的Hamel基的维数不小于连续统。
+		\item 无限维可分Banach空间的Hamel基的维数为连续统。
+	\end{itemize}
+\end{note}
+
+\begin{theorem}{Hamel基的存在性}{Hamel基的存在性}
+	对于线性空间$X$，如果子集$S\sub X$线性无关，那么存在Hamel基$H\sub X$，使得成立$S\sub H$。
+\end{theorem}
+
+\begin{proof}
+	定义
+	$$
+	\mathscr{P}=\{ P:S\sub P\sub X, \text{ 且 } P \text{ 线性无关} \}
+	$$
+	在子集族$\mathscr{P}$上存在序结构$\sub$，那么$\mathscr{P}$为非空部分有序集。任取完全有序子集$\mathscr{P}_0\sub \mathscr{P}$，那么$\mathscr{P}_0$存在上界$\displaystyle\bigcup_{P\in\mathscr{P}_0}P\in\mathscr{P}$。由Zorn引理\ref{thm:Zorn引理}，$\mathscr{P}$存在极大元$H\in\mathscr{P}$，进而$S\sub H\sub X$且$H$线性无关。如果$\mathrm{Sp}(H)\subsetneq X$，那么存在$x\in X$，使得$x\notin \mathrm{Sp}(H)$，于是$S\sub H\sub H\cup\{x\}\sub X$且$H\cup\{x\}$线性无关，同时$H\subsetneq H\cup\{x\}$，这与$H$的极大性矛盾！因此$\mathrm{Sp}(H)=X$，进而$H$为$X$的Hamel基。
+\end{proof}
+
+\begin{corollary}
+	线性空间的线性子空间存在代数补。
+\end{corollary}
+
+\begin{proof}
+	对于线性空间$X$的线性子空间$M$，由定理\ref{thm:Hamel基的存在性}，$X$存在Hamel基$H$，$M$存在Hamel基$H_0$，且满足$H_0\sub H$。记$N=\text{Sp}(H\setminus H_0)$，那么$X=M+N$。任取$x\in M\cap N$，那么存在$\{ u_k \}_{k=1}^{m}\sub M$，与$\{ v_k \}_{k=1}^{n}\sub N$，以及$\{ \alpha_k \}_{k=1}^{m}$与$\{ \beta_k \}_{k=1}^{n}$，使得成立
+	$$
+	x=\alpha_1u_1+\cdots+\alpha_mu_m=
+	\beta_1v_1+\cdots+\beta_nv_n
+	$$
+	因此
+	$$
+	\alpha_1u_1+\cdots+\alpha_mu_m-
+	\beta_1v_1-\cdots-\beta_nv_n=0
+	$$
+	由于$\{ u_k \}_{k=1}^{m}\cup \{ v_k \}_{k=1}^{n}$线性无关，那么
+	$$
+	\alpha_1=\cdots=\alpha_m=
+	\beta_1=\cdots=\beta_n=0
+	$$
+	于是$x=0$，因此$M\cap N=\{0\}$，进而$X=M\oplus N$，即$M$的代数补为$N$。
+\end{proof}
+
+\section{度量空间}
+
+\subsection{度量空间}
+
+\begin{definition}{度量空间}
+	称$(X,d)$为复数域$\C$上的度量空间，如果度量$d:X\times X\to \C$满足如下性质。
+	\begin{enumerate}
+		\item 正定性：$d(x,y)\ge 0$，当且仅当$x=y$时等号成立。
+		\item 对称性：$d(x,y)=d(y,x)$
+		\item 三角不等式：$d(x,z)\le d(x,y)+d(y,z)$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{收敛}
+	称度量空间$( X,d)$中点列$\{x_n\}_{n=1}^{\infty}$依度量$d$收敛到$x$，并记作$x_n\xlongrightarrow{d}x$，如果
+	$$
+	\lim_{n\to\infty}d(x_n,x)=0
+	$$
+\end{definition}
+
+\begin{definition}{度量线性空间}
+	称复数域$\C$上的度量空间$(X,d)$为度量线性空间，如果度量$d$对于加法和数乘运算连续；换言之
+	\begin{align*}
+		&x_n\xlongrightarrow{d}x\text{且}y_n\xlongrightarrow{d}y \implies x_n+y_n\xlongrightarrow{d}x+y\\
+		&x_n\xlongrightarrow{d}x\text{且}\lambda_n\longrightarrow  \lambda\implies \lambda_n x_n\xlongrightarrow{d}\lambda x
+	\end{align*}
+\end{definition}
+
+\begin{proposition}{度量线性空间的充分条件}
+	对于度量空间$(X,d)$，如果
+	$$
+	d(x+z,y+z)=d(x,y),\qquad 
+	d(\lambda x,0)\le |\lambda|d(x,0)
+	$$
+	那么$(X,d)$为度量线性空间。
+\end{proposition}
+
+\begin{proof}
+	任取
+	$$
+	x_n\xlongrightarrow{d}x,\qquad 
+	y_n\xlongrightarrow{d}y,\qquad 
+	\lambda_n\longrightarrow \lambda
+	$$
+	那么
+	$$
+	\lim_{n\to\infty}d(x_n,x)=\lim_{n\to\infty}d(y_n,y)=\lim_{n\to\infty}|\lambda_n-\lambda|=0
+	$$
+	由于
+	\begin{align*}
+		& d(x_n+y_n,x+y)
+		\le d(x_n+y_n,x+y_n)+d(x+y_n,x+y)
+		\le d(x_n,x)+d(y_n,y)\\
+		& d(\lambda_nx_n,\lambda x)
+		\le d(\lambda_nx_n,\lambda_n x)+d(\lambda_nx,\lambda x)
+		= d(\lambda_n(x_n-x),0)+d((\lambda_n-\lambda)x,0)
+		\le |\lambda_n|d(x_n,x)+|\lambda_n-\lambda|d(x,0)
+	\end{align*}
+	那么
+	$$
+	\lim_{n\to\infty}d(x_n+y_n,x+y)=\lim_{n\to\infty}d(\lambda_nx_n,\lambda x)=0
+	$$
+	因此
+	$$
+	x_n+y_n\xlongrightarrow{d}x+y,\qquad 
+	\lambda_nx_n\xlongrightarrow{d}\lambda x
+	$$
+	进而$(X,d)$为度量线性空间。
+\end{proof}
+
+\subsection{重要的度量线性空间}
+
+\begin{definition}{数列空间}
+	\begin{align*}
+		&s=\{\{x_n\}_{n=1}^{\infty}\}
+		&&d(\{x_n\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n-y_n|}{1+|x_n-y_n|}\\
+		&\left. \begin{lgathered}
+			l^\infty=\{\{x_n\}_{n=1}^{\infty}:\exists M,\forall n\in\N^*,|x_n|\le M\}\\
+			c=\{\{x_n\}_{n=1}^{\infty}:\exists x\in\R,x_n\to x\}\\
+			c_0=\{\{x_n\}_{n=1}^{\infty}:x_n\to 0\}\\
+			c_{00}=\{ \{x_n\}_{n=1}^{\infty}:\exists N,\forall n>N,x_n=0 \}\\
+		\end{lgathered}\right\}
+		&& \|\{x_n\}_{n=1}^{\infty}\|_\infty=\sup_{n\in\N^*}|x_n|\\
+		& l^p=\{\{x_n\}_{n=1}^{\infty}:\sum_{n=1}^{\infty}|x_n|^p<\infty\},\quad 1\le p<\infty
+		&& \|\{x_n\}_{n=1}^{\infty}\|_p=\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{1/p}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{函数空间}
+	\begin{align*}
+		& L^\infty[a,b]=\{ f\text{几乎处处有界} \},&& \|f\|_\infty=\inf_{m(E)=0}\sup_{[a,b]\setminus E}|f|\\
+		& L^p[a,b]=\left\{f:\int|f|^p<\infty\right\},&& \|f\|_p=\left(\int_a^b|f|^p\right)^{1/p}\\
+		&C[a,b]=\{\text{连续函数}f:[a,b]\to\C\},&& \|f\|=\sup_{[a,b]}|f|\\
+		&S[a,b]=\{\text{几乎处处有限的可测函数}f:[a,b]\to\R\},&& d(f,g)=\int_a^b\frac{|f-g|}{1+|f-g|}
+	\end{align*}
+\end{definition}
+
+\section{度量拓扑}
+
+\subsection{拓扑概念}
+
+\begin{definition}{开球}
+	对于度量空间$(X,d)$，定义开球
+	$$
+	B_r(x)=\{ y\in X:d(x,y)<r \}
+	$$
+\end{definition}
+
+\begin{definition}{邻域}
+	对于度量空间$(X,d)$，称$U\sub X$为$x\in X$的邻域，如果存在$r>0$，使得成立$B_r(x)\sub U$。
+\end{definition}
+
+\begin{definition}{内点}
+	对于度量空间$(X,d)$，称$x\in X$为$U\sub X$的内点，如果存在$r>0$，使得成立$B_r(x)\sub U$。
+\end{definition}
+
+\begin{definition}{极限点}
+	对于度量空间$(X,d)$，称$x\in X$为$E\sub X$的极限点，如果对于任意$r>0$，成立$B_r(x)\cap E\setminus\{ x \}\ne\varnothing$。
+\end{definition}
+
+\begin{definition}{接触点}
+	对于度量空间$(X,d)$，称$x\in X$为$E\sub X$的接触点，如果对于任意$r>0$，成立$B_r(x)\cap E\ne\varnothing$。
+\end{definition}
+
+\begin{definition}{内部}
+	对于度量空间$(X,d)$，$E\sub X$的所有内点称为$E$的内部，记作$E^\circ$。
+\end{definition}
+
+\begin{definition}{导集}
+	对于度量空间$(X,d)$，$E\sub X$的所有极限点称为$E$的导集，记作$E'$。
+\end{definition}
+
+\begin{definition}{闭包}
+	对于度量空间$(X,d)$，$E\sub X$的所有接触点称为$E$的闭包，记作$\overline{E}$。
+\end{definition}
+
+\begin{definition}{开集}
+	对于度量空间$(X,d)$，称$G\sub X$为开集，如果$G=G^\circ$。
+\end{definition}
+
+\begin{definition}{闭集}
+	对于度量空间$(X,d)$，称$F\sub X$为闭集，如果$F=\overline{F}$。
+\end{definition}
+
+\begin{definition}{连续映射}
+	对于度量空间$X$与$Y$，称映射$f:X\to Y$为连续的，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 邻域的原像是邻域。
+		\item 开集的原像是开集。
+		\item 闭集的原像是闭集。
+	\end{enumerate}
+\end{definition}
+
+\subsection{稠密性与可分性}
+
+\begin{definition}{稠密集合}
+	对于度量空间$(X,d)$，称子集$S\sub X$为$X$的稠密集，如果$\overline{S}=X$。
+\end{definition}
+
+\begin{definition}{可分空间}
+	称度量空间$( X,d )$为可分空间，如果$X$存在可数稠密子集。
+\end{definition}
+
+\begin{theorem}{同构保可分性}{同构保可分性}
+	对于赋范线性空间$X$与$Y$，如果存在保范线性双射$T:X\to Y$，那么
+	$$
+	X\text{ 为可分空间 }
+	\iff 
+	Y\text{ 为可分空间 }
+	$$
+\end{theorem}
+
+\begin{proof}
+	仅证明必要性，如果$X$为可分空间，那么存在可数子集$S\sub X$，使得成立$\overline{S}=X$。考察可数子集$T(S)\sub Y$，任取$y\in Y$，那么存在$x\in X=\overline{S}$，使得成立$T(x)=y$，进而存在$\{x_n\}_{n=1}^{\infty}\sub S$，使得成立$x_n\to x$。由于$T$为保范算子，那么由定理\ref{thm:有界线性算子的等价条件}，$T$为连续算子，因此
+	$$
+	\lim_{n\to\infty} T(x_n)
+	= T(\lim_{n\to\infty} x_n)
+	= T(x)
+	= y
+	$$
+	因此$\overline{T(S)}=Y$，进而$Y$为可分空间。
+\end{proof}
+
+\section{完备度量空间}
+
+\subsection{完备空间}
+
+\begin{definition}{Cauchy序列}
+	称度量空间$( X,d)$中的序列$\{x_n\}_{n=1}^{\infty}$为Cauchy序列，如果对于任意$\varepsilon>0$，存在$N\in\N^*$，使得对于任意$m,n>N$，成立$d(x_m,x_n)<\varepsilon$。
+\end{definition}
+
+\begin{definition}{完备度量空间}
+	称度量空间$(X,d)$为完备的，如果Cauchy序列收敛。
+\end{definition}
+
+\begin{definition}{完备化}
+	称完备的度量空间$(\tilde{X},\rho)$为度量空间$(X,d)$的完备化，如果存在等距映射$T:X\to \tilde{X}$，使得$T(X)$为$\tilde{X}$的稠密子集。
+\end{definition}
+
+\begin{theorem}{度量空间的完备化}
+	度量空间可完备化，且完备化空间在等距意义下唯一。
+\end{theorem}
+
+\begin{proof}
+	度量空间$(X,d)$的完备化空间为
+	\begin{align*}
+		&\tilde{X}=\{ X\text{中的Cauchy序列} \}/\sim\\
+		&\rho(\{x_n\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})=\lim_{n\to\infty}d(x_n,y_n)
+	\end{align*}
+	其中等价关系$\sim$定义为
+	$$
+	\{ x_n \}_{n=1}^{\infty}\sim \{ y_n \}_{n=1}^{\infty}\iff \lim_{n\to\infty}d(x_n,y_n)=0
+	$$
+\end{proof}
+
+\subsection{完备性与闭性}
+
+\begin{theorem}{完备性$\implies$闭性}{完备性与闭性的关系1}
+	对于度量空间$X$，如果$S$为$X$的完备子空间，那么$S$为$X$的闭子空间。
+\end{theorem}
+
+\begin{theorem}{闭性$\centernot\implies$完备性}{完备性与闭性的关系2}
+	对于完备度量空间$X$，如果$S$为$X$的闭子空间，那么$S$为$X$的完备子空间。
+\end{theorem}
+
+\begin{proof}
+	任取$S$中的Cauchy序列$\{x_n\}_{n=1}^\infty \subset S \subset X$，那么由于$X$的完备性，存在$x\in X$，使得成立$x_n\to x$。任取$r>0$，存在$N>0$，使得对于任意$n\ge N$，成立$d(x_n,x)<r$，即$x_n\in B_r(x)$。
+	
+	如果对于任意$n\ge N$，成立$x_n=x$，那么$x=x_N\in S$。
+	
+	如果存在$n_0\ge N$，使得成立$x_{n_0}\ne x$，那么$B_r(x)\cap S \setminus \{x\} \supset \{ x_{n_0} \}\ne\varnothing$，于是$x\in\overline{S}$。又因为$S$是闭的，所以$\overline{S}=S$，因此$x\in S$。
+	
+	综上所述，$x\in S$，进而$S$为完备子空间。
+\end{proof}
+
+\begin{theorem}{完备子空间的像为完备子空间}{完备子空间的像为完备子空间}
+	对于赋范线性空间$X$与$Y$，如果$T:X\to Y$为下有界连续算子，那么对于$X$的完备子空间$A$，$T(A)$为$Y$的完备子空间。
+\end{theorem}
+
+\begin{proof}
+	任取Cauchy序列$\{y_n\}_{n=1}^{\infty}\sub T(A)$，那么存在$\{ x_n \}_{n=1}^{\infty}\sub A$，使得对于任意$n\in\N^*$，成立$T(x_n)=y_n$，因此$\{ T(x_n) \}_{n=1}^{\infty}$为Cauchy序列。由于$T$为下有界算子，那么$\{ x_n \}_{n=1}^{\infty}$为Cauchy序列。由于$A$为完备子空间，那么存在$x\in A$，使得成立$x_n\to x$，因此$y_n=T(x_n)\to T(x)$，进而$T(A)$为$Y$的完备子空间。
+\end{proof}
+
+\section{紧致性}
+
+\subsection{紧致性}
+
+\begin{definition}{列紧性}
+	对于度量空间$X$，称子集$K\sub X$为列紧的，如果$K$中任意序列存在收敛子序列。
+\end{definition}
+
+\begin{definition}{自列紧性}
+	对于度量空间$X$，称闭的列紧子集$K\sub X$为自列紧集。
+\end{definition}
+
+\begin{definition}{紧致性}
+	对于度量空间$X$，称子集$K\sub X$是紧致的，如果$K$的任意开覆盖存在有限子覆盖。
+\end{definition}
+
+\begin{definition}{$\delta$-网}
+	对于度量空间$X$，称$N\sub X$为$M\sub X$的$\delta$-网，如果$\displaystyle M\sub \bigcup_{x\in N}B_\delta(x)$。
+\end{definition}
+
+\begin{definition}{完全有界性}
+	对于度量空间$X$，称子集$M\sub X$是完全有界的，如果对于任意$\delta>0$，存在有限$\delta$-网。
+\end{definition}
+
+\begin{theorem}
+	对于度量空间，成立
+	$$
+	\text{紧致性} \iff \text{自列紧性} \implies \text{列紧性}\implies \text{完全有界性} \implies \text{可分性}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于完备度量空间，成立
+	$$
+	\text{紧致性} \iff \text{自列紧性} \implies \text{列紧性}\iff \text{完全有界性} \implies \text{可分性}
+	$$
+\end{theorem}
+
+\begin{theorem}{对角线方法}
+	对于有界数列序列$\{ \{x_n^{(m)}\}_{n=1}^{\infty} \}_{m=1}^{\infty}\sub l^\infty$，存在正整数序列$\{n_k\}_{k=1}^{\infty}\sub\N^*$，使得对于任意$m\in\N^*$，数列$\{ x_{n_k}^{(m)} \}_{k=1}^{\infty}$收敛。
+\end{theorem}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 对于$m=1$，由于数列$\{ x_n^{(1)} \}_{n=1}^{\infty}$有界，那么存在正整数子序列$\{ n_k^{(1)} \}_{k=1}^{\infty}\sub\N^*$，使得数列$\{ x_{n_k^{(1)}}^{(1)} \}_{k=1}^{\infty}$收敛。
+		\item 假设对于$m=r$，存在正整数子序列$\{ n_k^{(r)} \}_{k=1}^{\infty}\sub \N^*$，使得数列$\{ x_{n_k^{(r)}}^{(r)} \}_{k=1}^{\infty}$收敛，那么对于$m=r+1$，由于数列$\{ x_{n_k^{(r)}}^{(r+1)} \}_{k=1}^{\infty}$有界，那么存在正整数子序列$\{ n_k^{(r+1)} \}_{k=1}^{\infty}\sub \{ n_k^{(r)} \}_{k=1}^{\infty}\sub \N^*$，使得数列$\{ x_{n_k^{(r+1)}}^{(r+1)} \}_{k=1}^{\infty}$收敛。
+		\item 由数学归纳法，存在$\N^*\supset \{ n_k^{(1)} \}_{k=1}^{\infty} \supset \{ n_k^{(2)} \}_{k=1}^{\infty}\supset\cdots$，使得对于任意$m\in\N^*$，数列$\{ x_{n_k^{(m)}}^{(m)} \}_{k=1}^{\infty}$收敛，取$n_k=n_k^{(k)}$，那么对于任意$m\in\N^*$，数列$\{ x_{n_k}^{(m)} \}_{k=1}^{\infty}$收敛。
+	\end{enumerate}
+\end{proof}
+
+\subsection{同等连续}
+
+\begin{definition}{同等连续}
+	对于度量空间$(X,d)$和$(Y,\rho)$，称函数族$\mathscr{F}=\{ f:X\to Y \}$为同等连续的，如果对于任意$\varepsilon>0$，存在$\delta>0$，使得对于任意$f\in\mathscr{F}$，当$d(x_1,x_2)<\delta$时，成立$\rho(f(x_1),f(x_2))<\varepsilon$。
+\end{definition}
+
+\begin{theorem}{Aezela-Ascoli定理}
+	对于连续函数族$\mathscr{F}\sub C[0,1]$，成立
+	$$
+	\mathscr{F}\text{为列紧子集}\iff \mathscr{F}\text{一致有界且同等连续}
+	$$
+\end{theorem}
+
+\begin{lemma}
+	对于$r\mathbb{D}\sub\C$上的解析函数序列$\{f_n\}$，其中$r>1$，如果$\{f_n\}$在$r\mathbb{D}$上一致有界，那么$\{f_n\}$在$\overline{\mathbb{D}}$上同等连续。
+\end{lemma}
+
+\begin{theorem}{Montel定理}
+	对于区域$\Omega\sub\C$上的一致有界的解析函数序列$\{ f_n \}_{n=1}^{\infty}$，那么对于任意满足$\overline{D}\sub\Omega$的有界区域$D$，存在在$D$上一致收敛的子函数序列$\{ f_{n_k} \}_{k=1}^{\infty}$。
+\end{theorem}
+
+\section{赋范线性空间}
+
+\subsection{范数}
+
+\begin{definition}{范数}
+	称复数域$\mathbb{C}$上的向量空间$X$上的函数$\Vert \cdot \Vert:X\to\mathbb{R}$为范数，如果满足如下性质。
+	\begin{enumerate}
+		\item 正定性：$\Vert x \Vert\ge 0$，当且仅当$x=0$时等号成立。
+		\item 绝对齐次性：$\Vert\lambda\cdot x\Vert=|\lambda|\Vert x \Vert$
+		\item 三角不等式：$\Vert x+y \Vert\le\Vert x \Vert+\Vert y \Vert$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{赋范线性空间}
+	称复数域$\mathbb{C}$上的向量空间$(X,\Vert \cdot \Vert)$为赋范线性空间，如果$\Vert \cdot \Vert:X\to\mathbb{R}$为范数。
+\end{definition}
+
+\begin{definition}{Banach空间}
+	称完备的赋范线性空间为Banach空间。
+\end{definition}
+
+\begin{theorem}{范数可诱导度量}
+	范数$\|\cdot\|$可诱导度量$d(\:\cdot\:,\:\cdot\:)$为$d(x,y)=\|x-y\|$。
+\end{theorem}
+
+\begin{proof}
+	仅证明三角不等式
+	\[ 
+	d(x,z)
+	=\|x-z\|
+	\le \|x-y\|+\|y-z\|
+	=d(x,y)+d(y,z)
+	 \]
+\end{proof}
+
+\subsection{收敛性}
+
+\begin{definition}{收敛}
+	称赋范线性空间$X$上的序列$\{x_n\}_{n=1}^{\infty}\sub X$收敛于$x\in X$，并记做$\displaystyle\lim_{n\to\infty}x_n=x$，如果
+	$$
+	\lim_{n\to\infty}\|x_n-x\|=0
+	$$
+\end{definition}
+
+\begin{theorem}{范数的连续性}
+	范数$\| \cdot\|:X\to\R$为Lipschitz连续映射。
+\end{theorem}
+
+\begin{proof}
+	$$
+	|\|x\|-\|y\||\le \|x-y\|
+	$$
+\end{proof}
+
+\begin{corollary}
+	赋范线性空间为线性度量空间。
+\end{corollary}
+
+\begin{definition}{收敛级数}
+	对于赋范线性空间$X$上的序列$\{x_n\}_{n=1}^{\infty}\sub X$，称级数$\displaystyle\sum_{n=1}^{\infty}x_n$收敛，如果序列$\displaystyle\left\{\sum_{k=1}^{n}x_k\right\}_{n=1}^{\infty}$收敛。
+\end{definition}
+
+\begin{definition}{绝对收敛级数}
+	对于赋范线性空间$X$上的序列$\{x_n\}_{n=1}^{\infty}\sub X$，称级数$\displaystyle\sum_{n=1}^{\infty}x_n$绝对收敛，如果数列级数$\displaystyle\sum_{n=1}^{\infty}\|x_n\|$收敛。
+\end{definition}
+
+\begin{theorem}{绝对收敛$\implies$收敛的充要条件}
+	对于赋范线性空间$X$，成立
+	$$
+	X\text{的绝对收敛级数为收敛级数}\iff X\text{为Banach空间}
+	$$
+\end{theorem}
+
+\begin{proof}
+	对于必要性，任取Cauchy序列$\{x_n\}_{n=1}^{\infty}\sub X$，我们来递归的寻找子序列$\{ n_k \}_{k=1}^{\infty}\sub\mathbb{N}^*$，使得对于任意$k\in\mathbb{N}^*$，成立$\| x_{n_{k+1}}-x_{n_k} \|<2^{-k}$。
+	
+	\begin{enumerate}
+		\item 取$\varepsilon=2^{-1}$，于是存在$N_1\in\mathbb{N}^*$，使得对于任意$m,n\ge N_1$，成立$\|x_m-x_n\|<2^{-1}$。取$n_1=N_1$。
+		\item 如果已取$n_1,\cdots,n_k$，那么取$\varepsilon=2^{-(k+1)}$，于是存在$N_{k+1}\in\mathbb{N}^*$，使得对于任意$m,n\ge N_{k+1}$，成立$\|x_m-x_n\|<2^{-(k+1)}$。取$n_{k+1}=\max\{ N_{k},N_{k+1} \}+1$。
+	\end{enumerate}
+	
+	递归的，子序列$\{ n_k \}_{k=1}^{\infty}\sub\mathbb{N}^*$满足对于任意$k\in\mathbb{N}^*$，成立$\| x_{n_{k+1}}-x_{n_k} \|<2^{-k}$，因此$\displaystyle\sum_{k=1}^{\infty}\|x_{n_{k+1}}-x_{n_k}\|<1$，即序列级数$\displaystyle\sum_{k=1}^{\infty}(x_{n_{k+1}}-x_{n_k})$绝对收敛。由必要性假设，序列级数$\displaystyle\sum_{k=1}^{\infty}(x_{n_{k+1}}-x_{n_k})$收敛，即序列$\displaystyle\left\{\sum_{k=1}^{m}(x_{n_{k+1}}-x_{n_k})\right\}_{m=1}^{\infty}$收敛，因此序列$\{x_n\}_{n=1}^{\infty}$的子序列$\{ x_{n_k} \}_{k=1}^{\infty}$收敛。记$x_{n_k}\to x\in X$，那么任取$\varepsilon>0$，存在$K\in\mathbb{N}^*$，使得对于任意$k\ge K$，成立$\| x_{n_k}-x\|<\varepsilon/2$。而序列$\{x_n\}_{n=1}^{\infty}$为Cauchy序列，那么对于此$\varepsilon>0$，存在$N\in\mathbb{N}^*$，使得对于任意$m,n\ge N$，成立$\|x_m-x_n\|<\varepsilon/2$。那么当$n,n_k\ge N$且$k\ge K$，$\| x_n-x \|\le \|x_n-x_{n_k}\|+\|x_{n_k}-x\|<\varepsilon$，因此$x_n\to x\in X$，进而$X$为完备的赋范线性空间，即Banach空间。
+	
+	对于充分性，任取绝对收敛序列级数$\displaystyle\sum_{n=1}^{\infty}x_n$，那么数列级数$\displaystyle\sum_{n=1}^{\infty}\|x_n\|$收敛，因此对于任意$\varepsilon>0$，存在$N\in\mathbb{N}^*$，使得对于任意$n\ge N$和$p\in\mathbb{N}^*$，成立$\displaystyle\sum_{k=n+1}^{n+p} \Vert x_k \Vert<\varepsilon$，那么对于此$\varepsilon>0$，成立
+	$$
+	\left\|\sum_{k=1}^{n+p}x_k-\sum_{k=1}^{n}x_k\right\|
+	=\left\|\sum_{k=n+1}^{n+p}x_k\right\|
+	\le\sum_{k=n+1}^{n+p} \Vert x_k \Vert
+	$$
+	因此序列$\displaystyle\left\{\sum_{k=1}^{n}x_k\right\}_{n=1}^{\infty}$为Cauchy序列，由$X$是完备的赋范线性空间，那么序列$\displaystyle\left\{\sum_{k=1}^{n}x_k\right\}_{n=1}^{\infty}$收敛，即序列级数$\displaystyle\sum_{n=1}^{\infty}x_n$收敛。
+\end{proof}
+
+\subsection{线性算子}
+
+\begin{definition}{线性算子}
+	对于赋范线性空间$X,Y$，称映射$T:X\to Y$为线性算子，如果
+	$$
+	T(x+y)=T(x)+T(y),\qquad T(\lambda x)=\lambda T(x)
+	$$
+\end{definition}
+
+\begin{definition}{线性泛函}
+	对于赋范线性空间$X$，称映射$f:X\to \C$为线性泛函，如果
+	$$
+	f(x+y)=f(x)+f(y),\qquad f(\lambda x)=\lambda f(x)
+	$$
+\end{definition}
+
+\begin{definition}{共轭线性算子}
+	对于赋范线性空间$X,Y$，称映射$T:X\to Y$为共轭线性算子，如果
+	$$
+	T(x+y)=T(x)+T(y),\qquad T(\lambda x)=\overline{\lambda} T(x)
+	$$
+\end{definition}
+
+\begin{definition}{有界线性算子}
+	对于赋范线性空间$X,Y$，称线性算子$T:X\to Y$为有界线性算子，如果存在$C$，使得对于任意$x\in X$，成立$\|T(x)\|\le C\|x\|$。
+\end{definition}
+
+\begin{definition}{连续线性算子}
+	对于赋范线性空间$X,Y$，称线性算子$T:X\to Y$为连续线性算子，如果
+	$$
+	x_n\to x\implies T(x_n)\to T(x)
+	$$
+\end{definition}
+
+\begin{definition}{逆线性算子}
+	对于赋范线性空间$X,Y$，称线性算子$T^{-1}:T(X)\to X$为单线性算子$T:X\to Y$的逆线性算子。
+\end{definition}
+
+\begin{definition}{有界可逆线性算子}
+	对于赋范线性空间$X,Y$，称线性算子$T:X\to Y$为有界可逆线性算子，如果$T$为双射，且$T$与$T^{-1}$为有界线性算子。
+\end{definition}
+
+\begin{definition}{有界线性算子的范数}
+	对于赋范线性空间$X,Y$，定义有界线性算子$T:X\to Y$的范数为
+	$$
+	\|T\|=\sup_{x\ne 0}\frac{\|T(x)\|}{\|x\|}
+	=\sup_{\|x\|\le 1}\|T(x)\|
+	=\sup_{\|x\|=1}\|T(x)\|
+	$$
+\end{definition}
+
+\begin{theorem}{有界线性算子的等价条件}{有界线性算子的等价条件}
+	对于线性算子$T:X\to Y$，其中$X,Y$为赋范线性空间，如下命题等价。
+	\begin{enumerate}
+		\item $T$在$0$处连续。
+		\item $T$在$x_0\in X$处连续。
+		\item $T$在$X$上连续。
+		\item $T$在$X$上一致连续。
+		\item $T$在$X$上Lipschitz连续。
+		\item $T$在$X$上有界。
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	$6\implies 5$：由于$T$有界，于是存在$C>0$，使得对于任意$x\in X$，成立$\|T\|\le C\|x\|$。任取$x,y\in X$，由于
+	$$
+	\|T(x)-T(y)\|=\|T(x-y)\|\le C\|x-y\|
+	$$
+	那么$T$在$X$上Lipschitz连续。
+	
+	$5\implies 4\implies 3\implies 2\implies 1$：显然！
+	
+	$1\implies 6$：由于$T$在$0$处连续，那么存在$\delta>0$，使得当$\|x\|\le\delta$时，成立$\|T(x)\|\le 1$，因此对于任意$x\in X\setminus\{0\}$，成立
+	$$
+	\|T(x)\|=\frac{\|x\|}{\delta}\left\| T\left( \frac{\delta}{\|x\|}x \right) \right\|\le \frac{\|x\|}{\delta}
+	$$
+	因此$T$在$X$上有界。
+\end{proof}
+
+\begin{proposition}{}{命题7.1}
+	对于赋范线性空间$X$中的线性无关子集$\{x_k\}_{k=1}^{n}\sub X$，存在$\mu>0$，使得对于任意$\{\lambda_k\}_{k=1}^{n}\sub \C$，成立
+	$$
+	\sum_{k=1}^{n}|\lambda_n|\le\mu\left\| \sum_{k=1}^{n}\lambda_k x_k \right\|
+	$$
+\end{proposition}
+
+\begin{proof}
+	定义
+	$$
+	\alpha=\inf\left\{
+	\left\| \sum_{k=1}^{n}\lambda_k x_k \right\|:\sum_{k=1}^{n}|\lambda_n|=1,\{\lambda_k\}_{k=1}^{n}\sub \C
+	\right\}
+	$$
+	因此存在$\{\{\lambda_k^{(m)}\}_{k=1}^{n}\}_{m=1}^{\infty}\sub\C$，使得成立
+	$$
+	\lim_{m\to\infty}\|y_m\|=\alpha
+	$$
+	其中
+	$$
+	y_m=\sum_{k=1}^{n}\lambda_k^{(m)} x_k,\qquad 
+	\sum_{k=1}^{n}|\lambda_n^{(m)}|=1
+	$$
+	由于对于任意$1\le k\le n$，数列$\{\lambda_k^{(m)}\}_{m=1}^{\infty}$有界，那么由对角线法则，存在子列$\{ m_i \}_{i=1}^{\infty}$，使得对于任意$1\le k\le n$成立
+	$$
+	\lim_{i\to\infty}\lambda_k^{(m_i)}=\gamma_k
+	\implies \sum_{k=1}^{n}|\gamma_k|=1
+	\implies x=\sum_{k=1}^{n}\gamma_k x_k\ne 0
+	$$
+	由于对于任意$i\in\N^*$，成立
+	$$
+	\|y_{m_i}-x\|
+	=\left\| \sum_{k=1}^{n}(\lambda_k^{(m_i)}-\gamma_k) x_k \right\|
+	\le \sum_{k=1}^{n}|\lambda_k^{(m_i)}-\gamma_k|\| x_k\|
+	\implies \lim_{i\to\infty}y_{m_i}=x
+	\implies \lim_{i\to\infty}\|y_{m_i}\|=\|x\|
+	\implies \alpha=\|x\|>0
+	$$
+	取$\mu=1/\alpha$，那么对于任意$\{\lambda_k\}_{k=1}^{n}\sub \C$，成立
+	$$
+	\left\| \sum_{k=1}^{n}\frac{\lambda_k}{\displaystyle \sum_{k=1}^{n}|\lambda_n|} x_k \right\|\ge \frac{1}{\mu}
+	\iff 
+	\sum_{k=1}^{n}|\lambda_n|\le\mu\left\| \sum_{k=1}^{n}\lambda_k x_k \right\|
+	$$
+\end{proof}
+
+\begin{proposition}{}{命题7.2}
+	对于有限维赋范线性空间$X$中的基$\{e_k\}_{k=1}^{n}\sub X$，成立
+	$$
+	\lim_{m\to\infty}\sum_{k=1}^{n}\lambda_k^{(m)}e_k=\sum_{k=1}^{n}\lambda_ke_k \iff
+	\lim_{m\to\infty}\lambda_k^{(m)}=\lambda_k,\forall 1\le k\le n
+	$$
+\end{proposition}
+
+\begin{proof}
+	令
+	$$
+	x_m=\sum_{k=1}^{n}\lambda_k^{(m)}e_k,\qquad 
+	x= \sum_{k=1}^{n}\lambda_ke_k
+	$$
+	
+	对于必要性，由命题\ref{pro:命题7.1}，存在$\mu>0$，使得对于任意$m\in\N^*$，成立
+	$$
+	\sum_{k=1}^{n}|\lambda_k^{(m)}-\lambda_k|
+	\le \mu\left\| \sum_{k=1}^{n}(\lambda_k^{(m)}-\lambda_k)e_k \right\|
+	= \mu\|x_m-x\|
+	$$
+	由于$x_m\to x$，那么对于任意$1\le k\le n$，成立$\lambda_k^{(m)}\to \lambda_k$，必要性得证！
+	
+	对于充分性，任取$\varepsilon>0$，令$\displaystyle K=\max_{1\le k\le n}\{\| e_k \|\}$，由于对于任意$1\le k\le n$，成立$\lambda_k^{(m)}\to \lambda_k$，那么存在$M\in\N^*$，使得对于任意$m\ge M$与$1\le k\le n$，成立$|\lambda_k^{(m)}-\lambda_k|<\varepsilon/(nK)$，那么当$m\ge M$时，成立
+	$$
+	\left\| \sum_{k=1}^{n}(\lambda_k^{(m)}-\lambda_k)e_k \right\|
+	\le \sum_{k=1}^{n}|\lambda_k^{(m)}-\lambda_k|\|e_k\|
+	\le \sum_{k=1}^{n}\frac{\varepsilon}{nK}K=\varepsilon
+	$$
+	因此
+	$$
+	\lim_{m\to\infty}x_m=\lim_{m\to\infty}\sum_{k=1}^{n}\lambda_k^{(m)}e_k=\sum_{k=1}^{n}\lambda_ke_k=x
+	$$
+	充分性得证！
+\end{proof}
+
+\begin{theorem}
+	$n$维实赋范线性空间与$\R^n$线性同构且同胚。
+\end{theorem}
+
+\begin{proof}
+	记$n$维实赋范线性空间$X$的基为$\{e_k\}_{k=1}^{n}$，构造线性双射
+	\function{T}{X}{\R^n}{\sum_{k=1}^{n}\lambda_ke_k}{(\lambda_1,\cdots,\lambda_n)}
+	
+	一方面，由命题\ref{pro:命题7.1}，存在$\mu>0$，使得对于任意$\{\lambda_k\}_{k=1}^{n}$，成立
+	$$
+	\sum_{k=1}^{n}|\lambda_n|\le\mu\left\| \sum_{k=1}^{n}\lambda_k e_k \right\|
+	$$
+	对于任意$\displaystyle x=\sum_{k=1}^{n}\lambda_k e_k\in X$，成立
+	$$
+	\|T(x)\|_2
+	= \left(\sum_{k=1}^{n}|\lambda_n|^2\right)^{1/2}
+	\le \sum_{k=1}^{n}|\lambda_n|
+	\le \mu\left\| \sum_{k=1}^{n}\lambda_k e_k \right\|
+	= \mu\|x\|
+	$$
+	因此$T$为有界算子。
+	
+	另一方面，对于任意$(\lambda_1,\cdots,\lambda_n)\in\R^n$，令$\displaystyle x=\sum_{k=1}^{n}\lambda_k e_k\in X$与$\displaystyle M=\max_{1\l k\le n}\|e_k\|$，由Hölder不等式\ref{thm:数列Hölder不等式}
+	$$
+	\|x\|
+	= \left\| \sum_{k=1}^{n}\lambda_k e_k \right\|
+	\le \sum_{k=1}^{n}|\lambda_k|\| e_k \|
+	\le \left(\sum_{k=1}^{n}|\lambda_k|^2\right)^{1/2}\left(\sum_{k=1}^{n}\| e_k \|^2\right)^{1/2}
+	\le \sqrt{n}M\|T(x)\|_2
+	$$
+	因此$T^{-1}$为有界算子。
+	
+	由定理\ref{thm:有界线性算子的等价条件}，$T$和$T^{-1}$为连续算子，因此$T$为同胚映射。
+\end{proof}
+
+\begin{theorem}{Bolzana-Weierstrass聚点定理}{Bolzana-Weierstrass聚点定理}
+	有限维赋范线性空间中有界序列存在收敛子序列。
+\end{theorem}
+
+\begin{proof}
+	对于$n$维实赋范线性空间$X$，其基为$\{e_k\}_{k=1}^{n}$，任取有界序列$\{ x_m \}_{m=1}^{\infty}\sub X$，令
+	$$
+	x_m=\sum_{k=1}^{n}\lambda_k^{(m)}e_k,\qquad 
+	\|x_m\|\le M,\qquad
+	m\in\N^*
+	$$
+	由命题\ref{pro:命题7.1}，存在$\mu>0$，使得对于任意$m\in\N^*$，成立
+	$$
+	\sum_{k=1}^{n}|\lambda_n^{(m)}|
+	\le\mu\left\| \sum_{k=1}^{n}\lambda_k^{(m)} e_k \right\|
+	= \mu\|x_m\|\le\mu M
+	\implies |\lambda_n^{(m)}|\le \mu M,\forall m\in\N^*,\forall 1\le k\le n
+	$$
+	于是对于任意$1\le k\le n$，数列$\{\lambda_k^{(m)}\}_{m=1}^{\infty}$有界，那么由对角线法则，存在子列$\{ m_i \}_{i=1}^{\infty}$，使得对于任意$1\le k\le n$成立
+	$$
+	\lim_{i\to\infty}\lambda_k^{(m_i)}=\gamma_k
+	$$
+	由命题\ref{pro:命题7.1}
+	$$
+	\lim_{i\to\infty} x_{m_i}
+	=\lim_{i\to\infty}\sum_{k=1}^{n}\lambda_k^{(m_i)}e_k
+	= \sum_{k=1}^{n}\gamma_ke_k=x
+	$$
+	因此序列$\{ x_m \}_{m=1}^{\infty}$存在收敛于$x$的子序列$\{ x_{m_i} \}_{i=1}^{\infty}$，命题得证！
+\end{proof}
+
+\begin{theorem}{Riesz引理}{Riesz引理}
+	如果$M$是赋范线性空间$X$的真线性闭子空间，那么对于任意$0<\varepsilon<1$，存在$x_\varepsilon\in X$，使得成立$\|x_\varepsilon\|=1$，且
+	$$
+	\inf_{m\in M}\|x_\varepsilon-m\|\ge 1-\varepsilon
+	$$
+\end{theorem}
+
+\begin{proof}
+	任取$x\in X\setminus M$，由于$M$为闭集，那么由分离定理，$d(x,M)=d>0$。任取$0<\varepsilon<1$，存在$y\in M$，使得成立
+	$$
+	d\le \|x-y\|\le \frac{d}{1-\varepsilon}
+	$$
+	定义
+	$$
+	x_\varepsilon=\frac{x-y}{\|x-y\|}
+	$$
+	那么$x_\varepsilon\in X$，且$\|x_\varepsilon\|=1$，同时对于任意$m\in M$，成立
+	\begin{align*}
+		\|x_\varepsilon-m\|
+		& = \left\| \frac{x-y}{\|x-y\|}-m \right\|\\
+		& = \frac{\|(m\|x-y\|-+y)-x\|}{\|x-y\|}\\
+		& \ge \frac{d}{d/(1-\varepsilon)}\\
+		& = 1-\varepsilon
+	\end{align*}
+\end{proof}
+
+\section{压缩映像原理}
+
+\subsection{压缩映像原理}
+
+\begin{definition}{Lipschitz条件}
+	对于度量空间$(X,d)$，称映射$T:X\to X$满足Lipschitz条件，如果存在Lipschitz常数$q>0$，使得对于任意$x,y\in X$，成立$d(T(x),T(y))\le qd(x,y)$。
+\end{definition}
+
+\begin{definition}{压缩映射}
+	对于度量空间$(X,d)$，称映射$T:X\to X$为压缩映射，如果存在Lipschitz常数$0<q<1$。
+\end{definition}
+
+\begin{definition}{不动点}
+	称$x\in X$为映射$T:X\to X$的不动点，如果$T(x)=x$。
+\end{definition}
+
+\begin{theorem}{压缩映像原理}{压缩映像原理}
+	对于完备度量空间$(X,d)$，如果映射$T:X\to X$为以$0<q<1$为Lipschitz常数的压缩映射，那么$T$存在且存在唯一不动点$\overline{x}$。进一步，对于任意初始点$x_0\in X$，逐次迭代点列$x_{n+1}=T(x_n)$，那么$x_n\to x$，且
+	$$
+	d(x_n,\overline{x})\le \frac{q^n}{1-q}d(T(x_0),x_0)
+	$$
+\end{theorem}
+
+\begin{corollary}{}{压缩映像原理的推论}
+	如果$T^{n}$存在且存在唯一不动点$\overline{x}$，那么$T$存在且存在唯一不动点$\overline{x}$。
+\end{corollary}
+
+\begin{proof}
+	由于
+	$$
+	T^{n}(T(\overline{x}))=T(T^n(\overline{x}))=T(\overline{x})\implies T(\overline{x})=\overline{x}
+	$$
+	那么$\overline{x}$为$T$的不动点。如果$\overline{y}$为$T$的不动点，那么$\overline{x}$与$\overline{y}$为$T^n$的不动点，于是$x=y$，进而$T$存在且存在唯一不动点$\overline{x}$。
+\end{proof}
+
+\subsection{压缩映像原理的应用}
+
+\begin{proposition}
+	存在且存在唯一$[0,1]$上的连续函数$f(x)$，使得成立
+	$$
+	f(x)=\frac{1}{2}\cos f(x)-\varphi(x)
+	$$
+	其中$\varphi(x)$是$[0,1]$上的连续函数。
+\end{proposition}
+
+\begin{proof}
+	构造映射
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow C[0,1]\\
+			f&\longmapsto F,\text{ 其中 }F(x)=\frac{1}{2}\cos f(x)-\varphi(x)
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		\|T(f)-T(g)\|=&\sup_{0\le x\le 1}|(T(f))(x)-(T(g))(x)|\\
+		= & \sup_{0\le x\le 1}\frac{1}{2}|\cos f(x)-\cos g(x)|\\
+		= & \sup_{0\le x\le 1}\left|\sin\frac{f(x)+g(x)}{2}\sin\frac{f(x)-g(x)}{2}\right|\\
+		\le & \sup_{0\le x\le 1}\frac{1}{2}|f(x)-g(x)|\\
+		= & \|f-g\|
+	\end{align*}
+	因此$T$为压缩映射，由压缩映像原理\ref{thm:压缩映像原理}，存在且存在唯一$f(x)\in C[0,1]$，使得成立$T(f)=f$，即
+	$$
+	f(x)=\frac{1}{2}\cos f(x)-\varphi(x)
+	$$
+\end{proof}
+
+\begin{proposition}{Fredholm积分方程}
+	当$|\mu||a-b|M<1$时，Fredholm积分方程
+	$$
+	f(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+	$$
+	存在且存在唯一解，其中$K(x,y),\varphi(x)$是$a\le x,y\le b$上的连续函数，且$M=\sup\limits_{a\le x,y\le b}|K(x,y)|$。
+\end{proposition}
+
+\begin{proof}
+	构造映射
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[a,b]&\longrightarrow C[a,b]\\
+			f&\longmapsto F,\text{ 其中 }F(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		\|T(f)-T(g)\|
+		=&\sup_{x\in[a,b]}|(T(f))(x)-(T(g))(x)|\\
+		=&|\mu|\sup_{x\in[a,b]}\left| \int_a^bK(x,y)(f(y)-g(y))\mathrm{d}y \right|\\
+		\le & |\mu|\sup_{x\in[a,b]}\int_a^b|K(x,y)||f(y)-g(y)|\mathrm{d}y\\
+		\le & |\mu||a-b|M\sup_{x\in[a,b]}|f(x)-g(x)|\\
+		=& |\mu||a-b|M\|f-g\|
+	\end{align*}
+	而$|\mu||a-b|M<1$，那么$T$为压缩映射，由压缩映像原理\ref{thm:压缩映像原理}，存在且存在唯一$f\in C[a,b]$，使得成立$T(f)=f$​，因此成立Fredholm积分方程
+	$$
+	f(x)=\varphi(x)+\mu\int_a^bK(x,y)f(y)\mathrm{d}y
+	$$
+\end{proof}
+
+\begin{proposition}{Volterra积分方程}
+	Volterra积分方程
+	$$
+	f(x)=\varphi(x)+\mu\int_a^xK(x,y)f(y)\mathrm{d}y
+	$$
+	存在且存在唯一解，其中$K(x,y),\varphi(x)$是$a\le x,y\le b$上的连续函数。
+\end{proposition}
+
+\begin{proof}
+	定义Volterra积分算子
+	\begin{align*}
+		V:\begin{aligned}[t]
+			C[a,b]&\longrightarrow C[a,b]\\
+			f&\longmapsto F,\text{ 其中 }F(x)=\varphi(x)+\mu\int_a^xK(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	记$M=\sup\limits_{a\le x,y\le b}|K(x,y)|$，递归证明
+	$$
+	|(T^n(f-g))(x)|
+	\le |\mu|^nM^n\frac{(x-a)^n}{n!}\|f-g\|,\qquad n\in\N^*
+	$$
+	当$n=1$时
+	\begin{align*}
+		|(T(f-g))(x)|
+		& = \left| \mu\int_a^xK(x,y)(f(y)-g(y))\mathrm{d}y \right|\\
+		& \le |\mu|\int_a^x|K(x,y)||f(y)-g(y)|\mathrm{d}y\\
+		& \le |\mu|\int_a^xM\|f-g\|\mathrm{d}y\\
+		& = |\mu|M(x-a)\|f-g\|
+	\end{align*}
+	假设当$n=k$时成立
+	$$
+	|(T^k(f-g))(x)|
+	\le |\mu|^kM^k\frac{(x-a)^k}{k!}\|f-g\|
+	$$
+	那么当$n=k+1$时
+	\begin{align*}
+		|(T^{k+1}(f-g))(x)|
+		& = \left| \mu\int_a^x K(x,y)((T^k(f-g))(y)) \mathrm{d}y\right|\\
+		& \le |\mu|\int_a^x|K(x,y)||(T^k(f-g))(y)|\mathrm{d}y\\
+		& \le |\mu|\int_a^xM|\mu|^kM^k\frac{(y-a)^k}{k!}\|f-g\|\mathrm{d}y\\
+		& = |\mu|^{k+1}M^{k+1}\frac{(x-a)^k}{({k+1})!}\|f-g\|
+	\end{align*}
+	由数学归纳法
+	$$
+	|(T^n(f-g))(x)|
+	\le |\mu|^nM^n\frac{(x-a)^n}{n!}\|f-g\|,\qquad n\in\N^*
+	$$
+	因此
+	$$
+	\|T^n(f)-T^n(g)\|
+	=\sup_{a\le x\le b}|(T^n(f-g))(x)|
+	\le |\mu|^nM^n\frac{(b-a)^n}{n!}\|f-g\|
+	$$
+	由于
+	$$
+	\lim_{n\to\infty}|\mu|^nM^n\frac{(b-a)^n}{n!}=0
+	$$
+	那么存在$N\in\N^*$，使得成立
+	$$
+	|\mu|^NM^N\frac{(b-a)^N}{N!}<1
+	$$
+	因此$T^N$为压缩映射，由压缩映像原理\ref{thm:压缩映像原理}，$T^N$存在且存在唯一不动点$f$。由压缩映像原理的推论\ref{cor:压缩映像原理的推论}，$T$存在且存在唯一不动点$f$。
+	
+	综上所述，Volterra积分方程
+	$$
+	f(x)=\varphi(x)+\mu\int_a^xK(x,y)f(y)\mathrm{d}y
+	$$
+	存在且存在唯一解$f$。
+\end{proof}
+
+\begin{theorem}{Picard定理}
+	对于带形区域$\{ (t,x):|t-t_0|<\delta,x\in\R \}$上的连续函数$f(t,x)$，如果$f(t,x)$对于关于$x$满足Lipschitz条件，即存在$L>0$，使得对于任意$|t-t_0|<\delta,x,y\in\R$，成立$|f(t,x)-f(t,y)|\le L|x-y|$，那么初值问题
+	$$
+	\begin{cases}x'(t)=f(t,x(t))\\x(t_0)=x_0\end{cases}
+	$$
+	在区间$[t_0-\beta,t_0+\beta]$上存在且存在唯一连续解，其中$0<\beta<\min\{\delta,1/L\}$。
+\end{theorem}
+
+\subsection{Fréchet导数}
+
+\begin{definition}{Fréchet可微}
+	对于Banach空间$X$与$Y$，以及$X$的开子集$\Omega$，称算子$T:\Omega\to Y$在$x\in\Omega$处Fréchet可微，如果存在有界线性算子$L:X\to Y$，使得成立
+	$$
+	\lim_{\|h\|\to 0}\frac{\| T(x+h)-T(x)-L(h) \|}{\|h\|}=0
+	$$
+\end{definition}
+
+\begin{definition}{Fréchet导数}
+	对于Banach空间$X$与$Y$，以及$X$的开子集$\Omega$，称有界线性算子$L:X\to Y$为算子$T:\Omega\to Y$在$x\in\Omega$处的Fréchet导数，如果$T$在$x$处Fréchet可微，且
+	$$
+	\lim_{\|h\|\to 0}\frac{\| T(x+h)-T(x)-L(h) \|}{\|h\|}=0
+	$$
+\end{definition}
+
+\section{$l^p$空间}
+
+\subsection{$l^p$空间}
+
+\begin{definition}{$l^p$空间}
+	对于$1\le p \le \infty$，定义复数域$\mathbb{C}$上的$l^p$空间
+	\nonumber\begin{align}
+		&l^p=\{p\text{ 次绝对可和数列}\{x_n\}_{n=1}^{\infty}\sub\C\},\qquad 1\le  p<\infty\\
+		&l^\infty=\{\text{有界数列}\{x_n\}_{n=1}^{\infty}\sub\C\}
+	\end{align}
+	
+	引入记号
+	\nonumber\begin{align}
+		&\|\{x_n\}_{n=1}^{\infty}\|_p=\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{1/p},\qquad 1\le p<\infty\\
+		&\|\{x_n\}_{n=1}^{\infty}\|_\infty=\sup_{n\in\N^*}|x_n|
+	\end{align}
+\end{definition}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item $l^p$为可分Banach空间，其中$1\le p<\infty$。
+		\item $l^\infty$为不可分Banach空间。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Hölder不等式}{数列Hölder不等式}
+	对于$1\le p,q \le\infty$满足$\frac{1}{p}+\frac{1}{q}=\frac{1}{r}$，如果$x\in l^p$且$y\in l^q$，那么成立不等式
+	$$
+	\| xy \|_r\le\|x\|_p \|y\|_q
+	$$
+	换言之
+	$$
+	\left(\sum_{n=1}^{\infty}|x_ny_n|^r\right)^{1/r}\le
+	\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{1/p}\left(\sum_{n=1}^{\infty}|y_n|^q\right)^{1/q}
+	$$
+\end{theorem}
+
+\begin{theorem}{Minkowsky不等式}{数列Minkowsky不等式}
+	对于$1\le p \le\infty$，如果$x,y\in l^p$，那么成立不等式
+	$$
+	\|x+y\|_p\le\|x\|_p+\|y\|_p
+	$$
+	换言之
+	$$
+	\left(\sum_{n=1}^{\infty}|x_n+y_n|^p\right)^{1/p}\le
+	\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{1/p}+\left(\sum_{n=1}^{\infty}|y_n|^pq\right)^{1/p}
+	$$
+\end{theorem}
+
+\subsection{$l^p$空间的收敛性}
+
+\begin{theorem}{$l^p$空间的收敛性}{lp空间的收敛性}
+	\begin{enumerate}
+		\item 在$l^p$空间中，成立
+		$$
+		\{x_n\}_{n=1}^{\infty}\text{依}p\text{-范数}\text{收敛于}x\implies
+		\{x_n\}_{n=1}^{\infty}\text{依坐标一致收敛于}x
+		$$
+		其中$1\le p<\infty$。
+		\item 在$l^\infty$空间中，成立
+		$$
+		\{x_n\}_{n=1}^{\infty}\text{依}\infty\text{-范数}\text{收敛于}x\iff \{x_n\}_{n=1}^{\infty}\text{依坐标一致收敛于}x
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	对于$1\le p<\infty$
+	\begin{align*}
+		& \{ x_n^{(m)} \}_{n=1}^{\infty}\text{依}p\text{-范数}\text{收敛于}\{x_n\}_{n=1}^{\infty}\\
+		\iff & \{ x_n^{(m)} \}_{n=1}^{\infty}\longrightarrow \{x_n\}_{n=1}^{\infty}\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}\}_{n=1}^{\infty}-\{x_n \}_{n=1}^{\infty} \|_p=0\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}-x_n \}_{n=1}^{\infty} \|_p=0\\
+		\iff & \lim_{m\to\infty}\left( \sum_{n=1}^{\infty}|x_n^{(m)}-x_n|^p \right)^{1/p}=0\\
+		\iff & \forall \varepsilon>0,\exists M\in\N^*,\forall m\ge M,\left( \sum_{n=1}^{\infty}|x_n^{(m)}-x_n|^p \right)^{1/p}\le \varepsilon\\
+		\implies & \forall \varepsilon>0,\exists M\in\N^*,\forall m\ge M,\forall n\in\N^*,|x_n^{(m)}-x_n|\le\varepsilon\\
+		\iff & \{x_n\}_{n=1}^{\infty}\text{依坐标一致收敛于}x
+	\end{align*}
+	
+	对于$p=\infty$
+	\begin{align*}
+		& \{ x_n^{(m)} \}_{n=1}^{\infty}\text{依}\infty\text{-范数}\text{收敛于}\{x_n\}_{n=1}^{\infty}\\
+		\iff & \{ x_n^{(m)} \}_{n=1}^{\infty}\longrightarrow \{x_n\}_{n=1}^{\infty}\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}\}_{n=1}^{\infty}-\{x_n \}_{n=1}^{\infty} \|_\infty=0\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}-x_n \}_{n=1}^{\infty} \|_\infty
+		=0\\
+		\iff & \lim_{m\to\infty}\sup_{n\in\N^*}|x_n^{(m)}-x_n|=0\\
+		\iff & \forall\varepsilon>0,\exists M\in\N^*,\forall m\ge M,\sup_{n\in\N^*}|x_n^{(m)}-x_n|\le\varepsilon\\
+		\iff & \forall\varepsilon>0,\exists M\in\N^*,\forall m\ge M,\forall n\in\N^*,|x_n^{(m)}-x_n|\le\varepsilon\\
+		\iff & \{ x_n^{(m)} \}_{n=1}^{\infty}\text{依坐标一致收敛于}\{x_n\}_{n=1}^{\infty}
+	\end{align*}
+\end{proof}
+
+\subsection{$l^p$空间的完备性}
+
+\begin{theorem}{$l^p$空间的完备性}
+	$l^p$空间依$p$-范数完备，其中$1\le p\le \infty$。
+\end{theorem}
+
+\begin{proof}
+	对于$1\le p<\infty$，任取Cauchy序列$\{ \{x_n^{(m)}\}_{n=1}^{\infty} \}_{m=1}^{\infty}\sub l^p$，那么对于任意$\varepsilon>0$，存在$M\in\N^*$，使得对于任意$i,j\ge M$，成立
+	\begin{equation}
+		\label{公式11}\|\{x_n^{(i)}\}_{n=1}^{\infty}-\{x_n^{(j)}\}_{n=1}^{\infty}\|_p\le\varepsilon
+		\iff \sum_{n=1}^{\infty}|x_n^{(i)}-x_n^{(j)}|^p\le\varepsilon^p
+		\implies |x_n^{(i)}-x_n^{(j)}|\le\varepsilon,\forall n\in\N^*\tag*{(*)}
+	\end{equation}
+	因此对于任意$n\in\N^*$，$\{ x_n^{(m)} \}_{m=1}^{\infty}\sub\C$为Cauchy序列，因此存在$x_n\in\C$，使得成立$\lim\limits_{m\to\infty}x_n^{(m)}=x_n$。在式\ref{公式11}中，取$j=M$，令$i\to\infty$，可得
+	$$
+	\|\{x_n\}_{n=1}^{\infty}-\{x_n^{(M)}\}_{n=1}^{\infty}\|_p\le\varepsilon
+	$$
+	因此由Minkowsky不等式\ref{thm:数列Minkowsky不等式}
+	$$
+	\|\{x_n\}_{n=1}^{\infty}\|_p
+	\le \|\{x_n\}_{n=1}^{\infty}-\{x_n^{(M)}\}_{n=1}^{\infty}\|_p+\|\{x_n^{(M)}\}_{n=1}^{\infty}\|_p\le \varepsilon+\|\{x_n^{(M)}\}_{n=1}^{\infty}\|_p<\infty
+	$$
+	进而$\{ x_n \}_{n=1}^{\infty}\in l^p$。又由于
+	$$
+	\lim_{m\to\infty}\|\{x_n\}_{n=1}^{\infty}-\{x_n^{(m)}\}_{n=1}^{\infty}\|_p
+	=\lim_{i,j\to\infty}\|\{x_n^{(i)}\}_{n=1}^{\infty}-\{x_n^{(j)}\}_{n=1}^{\infty}\|_p=0
+	$$
+	那么
+	$$
+	\{x_n^{(m)}\}_{n=1}^{\infty}\longrightarrow \{x_n\}_{n=1}^{\infty}
+	$$
+	进而$l^p$空间为完备空间。
+	
+	对于$p=\infty$，任取Cauchy序列$\{ \{x_n^{(m)}\}_{n=1}^{\infty} \}_{m=1}^{\infty}\sub l^p$，那么对于任意$\varepsilon>0$，存在$M\in\N^*$，使得对于任意$i,j\ge M$，成立
+	\begin{equation}
+		\label{公式12}\|\{x_n^{(i)}\}_{n=1}^{\infty}-\{x_n^{(j)}\}_{n=1}^{\infty}\|_\infty\le\varepsilon
+		\iff \sup_{n\in\N^*}|x_n^{(i)}-x_n^{(j)}|\le\varepsilon
+		\implies |x_n^{(i)}-x_n^{(j)}|\le\varepsilon,\forall n\in\N^*\tag*{(**)}
+	\end{equation}
+	因此对于任意$n\in\N^*$，$\{ x_n^{(m)} \}_{m=1}^{\infty}\sub\C$为Cauchy序列，因此存在$x_n\in\C$，使得成立$\lim\limits_{m\to\infty}x_n^{(m)}=x_n$。在式\ref{公式12}中，取$j=M$，令$i\to\infty$，可得
+	$$
+	\|\{x_n\}_{n=1}^{\infty}-\{x_n^{(M)}\}_{n=1}^{\infty}\|_\infty\le\varepsilon
+	$$
+	因此由Minkowsky不等式\ref{thm:数列Minkowsky不等式}
+	$$
+	\|\{x_n\}_{n=1}^{\infty}\|_\infty
+	\le \|\{x_n\}_{n=1}^{\infty}-\{x_n^{(M)}\}_{n=1}^{\infty}\|_\infty+\|\{x_n^{(M)}\}_{n=1}^{\infty}\|_\infty\le \varepsilon+\|\{x_n^{(M)}\}_{n=1}^{\infty}\|_\infty<\infty
+	$$
+	进而$\{ x_n \}_{n=1}^{\infty}\in l^\infty$。又由于
+	$$
+	\lim_{m\to\infty}\|\{x_n\}_{n=1}^{\infty}-\{x_n^{(m)}\}_{n=1}^{\infty}\|_\infty
+	=\lim_{i,j\to\infty}\|\{x_n^{(i)}\}_{n=1}^{\infty}-\{x_n^{(j)}\}_{n=1}^{\infty}\|_\infty=0
+	$$
+	那么
+	$$
+	\{x_n^{(m)}\}_{n=1}^{\infty}\longrightarrow \{x_n\}_{n=1}^{\infty}
+	$$
+	进而$l^\infty$空间为完备空间。
+	
+	综上所述，$l^p$空间依$p$-范数完备，其中$1\le p\le \infty$。
+\end{proof}
+
+\subsection{$l^p$空间的可分性}
+
+\begin{theorem}{$l^p$空间的可分性}{lp空间的可分性}
+	\begin{enumerate}
+		\item $l^p$为可分空间，其中$1\le p<\infty$。
+		\item $l^\infty$不为可分空间。
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	对于$1\le p<\infty$，构造
+	$$
+	S=\{ \{r_1,\cdots,r_n,0,0,\cdots\}:r_k\in\Q,n\in\N^* \}
+	$$
+	那么$S$为可数集合。任取$x=\{ x_n \}_{n=1}^{\infty}\in l^p$，任取$\varepsilon>0$，由于
+	$$
+	\|\{ x_n \}_{n=1}^{\infty}\|_p<\infty\iff
+	\sum_{n=1}^{\infty}\left|x_n\right|^p<\infty
+	$$
+	那么存在$N\in\N^*$​，使得成立
+	$$
+	\sum_{n=N+1}^{\infty}\left|x_n\right|^p<\frac{\varepsilon^p}{2}
+	$$
+	而对于任意$1\le n\le N$，存在$\{ r^{(m)}_n \}_{m=1}^{\infty}\sub\Q$，使得成立$\lim\limits_{m\to\infty}r_n^{(m)}=x_n$，因此存在$M_n\in\N^*$，使得对于任意$m\ge M_n$，成立
+	$$
+	|r_n^{(m)}-x_n|<\frac{\varepsilon}{(2N)^{1/p}}
+	$$
+	令$r_m=\{ r_1^{(m)},\cdots,r_N^{(m)},0,0,\cdots \}\in S$，取$K=\max\{ N,M_1,\cdots,M_{N} \}$，那么当$m\ge K$时，成立
+	$$
+	\|r_m-x\|_p
+	=  \left(\sum_{n=1}^{N}|r_n^{(m)}-x_n|^p+\sum_{n=N+1}^{\infty}|x_n|^p\right)^{1/p}
+	< \left(\sum_{n=1}^{N}\left(\frac{\varepsilon}{(2N)^{1/p}}\right)^p+\frac{\varepsilon^p}{2}\right)^{1/p}
+	=\varepsilon
+	$$
+	因此
+	$$
+	r_m\longrightarrow x
+	$$
+	于是$S$为$l^p$的可数稠密子集，所以$l^p$空间为可分空间。
+	
+	对于$p=\infty$，构造
+	$$
+	E=\{ \{x_n\}_{n=1}^{\infty}:x_n\in\{0,1\} \}
+	$$
+	那么$E$为不可数集。如果$l^\infty$为可分空间，那么存在可数稠密子集$S$，使得成立$\overline{S}=l^\infty$，因此
+	$$
+	\bigcup_{x\in S}B_{\frac{1}{3}}(x)=l^p\supset E
+	$$
+	从而存在$s\in S$，与$x\ne y\in E$，使得成立$x,y\in B_{\frac{1}{3}}(s)$，于是由Minkowsky不等式\ref{thm:数列Minkowsky不等式}
+	$$
+	1=\|x-y\|_\infty\le 
+	\|x-s\|_\infty+\|s-y\|_\infty
+	\le \frac{1}{3}+\frac{1}{3}=\frac{2}{3}
+	$$
+	矛盾！因此$l^\infty$不为可分空间。
+\end{proof}
+
+\section{$L^p$空间}
+
+\subsection{$L^p$空间}
+
+\begin{definition}{$L^p$空间}
+	对于$0< p \le \infty$，定义数域$\mathbb{F}$上的测度空间$(X,\Sigma,\mu)$上的$L^p$空间
+	\nonumber\begin{align}
+		&L^p=\left\{ p\text{ 次绝对可积函数}f:X\to\C \right\},\qquad 0< p<\infty\\
+		&L^\infty=\left\{ \text{几乎处处有界函数}f:X\to\C \right\}
+	\end{align}
+	
+	引入记号
+	\nonumber\begin{align}
+		&\|  f \|_p=\left( \int_X |f|^p\mathrm{d}\mu \right)^{1/p},\qquad 0< p<\infty\\
+		&\|f\|_\infty=\inf_{\mu(N)=0}\sup_{X\setminus N}|f|
+	\end{align}
+\end{definition}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item $L^p$为可分Banach空间，其中$1\le p<\infty$。
+		\item $L^\infty$为不可分Banach空间。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Young不等式}{Young不等式}
+	如果$1< p,q <\infty$满足$\frac{1}{p}+\frac{1}{q}=1$且$a,b\ge 0$，那么成立不等式
+	$$
+	ab\le \frac{1}{p}a^p+\frac{1}{q}b^q
+	$$
+	当且仅当$a^p=b^q$时等号成立。
+\end{theorem}
+
+\begin{proof}
+	当$ab=0$时不等式显然成立；当$ab>0$时，记$t=\frac{1}{p}\in(0,1),x=\frac{a^{1/t}}{b^{1/(1-t)}}\in(0,\infty)$，那么等价于证明$x^t\le tx+1-t$，这是容易的。
+\end{proof}
+
+\begin{theorem}{Hölder不等式}{函数Hölder不等式}
+	对于$0< p,q \le\infty$满足$\frac{1}{p}+\frac{1}{q}=\frac{1}{r}$，如果$f\in L^p$且$g\in L^q$，那么成立不等式
+	$$
+	\| fg \|_r\le\|f\|_p \|g\|_q
+	$$
+	换言之
+	$$
+	\left(\int |fg|^r\right)^{1/r}
+	\le \left(\int |f|^p\right)^{1/p}\left(\int |g|^q\right)^{1/q}
+	$$
+\end{theorem}
+
+\begin{proof}
+	1.当$p=q=r=\infty$时，由于$f,g\in L^{\infty}$，那么存在零测集$A,B\in\Sigma$，使得成立$\displaystyle\sup_{X\setminus A}|f|\le \|f\|_{\infty}$且$\displaystyle\sup_{X\setminus B}|g|\le \|g\|_{\infty}$，因此
+	$$
+	\|fg\|_\infty=\inf_{\mu(N)=0}\sup_{X\setminus N}|fg|\le \sup_{X\setminus(A\cup B)}|fg|\le\sup_{X\setminus A}|f|\cdot\sup_{X\setminus B}|g|\le\|f\|_\infty\|g\|_\infty
+	$$
+	
+	2.当$p=\infty$且$q=r<\infty$时，由于$f\in L^\infty$，那么存在零测集$E\in\Sigma$，使得成立$\displaystyle\sup_{X\setminus E}|f|\le \|f\|_{\infty}$，因此
+	$$
+	\|fg\|_r
+	=\left( \int_{X}|fg|^r \right)^{1/r}
+	=\left( \int_{X\setminus E}|fg|^r \right)^{1/r}
+	\le \|f\|_\infty \left( \int_{X\setminus E}|g|^r \right)^{1/r}
+	=\|f\|_\infty \left( \int_{X}|g|^r \right)^{1/r}
+	=\|f\|_p \|g\|_q
+	$$
+	同理可证当$q=\infty$且$p=r<\infty$时，成立不等式$\| fg \|_r\le\|f\|_p \|g\|_q$。
+	
+	3.当$p,q<\infty$时，如果$\|f\|_p=0$或$\|g\|_q=0$，那么几乎处处于成立$fg=0$，于是不等式显然成立。如果$\|f\|_p>0$且$\|g\|_q>0$，那么令$F=f/\|f\|_p$且$G=g/\|g\|_q$，于是$\|F\|_p=\|G\|_q=1$。由Young不等式\ref{thm:Young不等式}
+	$$
+	\|FG\|_r=
+	\left(\int|FG|^r\right)^{1/r}
+	\le\left(\frac{r}{p}\int|F|^p+\frac{r}{q}\int|G|^q\right)^{1/r}
+	=\left(\frac{r}{p}\|F\|_p^p+\frac{r}{q}\|G\|_q^q\right)^{1/r}
+	=\left(\frac{r}{p}+\frac{r}{q}\right)^{1/r}=1
+	$$
+	进而成立不等式$\| fg \|_r\le\|f\|_p \|g\|_q$。
+\end{proof}
+
+\begin{theorem}{Minkowsky不等式}{函数Minkowsky不等式}
+	\begin{enumerate}
+		\item 对于$1\le p \le\infty$，如果$f,g\in L^p$，那么成立不等式
+		$$
+		\|f+g\|_p\le\|f\|_p+\|g\|_p
+		$$
+		换言之
+		$$
+		\left(\int |f+g|^p\right)^{1/p}
+		\le \left(\int |f|^p\right)^{1/p}+\left(\int |g|^p\right)^{1/p}
+		$$
+		\item 对于$0<p<1$，如果$f,g\in L^p$，那么成立不等式
+		$$
+		\|f+g\|_p^p\le\|f\|_p^p+\|g\|_p^p
+		$$
+		换言之
+		$$
+		\int |f+g|^p\le \int |f|^p+\int |g|^p
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	一方面，对于$1\le p\le \infty$。
+	
+	$1.$当$p=1$时，不等式蕴含于三角不等式$|f+g|\le|f|+|g|$中。
+	
+	2.当$p=\infty$时，由于$f,g\in L^\infty$，那么存在零测集$A,B\in\Sigma$，使得成立$\displaystyle\sup_{X\setminus A}|f|\le \|f\|_{\infty}$且$\displaystyle\sup_{X\setminus B}|g|\le \|g\|_{\infty}$，因此
+	$$
+	\|f+g\|_\infty
+	=\inf_{\mu(N)=0}\sup_{X\setminus N}|f+g|
+	\le \sup_{X\setminus(A\cup B)}|f+g|
+	\le\sup_{X\setminus A}|f|+\sup_{X\setminus B}|g|
+	\le\|f\|_\infty\|g\|_\infty
+	$$
+	
+	3.当$1<p<\infty$时，令$1<q<\infty$满足$\frac{1}{p}+\frac{1}{q}=1$，由Hölder不等式\ref{thm:函数Hölder不等式}
+	\nonumber\begin{align}
+		&\|f+g\|_p^p\\
+		=&\| \ |f+g|^p \ \|_1\\
+		=&\| \ |f+g|^{p-1}|f+g| \ \|_1\\
+		\le&\| \ |f+g|^{p-1}|f| \ \|_1+\| \ |f+g|^{p-1}|g| \ \|_1\\
+		\le & (\|f\|_p+\|g\|_p) \cdot \| \ |f+g|^{p-1} \ \|_q\\
+		=&(\|f\|_p+\|g\|_p)\cdot\| f+g\|_p^{p-1}
+	\end{align}
+	进而成立不等式$\|f+g\|_p\le\|f\|_p+\|g\|_p$。
+	
+	另一方面，对于$0<p<1$，此时成立
+	$$
+	|f+g|^p\le |f|^p+|g|^p\implies \int_X|f+g|^p\le \int_X |f|^p+\int_X |g|^p\iff \|f+g\|_p^p\le\|f\|_p^p+\|g\|_p^p
+	$$
+\end{proof}
+
+\subsection{$L^p$空间的完备性}
+
+\begin{theorem}{Levi单调收敛定理}{Levi单调收敛定理}
+	对于可测集$E\sub\R^n$上的非负单调递增的可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E\lim_{n\to\infty}f_n=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\begin{theorem}{$L^p$空间的完备性}
+	\begin{enumerate}
+		\item 当$1\le p\le\infty$时，$L^p$空间依范数$\|\cdot\|_p$完备。
+		\item 当$0<p<1$时，$L^p$空间依度量$\|\cdot-\cdot\|_p^p$完备。
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	一方面，对于$0<p<\infty$。
+	
+	任取Cauchy序列$\{f_n\}_{n=1}^\infty\sub L^p$，递归寻找子序列$\{ n_k \}_{k=1}^{\infty}\sub\mathbb{N}^*$，使得对于任意$k\in\mathbb{N}^*$，成立$\| f_{n_{k+1}}-f_{n_k} \|_p<2^{-k}$。
+	
+	1.取$\varepsilon=2^{-1}$，存在$N_1\in\mathbb{N}^*$，使得对于任意$m,n\ge N_1$，成立$\|f_m-f_n\|_p<2^{-1}$。取$n_1=N_1$。
+	2.如果已取$n_1,\cdots,n_k$，那么取$\varepsilon=2^{-(k+1)}$，于是存在$N_{k+1}\in\mathbb{N}^*$，使得对于任意$m,n\ge N_{k+1}$，成立$\|f_m-f_n\|_p<2^{-(k+1)}$。取$n_{k+1}=\max\{ N_{k},N_{k+1} \}+1$。
+	
+	递归的，可得子序列$\{ n_k \}_{k=1}^{\infty}\sub\mathbb{N}^*$满足对于任意$k\in\mathbb{N}^*$，成立$\| f_{n_{k+1}}-f_{n_k} \|_p<2^{-k}$。考虑级数
+	$$
+	f=f_{n_1}+\sum_{k=1}^{\infty}(f_{n_{k+1}}-f_{n_k}),\qquad
+	S_m(f)=f_{n_1}+\sum_{k=1}^{m}(f_{n_{k+1}}-f_{n_k})
+	$$
+	$$
+	g=|f_{n_1}|+\sum_{k=1}^{\infty}|f_{n_{k+1}}-f_{n_k}|,\qquad
+	S_m(g)=|f_{n_1}|+\sum_{k=1}^{m}|f_{n_{k+1}}-f_{n_k}|
+	$$
+	
+	1.当$0<p<1$时，对于任意$m\in\N^*$，由Minkowsky不等式\ref{thm:函数Minkowsky不等式}
+	$$
+	\|S_m(g)\|_p^p\le \|f_{n_1}\|_p^p+\sum_{k=1}^{m}\| f_{n_{k+1}}-f_{n_k}\|_p^p< \|f_{n_1}\|_p^p+\sum_{k=1}^{m}2^{-pk}<1+\|f_{n_1}\|_p^p
+	$$
+	由Levi单调收敛定理\ref{thm:Levi单调收敛定理}
+	$$
+	\|g\|_p^p=\int_X |g|^p=\int_X \lim_{m\to\infty} |S_m(g)|^p=\lim_{m\to\infty}\int_X |S_m(g)|^p=\lim_{m\to\infty}\|S_m(g)\|_p^p\le 1+\|f_{n_1}\|_p^p
+	$$
+	因此级数$g$几乎处处收敛，于是级数$f$几乎处处绝对收敛，那么存在零测集$N\in\Sigma$，使得级数$f$在$X\setminus N$上绝对收敛。不妨当$x\in N$时，令$f(x)=0$，那么$f$为可测函数。
+	
+	注意到
+	$$
+	\|f\|_p
+	=\left( \int_{X}|f|^p \right)^{1/p}
+	=\left( \int_{X\setminus N}|f|^p \right)^{1/p}
+	\le \left( \int_{X\setminus N}|g|^p \right)^{1/p}
+	=\left( \int_{X}|g|^p \right)^{1/p}
+	=\|g\|_p<\infty
+	$$
+	因此$f\in L^p$，同时注意到
+	$$
+	\| f-f_{n_k} \|_p^p
+	=\left\| \sum_{i=k+1}^{\infty}(f_{n_{i+1}}-f_{n_i}) \right\|_p^p
+	\le \sum_{i=k+1}^{\infty}\| f_{n_{i+1}}-f_{n_i} \|_p^p
+	< \sum_{i=k+1}^{\infty}2^{-pi}=\frac{2^p}{2^p-1}\frac{1}{2^{p(k+1)}}\to0
+	$$
+	因此子序列$\{f_{n_k}\}_{k=1}^{\infty}$在$L^p$空间中收敛于$f$。任取$\varepsilon>0$，存在$K\in\N^*$，使得当$n_k\ge k\ge K$时，成立$\|f-f_{n_k}\|_p<\varepsilon/2$且$\|f_k-f_{n_k}\|_p<\varepsilon/2$，于是
+	$$
+	\|f-f_k\|_p^p\le\|f-f_{n_k}\|_p^p+\|f_k-f_{n_k}\|_p^p<\varepsilon^p\implies \|f-f_k\|_p<\varepsilon
+	$$
+	进而序列$\{f_n\}_{n=1}^{\infty}$在$L^p$空间中收敛于$f$。
+	
+	2.当$1\le p<\infty$时，对于任意$m\in\N^*$，由Minkowsky不等式\ref{thm:函数Minkowsky不等式}
+	$$
+	\|S_m(g)\|_p
+	\le \|f_{n_1}\|_p+\sum_{k=1}^{m}\| f_{n_{k+1}}-f_{n_k}\|_p
+	< \|f_{n_1}\|_p+\sum_{k=1}^{m}2^{-k}
+	< 1+\|f_{n_1}\|_p
+	$$
+	由Levi单调收敛定理\ref{thm:Levi单调收敛定理}
+	$$
+	\|g\|_p
+	=\left(\int_X |g|^p\right)^{1/p}
+	=\left(\int_X \lim_{m\to\infty} |S_m(g)|^p\right)^{1/p}
+	=\lim_{m\to\infty}\left(\int_X |S_m(g)|^p\right)^{1/p}
+	=\lim_{m\to\infty}\|S_m(g)\|_p
+	\le 1+\|f_{n_1}\|_p
+	$$
+	因此级数$g$几乎处处收敛，于是级数$f$几乎处处绝对收敛，那么存在零测集$N\in\Sigma$，使得级数$f$在$X\setminus N$上绝对收敛。不妨当$x\in N$时，令$f(x)=0$，那么$f$为可测函数。
+	
+	注意到
+	$$
+	\|f\|_p
+	=\left( \int_{X}|f|^p \right)^{1/p}
+	=\left( \int_{X\setminus N}|f|^p \right)^{1/p}
+	\le \left( \int_{X\setminus N}|g|^p \right)^{1/p}
+	=\left( \int_{X}|g|^p \right)^{1/p}
+	=\|g\|_p<\infty
+	$$
+	因此$f\in L^p$。同时注意到
+	$$
+	\| f-f_{n_k} \|_p
+	=\left\| \sum_{i=k+1}^{\infty}(f_{n_{i+1}}-f_{n_i}) \right\|_p
+	\le \sum_{i=k+1}^{\infty}\| f_{n_{i+1}}-f_{n_i} \|_p
+	< \sum_{i=k+1}^{\infty}2^{-i}=\frac{1}{2^k}\to0
+	$$
+	因此子序列$\{f_{n_k}\}_{k=1}^{\infty}$在$L^p$空间中收敛于$f$。任取$\varepsilon>0$，存在$K\in\N^*$，使得当$n_k\ge k\ge K$时，成立$\|f-f_{n_k}\|_p<\varepsilon/2$且$\|f_k-f_{n_k}\|_p<\varepsilon/2$，于是
+	$$
+	\|f-f_k\|_p\le\|f-f_{n_k}\|_p+\|f_k-f_{n_k}\|_p<\varepsilon
+	$$
+	进而序列$\{f_n\}_{n=1}^{\infty}$在$L^p$空间中收敛于$f$。
+	
+	另一方面，对于$p=\infty$。任取Cauchy序列$\{f_n\}_{n=1}^\infty\sub L^\infty$，那么对于任意$\varepsilon>0$，存在$M\in\N^*$，使得对于任意$m,n\ge M$，成立$\| f_m-f_n \|_\infty<\varepsilon$。对于任意$m,n\in\N^*$，存在零测集$N_{m,n}$，使得成立$\displaystyle \sup_{X\setminus N_{m,n}}|f_m-f_n|\le \| f_m-f_n \|_\infty$。
+	
+	记$\displaystyle N=\bigcup_{m,n\in\N^*}N_{m,n}$，那么$N$为零测集且对于任意$m,n\in\N^*$，成立$\displaystyle \sup_{X\setminus N}|f_m-f_n|\le \| f_m-f_n \|_\infty$，进而当$m,n\ge M$时，成立$\displaystyle \sup_{X\setminus N}|f_m-f_n|<\varepsilon$，因此对于任意$x\in X\setminus N$，$|f_m(x)-f_n(x)|<\varepsilon$，于是$\{ f_n(x) \}_{n=1}^{\infty}\sub\C$为Cauchy序列，记$\displaystyle f(x)=\lim_{n\to\infty}f_n(x)$。当$x\in N$时，令$f(x)=0$，那么$f$为可测函数。
+	
+	令$m\to\infty$，当$n\ge M$时，成立$\displaystyle \sup_{X\setminus N}|f-f_n|<\varepsilon$。注意到
+	$$
+	\sup_{X\setminus N}|f|\le\sup_{X\setminus N}|f-f_n|+\sup_{X\setminus N}|f_n|<\varepsilon+\sup_{X\setminus N}|f_n|
+	$$
+	因此$f\in L^\infty$。同时注意到
+	$$
+	\|f-f_n\|_\infty=\inf_{\mu(N)=0}\sup_{X\setminus N}|f-f_n|\le\sup_{X\setminus N}|f-f_n|<\varepsilon
+	$$
+	进而序列$\{f_n\}_{n=1}^{\infty}$在$L^\infty$空间中收敛于$f$。
+	
+	综上所述，$L^p$空间关于范数$\Vert \cdot \Vert_p$是完备的，其中$0<p\le \infty$。
+\end{proof}
+
+\subsection{$L^p$空间的可分性}
+
+\begin{theorem}{Luzin定理}{Luzin定理}
+	\begin{enumerate}
+		\item 如果$f$是可测集$E$上的几乎处处有限的可测函数，那么对于任意$\varepsilon>0$，存在闭集$F\sub E$，使得成立$m(E-F)<\varepsilon$，且$f$在$F$上连续。
+		\item 如果$f$是可测集$E$上的几乎处处有限的可测函数，那么对于任意$\varepsilon>0$，存在$E$上的连续函数$g$，使得成立$m(f\ne g)<\varepsilon$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Lebesgue控制收敛定理}{Lebesgue控制收敛定理}
+	如果$F$在可测集$E\sub\R^n$上可积，在$E$上的可测函数序列$\{ f_n \}_{n=1}^{\infty}$满足$|f_n|\le F$，且$f_n$在$E$上依测度收敛于$f$，或$f_n$在$E$上几乎处处收敛于$f$，那么$f$在$E$上可积，且
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\begin{theorem}{Weierstrass逼近定理}{Weierstrass逼近定理}
+	如果$f$为$[a,b]$上的连续函数，那么存在多项式函数序列$\{f_n\}_{n=1}^{\infty}$，使得$f_n$一致收敛于$f$。
+\end{theorem}
+
+\begin{theorem}{简单函数逼近定理}{简单函数逼近定理}
+	对于可测集$E\sub\R^n$上的非负函数$f$，如下命题等价。
+	\begin{enumerate}
+		\item $f$是$E$上的可测函数。
+		\item 存在单调递增的非负简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}$，使得成立$\varphi_n\to f$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{$L^p$空间的稠密性}
+	$p$次幂可积简单函数族在$L^p$空间中稠密，其中$0<p<\infty$。
+\end{theorem}
+
+\begin{proof}
+	记$X$上的$p$次幂可积简单函数族为
+	$$
+	\chi^p=\left\{ \sum_{k=1}^{n}a_k\mathbbm{1}_{E_k}:a_k\in\C,E_k\in \Sigma,\left\| \sum_{k=1}^{n}a_k\mathbbm{1}_{E_k} \right\|_p<\infty \right\}
+	$$
+	
+	1.对于非负实值函数$f\in L^p$，由简单函数逼近定理\ref{thm:简单函数逼近定理}，存在单调递增的非负$p$次幂可积简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}\subset \chi^p$，使得成立$\varphi_n\to f$，因此$\left|f-\varphi_n\right|^p\to0$。注意到$\left|f-\varphi_n\right|^p\le \left|2f\right|^p$，且$\left|2f\right|^p$在$L^1$上可积，那么由Lebesgue控制收敛定理\ref{thm:Lebesgue控制收敛定理}，$\left|f-\varphi_n\right|^p$在$L^1$上可积，且
+	$$
+	\lim_{n\to\infty}\int_X \left|f-\varphi_n\right|^p=0
+	\implies \lim_{n\to\infty}\|f-\varphi_n\|_p=0
+	$$
+	
+	2.对于$f\in L^p$，由$1.$存在$p$次幂可积简单函数序列$\{ \varphi_n^+ \}_{n=1}^{\infty},\{ \varphi_n^- \}_{n=1}^{\infty},\{ \psi_n^+ \}_{n=1}^{\infty},\{ \psi_n^- \}_{n=1}^{\infty}\subset \chi^p$，使得成立
+	$$
+	\lim_{n\to\infty}\|(\text{Re} f)^+-\varphi_n^+\|_p
+	=\lim_{n\to\infty}\|(\text{Re} f)^--\varphi_n^-\|_p
+	=\lim_{n\to\infty}\|(\text{Im} f)^+-\psi_n^+\|_p
+	=\lim_{n\to\infty}\|(\text{Im} f)^--\psi_n^-\|_p=0
+	$$
+	因此当$0<p<1$时
+	\nonumber\begin{align}
+		&\lim_{n\to\infty}\| f-((\varphi_n^+-\varphi_n^-)+i(\psi_n^+-\psi_n^-)) \|_p^p\\
+		\le & \lim_{n\to\infty}\| ((\text{Re} f)^+-\varphi_n^+)-((\text{Re} f)^--\varphi_n^-)+i((\text{Im} f)^+-\psi_n^+)-i(\text{Im} f)^--\psi_n^- \|_p^p\\
+		\le & \lim_{n\to\infty}\|(\text{Re} f)^+-\varphi_n^+\|_p^p+\lim_{n\to\infty}\|(\text{Re} f)^--\varphi_n^-\|_p^p+\lim_{n\to\infty}\|(\text{Im} f)^+-\psi_n^+\|_p^p+\lim_{n\to\infty}\|(\text{Im} f)^--\psi_n^-\|_p^p\\
+		=&0
+	\end{align}
+	当$1\le p<\infty$时
+	\nonumber\begin{align}
+		&\lim_{n\to\infty}\| f-((\varphi_n^+-\varphi_n^-)+i(\psi_n^+-\psi_n^-)) \|_p\\
+		\le & \lim_{n\to\infty}\| ((\text{Re} f)^+-\varphi_n^+)-((\text{Re} f)^--\varphi_n^-)+i((\text{Im} f)^+-\psi_n^+)-i(\text{Im} f)^--\psi_n^- \|_p\\
+		\le & \lim_{n\to\infty}\|(\text{Re} f)^+-\varphi_n^+\|_p+\lim_{n\to\infty}\|(\text{Re} f)^--\varphi_n^-\|_p+\lim_{n\to\infty}\|(\text{Im} f)^+-\psi_n^+\|_p+\lim_{n\to\infty}\|(\text{Im} f)^--\psi_n^-\|_p\\
+		=&0
+	\end{align}
+	
+	综上所述，$p$次幂可积简单函数族在$L^p$空间中稠密，其中$0<p<\infty$。
+\end{proof}
+
+\begin{lemma}{简单函数族在$L^p$空间中稠密}{简单函数族在Lp空间中稠密}
+	记$[a,b]$上的简单函数全体为
+	$$
+	S[a,b]=\left\{ \sum_{k=1}^{n}a_k\mathbbm{1}_{A_k}:A_k\subset[a,b]\right\},
+	$$
+	那么$S[a,b]$在$L^p[a,b]$中稠密，其中于$1\le p<\infty$。
+\end{lemma}
+
+\begin{proof}
+	首先证明$S[a,b]\subset L^p[a,b]$。由Minkowsky不等式\ref{thm:函数Minkowsky不等式}，成立
+	$$
+	\left\| \sum_{k=1}^{n}a_k\mathbbm{1}_{A_k} \right\|_p
+	\le \sum_{k=1}^{n}|a_k|\left\| \mathbbm{1}_{A_k} \right\|_p
+	= \sum_{k=1}^{n}|a_k|\left(m(A_k)\right)^{1/p}
+	<\infty
+	$$
+	因此$S[a,b]\subset L^p[a,b]$。
+	
+	其次证明$S[a,b]$在$L^p[a,b]$中稠密。任取$f\in L^p[a,b]$，由简单函数逼近定理\ref{thm:简单函数逼近定理}，存在单调递增的非负简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}\subset S[a,b]$，使得成立$\varphi_n\to f^+$，因此$\left|f^+-\varphi_n\right|^p\to0$。注意到$\left|f^+-\varphi_n\right|^p\le \left|2f^+\right|^p$，且$\left|2f^+\right|^p$在$[a,b]$上可积，那么由Lebesgue控制收敛定理\ref{thm:Lebesgue控制收敛定理}，$\left|f^+-\varphi_n\right|^p$在$[a,b]$上可积，且
+	$$
+	\lim_{n\to\infty}\int_a^b \left|f^+-\varphi_n\right|^p=0
+	\implies \lim_{n\to\infty}\|f^+-\varphi_n\|_p=0
+	$$
+	同理，存在单调递增的非负简单函数序列$\{ \psi_n \}_{n=1}^{\infty}\subset S[a,b]$，使得成立$\lim\limits_{n\to\infty}\|f^--\psi_n\|_p=0$。由Minkowsky不等式\ref{thm:函数Minkowsky不等式}，成立
+	$$
+	\lim_{n\to\infty}\| f-(\varphi_n-\psi_n) \|_p
+	=\lim_{n\to\infty}\| (f^+-\varphi_n)-(f^--\psi_n) \|_p
+	\le \lim_{n\to\infty}\|f^+-\varphi_n\|_p+\lim_{n\to\infty}\|f^--\psi_n\|_p=0
+	$$
+	进而$S[a,b]$是$L^p$的稠密子集。
+\end{proof}
+
+\begin{lemma}{有界可测函数族在$L^p$空间中稠密}{有界可测函数族在Lp空间中稠密}
+	记$B[a,b]$是$[a,b]$上的有界可测函数全体，那么$B[a,b]$在$L^p[a,b]$中稠密，其中$1\le p<\infty$。
+\end{lemma}
+
+\begin{proof}
+	首先证明$B[a,b]\subset L^p[a,b]$。任取$f\in B[a,b]$，那么存在$M$，使得成立$|f|<M$，于是
+	$$
+	\|f\|_p=\left(\int_a^b|f|^p\right)^{1/p}<(b-a)^{1/p}M<\infty
+	$$
+	因此$f\in L^p[a,b]$，进而$B[a,b]\subset L^p[a,b]$。
+	
+	其次证明$B[a,b]$在$L^p[a,b]$中稠密。任取$f\in L^p[a,b]$，以及$\varepsilon>0$。定义函数序列$f_n=\min\{ f,n \}$，那么$f_n\in B[a,b]$。由于$|f|^p\in L^1[a,b]$，那么$|f|^p$可积，由积分绝对连续性，对于此$\varepsilon>0$，存在$\delta>0$，使得当$e\subset [a,b]$且$m(e)<\delta$时，成立$\displaystyle \int_{e}|f|^p <\varepsilon^p$。注意到
+	$$
+	n^p m(|f|>n)\le \int_{|f|>n}|f|^p\le\int_a^b|f|^p<\infty
+	$$
+	那么$m(|f|>n)\to 0$，因此对于此$\delta>0$，存在$n\in\mathbb{N}^*$，使得成立$m(|f|>n)<\delta$，于是$\displaystyle \int_{|f|>n}|f|^p <\varepsilon^p$，进而
+	$$
+	\|f_n-f\|_p=\left(\int_a^b|f_n-f|^p\right)^{1/p}=\left(\int_{|f|>n}|f|^p\right)^{1/p}<\varepsilon
+	$$
+	因此$B[a,b]$在$L^p[a,b]$中稠密。
+\end{proof}
+
+\begin{lemma}{连续函数族在$B[a,b]$空间中稠密}{连续函数族在B[a,b]空间中稠密}
+	记$C[a,b]$是$[a,b]$上的连续函数全体，那么$C[a,b]$在$B[a,b]$中稠密，其中$1\le p<\infty$。
+\end{lemma}
+
+\begin{proof}
+	显然$C[a,b]\subset B[a,b]$。任取$f\in B[a,b]$，那么存在$M$，使得成立$|f|<M$。任取$\varepsilon>0$，由Luzin定理\ref{thm:Luzin定理}，存在$g\in C[a,b]$，使得成立$m(f\ne g)<(\varepsilon/2M)^p$。记$h=\max\{ \min\{g,M\},-M \}$，因此$|h|\le M$，且$m(f\ne h)\le m(f\ne g )<(\varepsilon/2M)^p$，从而
+	$$
+	\|f-h\|_p
+	=\left(\int_a^b|f-h|^p\right)^{1/p}
+	=\left(\int_{f\ne g}|f-h|^p\right)^{1/p}
+	\le (2M)(m(f\ne h))^{1/p}=\varepsilon
+	$$
+	因此$C[a,b]$在$B[a,b]$中稠密。
+\end{proof}
+
+\begin{lemma}{多项式函数族在$C[a,b]$空间中稠密}{多项式函数族在C[a,b]空间中稠密}
+	记$P[a,b]$是$[a,b]$上的多项式函数全体，那么$P[a,b]$在$B[a,b]$中稠密，其中$1\le p<\infty$。
+\end{lemma}
+
+\begin{proof}
+	显然$P[a,b]\subset C[a,b]$。任取$f\in C[a,b]$，由Weierstrass逼近定理\ref{thm:Weierstrass逼近定理}，存在多项式函数序列$\{f_n\}_{n=1}^{\infty}\subset P[a,b]$，使得$f_n$一致收敛于$f$。任取$\varepsilon>0$，存在$N\in\mathbb{N}^*$，使得对于任意$n\ge N$，成立$|f_n-f|<\varepsilon(b-a)^{-1/p}$，因此
+	$$
+	\|f_n-f\|_p=\left(\int_a^b|f_n-f|^p\right)^{1/p}<\varepsilon
+	$$
+	进而$P[a,b]$在$C[a,b]$中稠密。
+\end{proof}
+
+\begin{theorem}{$L^p$空间的可分性}
+	$L^p[a,b]$为可分空间，其中$1\le p<\infty$。
+\end{theorem}
+
+\begin{proof}
+	（法一：简单函数族）由引理\ref{lem:简单函数族在Lp空间中稠密}，我们仅需构造一个简单函数族的可数稠密子集。取$[a,b]$的可数拓扑基
+	$$
+	\mathscr{B}=\{ [a,b]\cap (p,q):p,q\in\mathbb{Q} \}=\{B_n\}_{n=1}^{\infty}
+	$$
+	事实上，任取开集$I\subset[a,b]$，那么$I$可表示为可数个不交开区间的并，不妨记$\displaystyle I=\bigcup_{n=1}^{\infty}(a_n,b_n)$，其中每一个$(a_n,b_n)\subset (a,b)$。对于每一个$(a_n,b_n)$，存在有理数序列$\{p_{n_k}\}_{k=1}^{\infty}\subset \mathbb{Q}$和$\{q_{n_k}\}_{k=1}^{\infty}\subset \mathbb{Q}$，使得$p_{n_k}<q_{n_k}$，且$p_{n_k}\to a_n,q_{n_k}\to b_n$，于是$\displaystyle (a_n,b_n)=\bigcup_{k=1}^{\infty}(a_{n_k},b_{n_k})$，因此$\displaystyle I=\bigcup_{n=1}^{\infty}\bigcup_{k=1}^{\infty}(a_{n_k},b_{n_k})$，于是$\mathscr{B}$为$[a,b]$的可数拓扑基。构造$S[a,b]$的可数子集
+	$$
+	S_{\mathbb{Q}}[a,b]=\left\{ \sum_{k=1}^{n}r_k\mathbbm{1}_{B_{n_k}}:r_k\in \mathbb{Q} \right\}
+	$$
+	下面我们证明$S_{\mathbb{Q} }[a,b]$为$S[a,b]$的稠密子集，分三部分进行。
+	
+	1.对于可测集$A\subset [a,b]$，存在$\varphi_n\in S_\mathbb{Q}[a,b]$，使得成立$\left\| \varphi_n-\mathbbm{1}_{A} \right\|_p\to0$。
+	
+	对于任意$n\in\mathbb{N}^*$，存在开集$G_n\supset A$，使得成立$m(G_n\setminus A)<1/n$。由于$\mathscr{B}$为拓扑基，那么对于任意开集$G$，存在可数指标集$\Omega\subset \mathbb{N}^*$，使得成立$\displaystyle G=\bigcup_{k\in\Omega}B_k$，因此可知
+	$$
+	m\left(G\setminus \bigcup_{k\in\Omega\cap[1,N]}B_k\right)\to 0,\qquad (N\to\infty)
+	$$
+	那么对于任意$\varepsilon>0$,存在$N_0\in\mathbb{N}^*$，使得成立
+	$$
+	m\left(G\setminus \bigcup_{k\in\Omega\cap[1,N_0]}B_k\right)<\varepsilon
+	$$
+	于是有限指标集$\Lambda=\Omega\cap[1,N_0]$，满足$m(G\setminus\bigcup_{k\in\Lambda}B_k)<\varepsilon$。进而对于开集$G_n$，存在有限指标集$\Lambda_n\subset\mathbb{N}^*$，使得成立$G_n\supset\bigcup_{k\in\Lambda_n}B_k$，且$m(G_n\setminus\bigcup_{k\in\Lambda_n}B_k)<1/n$。而容易知道对于任意$E,F\in\mathscr{B}$，成立$E\cap F\in\mathscr{B}$，因此存在有限指标集$\Xi_n\subset\mathbb{N}^*$，使得成立
+	$$
+	\bigcup_{k\in\Lambda_n}B_k=\bigsqcup_{k\in\Xi_n}B_k
+	$$
+	其中$\sqcup$表示不交并。令$\displaystyle \varphi_n=\sum_{k\in\Xi_n}\mathbbm{1}_{B_k}$，于是由Minkowsky不等式\ref{thm:函数Minkowsky不等式}
+	\begin{align*}
+		& \| \varphi_n-\mathbbm{1}_{A}\|_p\\
+		= &\left\| \sum_{k\in\Xi_n}\mathbbm{1}_{B_k}-\mathbbm{1}_{A} \right\|_p\\
+		= &\left\| \mathbbm{1}_{\bigsqcup\limits_{k\in\Xi_n}B_k}-\mathbbm{1}_{A} \right\|_p\\
+		= &\left\| \mathbbm{1}_{\bigcup\limits_{k\in\Lambda_n}B_k}-\mathbbm{1}_{A} \right\|_p\\
+		\le & \left\| \mathbbm{1}_{\bigcup\limits_{k\in\Lambda_n}B_k}-\mathbbm{1}_{G_n} \right\|_p+\left\| \mathbbm{1}_{A}-\mathbbm{1}_{G_n} \right\|_p\\
+		=&m\left(G_n\setminus\bigcup_{k\in\Lambda_n}B_k\right)^{1/p}+m(G_n\setminus A)^{1/p}\\
+		<&\frac{2}{n^{1/p}}\to0
+	\end{align*}
+	
+	2.对于可测集$A\subset [a,b]$，以及$r\in\R$，存在$\varphi_n\in S_\mathbb{Q}[a,b]$，使得成立$\left\| \varphi_n-r\mathbbm{1}_{A} \right\|_p\to0$。
+	
+	对于任意$n\in\mathbb{N}^*$，存在$r_n\in\mathbb{Q}$，且由1.存在$\varphi_n$，使得成立$|r-r_n|<1/n$，且$\left\| \varphi_n-\mathbbm{1}_A \right\|_p<1/n$，于是由Minkowsky不等式\ref{thm:函数Minkowsky不等式}
+	\begin{align*}
+		& \left\| r_n\varphi_n-r\mathbbm{1}_A \right\|_p\\
+		\le & \left\| r_n\varphi_n-r_n\mathbbm{1}_A \right\|_p+\left\| r_n\mathbbm{1}_A-r\mathbbm{1}_A \right\|_p\\
+		= & |r_n|\left\| \varphi_n-\mathbbm{1}_A \right\|_p+|r_n-r|\left\|\mathbbm{1}_A\right\|_p\\
+		\le&(|r-r_n|+|r|)\left\| \varphi_n-\mathbbm{1}_A \right\|_p+|r_n-r|\left\|\mathbbm{1}_A\right\|_p\\
+		<&\frac{|r|+m(A)}{n}+\frac{1}{n^2}\to0
+	\end{align*}
+	
+	3.对于$\displaystyle\sum_{k=1}^{m}a_k\mathbbm{1}_{A_k}\in S[a,b]$，存在$\varphi_n\in S_\mathbb{Q}[a,b]$，使得成立$\displaystyle \left\| \varphi_n-\sum_{k=1}^{m}a_k\mathbbm{1}_{A_k} \right\|_p\to 0$。
+	
+	对于任意$1\le k \le m$，由2.存在$\varphi_n^{(k)}\in S_\mathbb{Q}[a,b]$，使得当$n\to\infty$时，成立$\left\| \varphi_n^{(k)}-a_k\mathbbm{1}_{A_k} \right\|_p\to 0$，令$\displaystyle\varphi_n=\sum_{k=1}^{m}\varphi_n^{(k)}$，于是由Minkowsky不等式\ref{thm:函数Minkowsky不等式}
+	$$
+	\left\| \varphi_n-\sum_{k=1}^{m}a_k\mathbbm{1}_{A_k} \right\|_p
+	\le \sum_{k=1}^{m}\left\| \varphi_n^{(k)}-a\mathbbm{1}_{A_k} \right\|_p \to0
+	$$
+	
+	综合1.2.3.三点，$S_\mathbb{Q}[a,b]$是$S[a,b]$的可数稠密子集，因此$S_\mathbb{Q}[a,b]$是$L^p[a,b]$的可数稠密子集，于是$L^p[a,b]$为可分空间，命题得证！
+	
+	（法二：多项式函数族）由引理\ref{lem:有界可测函数族在Lp空间中稠密}、\ref{lem:连续函数族在B[a,b]空间中稠密}与\ref{lem:多项式函数族在C[a,b]空间中稠密}，我们仅需构造一个多项式函数族的可数稠密子集。这是容易的——构造
+	$$
+	P_{\mathbb{Q}}[a,b]=\left\{ \sum_{k=1}^{n}r_k x^k:r_k\in\mathbb{Q},x\in[a,b] \right\}
+	$$
+	任取$\displaystyle \varphi(x)=\sum_{k=1}^{n}a_k x^k \in P[a,b]$，以及$\varepsilon>0$。对于任意$k=1,\cdots,n$，存在$\{ r_m^{(k)} \}_{m=1}^{\infty}\subset\mathbb{Q}$，以及$M_k\in\mathbb{N}^*$，使得对于任意$m\ge M_k$，成立$|r_m^{(k)}-a_k|<\varepsilon/(n\|x^k\|_p)$。记$\displaystyle \varphi_m(x)=\sum_{k=1}^{n}r_m^{(k)} x^k \in P_{\mathbb{Q}}[a,b]$，取$\displaystyle M=\max_{1\le k \le n}M_k$，那么当$m\ge M$时，成立
+	\begin{align*}
+		&\| \varphi_m(x)-\varphi(x) \|_p\\
+		=&\left\|  \sum_{k=1}^{n}r_m^{(k)} x^k-\sum_{k=1}^{n}a_k x^k \right\|_p\\
+		\le&\sum_{k=1}^{n} |r_m^{(k)}-a_k|\left\|  x^k \right\|_p\\
+		\le& \sum_{k=1}^{n}\frac{\varepsilon}{n\|x^k\|_p}\left\|  x^k \right\|_p\\
+		=&\varepsilon
+	\end{align*}
+	因此$P_\mathbb{Q}[a,b]$是$P[a,b]$的可数稠密子集，于是$P_\mathbb{Q}[a,b]$是$L^p[a,b]$的可数稠密子集，进而$L^p[a,b]$为可分空间，命题得证！
+\end{proof}
+
+\section{$s$空间，$c$空间与$S[a,b]$空间，$C[a,b]$空间}
+
+\subsection{$s$空间}
+
+\begin{definition}{$s$空间}
+	$$
+	s=\{\{x_n\}_{n=1}^{\infty}\sub\C\},\qquad 
+	d(\{x_n\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n-y_n|}{1+|x_n-y_n|}
+	$$
+\end{definition}
+
+\begin{lemma}{}{引理11}
+	$$
+	\frac{|x+y|}{1+|x+y|}\le\frac{|x|}{1+|x|}+\frac{|y|}{1+|y|},\qquad x,y\in\C
+	$$
+\end{lemma}
+
+\begin{proof}
+	构造函数
+	$$
+	f(x)=\frac{x}{1+x},\qquad x\in[0,\infty)
+	$$
+	由于$f$在$[0,\infty)$上单调递增，那么由三角不等式$|x+y|\le |x|+|y|$，可得
+	$$
+	\frac{|x+y|}{1+|x+y|}
+	= f(|x+y|)
+	\le f(|x|+|y|)
+	= \frac{|x|+|y|}{1+|x|+|y|}
+	\le \frac{|x|}{1+|x|}+\frac{|y|}{1+|y|}
+	$$
+\end{proof}
+
+\begin{proposition}{$s$空间为度量空间}{s空间为度量空间}
+	$s$空间为度量空间。
+\end{proposition}
+
+\begin{proof}
+	仅证明三角不等式，由引理\ref{lem:引理11}
+	\begin{align*}
+		d(\{x_n\}_{n=1}^{\infty},\{z_n\}_{n=1}^{\infty})
+		& = \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n-z_n|}{1+|x_n-z_n|}\\
+		& = \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|(x_n-y_n)+(y_n-z_n)|}{1+|(x_n-y_n)+(y_n-z_n)|}\\
+		& \le \sum_{n=1}^{\infty}\frac{1}{2^n}\left(\frac{|x_n-y_n|}{1+|x_n-y_n|}+\frac{|y_n-z_n|}{1+|y_n-z_n|}\right)\\
+		& = \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n-y_n|}{1+|x_n-y_n|}+\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|y_n-z_n|}{1+|y_n-z_n|}\\
+		& = d(\{x_n\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})+d(\{y_n\}_{n=1}^{\infty},\{z_n\}_{n=1}^{\infty})
+	\end{align*}
+\end{proof}
+
+\begin{proposition}{$s$空间为度量线性空间}{s空间为度量线性空间}
+	$s$空间为度量线性空间。
+\end{proposition}
+
+\begin{proof}
+	任取
+	$$
+	\{x_n^{(m)}\}_{n=1}^{\infty}\xlongrightarrow{d}\{x_n\}_{n=1}^{\infty},\qquad 
+	\{y_n^{(m)}\}_{n=1}^{\infty}\xlongrightarrow{d}\{y_n\}_{n=1}^{\infty},\qquad 
+	\lambda_m\longrightarrow \lambda
+	$$
+	那么
+	$$
+	\lim_{m\to\infty}d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})=
+	\lim_{m\to\infty}d(\{y_n^{(m)}\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})= 
+	\lim_{m\to\infty}|\lambda_m-\lambda|=0
+	$$
+	
+	对于加法连续性
+	\begin{align*}
+		& d(\{x_n^{(m)}\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty},
+		\{x_n\}_{n=1}^{\infty}+\{y_n\}_{n=1}^{\infty})\\
+		\le &   d(\{x_n^{(m)}\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty},
+		\{x_n\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty})+
+		d(\{x_n\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty},
+		\{x_n\}_{n=1}^{\infty}+\{y_n\}_{n=1}^{\infty})\\
+		= &   d(\{x_n^{(m)}+y_n^{(m)}\}_{n=1}^{\infty},
+		\{x_n+y_n^{(m)}\}_{n=1}^{\infty})+
+		d(\{x_n+y_n^{(m)}\}_{n=1}^{\infty},
+		\{x_n+y_n\}_{n=1}^{\infty})\\
+		= & \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}+
+		\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|y_n^{(m)}-y_n|}{1+|y_n^{(m)}-y_n|}\\
+		= & d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})+d(\{y_n^{(m)}\}_{n=1}^{\infty},\{y_n\}_{n=1}^{\infty})
+	\end{align*}
+	因此
+	$$
+	\lim_{m\to\infty}d(\{x_n^{(m)}\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty},
+	\{x_n\}_{n=1}^{\infty}+\{y_n\}_{n=1}^{\infty})=
+	0
+	$$
+	于是
+	$$
+	\{x_n^{(m)}\}_{n=1}^{\infty}+\{y_n^{(m)}\}_{n=1}^{\infty}\xlongrightarrow{d}\{x_n\}_{n=1}^{\infty}+\{y_n\}_{n=1}^{\infty}
+	$$
+	
+	对于数乘连续性，任取$\varepsilon>0$，由于
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{2^n}=1
+	$$
+	那么存在$N\in\N^*$，使得成立
+	$$
+	\sum_{n=N+1}^{\infty}\frac{1}{2^n}<\frac{\varepsilon}{3}
+	$$
+	由于
+	$$
+	\lim_{m\to\infty}d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})= 
+	\lim_{m\to\infty}|\lambda_m-\lambda|=0
+	$$
+	那么存在$M\in\N^*$与$K>0$，使得对于任意$m\in\N^*$，成立
+	$$
+	|\lambda_m|<K
+	$$
+	且对于任意$m\ge M$与$n\le N$，成立
+	$$
+	|\lambda_m-\lambda||x_n|<\frac{\varepsilon}{3},\qquad 
+	d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})<\frac{\varepsilon}{3(1+K)}
+	$$
+	因此当$m\ge M$时，由于引理\ref{lem:引理11}以及
+	$$
+	\frac{|\lambda||x|}{1+|\lambda||x|}\le \frac{(1+|\lambda|)|x|}{1+|x|},\qquad \forall \lambda,x\in\C
+	$$
+	那么
+	\begin{align*}
+		& d(\lambda_m\{x_n^{(m)}\}_{n=1}^{\infty},
+		\lambda\{x_n\}_{n=1}^{\infty})\\
+		\le &   d(\lambda_m\{x_n^{(m)}\}_{n=1}^{\infty},
+		\lambda_m\{x_n\}_{n=1}^{\infty})+
+		d(\lambda_m\{x_n\}_{n=1}^{\infty},\lambda\{x_n\}_{n=1}^{\infty})\\
+		= & d(\{\lambda_mx_n^{(m)}\}_{n=1}^{\infty},
+		\{\lambda_mx_n\}_{n=1}^{\infty})+
+		d(\{\lambda_mx_n\}_{n=1}^{\infty},\{ \lambda x_n\}_{n=1}^{\infty})\\
+		= & \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|\lambda_m||x_n^{(m)}-x_n|}{1+|\lambda_m||x_n^{(m)}-x_n|}
+		+\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|\lambda_m-\lambda||x_n|}{1+|\lambda_m-\lambda||x_n|}\\
+		\le & (1+|\lambda_m|)\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}
+		+\sum_{n=1}^{N}\frac{1}{2^n}\frac{|\lambda_m-\lambda||x_n|}{1+|\lambda_m-\lambda||x_n|}
+		+\sum_{n=N+1}^{\infty}\frac{1}{2^n}\frac{|\lambda_m-\lambda||x_n|}{1+|\lambda_m-\lambda||x_n|}\\
+		< & (1+K)\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}
+		+\sum_{n=1}^{N}\frac{1}{2^n}\frac{\varepsilon}{3}
+		+\sum_{n=N+1}^{\infty}\frac{1}{2^n}\\
+		< & (1+K)d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})
+		+\sum_{n=1}^{\infty}\frac{1}{2^n}\frac{\varepsilon}{3}+\frac{\varepsilon}{3}\\
+		< & (1+K)\frac{\varepsilon}{3(1+K)}+\frac{\varepsilon}{3}+\frac{\varepsilon}{3}\\
+		= & \varepsilon
+	\end{align*}
+	因此
+	$$
+	\lim_{m\to\infty}d(\lambda_m\{x_n^{(m)}\}_{n=1}^{\infty},
+	\lambda\{x_n\}_{n=1}^{\infty})=0
+	$$
+	于是
+	$$
+	\lambda_m\{x_n^{(m)}\}_{n=1}^{\infty}\xlongrightarrow{d}\lambda\{x_n\}_{n=1}^{\infty}
+	$$
+	
+	综上所述，$s$空间为度量线性空间。
+\end{proof}
+
+\begin{proposition}{$s$空间为可分空间}{s空间为可分空间}
+	$s$空间为可分空间。
+\end{proposition}
+
+\begin{proof}
+	构造
+	$$
+	S=\{ \{r_1,\cdots,r_n,0,0,\cdots\}:r_k\in\Q,n\in\N^* \}
+	$$
+	那么$S$为可数集。任取$x=\{x_n\}_{n=1}^{\infty}\in s$，对于任意$n\in\N^*$，取$\{ r_n^{(m)} \}_{m=1}^{\infty}\sub\Q$，使得成立$r_n^{(m)}\to x_n$，令
+	$$
+	t_m=\{ r_1^{(m)},\cdots, r_m^{(m)},0,0,\cdots \},\qquad m\in\N^*
+	$$
+	那么$\{t_m\}_{m=1}^{\infty}$依坐标收敛于$x$。由命题\ref{pro:s空间的收敛}，$\{t_m\}_{m=1}^{\infty}$依依度量$d$收敛于$x$，因此$S$为$s$空间的可数稠密集，进而$s$空间为可分空间。
+\end{proof}
+
+\begin{proposition}{$s$空间的收敛性}{s空间的收敛}
+	在$s$空间中，成立
+	$$
+	\{x_n\}_{n=1}^{\infty}\text{依度量}d\text{收敛于}x\iff \{x_n\}_{n=1}^{\infty}\text{依坐标收敛于}x
+	$$
+\end{proposition}
+
+\begin{proof}
+	如果$\{\{x_n^{(m)}\}_{n=1}^{\infty}\}_{m=1}^{\infty}$依坐标收敛于$\{x_n\}_{n=1}^{\infty}$，那么对于任意$n\in\N^*$，成立
+	$$
+	\lim_{m\to\infty}x_n^{(m)}=x_n
+	$$
+	任取$\varepsilon>0$，由于
+	$$
+	\sum_{n=1}^{\infty}\frac{1}{2^n}=1
+	$$
+	那么存在$N\in\N^*$，使得成立
+	$$
+	\sum_{n=N+1}^{\infty}\frac{1}{2^n}<\frac{\varepsilon}{2}
+	$$
+	由于对于任意$n\le N$，成立
+	$$
+	\lim_{m\to\infty}x_n^{(m)}=x_n
+	$$
+	那么存在$M\in\N^*$，使得对于任意$m\ge M$与$n\le N$，成立
+	$$
+	|x_n^{(m)}-x_n|<\frac{\varepsilon}{2}
+	$$
+	因此当$m\ge M$时，由引理\ref{lem:引理11}
+	\begin{align*}
+		d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})
+		= & \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}\\
+		= & \sum_{n=1}^{N}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}+
+		\sum_{n=N+1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m)}-x_n|}{1+|x_n^{(m)}-x_n|}\\
+		\le & \sum_{n=1}^{N}\frac{1}{2^n}\frac{\varepsilon}{2}+
+		\sum_{n=N+1}^{\infty}\frac{1}{2^n}\\
+		< & \frac{\varepsilon}{2}+\frac{\varepsilon}{2}\\
+		= & \varepsilon
+	\end{align*}
+	于是
+	$$
+	\lim_{n\to\infty}d(\{x_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})=0
+	$$
+	进而
+	$$
+	\{x_n^{(m)}\}_{n=1}^{\infty}\xlongrightarrow{d}\{x_n\}_{n=1}^{\infty}
+	$$
+	即$\{\{x_n^{(m)}\}_{n=1}^{\infty}\}_{m=1}^{\infty}$依度量$d$收敛于$\{x_n\}_{n=1}^{\infty}$。
+	
+	
+	如果$\{\{x_n^{(m)}\}_{n=1}^{\infty}\}_{m=1}^{\infty}$不依坐标收敛于$\{x_n\}_{n=1}^{\infty}$，那么存在$n_0\in\N^*$与$\varepsilon_0>0$，以及子序列$\{m_k\}_{k=1}^{\infty}\sub \N^*$，使得成立对于任意$k\in\N^*$，成立
+	$$
+	|x_{n_0}^{(m_k)}-x_{n_0}|\ge \varepsilon_0
+	$$
+	于是由引理\ref{lem:引理11}
+	$$
+	d(\{x_n^{(m_k)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty})
+	=  \sum_{n=1}^{\infty}\frac{1}{2^n}\frac{|x_n^{(m_k)}-x_n|}{1+|x_n^{(m_k)}-x_n|}
+	\ge  \frac{|x_{n_0}^{(m_k)}-x_{n_0}|}{1+|x_{n_0}^{(m_k)}-x_{n_0}|}
+	\ge  \frac{\varepsilon_0}{1+\varepsilon_0}
+	$$
+	因此$\{\{x_n^{(m)}\}_{n=1}^{\infty}\}_{m=1}^{\infty}$不依度量$d$收敛于$\{x_n\}_{n=1}^{\infty}$。
+\end{proof}
+
+\subsection{$c$空间}
+
+\begin{definition}{$c$空间}
+	$$
+	c=\{\text{收敛数列}\{x_n\}_{n=1}^{\infty}\sub\C\},\qquad 
+	\|\{x_n\}_{n=1}^{\infty}\|=\sup_{n\in\N^*}|x_n|
+	$$
+\end{definition}
+
+\begin{proposition}{$c$空间为赋范线性空间}{c空间为赋范线性空间}
+	$c$空间为赋范线性空间。
+\end{proposition}
+
+\begin{proof}
+	仅证明三角不等式，由于对于任意$n\in\N^*$，成立
+	$$
+	|x_n+y_n|\le |x_n|+|y_n|\le \sup_{n\in\N^*}|x_n|+\sup_{n\in\N^*}|y_n|=\|\{x_n\}_{n=1}^{\infty}\|+\|\{y_n\}_{n=1}^{\infty}\|
+	$$
+	那么
+	$$
+	\|\{x_n\}_{n=1}^{\infty}+\{y_n\}_{n=1}^{\infty}\|
+	=\|\{x_n+y_n\}_{n=1}^{\infty}\|
+	=\sup_{n\in\N^*}|x_n+y_n|
+	\le \|\{x_n\}_{n=1}^{\infty}\|+\|\{y_n\}_{n=1}^{\infty}\|
+	$$
+\end{proof}
+
+\begin{proposition}{$c$空间为可分空间}{c空间为可分空间}
+	$c$空间为可分空间。
+\end{proposition}
+
+\begin{proof}
+	构造
+	$$
+	S=\{ \{ r_1,\cdots,r_n,r_n,\cdots \} \}:r_k\in\Q,n\in\N^* \}
+	$$
+	那么$S$为可数集。对于任意$x=\{x_n\}_{n=1}^{\infty}\in c$，记$x_n\to x_0$，那么存在$N\in\N^*$，使得对于任意$n> N$，成立$|x_n-x_0|\le\varepsilon/2$。取$r_{N+1}$满足$|r_{N+1}-x_0|\le \varepsilon/2$，此时对于任意$n> N$，成立
+	$$
+	|r_{N+1}-x_n|\le|x_n-x_0|+|r_{N+1}-x_0|\le \varepsilon
+	$$
+	对于任意$1\le n \le N$，取$r_n$满足$|r_n-x_n|\le \varepsilon$。令$x_r=\{ r_1,\cdots,r_N,r_{N+1},r_{N+1},\cdots \}$，于是
+	$$
+	\|x_r-x\|=\sup_{n\in\N^*}|r_n-x_n|=\max\left( \sup_{1\le n \le N}|r_n-x_n|,\sup_{n>N}|r_{N+1}-x_n| \right)\le \varepsilon
+	$$
+	因此$S$为稠密集，进而$c$空间为可分空间。
+\end{proof}
+
+\begin{proposition}{$c$空间的收敛性}{c空间的收敛}
+	在$c$空间中，成立
+	$$
+	\{x_n\}_{n=1}^{\infty}\text{依范数}\text{收敛于}x\iff \{x_n\}_{n=1}^{\infty}\text{依坐标一致收敛于}x
+	$$
+\end{proposition}
+
+\begin{proof}
+	\begin{align*}
+		& \{\{ x_n^{(m)} \}_{n=1}^{\infty}\}_{m=1}^{\infty}\text{依范数}\text{收敛于}\{x_n\}_{n=1}^{\infty}\\
+		\iff & \{ x_n^{(m)} \}_{n=1}^{\infty}\longrightarrow \{x_n\}_{n=1}^{\infty}\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}\}_{n=1}^{\infty}-\{x_n \}_{n=1}^{\infty} \|=0\\
+		\iff & \lim_{m\to\infty}\| \{ x_n^{(m)}-x_n \}_{n=1}^{\infty} \|
+		=0\\
+		\iff & \lim_{m\to\infty}\sup_{n\in\N^*}|x_n^{(m)}-x_n|=0\\
+		\iff & \forall\varepsilon>0,\exists M\in\N^*,\forall m\ge M,\sup_{n\in\N^*}|x_n^{(m)}-x_n|\le\varepsilon\\
+		\iff & \forall\varepsilon>0,\exists M\in\N^*,\forall m\ge M,\forall n\in\N^*,|x_n^{(m)}-x_n|\le\varepsilon\\
+		\iff & \{\{ x_n^{(m)} \}_{n=1}^{\infty}\}_{m=1}^{\infty}\text{依坐标一致收敛于}\{x_n\}_{n=1}^{\infty}
+	\end{align*}
+\end{proof}
+
+\subsection{$S[a,b]$空间}
+
+\begin{definition}{$S[a,b]$空间}
+	$$
+	S[a,b]=\{\text{几乎处处有限的可测函数 }f:[a,b]\to\R\},\qquad  d(f,g)=\int_a^b\frac{|f-g|}{1+|f-g|}
+	$$
+\end{definition}
+
+\begin{proposition}{$S[a,b]$空间为度量空间}
+	$S[a,b]$空间为度量空间。
+\end{proposition}
+
+\begin{proof}
+	仅证明三角不等式，由引理\ref{lem:引理11}
+	\begin{align*}
+		d(f,h)
+		& = \int_a^b\frac{|f-h|}{1+|f-h|}\\
+		& = \int_a^b\frac{|(f-g)+(g-h)|}{1+|(f-g)+(g-h)|}\\
+		& \le \int_a^b \left( \frac{|f-g|}{1+|f-g|}+\frac{|g-h|}{1+|g-h|} \right)\\
+		& = \int_a^b\frac{|f-g|}{1+|f-g|}+\int_a^b\frac{|g-h|}{1+|g-h|}\\
+		& = d(f,g)+d(g,h)
+	\end{align*}
+\end{proof}
+
+\begin{definition}{依测度收敛}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$和可测函数$f$，称$f_n$在$E$上依测度收敛于$f$，并记作$f_n\xrightarrow{m} f$，如果对于任意$\varepsilon>0$，成立
+	$$
+	\lim_{n\to\infty}m(E[|f_n-f|\ge\varepsilon])=0
+	$$
+\end{definition}
+
+\begin{proposition}{$S[a,b]$空间为度量线性空间}
+	$S[a,b]$空间为度量线性空间。
+\end{proposition}
+
+\begin{proof}
+	任取
+	$$
+	f_n\xlongrightarrow{d} f,\qquad 
+	g_n\xlongrightarrow{d} g,\qquad 
+	\lambda_n\longrightarrow \lambda
+	$$
+	那么
+	$$
+	\lim_{n\to\infty}d(f_n,f)=
+	\lim_{n\to\infty}d(g_n,g)= 
+	\lim_{n\to\infty}|\lambda_n-\lambda|=0
+	$$
+	
+	对于加法连续性
+	$$
+	\begin{align*}
+		& d(f_n+g_n,f+g)\\
+		\le &   d(f_n+g_n,f+g_n)+
+		d(f+g_n,f+g)\\
+		= & \int_a^b\frac{|f_n-f|}{1+|f_n-f|}+\int_a^b\frac{|g_n-g|}{1+|g_n-g|}\\
+		= & d(f_n,f)+d(g_n,g)
+	\end{align*}
+	$$
+	因此
+	$$
+	\lim_{n\to\infty}d(f_n+g_n,f+g)=
+	\lim_{n\to\infty}d(f_n,f)+
+	\lim_{n\to\infty}d(g_n,g)=0
+	$$
+	于是
+	$$
+	f_n+g_n\xlongrightarrow{d} f+g
+	$$
+	
+	对于数乘连续性，容易证明函数序列$\{ (\lambda_n-\lambda)f \}_{n=1}^{\infty}$依测度收敛于$0$，而
+	$$
+	\frac{|\lambda_n-\lambda||f|}{1+|\lambda_n-\lambda||f|}\le |\lambda_n-\lambda||f|
+	$$
+	那么函数序列
+	$$
+	\left\{ \frac{|\lambda_n-\lambda||f|}{1+|\lambda_n-\lambda||f|} \right\}_{n=1}^{\infty}
+	$$
+	依测度收敛于$0$。又由于
+	$$
+	\frac{|\lambda_n-\lambda||f|}{1+|\lambda_n-\lambda||f|}\le 1
+	$$
+	那么由Lebesgue控制收敛定理\ref{thm:Lebesgue控制收敛定理}，成立
+	$$
+	d(\lambda_nf,\lambda f)=\int_a^b\frac{|\lambda_n-\lambda||f|}{1+|\lambda_n-\lambda||f|}\to0
+	$$
+	由于$\lambda_n\to\lambda$，那么存在$M>0$，使得对于任意$n\in\N^*$，成立$|\lambda_n|< M$。由于引理\ref{lem:引理11}以及
+	$$
+	\frac{|\lambda||x|}{1+|\lambda||x|}\le \frac{(1+|\lambda|)|x|}{1+|x|},\qquad \forall \lambda,x\in\C
+	$$
+	那么
+	\begin{align*}
+		& d(\lambda_n f_n,\lambda f)\\
+		\le &  d(\lambda_n f_n,\lambda_n f)+
+		d(\lambda_n f,\lambda f)\\
+		= & \int_a^b\frac{|\lambda_n||f_n-f|}{1+|\lambda_n||f_n-f|}+d(\lambda_n f,\lambda f)\\
+		\le & (1+|\lambda_n|)\int_a^b\frac{|f_n-f|}{1+|f_n-f|}+d(\lambda_n f,\lambda f)\\
+		< & (1+M)d(f_n,f)+d(\lambda_n f,\lambda f)
+	\end{align*}
+	因此
+	$$
+	\lim_{n\to\infty}d(\lambda_n f_n,\lambda f)
+	=(1+M)\lim_{n\to\infty}d(f_n,f)+\lim_{n\to\infty}d(\lambda_n f,\lambda f)=0
+	$$
+	于是
+	$$
+	\lambda_n f_n\xlongrightarrow{d}\lambda f
+	$$
+	
+	综上所述，$S[a,b]$空间为度量线性空间。
+\end{proof}
+
+\begin{proposition}{$S[a,b]$空间为完备空间}
+	$S[a,b]$空间为完备空间。
+\end{proposition}
+
+\begin{proposition}{$S[a,b]$空间的收敛性}{S[a,b]空间的收敛}
+	在$S[a,b]$，成立
+	$$
+	\{f_n\}_{n=1}^{\infty}\text{依度量}d\text{收敛于}f\iff \{f_n\}_{n=1}^{\infty}\text{依测度收敛于}f
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于必要性，任取$\{f_n\}_{n=1}^{\infty}\sub S[a,b]$，使得成立$\{f_n\}_{n=1}^{\infty}$依度量$d$收敛于$f\in S[a,b]$。任取$\varepsilon>0$，记
+	$$
+	E_n=\{ x\in [a,b]:|f_n(x)-f(x)|\ge \varepsilon \}
+	$$
+	由引理\ref{lem:引理11}
+	\begin{align*}
+		d(f_n,f)
+		& = \int_a^b\frac{|f_n-f|}{1+|f_n-f|}\\
+		& \ge \int_{E_n}\frac{|f_n-f|}{1+|f_n-f|}\\
+		& \ge \int_{E_n}\frac{\varepsilon}{1+\varepsilon}\\
+		& = m(E_n)\frac{\varepsilon}{1+\varepsilon}
+	\end{align*}
+	从而$m(E_n)\to 0$，因此$\{f_n\}_{n=1}^{\infty}$依测度收敛于$f$。
+	
+	对于充分性，任取$\{f_n\}_{n=1}^{\infty}\sub S[a,b]$，使得成立$\{f_n\}_{n=1}^{\infty}$依测度收敛于$f\in S[a,b]$，那么$\{ f_n-f \}_{n=1}^{\infty}$依测度收敛于$0$，而
+	$$
+	\frac{|f_n-f|}{1+|f_n-f|}\le |f_n-f|
+	$$
+	那么函数序列
+	$$
+	\left\{ \frac{|f_n-f|}{1+|f_n-f|}\right\}_{n=1}^{\infty}
+	$$
+	依测度收敛于$0$。又由于
+	$$
+	\frac{|f_n-f|}{1+|f_n-f|}\le 1
+	$$
+	那么由Lebesgue控制收敛定理\ref{thm:Lebesgue控制收敛定理}，成立
+	$$
+	d(f_n,f)=\int_a^b\frac{|f_n-f|}{1+|f_n-f|}\to0
+	$$
+	因此$\{f_n\}_{n=1}^{\infty}$依度量$d$收敛于$f$。
+\end{proof}
+
+\subsection{$C[a,b]$空间}
+
+\begin{definition}{$C[a,b]$空间}
+	$$
+	C[a,b]=\{\text{连续函数 }f:[a,b]\to\C\},\qquad 
+	\|f\|=\sup_{[a,b]}|f|
+	$$
+\end{definition}
+
+\begin{proposition}{$C[a,b]$空间为赋范线性空间}{C[a,b]空间为赋范线性空间}
+	$C[a,b]$空间为赋范线性空间。
+\end{proposition}
+
+\begin{proof}
+	仅证明三角不等式，由于对于任意$x\in [a,b]$，成立
+	$$
+	|f(x)+g(x)|\le |f(x)|+|g(x)|
+	\le \sup_{[a,b]}|f|+\sup_{[a,b]}|g|
+	= \|f\|+\|g\|
+	$$
+	那么
+	$$
+	\|f+g\|=\sup_{[a,b]}|f+g|\le \|f\|+\|g\|
+	$$
+\end{proof}
+
+\begin{proposition}{$C[a,b]$空间为完备空间}{C[a,b]空间为完备空间}
+	$C[a,b]$空间为完备空间。
+\end{proposition}
+
+\begin{proof}
+	任取Cauchy序列$\{ f_n \}_{n=1}^{\infty}\sub C[a,b]$，那么对于任意$\varepsilon>0$，存在$N\in\N^*$，使得对于任意$m,n\ge N$，成立
+	\begin{equation}
+		\label{公式1}\|f_m-f_n\|\le\varepsilon\iff |f_m(x)-f_n(x)|\le\varepsilon,\forall x\in[0,1]\tag*{(*)}
+	\end{equation}
+	因此对于任意$x\in[0,1]$，数列$\{ f_n(x) \}_{n=1}^{\infty}\sub\C$为Cauchy序列，因此存在$f(x)\in\C$，使得成立$\lim\limits_{n\to\infty}f_n(x)=f(x)$。在\ref{公式1}式中，令$m\to\infty$，那么对于任意$n\ge N$，以及任意$x\in[0,1]$，成立
+	$$
+	|f(x)-f_n(x)|\le\varepsilon
+	$$
+	因此序列$\{ f_n \}_{n=1}^{\infty}$一致收敛于$f$，进而$f$连续，即$f\in C[a,b]$。又由\ref{公式1}式，对于任意$n\ge N$​，成立
+	$$
+	\|f-f_n\|\le\varepsilon\implies \lim_{n\to\infty}\|f-f_n\|=0
+	$$
+	综上所述，$C[a,b]$为完备空间。
+\end{proof}
+
+\begin{proposition}{$C[a,b]$空间的收敛性}{C[a,b]空间的收敛}
+	在$C[a,b]$空间中，成立
+	$$
+	\{f_n\}_{n=1}^{\infty}\text{依范数}\text{收敛于}f\iff \{f_n\}_{n=1}^{\infty}\text{一致收敛于}f
+	$$
+\end{proposition}
+
+\begin{proof}
+	\begin{align*}
+		& \{ f_n \}_{n=1}^{\infty}\text{ 依范数收敛于 }f\\
+		\iff & f_n\longrightarrow f\\
+		\iff & \lim_{n\to\infty}\| f_n-f \|=0\\
+		\iff & \lim_{n\to\infty}\sup_{a\le x\le b}|f_n(x)-f(x)|=0\\
+		\iff & \forall\varepsilon>0,\exists N\in\N^*,\forall n\ge N,\sup_{a\le x\le b}|f_n(x)-f(x)|\le\varepsilon\\
+		\iff & \forall\varepsilon>0,\exists N\in\N^*,\forall n\ge N,\forall a\le x\le b,|f_n(x)-f(x)|\le\varepsilon\\
+		\iff & \{ f_n \}_{n=1}^{\infty}\text{ 一致收敛于 }f
+	\end{align*}
+\end{proof}
+
+\chapter{Hilbert空间}
+
+\section{内积空间}
+
+\subsection{内积}
+
+\begin{definition}{内积}
+	称复数域$\mathbb{C}$上的向量空间$X$上的函数$(\;\cdot\;,\;\cdot\;):X\times X\to\C$为内积，如果满足如下性质。
+	\begin{enumerate}
+		\item $(x,x)\ge 0$，当且仅当$x=0$时等号成立。
+		\item 共轭对称性：$(x,y)=\overline{(y,x)}$
+		\item 左线性：$(\lambda x+\mu y,z)=\lambda(x,z)+\mu(y,z)$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{内积空间}
+	称复数域$\mathbb{C}$上的向量空间$(X,(\;\cdot\;,\;\cdot\;))$为内积空间，如果$(\;\cdot\;,\;\cdot\;):X\times X\to\C$为内积。
+\end{definition}
+
+\begin{definition}{Hilbert空间}
+	称完备的内积空间为Hilbert空间。
+\end{definition}
+
+\begin{theorem}{内积的连续性}{内积的连续性}
+	内积$(\;\cdot\;,\;\cdot\;):X\times X\to\C$为连续函数。
+\end{theorem}
+
+\begin{proof}
+	任取
+	$$
+	x_n\longrightarrow x,\qquad y_n\longrightarrow y
+	$$
+	由三角不等式与Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	|(x_n,y_n)-(x,y)|
+	\le |(x_n,y_n)-(x_n,y)|+|(x_n,y)-(x,y)|
+	= |(x_n,y_n-y)|+|(x_n-x,y)|
+	\le \|x_n\|\|y_n-y\|+\|x_n-x\|\|y\|
+	$$
+\end{proof}
+
+\begin{proposition}{}{内积判断为零}
+	对于内积空间$X$中稠密子集$M\sub X$，如果$x\in X$满足对于任意$y\in M$，成立$(x,y)=0$，那么$x=0$。
+\end{proposition}
+
+\begin{proof}
+	由于$\overline{M}=X$，那么存在$\{x_n\}_{n=1}^{\infty}\sub M$，使得成立$x_n\to x$，由内积的连续性\ref{thm:内积的连续性}，成立
+	$$
+	(x,x)=\lim_{n\to\infty}(x_n,x)=0
+	$$
+	因此$x=0$。
+\end{proof}
+
+\subsection{正交性}
+
+\begin{definition}{正交}
+	对于内积空间$X$，称$x,y\in X$相互正交，并记作$x\perp y$，如果$(x,y)=0$。
+\end{definition}
+
+\begin{definition}{正规正交集}
+	称$\{ e_\lambda \}_{\lambda\in\Lambda}\sub X$为内积空间$X$中的正规正交集，如果
+	$$
+	(e_\alpha,e_\beta)=\begin{cases}
+		1,\qquad & \alpha=\beta\\
+		0,\qquad & \alpha\ne\beta
+	\end{cases}
+	$$
+\end{definition}
+
+\begin{theorem}{勾股定理}{勾股定理}
+	对于内积空间$X$，如果$(x,y)=0$，那么
+	$$
+	\|x+y\|^2=\|x\|^2+\|y\|^2
+	$$
+\end{theorem}
+
+\begin{proof}
+	\begin{align*}
+		\|x+y\|^2
+		& = (x+y,x+y)\\
+		& = (x,x)+(y,x)+(x,y)+(y,y)\\
+		& = (x,x)+(y,y)\\
+		& = \|x\|^2+\|y\|^2
+	\end{align*}
+\end{proof}
+
+\begin{theorem}{}{正规正交集定理}
+	如果$\{x_k\}_{k=1}^n\sub X$为内积空间$X$中的正规正交集，那么对于任意$x\in X$，成立
+	$$
+	\| x \|^2=\sum_{k=1}^{n}|(x,x_k)|^2+\left\| x-\sum_{k=1}^{n}(x,x_k)x_k \right\|^2
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于
+	$$
+	x = \left(\sum_{k=1}^{n}(x,x_k)x_k\right)+\left(x-\sum_{k=1}^{n}(x,x_k)x_k\right)
+	$$
+	且
+	\begin{align*}
+		\left(\sum_{k=1}^{n}(x,x_k)x_k,x-\sum_{k=1}^{n}(x,x_k)x_k\right)
+		& = \sum_{k=1}^{n}(x,x_k)(x_k,x)-\sum_{i,j=1}^{n}(x,x_i)(x_j,x)(x_i,x_j)\\
+		& =\sum_{k=1}^{n}(x,x_k)(x_k,x)-\sum_{k=1}^{n}(x,x_k)(x_k,x)\\
+		& =0
+	\end{align*}
+	\begin{align*}
+		\left\| \sum_{k=1}^{n}(x,x_k)x_k \right\|^2
+		& = \left(\sum_{k=1}^{n}(x,x_k)x_k,\sum_{k=1}^{n}(x,x_k)x_k\right)\\
+		& = \sum_{i,j=1}^{n}(x,x_i)(x_j,x)(x_i,x_j)\\
+		& = \sum_{k=1}^{n}(x,x_k)(x_k,x)\\
+		& = \sum_{k=1}^{n}|(x,x_k)|^2
+	\end{align*}
+	那么由勾股定理\ref{thm:勾股定理}
+	$$
+	\| x \|^2=\left\| \sum_{k=1}^{n}(x,x_k)x_k \right\|^2+\left\| x-\sum_{k=1}^{n}(x,x_k)x_k \right\|^2
+	= \sum_{k=1}^{n}|(x,x_k)|^2+\left\| x-\sum_{k=1}^{n}(x,x_k)x_k \right\|^2
+	$$
+\end{proof}
+
+\begin{theorem}{Bessel不等式}{Bessel不等式}
+	如果$\{e_k\}_{k=1}^n\sub X$为内积空间$X$中的正规正交集，那么对于任意$x\in X$​，成立
+	$$
+	\sum_{k=1}^{n}|(x,e_k)|^2 \le \| x \|^2
+	$$
+	当且仅当
+	$$
+	x=\sum_{k=1}^{n}(x,e_k)e_k
+	$$
+	时等号成立。
+\end{theorem}
+
+\begin{proof}
+	由定理\ref{thm:正规正交集定理}，命题显然！
+\end{proof}
+
+\begin{theorem}{Scharz不等式}{Scharz不等式}
+	对于内积空间$X$，如果$x,y\in X$，那么成立不等式
+	$$
+	|(x,y)|\le \|x\|\|y\|
+	$$
+\end{theorem}
+
+\begin{proof}
+	如果$x=0$或$y=0$，那么
+	$$
+	0=|(x,y)|=\|x\|\|y\|
+	$$
+	
+	如果$x\ne0$且$y\ne 0$，那么由Bessel不等式\ref{thm:Bessel不等式}
+	$$
+	\frac{|(x,y)|^2}{\|y\|^2}
+	=\left| \left(x,\frac{y}{\|y\|}\right) \right|^2
+	\le \|x\|
+	\implies
+	|(x,y)|\le \|x\|\|y\|
+	$$
+\end{proof}
+
+\subsection{内积与范数}
+
+\begin{theorem}{内积可诱导范数}
+	内积$(\;\cdot\;,\;\cdot\;)$可诱导范数$\|\cdot\|$为$\|x\|=\sqrt{(x,x)}$。
+\end{theorem}
+
+\begin{proof}
+	仅证明三角不等式，由Scharz不等式\ref{thm:Scharz不等式}
+	\begin{align*}
+		\|x+y\|^2
+		&= \|x\|^2+2\text{Re}(x,y)+\|y\|^2\\
+		&\le \|x\|^2+2|(x,y)|+\|y\|^2\\
+		&\le \|x\|^2+2\|x\|\|y\|+\|y\|^2\\
+		&= (\|x\|+\|y\|)^2
+	\end{align*}
+	那么
+	\[ 
+	\|x+y\|\le \|x\|+\|y\|
+	 \]
+\end{proof}
+
+\begin{theorem}{极化恒等式}
+	对于内积空间$X$中的$x,y\in X$，成立
+	$$
+	(x,y)=\frac{1}{4}(\|x+y\|^2 - \|x-y\|^2 + i\|x+iy\|^2 - i\|x-iy\|^2)
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于
+	\begin{align*}
+		& \|x+y\|^2=(x,x)+(x,y)+(y,x)+(y,y)\\
+		& \|x-y\|^2=(x,x)-(x,y)-(y,x)+(y,y)\\
+		& \|x+iy\|^2=(x,x)-i(x,y)+i(y,x)+(y,y)\\
+		& \|x-iy\|^2=(x,x)+i(x,y)-i(y,x)+(y,y)
+	\end{align*}
+	那么
+	$$
+	(x,y)=\frac{1}{4}(\|x+y\|^2 - \|x-y\|^2 + i\|x+iy\|^2 - i\|x-iy\|^2)
+	$$
+\end{proof}
+
+\begin{theorem}{平行四边形法则}
+	对于内积空间$X$中的$x,y\in X$，成立
+	$$
+	\|x+y\|^2+\|x-y\|^2=2(\|x\|^2+\|y\|^2)
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于
+	\begin{align*}
+		& \|x+y\|^2=(x,x)+(x,y)+(y,x)+(y,y)\\
+		& \|x-y\|^2=(x,x)-(x,y)-(y,x)+(y,y)
+	\end{align*}
+	那么
+	$$
+	\|x+y\|^2+\|x-y\|^2=2(\|x\|^2+\|y\|^2)
+	$$
+\end{proof}
+
+\begin{theorem}{范数可诱导内积的等价条件}{范数可诱导内积的等价条件}
+	对于范数$\| \cdot\|:X\to\R$，成立
+	$$
+	\text{范数}\|\cdot\|\text{可诱导内积}\iff 
+	\text{范数}\|\cdot\|\text{满足平行四边形法则}
+	$$
+	此时诱导内积为
+	$$
+	(x,y)=\frac{1}{4}(\|x+y\|^2 - \|x-y\|^2 + i\|x+iy\|^2 - i\|x-iy\|^2)
+	$$
+\end{theorem}
+
+\begin{proposition}
+	$$
+	l^p\text{空间为内积空间}\iff p=2
+	$$
+\end{proposition}
+
+\begin{proof}
+	如果$p=2$​，那么
+	$$
+	\|x+y\|_2^2+\|x-y\|_2^2=2(\|x\|_2^2+\|y\|_2^2),\qquad \forall x,y\in l^2
+	$$
+	由定理\ref{thm:范数可诱导内积的等价条件}，$l^2$空间为内积空间。
+	
+	如果$p\ne 2$，那么取$x=(1,1,0,\cdots)$，$y=(1,-1,0,\cdots)$​，因此
+	$$
+	\|x+y\|_p^2=\|x-y\|_p^2=4,\qquad 
+	\|x\|_p^2=\|y\|_p^2=2^{2/p}
+	$$
+	此时
+	$$
+	\|x+y\|_p^2+\|x-y\|_p^2=2^3,\qquad 
+	2(\|x\|_p^2+\|y\|_p^2)=2^{2+2/p}
+	$$
+	那么
+	$$
+	\|x+y\|_p^2+\|x-y\|_p^2\ne 
+	2(\|x\|_p^2+\|y\|_p^2)
+	$$
+	由定理\ref{thm:范数可诱导内积的等价条件}，$l^p$空间不为内积空间。
+\end{proof}
+
+\begin{proposition}
+	$$
+	L^p\text{空间为内积空间}\iff p=2
+	$$
+\end{proposition}
+
+\begin{proof}
+	如果$p=2$​，那么
+	$$
+	\|f+g\|_2^2+\|f-g\|_2^2=2(\|f\|_2^2+\|g\|_2^2),\qquad \forall f,g\in L^p
+	$$
+	由定理\ref{thm:范数可诱导内积的等价条件}，$L^2$空间为内积空间。
+	
+	如果$p\ne 2$，那么取$f=\mathbbm{1}_A$，$g=\mathbbm{1}_B$，其中$A\sqcup B=E$，且$\mu(A)=\mu(B)=\mu(E)/2=m<\infty$，那么$f+g=|f-g|=\mathbbm{1}_E$，因此
+	$$
+	\|f+g\|_p^2=\|f-g\|_p^2=2m,\qquad 
+	\|f\|_p^2=\|g\|_p^2=m^{2/p}
+	$$
+	此时
+	$$
+	\|f+g\|_p^2+\|f-g\|_p^2=4m,\qquad
+	2(\|f\|_p^2+\|g\|_p^2)=4m^{2/p}
+	$$
+	那么
+	$$
+	\|f+g\|_p^2+\|f-g\|_p^2\ne
+	2(\|f\|_p^2+\|g\|_p^2)
+	$$
+	由定理\ref{thm:范数可诱导内积的等价条件}，$L^p$空间不为内积空间。
+\end{proof}
+
+\section{正规正交基}
+
+\begin{theorem}{Schmidt正交化}{Schmidt正交化}
+	由Hilbert空间$\mathcal{H}$中的线性无关向量$\{ \xi_n \}$递归构造正规正交集$\{e_n\}$。
+	$$
+	e_1=\frac{\xi_1}{\|\xi_1\|},\qquad 
+	e_{n}=\frac{\displaystyle \xi_n-\sum_{k=1}^{n-1}(\xi_n,e_{k})e_k}{\displaystyle \left\| \xi_n-\sum_{k=1}^{n-1}(\xi_n,e_{k})e_k \right\|}
+	$$
+\end{theorem}
+
+\begin{definition}{正规正交基}
+	称正规正交集$\mathcal{N}\sub \mathcal{H}$为Hilbert空间$\mathcal{H}$的正规正交基，如果满足如下命题之一。
+	\begin{enumerate}
+		\item 
+		$$
+		\mathcal{M}\supset\mathcal{N}\text{为正规正交集}\implies\mathcal{M}=\mathcal{N}
+		$$
+		\item 
+		$$
+		\forall e\in\mathcal{N},(x,e)=0\implies x=0
+		$$
+		\item 
+		$$
+		\overline{\text{Sp }\mathcal{N}}=\mathcal{H}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：任取$x\in\mathcal{H}$，满足对于任意$e\in\mathcal{N}$，成立$(x,e)=0$，如果$x\ne 0$，那么$\mathcal{N}\cup\{ x/\|x\| \}\supsetneq \mathcal{N}$为正规正交基，矛盾！因此$x=0$。
+	
+	$2\implies 1$：任取正规正交集$\mathcal{M}\supset\mathcal{N}$，如果$\mathcal{M}\supsetneq\mathcal{N}$，那么取$x\in \mathcal{M}\setminus \mathcal{N}$，满足对于任意$e\in\mathcal{N}$，成立$(x,e)=0$，但是$x\ne 0$，矛盾！
+\end{proof}
+
+\begin{theorem}{正规正交基的存在性}{正规正交基的存在性}
+	Hilbert空间存在正规正交基。
+\end{theorem}
+
+\begin{proof}
+	对于Hilbert空间$\mathcal{H}$，定义
+	$$
+	\mathscr{T}=\{ \mathcal{H}\text{的正规正交集} \}
+	$$
+	那么$\mathscr{T}\ne\varnothing$。定义$\mathscr{T}$中的序
+	$$
+	S\prec T\iff S\sub T
+	$$
+	那么$\mathscr{T}$依序$\prec$构成部分有序集。任取$\mathscr{T}$中的完全有序子集$\{ S_\lambda \}_{\lambda\in\Lambda}$，那么$\displaystyle\bigcup_{\lambda\in\Lambda}S_\lambda\in \mathscr{T}$为$\{ S_\lambda \}_{\lambda\in\Lambda}$的上界，由Zorn引理\ref{thm:Zorn引理}，$\mathscr{T}$存在极大元$\mathcal{M}$，此为$\mathcal{H}$的正规正交基。
+\end{proof}
+
+\begin{theorem}{可分Hilbert空间存在可数正规正交基}{可分Hilbert空间存在可数正规正交基}
+	可分Hilbert空间存在可数正规正交基。
+\end{theorem}
+
+\begin{proof}
+	如果Hilbert空间$\mathcal{H}$为可分空间，那么存在可数子集$\mathcal{S}\sub \mathcal{H}$，使得成立$\overline{\mathcal{S}}=\mathcal{H}$。由数学归纳法，存在线性无关子集$\{ x_n \}_{n=1}^{\infty}$，使得成立$\mathcal{S}=\text{Sp }\{ x_n \}_{n=1}^{\infty}$。利用Schmidt正交化\ref{thm:Schmidt正交化}，得到正规正交集$\{ e_n \}_{n=1}^{\infty}$，那么对于任意$n\in\N^*$，存在$\{ \lambda_k^{(n)} \}_{k=1}^{n}\sub\C$，使得成立
+	$$
+	x_n=\sum_{k=1}^{n}\lambda_k^{(n)}e_k
+	$$
+	任取$x\in \mathcal{H}$，满足对于任意$n\in\N^*$，成立$(x,e_n)=0$，那么对于任意$n\in\N^*$，成立$(x,x_n)=0$。任取$s\in \mathcal{S}$，由于$\mathcal{S}=\text{Sp }\{ x_n \}_{n=1}^{\infty}$，那么$(x,s)=0$。由命题\ref{pro:内积判断为零}，$x=0$。由$x$的任意性，$\{ e_n \}_{n=1}^{\infty}$为$\mathcal{H}$的正规正交基。
+\end{proof}
+
+\begin{theorem}{Parseval公式}{Parseval公式}
+	如果$\mathcal{N}\sub \mathcal{H}$为Hilbert空间$\mathcal{H}$的正规正交基，那么对于任意$x\in \mathcal{H}$，成立
+	$$
+	x=\sum_{e\in\mathcal{N}}(x,e)e,\qquad
+	\|x\|^2=\sum_{e\in\mathcal{N}}|(x,e)|^2
+	$$
+	其中级数无条件收敛，即求和与顺序无关，且存在可数正规正交集$\mathcal{N}_x=\{ e_n^{(x)} \}_{n=1}^{\infty}\sub\mathcal{N}$，使得对于任意$e\in\mathcal{N}\setminus\mathcal{N}_x$，成立$(x,e)=0$，进而成立
+	$$
+	x=\sum_{n=1}^\infty(x,e_n^{(x)})e_n,\qquad
+	\|x\|^2=\sum_{n=1}^\infty|(x,e_n^{(x)})|^2
+	$$
+\end{theorem}
+
+\begin{theorem}{可分Hilbert空间的结构}{可分Hilbert空间的结构}
+	可分Hilbert空间与$l^2$空间保内积线性同构。
+\end{theorem}
+
+\section{射影定理，Frechet-Riesz表现定理}
+
+\subsection{射影定理}
+
+\begin{definition}{正交补}
+	定义Hilbert空间$\mathcal{H}$的子空间$\mathcal{M}$的正交补为
+	$$
+	\mathcal{M}^\perp=\{ x\in \mathcal{H}:(x,m)=0,\forall m\in\mathcal{M} \}
+	$$
+\end{definition}
+
+\begin{proposition}{正交补为闭子空间}{正交补为闭子空间}
+	如果$\mathcal{M}$为HIlbert空间$\mathcal{H}$的子空间，那么$\mathcal{M}^\perp$为$\mathcal{H}$的闭子空间。
+\end{proposition}
+
+\begin{proof}
+	任取$x,y\in\mathcal{M}^\perp$，以及$\lambda\in\C$，那么对于任意$m\in \mathcal{M}$，成立
+	$$
+	(x,m)=(y,m)=0
+	$$
+	因此
+	$$
+	(x+y,m)=(x,m)+(y,m)=0,\qquad
+	(\lambda x,m)=\lambda(x,m)=0
+	$$
+	于是$x+y\in \mathcal{M}^\perp$，且$\lambda x\in \mathcal{M}^\perp$，进而$\mathcal{M}^\perp$为$\mathcal{H}$的子空间。
+	
+	对于闭性，任取$x\in\overline{\mathcal{M}^\perp}$，那么存在$\{x_n\}_{n=1}^{\infty}\sub \mathcal{M}^\perp$，使得成立$x_n\to x$。任取$y\in \mathcal{M}$，那么对于任意$n\in\N^*$，成立$(x_n,y)=0$，因此$(x,y)=0$，进而$\overline{\mathcal{M}^\perp}=\mathcal{M}^\perp$，所以$\mathcal{M}^\perp$为$\mathcal{H}$的闭子空间。
+\end{proof}
+
+\begin{proposition}{正交补的性质}{正交补的性质1}
+	如果$\mathcal{M}, \mathcal{N} $为HIlbert空间$\mathcal{H}$的子空间，且$\mathcal{M}\sub \mathcal{N} $，那么$ \mathcal{N} ^\perp\sub \mathcal{M}^\perp$。
+\end{proposition}
+
+\begin{proof}
+	任取$x\in \mathcal{N}^\perp$，那么对于任意$m\in \mathcal{M}\sub \mathcal{N}$，成立$(x,m)=0$，因此$x\in \mathcal{M}$，进而$\mathcal{N} ^\perp\sub \mathcal{M}^\perp$。
+\end{proof}
+
+\begin{proposition}{正交补的性质}{正交补的性质2}
+	如果$\mathcal{M}$为HIlbert空间$\mathcal{H}$的子空间，那么$(\overline{\mathcal{M}})^\perp=\mathcal{M}^\perp$。
+\end{proposition}
+
+\begin{proof}
+	一方面，由于$\mathcal{M}\sub\overline{\mathcal{M}}$，那么由命题\ref{pro:正交补的性质1}，$(\overline{\mathcal{M}})^\perp\sub\mathcal{M}^\perp$。
+	
+	另一方面，任取$x\in \mathcal{M}^\perp$，以及$y\in \overline{\mathcal{M}}$，那么存在$\{y_n\}_{n=1}^{\infty}\sub\mathcal{M}$，使得$y_n\to y$。而对于任意$n\in\N^*$，成立$(x,y_n)=0$，因此$(x,y)=0$，那么$x\in (\overline{\mathcal{M}})^\perp$，进而$(\overline{\mathcal{M}})^\perp\supset\mathcal{M}^\perp$。
+	
+	综合两方面，$(\overline{\mathcal{M}})^\perp=\mathcal{M}^\perp$。
+\end{proof}
+
+\begin{proposition}{正交补的性质}{正交补的性质3}
+	如果$\mathcal{M}$为HIlbert空间$\mathcal{H}$的子空间，那么$\overline{\mathcal{M}}=(\mathcal{M}^\perp)^\perp$。
+\end{proposition}
+
+\begin{proof}
+	一方面，任取$x\in (\mathcal{M}^\perp)^\perp$，由于$\overline{\mathcal{M}}$为$\mathcal{H}$的闭子空间，那么由射影定理\ref{thm:射影定理}，存在且存在唯一$(y,z)\in\overline{\mathcal{M}}\times(\overline{\mathcal{M}})^\perp$，使得成立$x=y+z$。由命题\ref{pro:正交补的性质2}，$z\in \mathcal{M}^\perp$，那么
+	$$
+	0=(x,z)=(z,z)\implies z=0\iff x=y\in \overline{\mathcal{M}}\implies \overline{\mathcal{M}}\supset(\mathcal{M}^\perp)^\perp
+	$$
+	
+	另一方面，由于$\mathcal{M}\sub (\mathcal{M}^\perp)^\perp$，且由命题\ref{pro:正交补为闭子空间}，那么
+	$$
+	\overline{\mathcal{M}}=\mathcal{M}\sub(\mathcal{M}^\perp)^\perp
+	$$
+	
+	综合两方面，$\overline{\mathcal{M}}=(\mathcal{M}^\perp)^\perp$。
+\end{proof}
+
+
+\begin{theorem}{射影定理}{射影定理}
+	如果$\mathcal{M}$为Hilbert空间$\mathcal{H}$的闭子空间，那么对于任意$x\in \mathcal{H}$，存在且存在唯一$(y,z)\in\mathcal{M}\times\mathcal{M}^\perp$，使得成立$x=y+z$。
+\end{theorem}
+
+\begin{proof}
+	由定理\ref{thm:完备性与闭性的关系2}，$\mathcal{M}$为Hilbert空间。由定理\ref{thm:正规正交基的存在性}，$\mathcal{M}$存在正规正交基$\mathcal{N}$。任取$x\in\mathcal{H}$，由定理\ref{thm:Parseval公式}，存在可数正规正交集$\mathcal{N}_x=\{ e_n^{(x)} \}_{n=1}^{\infty}\sub\mathcal{N}$，使得对于任意$e\in\mathcal{N}\setminus\mathcal{N}_x$，成立$(x,e)=0$。令
+	$$
+	y=\sum_{n=1}^{\infty}(x,e_n^{(x)})e_n^{(x)}
+	$$
+	由定理\ref{thm:Parseval公式}，该级数收敛。由于$\mathcal{M}$为闭集，那么$y\in \mathcal{M}$。
+	
+	令$z=x-y$，那么对于任意$n\in\N^*$，成立
+	\begin{align*}
+		(z,e_n^{(x)})
+		& = (x-y,e_n^{(x)})\\
+		& = (x,e_n^{(x)})-(y,e_n^{(x)})\\
+		& = (x,e_n^{(x)})-\left(\sum_{k=1}^{\infty}(x,e_k^{(x)})e_k^{(x)},e_n^{(x)}\right)\\
+		& = (x,e_n^{(x)})-\sum_{k=1}^{\infty}(x,e_k^{(x)})(e_k^{(x)},e_n^{(x)})\\
+		& = (x,e_n^{(x)})-(x,e_n^{(x)})\\
+		& = 0
+	\end{align*}
+	对于任意$e\in\mathcal{N}\setminus\mathcal{N}_x$，成立
+	$$
+	(z,e)
+	=(x-y,e)
+	=(x,e)-(y,e)
+	=(x,e)-\left(\sum_{n=1}^{\infty}(x,e_n^{(x)})e_n^{(x)},e\right)
+	=(x,e)-\sum_{n=1}^{\infty}(x,e_n^{(x)})(e_n^{(x)},e)=0
+	$$
+	因此对于任意$e\in\mathcal{N}$，成立$(z,e)=0$。任取$m\in\mathcal{M}$，由Parseval公式\ref{thm:Parseval公式}
+	$$
+	m=\sum_{e\in\mathcal{N}}(m,e)e\implies (z,m)=0\implies z\in\mathcal{M}^\perp
+	$$
+	
+	综上所述，成立
+	$$
+	x=y+z,\qquad y\in\mathcal{M},\quad z\in\mathcal{M}^\perp
+	$$
+	唯一性由$\mathcal{M}\cap\mathcal{M}^\perp=\{0\}$保证。
+\end{proof}
+
+\subsection{Frechet-Riesz表现定理}
+
+\begin{definition}{Hilbert空间的对偶空间}
+	定义Hilbert空间$\mathcal{H}$的对偶空间为Hilbert空间
+	\begin{align*}
+		&\mathcal{H}^*=\{ \text{有界线性泛函}f:\mathcal{H}\to \C \}\\
+		& (f,g)=\overline{(\tau(f),\tau(g))}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{Frechet-Riesz表现定理}{Frechet-Riesz表现定理}
+	对于Hilbert空间$\mathcal{H}$，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}^*$，成立$f(x)=(x,\tau(f))$。
+\end{theorem}
+
+\begin{proof}
+	首先证明存在映射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}$，成立$f(x)=(x,\tau(f))$。任取$f\in \mathcal{H}^*$，如果$f=0$，那么定义$\tau(f)=0$，因此对于任意$x\in \mathcal{H}$，成立
+	$$
+	f(x)=0=(x,0)=(x,\tau(f))
+	$$
+	如果$f\ne 0$，那么$\ker f\subsetneq \mathcal{H}$。由命题\ref{pro:有界线性算子的核为闭子集}，$\ker f$为$\mathcal{H}$的闭子空间。取$x_0\in \mathcal{H}\setminus\ker f$，由射影定理\ref{thm:射影定理}，存在且存在唯一$(y_0,z_0)\in\ker f\times(\ker f)^\perp$，使得成立$x_0=y_0+z_0$，因此$z_0\ne0$且$f(z_0)\ne0$。任取$x\in\mathcal{H}$，令$\beta_x=f(x)/f(z_0)$，那么
+	$$
+	f(x)=\beta_xf(z_0)=f(\beta_x z_0)\iff f(x-\beta_xz_0)\in\ker f\iff x-\beta_xz_0\in\ker f
+	$$
+	由于$x=(x-\beta_xz_0)+\beta_xz_0$，那么$\mathcal{H}=\text{span }(\ker f\cup\{z_0\})$。由于
+	$$
+	(x,z_0)=((x-\beta_xz_0)+\beta_xz_0,z_0)=(x-\beta_xz_0,z_0)+\beta_x(z_0,z_0)
+	=\beta_x\|z_0\|^2
+	$$
+	因此$\beta_x=(x,z_0/\|z_0\|^2)$，进而$f(x)=(x,z_0\overline{f(z_0)}/\|z_0\|^2)$，此时定义$\tau(f)=z_0\overline{f(z_0)}/\|z_0\|^2$，那么对于任意$x\in \mathcal{H}$，成立$f(x)=(x,\tau(f))$。
+	
+	其次证明映射$\tau$为保范共轭线性双射。对于保范性，任取$f\in\mathcal{H}^*$，如果$f=0$，那么$\tau(f)=0$，因此
+	$$
+	\|\tau(f)\|=\|f\|=0
+	$$
+	如果$f\ne 0$，那么由Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	\begin{align*}
+		&\| \tau(f)\|
+		=\left|\left(\frac{\tau(f)}{\|\tau(f)\|},\tau(f)\right)\right|
+		=\left|f\left(\frac{\tau(f)}{\|\tau(f)\|}\right)\right|
+		\le \|f\|\\
+		&\|f\|
+		=\sup_{\|x\|\le 1}|f(x)|
+		=\sup_{\|x\|\le 1}|(x,\tau(f))|
+		\le\sup_{\|x\|=1}\|x\|\|\tau(f)\|=\|\tau(f)\|
+	\end{align*}
+	$$
+	因此$\|f\|=\|\tau(f)\|$，进而该映射为保范映射。
+	
+	对于单射性，由命题\ref{pro:下有界线性算子为单射}，结合$\tau$的保范性，$\tau$为单射。
+	
+	对于满射性，对于任意$x\in\mathcal{H}$，定义$f_x\in\mathcal{H}^*$，使得对于任意$y\in\mathcal{H}$，成立$f_x(y)=(y,x)$，那么$\tau(f_x)=x$，进而$\tau$为满射。
+	
+	对于共轭线性，由于
+	\begin{align*}
+		&(x,\tau(f+g))=(f+g)(x)=f(x)+g(x)=(x,\tau(f))+(x,\tau(g))=(x,\tau(f)+\tau(g))\\
+		&(x,\tau(\lambda f))=(\lambda f)(x)=\lambda f(x)=\lambda (x,\tau(f))=(x,\overline{\lambda}\tau(f))
+	\end{align*}
+	那么由命题\ref{pro:内积判断为零}
+	$$
+	\tau(f+g)=\tau(f)+\tau(g),\qquad 
+	\tau(\lambda f)=\overline{\lambda }\tau(f)
+	$$
+	
+	综上所述，对于Hilbert空间$\mathcal{H}$，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}^*$，成立$f(x)=(x,\tau(f))$，命题得证！
+\end{proof}
+
+\begin{corollary}{}{Frechet-Riesz表现定理的推论}
+	对于Hilbert空间$\mathcal{H}$，成立
+	$$
+	\|x\|=\sup_{\|y\|\le 1}|(x,y)|
+	$$
+\end{corollary}
+
+\begin{proof}
+	构造映射
+	\function{f_x}{\mathcal{H}}{\C}{y}{(y,x)}
+	那么$f_x\in\mathcal{H}^*$。由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}$，成立$f(x)=(x,\tau(f))$。由于$\tau(f_x)=x$，那么
+	$$
+	\|x\|
+	=\|\tau(f_x)\|
+	=\sup_{\|y\|\le 1}|f_x(y)|
+	=\sup_{\|y\|\le 1}|(x,y)|
+	$$ 
+\end{proof}
+
+\begin{theorem}{}{Hilbert空间的对偶空间为Hilbert空间}
+	Hilbert空间的对偶空间为Hilbert空间。
+\end{theorem}
+
+\begin{proof}
+	对于Hilbert空间$\mathcal{H}$，其对偶空间为
+	\begin{align*}
+		&\mathcal{H}^*=\{ \text{有界线性泛函}f:\mathcal{H}\to \C \}\\
+		& (f,g)=\overline{(\tau(f),\tau(g))}
+	\end{align*}
+	由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\tau:\mathcal{H}^*\to\mathcal{H}$。由定理\ref{thm:有界线性算子空间为Banach空间}，$\mathcal{H}^*$为Hilbert空间。
+\end{proof}
+
+\begin{definition}{双线性泛函}
+	对于线性空间$X$，称映射$f:X\times X\to\C$为共轭双线性泛函，如果成立
+	$$
+	f(x+y,z)=f(x,z)+f(y,z),\qquad f(\lambda x,y)=\lambda f(x,y)\\
+	f(x,y+z)=f(x,y)+f(x,z),\qquad f(x,\lambda y)=\lambda f(x,y)
+	$$
+\end{definition}
+
+\begin{definition}{共轭双线性泛函}
+	对于线性空间$X$，称映射$f:X\times X\to\C$为共轭双线性泛函，如果成立
+	$$
+	f(x+y,z)=f(x,z)+f(y,z),\qquad f(\lambda x,y)=\lambda f(x,y)\\
+	f(x,y+z)=f(x,y)+f(x,z),\qquad f(x,\lambda y)=\overline{\lambda }f(x,y)
+	$$
+\end{definition}
+
+\begin{definition}{有界双线性泛函}
+	对于赋范线性空间$X$，称双线性泛函$f:X\times X\to\C$为有界的，如果存在$C$，使得对于任意$x,y\in X$，成立$|f(x,y)|\le C\|x\|\|y\|$。
+\end{definition}
+
+\begin{theorem}{}{Frechet-Riesz表现定理的应用}
+	对于Hilbert空间$\mathcal{H}$上的有界共轭双线性泛函$f:\mathcal{H}\times \mathcal{H}\to\C$，存在且存在唯一有界线性算子$T:\mathcal{H}\to\mathcal{H}$，使得成立$\|T\|=\|f\|$，且对于任意$x,y\in \mathcal{H}$，成立$f(x,y)=(T(x),y)$。
+\end{theorem}
+
+\begin{proof}
+	由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in\mathcal{H}$与$\varphi\in \mathcal{H}^*$，成立$\varphi(x)=(x,\tau(\varphi))$。
+	
+	定义映射
+	\begin{align*}
+		\pi:\begin{aligned}[t]
+			\mathcal{H}&\longrightarrow \mathcal{H}^*\\
+			x&\longmapsto \varphi_x,\text{ 其中 }\varphi_x(y)=\overline{f(x,y)}
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		&(\pi(x+y))(z)=\overline{f(x+y,z)}=\overline{f(x,z)}+\overline{f(x,z)}=\varphi_{x}(z)+\varphi_{y}(z)=(\pi(x))(z)+(\pi(y))(z)\\
+		&(\pi(\lambda x))(y)=\varphi_{\lambda x}(y)=\overline{f(\lambda x,y)}=\overline{\lambda f(x,y)}=\overline{\lambda}\varphi_{x}(y)=\overline{\lambda}(\pi(x))(y)
+	\end{align*}
+	那么
+	$$
+	\pi(x+y)=\pi(x)+\pi(y),\qquad 
+	\pi(\lambda x)=\overline{\lambda}\pi(x)
+	$$
+	
+	定义映射
+	$$
+	T=\tau\circ \pi:\mathcal{H}\to \mathcal{H}
+	$$
+	那么
+	$$
+	f(x,y)=\overline{\varphi_x(y)}=\overline{(y,\tau(\varphi_x))}=\overline{(y,(\tau\circ \pi)(x))}=\overline{(y,T(x))}=(T(x),y)
+	$$
+	由于
+	\begin{align*}
+		&T(x+y)=(\tau\circ \pi)(x+y)=\tau(\pi(x))+\tau(\pi(y))=(\tau\circ \pi)(x)+(\tau\circ \pi)(y)=T(x)+T(y)\\
+		&T(\lambda x)=(\tau\circ \pi)(\lambda x)=\tau(\pi(\lambda x))=\tau(\overline{\lambda }\pi(x))=\lambda \tau(\pi(x))=\lambda (\tau\circ \pi)(x)=\lambda T(x)
+	\end{align*}
+	那么$T$为线性算子。
+	
+	由推论\ref{cor:Frechet-Riesz表现定理的推论}
+	\begin{align*}
+		\|T\| = & \sup_{\|x\|\le 1}\|T(x)\|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|f(x,y)|\\
+		= & \|f\|
+	\end{align*}
+	因此$T$为有界线性算子。
+	
+	如果存在有界线性算子$S:\mathcal{H}\to\mathcal{H}$，使得对于任意$x,y\in \mathcal{H}$，成立$f(x,y)=(S(x),y)$，那么
+	$$
+	((T-S)(x),y)=(T(x),y)-(S(x),y)=f(x,y)-f(x,y)=0
+	$$
+	进而$T=S$，进而$T$为唯一的。
+\end{proof}
+
+\section{Hilbert共轭算子，Lax-Milgram定理}
+
+\subsection{Hilbert共轭算子}
+
+\begin{definition}{Hilbert共轭算子}
+	对于Hilbert空间$X$与$Y$，称有界线性算子$T^*:Y\to X$为有界线性算子$T:X\to Y$的Hilbert共轭算子，如果对于任意$x\in X$与$y\in Y$，成立$(T(x),y)=(x,T^*(y))$。
+\end{definition}
+
+\begin{theorem}{Hilbert共轭算子的存在唯一性}
+	对于Hilbert空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，那么存在且存在唯一有界线性算子$T^*:Y\to X$，使得成立$\|T^*\|=\|T\|$，且对于任意$x\in X$与$y\in Y$，成立$(T(x),y)=(x,T^*(y))$。
+\end{theorem}
+
+\begin{proof}
+	由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射为$\tau:X^*\to X$，使得对于任意$x\in X$，成立$f(x)=(x,\tau(f))$。构造映射
+	\begin{align*}
+		\pi:\begin{aligned}[t]
+			Y&\longrightarrow X^*\\
+			y&\longmapsto f_y
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		f_y:\begin{aligned}[t]
+			X&\longrightarrow \C\\
+			x&\longmapsto (T(x),y)
+		\end{aligned}
+	\end{align*}
+	因此对于任意$x\in X$，成立$f_y(x)=(x,\tau(f_y))$，且$\|f_y\|=\|\tau(f_y)\|$。
+	
+	由于
+	\begin{align*}
+		&(\pi(x+y))(z)=f_{x+y}(z)=f_x(z)+f_y(z)=(\pi(x))(z)+(\pi(y))(z)\\
+		&(\pi(\lambda y))(x)=f_{\lambda y}(x)=(T(x),\lambda y)=\overline{\lambda}(T(x),y)=\overline{\lambda}f_y(x)=\overline{\lambda}(\pi(y))(x)
+	\end{align*}
+	那么
+	$$
+	\pi(x+y)=\pi(x)+\pi(y),\qquad 
+	\pi(\lambda y)=\overline{\lambda}\pi(y)
+	$$
+	因此$\pi$为共轭线性映射。
+	
+	构造映射
+	$$
+	T^*=\tau\circ \pi:Y\to X
+	$$
+	那么对于任意$x\in X$与$y\in Y$，成立
+	$$
+	(T(x),y)=f_y(x)=(x,\tau(f_y))=(x,(\tau\circ \pi)(y))=(x,T^*(y))
+	$$
+	
+	由于
+	\begin{align*}
+		&T^*(x+y)=\tau(\pi(x+y))=\tau(\pi(x)+\pi(y))=\tau(\pi(x))+\tau(\pi(y))=T^*(x)+T^*(y)\\
+		&T^*(\lambda y)=(\tau\circ \pi)(\lambda y)=\tau(\pi(\lambda y))=\tau(\overline{\lambda}\pi(y))=\lambda \tau(\pi(y))=\lambda (\tau\circ \pi)(y)=T^*(y)
+	\end{align*}
+	那么$T^*$为线性算子。
+	
+	由Frechet-Riesz表现定理的推论\ref{cor:Frechet-Riesz表现定理的推论}
+	\begin{align*}
+		\|T^*\| = & \sup_{\|y\|\le 1}\|T^*(y)\|\\
+		= & \sup_{\|y\|\le 1}\sup_{\|x\|\le 1}|(x,T^*(y))|\\
+		= & \sup_{\|y\|\le 1}\sup_{\|x\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\|T(x)\|\\
+		= & \|T\|
+	\end{align*}
+	于是$T^*$为有界线性算子。
+	
+	如果存在有界线性算子$S:Y\to X$，使得对于任意$x\in X$与$y\in Y$，成立$(T(x),y)=(x,S(y))$，那么
+	$$
+	(x,(T^*-S)(y))=(x,T^*(y))-(x,S(y))=(T(x),y)-(T(x),y)=0
+	$$
+	因此$T^*=S$。
+\end{proof}
+
+\begin{proposition}{Hilbert共轭算子的性质}{Hilbert共轭算子的性质1}
+	对于Hilbert空间$\mathcal{H}$上的有界线性算子$T$与$S$，成立
+	$$
+	(S+T)^*=S^*+T^*,\quad (ST)^*=T^*S^*,\quad (T^*)^*=T,\quad 
+	(\lambda T)^*=\overline{\lambda}T^*,\quad (T^*)^{-1}=(T^{-1})^*,\quad \|T^*\|=\|T\|
+	$$
+\end{proposition}
+
+\begin{proof}
+	任取$x,y\in\mathcal{H}$，由于
+	\begin{gather*}
+		((S+T)^*(x),y)
+		= (x,(S+T)(y))
+		= (x,S(y))+(x,T(y))
+		= (S^*(x),y)+(T^*(x),y)
+		= ((S^*+T^*)(x),y)\\
+		((ST)^*(x),y)
+		= (x,(ST)(y))
+		= (x,S(T(x)))
+		= (S^*(x),T(y))
+		= (T^*(S^*(x)),y)
+		= ((T^*S^*)(x),y)\\
+		(x,(T^*)^*(y))
+		= (T^*(x),y)
+		= \overline{(y,T^*(x))}
+		= \overline{(T(y),x)}
+		= (x,T(y))\\
+		(x,(\lambda T)^*(y))
+		= ((\lambda T)(x),y)
+		= \lambda(T(x),y)
+		= \lambda(x,T^*(y))
+		= (x,(\overline{\lambda}T^*)(y))\\
+		(x,I^*(y))
+		= (I(x),y)
+		= (x,y)
+		= (x,I(y))
+	\end{gather*}
+	那么
+	$$
+	(S+T)^*=S^*+T^*,\qquad (ST)^*=T^*S^*,\qquad (T^*)^*=T
+	(\lambda T)^*=\overline{\lambda}T^*,\qquad I^*=I
+	$$
+	进而
+	$$
+	T^*(T^{-1})^*=(T^{-1}T)^*=I^*=I,\quad 
+	(T^{-1})^*T^*=(TT^{-1})^*=I^*=I\implies 
+	(T^*)^{-1}=(T^{-1})^*
+	$$
+	
+	由Frechet-Riesz表现定理的推论\ref{cor:Frechet-Riesz表现定理的推论}
+	\begin{align*}
+		\|T^*\| = & \sup_{\|y\|\le 1}\|T^*(y)\|\\
+		= & \sup_{\|y\|\le 1}\sup_{\|x\|\le 1}|(x,T^*(y))|\\
+		= & \sup_{\|y\|\le 1}\sup_{\|x\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\sup_{\|y\|\le 1}|(T(x),y)|\\
+		= & \sup_{\|x\|\le 1}\|T(x)\|\\
+		= & \|T\|
+	\end{align*}
+\end{proof}
+
+\begin{proposition}{Hilbert共轭算子的性质}{Hilbert共轭算子的性质2}
+	对于Hilbert空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，那么
+	$$
+	\ker T=(\im T^*)^\perp, \qquad \ker T^*=(\im T)^\perp\qquad \overline{\im T}=(\ker T^*)^\perp, \qquad  \overline{\im T^*}=(\ker T)^\perp
+	$$
+\end{proposition}
+
+\begin{proof}
+	由于
+	\begin{align*}
+		&\forall x\in\ker T,T(x)=0
+		\implies \forall x\in\ker T,\forall y\in Y,(x,T^*(y))=(T(x),y)=0\\
+		\implies &\forall x\in\ker T,x\in (\im T^*)^\perp
+		\implies \ker T\sub (\im T^*)^\perp\\
+		& \forall x\in (\im T^*)^\perp,\forall y\in Y,(T(x),y)=(x,T^*(y))=0
+		\implies \forall x\in (\im T^*)^\perp,T(x)=0\\
+		\implies &\forall x\in (\im T^*)^\perp,x\in\ker T
+		\implies \ker T\supset (\im T^*)^\perp
+	\end{align*}
+	那么$\ker T=(\im T^*)^\perp$。
+	
+	由于
+	\begin{align*}
+		&\forall y\in\ker T^*,T^*(y)=0
+		\implies \forall y\in\ker T^*,\forall x\in X,(T(x),y)=(x,T^*(y))=0\\
+		\implies &\forall y\in\ker T^*,y\in (\im T)^\perp
+		\implies \ker T^*\sub (\im T)^\perp\\
+		& \forall y\in (\im T)^\perp,\forall x\in X,(x,T^*(y))=(T(x),y)=0
+		\implies \forall y\in (\im T)^\perp,T^*(y)=0\\
+		\implies &\forall y\in (\im T)^\perp,y\in\ker T^*
+		\implies \ker T^*\supset (\im T)^\perp
+	\end{align*}
+	那么$\ker T^*=(\im T)^\perp$。
+	
+	由命题\ref{pro:正交补的性质3}
+	$$
+	\overline{\im T^*}
+	= ((\im T^*)^\perp)^\perp
+	= (\ker T)^\perp,\qquad 
+	\overline{\im T}
+	= ((\im T)^\perp)^\perp
+	= (\ker T^*)^\perp
+	$$
+\end{proof}
+
+\subsection{Lax-Milgram定理}
+
+\begin{theorem}{Lax-Milgram定理}
+	对于Hilbert空间$\mathcal{H}$上的有界共轭双线性泛函$f:\mathcal{H}\times \mathcal{H}\to\C$，如果存在$r>0$，使得对于任意$x\in \mathcal{H}$，成立$|f(x,x)|\ge r\|x\|^2$，那么对于任意有界线性泛函$\varphi:\mathcal{H}\to \C$，存在且存在唯一$x_\varphi\in \mathcal{H}$，使得对于任意$x\in \mathcal{H}$，成立$\varphi(x)=f(x,x_\varphi)$，且$r\|x_\varphi\|\le\|\varphi\|$。
+\end{theorem}
+
+\begin{proof}
+	由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射为$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$y\in \mathcal{H}$，成立$f(y)=(y,\tau(f))$。
+	
+	由定理\ref{thm:Frechet-Riesz表现定理的应用}，存在且存在唯一有界线性算子$T:\mathcal{H}\to\mathcal{H}$，使得对于任意$x,y\in \mathcal{H}$，成立$f(x,y)=(T(x),y)$。
+	
+	由于对于任意$x\in \mathcal{H}$，成立$|f(x,x)|\ge r\|x\|^2$，那么由Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	r\|x\|^2\le |f(x,x)|=|(T(x),x)|=|(x,T^*(x))|\le \|x\|\|T^*(x)\|
+	$$
+	从而$r\|x\|\le\|T^*(x)\|$，因此$T^*$为下有界线性算子。由命题\ref{pro:下有界线性算子为单射}，$T^*$为单射。由命题\ref{pro:下有界连续线性算子的像为闭子集}，$\im T^*$为$\mathcal{H}$的闭子空间。
+	
+	如果$\im T^*\subsetneq \mathcal{H}$，那么存在非零元$x_t\in\mathcal{H}$，使得成立$x_t\perp\im T^*$，从而
+	$$
+	r\|x_t\|^2\le |f(x_t,x_t)|=|(T(x_t),x_t)|=|(x_t,T^*(x_t))|=0
+	$$
+	因此$x_t=0$，矛盾！进而$\im T^*=\mathcal{H}$，$T^*$为双射。
+	
+	任取有界线性泛函$\varphi:\mathcal{H}\to \C$，令$x_\varphi=((T^*)^{-1}\circ\tau)(\varphi)$，那么对于任意$x\in \mathcal{H}$，成立
+	\begin{align*}
+		&\varphi(x)=(x,\tau(\varphi))=(x,T^*(x_\varphi))=(T(x),x_\varphi)=f(x,x_\varphi)\\
+		&r\|x_\varphi\|\le \| T^*(x_\varphi) \|=\| \tau(\varphi)\|=\|\varphi\|
+	\end{align*}
+\end{proof}
+
+\chapter{Banach空间}
+
+\section{有界线性算子}
+
+\subsection{算子范数}
+
+\begin{definition}{算子范数}
+	对于赋范线性空间$X$与$Y$，定义有界线性算子$T:X\to Y$的范数为
+	$$
+	\|T\|=\sup_{\|x\|=1}\|T(x)\|=\sup_{\|x\|\le1}\|T(x)\|=\sup_{\|x\|\ne0}\frac{\|T(x)\|}{\|x\|}
+	$$
+\end{definition}
+
+\begin{definition}{强范数}{强范数}
+	对于线性空间$X$上的范数$\|\cdot\|_1$与$\|\cdot\|_2$，称范数$\|\cdot\|_1$强于$\|\cdot\|_2$，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $\|x_n\|_1\to 0\implies \|x_n\|_2\to 0$
+		\item 存在$C>0$，使得对于任意$x\in X$，成立$\|x\|_2\le C\|x\|_1$。
+		\item 恒等算子
+		\function{I}{(X,\|\cdot\|_1)}{(X,\|\cdot\|_2)}{x}{x}
+		为连续线性算子。
+		\item 恒等算子
+		\function{I}{(X,\|\cdot\|_1)}{(X,\|\cdot\|_2)}{x}{x}
+		为有界线性算子。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{等价范数}{等价范数}
+	对于线性空间$X$上的范数$\|\cdot\|_1$与$\|\cdot\|_2$，称范数$\|\cdot\|_1$与$\|\cdot\|_2$等价，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $\|x_n\|_1\to 0\iff\|x_n\|_2\to 0$
+		\item 存在$C_1,C_2>0$，使得对于任意$x\in X$，成立$C_1\|x\|_2\le \|x\|_1 \le C_2\|x\|_2$。
+		\item 对于恒等算子
+		\function{I}{(X,\|\cdot\|_1)}{(X,\|\cdot\|_2)}{x}{x}
+		$I,I^{-1}$均为连续线性算子。
+		\item 对于恒等算子
+		\function{I}{(X,\|\cdot\|_1)}{(X,\|\cdot\|_2)}{x}{x}
+		$I,I^{-1}$均为有界线性算子。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{有界线性算子}
+	对于赋范线性空间$X$与$Y$，称线性算子$T:X\to Y$为有界的，如果存在$M>0$，使得对于任意$x\in X$，成立$\|T(x)\|\le M\|x\|$。
+\end{definition}
+
+\begin{definition}{下有界线性算子}
+	对于赋范线性空间$X$与$Y$，称线性算子$T:X\to Y$为下有界的，如果存在$M>0$，使得对于任意$x\in X$，成立$\|T(x)\|\ge M\|x\|$。
+\end{definition}
+
+\begin{proposition}{有界线性算子的核为闭子集}{有界线性算子的核为闭子集}
+	对于赋范线性空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，那么$\ker T$为$X$的闭子集。
+\end{proposition}
+
+\begin{proof}
+	（朴素）任取$x\in\overline{\ker T}$，那么存在$\{ x_n \}_{n=1}^{\infty}\subset \ker T$，使得成立$x_n\to x$。由于$T$为有界线性算子，那么由定理\ref{thm:有界线性算子的等价条件}，$T$为连续线性算子，因此
+	$$
+	T(x)=T(\lim_{n\to\infty}x_n)=\lim_{n\to\infty}T(x_n)=0
+	$$
+	进而$x\in \ker T$。由$x$的任意性，$\ker T$为$X$的闭子集。
+	
+	（优雅）由于$Y$为度量空间，因此$Y$满足$T_1$公理，进而$\{0\}$为$Y$的闭子集。而由定理\ref{thm:有界线性算子的等价条件}，$T$有界$\iff T$连续，因此$\ker T=T^{-1}(0)$为$X$的闭子集。
+\end{proof}
+
+\begin{proposition}{下有界线性算子为单射}{下有界线性算子为单射}
+	对于赋范线性空间$X$与$Y$，如果$T:X\to Y$为下有界线性算子，那么$T$为单射。
+\end{proposition}
+
+\begin{proof}
+	这当然是显然的！
+	$$
+	T(x)=0
+	\iff \|T(x)\|=0
+	\implies M\|x\|\le 0
+	\iff x=0
+	$$
+\end{proof}
+
+\begin{proposition}{下有界连续线性算子的像为闭子集}{下有界连续线性算子的像为闭子集}
+	对于赋范线性空间$X$与$Y$，如果$X$为Banach空间，且$T:X\to Y$为下有界连续线性算子，那么$\im T$为$Y$的闭子集。
+\end{proposition}
+
+\begin{proof}
+	任取$y\in \overline{\im T}$，那么存在$\{x_n\}_{n=1}^{\infty}\sub X$，使得成立$T(x_n)\to y$，因此$\{T(x_n)\}_{n=1}^{\infty}\sub Y$为Cauchy序列。由于$T$为下有界算子，那么$\{x_n\}_{n=1}^{\infty}\sub X$为Cauchy序列。由于$X$为Banach空间，那么存在$x\in X$，使得成立$x_n\to x$。由于$T$为连续算子，那么
+	$$
+	y=\lim_{n\to\infty} T(x_n)
+	=T(\lim_{n\to\infty}x_n)
+	=T(x)
+	=\im T
+	$$
+	由$y$的任意性，$\im T$为$Y$的闭子集。
+\end{proof}
+
+\begin{proposition}{积分算子}{积分算子}
+	对于$K(x,y)\in C[0,1]^2$，定义积分算子
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow C[0,1]\\
+			f&\longmapsto F, \text{其中} F(x)=\int_0^1K(x,y)f(y)\mathrm{d}y 
+		\end{aligned}
+	\end{align*}
+	其算子范数为
+	$$
+	\|T\|=\sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	$$
+\end{proposition}
+
+\begin{proof}
+	一方面，注意到
+	\begin{align*}
+		|(T(f))(x)|&\le\int_0^1|K(x,y)||f(y)|\mathrm{d}y\\
+		&\le\sup_{0\le y\le 1}|f(y)|\int_0^1|K(x,y)|\mathrm{d}y\\
+		&=\|f\|\int_0^1|K(x,y)|\mathrm{d}y
+	\end{align*}
+	因此
+	\begin{align*}
+		\|T\|&=\sup_{\|f\|\ne0}\frac{\|T(f)\|}{\|f\|}\\
+		&=\sup_{\|f\|\ne0}\sup_{0\le x\le 1}\frac{1}{\|f\|}|(T(f))(x)|\\
+		&\le \sup_{\|f\|\ne0}\sup_{0\le x\le 1}\frac{1}{\|f\|} \|f\|\int_0^1|K(x,y)|\mathrm{d}y\\
+		&=\sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	\end{align*}
+
+	另一方面，由于$\displaystyle\int_0^1|K(x,y)|\mathrm{d}y$为$0\le x\le 1$上的连续函数，那么存在$0\le x_0\le 1$，使得成立
+	$$
+	\int_0^1|K(x_0,y)|\mathrm{d}y=\sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	$$
+	构造函数
+	\begin{align*}
+		k_{0}:\begin{aligned}[t]
+			[0,1]&\longrightarrow \C\\
+			y&\longmapsto \begin{cases}
+				\displaystyle\frac{\overline{K(x_0,y)}}{|K(x_0,y)|},\qquad & K(x_0,y)\ne0\\
+				0,\qquad & K(x_0,y)=0
+			\end{cases}
+		\end{aligned}
+	\end{align*}
+	那么$\|k_0\|\le 1$，且
+	$$
+	\int_0^1K(x_0,y)k_{0}(y)\mathrm{d}y=\int_0^1|K(x_0,y)|\mathrm{d}y=\sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	$$
+	由Luzin定理\ref{thm:Luzin定理}，对于任意$\varepsilon>0$，存在$k\in C[0,1]$，使得$\|k\|\le 1$，且
+	$$
+	m([k\ne k_{0}])<\frac{\varepsilon}{2\sup\limits_{0\le x,y\le 1}|K(x,y)|}
+	$$
+	从而
+	\begin{align*}
+		&\left| \int_0^1K(x_0,y)(k(y)-k_{x_0}(y))\mathrm{d}y \right|\\
+		=&\left| \int_{[k\ne k_{x_0}]}K(x_0,y)(k(y)-k_{x_0}(y))\mathrm{d}y \right|\\
+		\le&\int_{[k\ne k_{x_0}]}|K(x_0,y)|(|k(y)|+|k_{x_0}(y)|)\mathrm{d}y\\
+		\le & \sup\limits_{0\le x,y\le 1}|K(x,y)|(\|k\|+\|k_{0}\|)\int_{[k\ne k_{x_0}]}\mathrm{d}y\\
+		\le & 2m([k\ne k_{0}])\sup\limits_{0\le x,y\le 1}|K(x,y)|\\
+		< & \varepsilon
+	\end{align*}
+	进而
+	\begin{align*}
+		\|T\|=&\sup_{\|f\|=1}\|T(f)\|\\
+		=&\sup_{\|f\|=1}\sup_{0\le x\le 1}|(T(f))(x)|\\
+		\ge &\sup_{\|f\|=1}|(T(f))(x_0)|\\
+		= & \sup_{\|f\|=1} \left| \int_0^1K(x_0,y)f(y)\mathrm{d}y \right|\\
+		\ge & \left| \int_0^1K(x_0,y)k(y)\mathrm{d}y \right|\\
+		\ge & \left| \int_0^1K(x_0,y)k_{0}(y)\mathrm{d}y \right|-\left| \int_0^1K(x_0,y)(k(y)-k_{x_0}(y))\mathrm{d}y \right|\\
+		> & \sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y-\varepsilon
+	\end{align*}
+	由$\varepsilon$​的任意性，成立
+	$$
+	\|T\|\ge \sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	$$
+	
+	综合两方面
+	$$
+	\|T\|=\sup_{0\le x\le 1}\int_0^1|K(x,y)|\mathrm{d}y
+	$$
+\end{proof}
+
+\subsection{有界线性算子空间}
+
+\begin{definition}{有界线性算子空间}
+	对于赋范线性空间$X$与$Y$，定义有界线性算子空间为赋范线性空间
+	\begin{align*}
+		&\mathcal{L}(X,Y)=\{ \text{有界线性算子}T:X\to Y \}\\
+		&\|T\|=\sup_{\|x\|=1}\|T(x)\|
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{有界线性算子空间为Banach空间}{有界线性算子空间为Banach空间}
+	对于赋范线性空间$X$与$Y$，成立
+	$$
+	Y\text{为Banach空间}\iff \mathcal{L}(X,Y)\text{为Banach空间}
+	$$
+\end{theorem}
+
+\begin{proof}
+	对于必要性，如果$Y$为Banach空间，那么任取Cauchy序列$\{ T_n \}_{n=1}^{\infty}\sub \mathcal{L}(X,Y)$，因此对于任意$\varepsilon>0$，存在$N\in\N^*$，使得对于任意$m,n\ge N$，成立
+	$$
+	\|T_m-T_n\|<\varepsilon\implies \|T_m(x)-T_n(x)\|<\varepsilon\|x\|,\forall x\in X
+	$$
+	因此对于任意$x\in X$，$\{ T_n(x) \}_{n=1}^{\infty}\sub Y$为Cauchy序列，而$Y$为Banach空间，因此存在$T(x)\in Y$，使得成立$\lim\limits_{n\to\infty}T_n(x)=T(x)$。
+	
+	由于
+	\begin{align*}
+		&T(x+y)
+		=\lim_{n\to\infty}T_n(x+y)
+		=\lim_{n\to\infty}T_n(x)+T_n(y)
+		=T(x)+T(y)\\
+		&T(\lambda x)
+		=\lim_{n\to\infty}T_n(\lambda x)
+		=\lim_{n\to\infty}\lambda T_n(x)
+		=\lambda T(x)
+	\end{align*}
+	而度量空间中的Cauchy序列有界，那么存在$M>0$，使得对于任意$n\in\N^*$，成立$\|T_n\|\le M$，那么
+	$$
+	\|T\|
+	=\sup_{\|x\|\le 1}\|T(x)\|
+	=\sup_{\|x\|\le 1}\lim_{n\to\infty}\|T_n(x)\|
+	\le \lim_{n\to\infty}\sup_{\|x\|\le 1}\|T_n(x)\|
+	=\lim_{n\to\infty}\|T_n\|
+	\le M
+	$$
+	因此$T\in\mathcal{L}(X,Y)$。
+	
+	由于
+	\begin{align*}
+		\lim_{n\to\infty}\|T_n-T\|=& \lim_{n\to\infty}\sup_{\|x\|=1}\|T_n(x)-T(x)\|\\
+		=&\lim_{n\to\infty}\sup_{\|x\|=1}\lim_{m\to\infty}\|T_n(x)-T_m(x)\|\\
+		=&\lim_{m,n\to\infty}\sup_{\|x\|=1}\|T_n(x)-T_m(x)\|\\
+		= & \lim_{m,n\to\infty}\|T_m-T_n\|\\
+		= & 0
+	\end{align*}
+	那么$\mathcal{L}(X,Y)$为Banach空间。
+	
+	对于充分性，如果$\mathcal{L}(X,Y)$为Banach空间，那么取$x_0\in X\setminus\{0\}$。由Hahn-Banach定理的推论\ref{cor:命题2.1}}，存在有界线性泛函$f_0:X\to \C$，使得成立
+	$$
+	\|f_0\|=1,\qquad f_0(x_0)=\|x_0\|
+	$$
+	任取Cauchy序列$\{y_n\}_{n=1}^{\infty}\sub Y$，对于任意$n\in\N^*$，定义映射
+	\begin{align*}
+		T_n:\begin{aligned}[t]
+			X &\longrightarrow Y\\
+			x &\longmapsto \frac{f_0(x)}{f_0(x_0)}y_n
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		& T_n(x+y)
+		=\frac{f_0(x+y)}{f_0(x_0)}y_n
+		=\frac{f_0(x)}{f_0(x_0)}y_n+\frac{f_0(y)}{f_0(x_0)}y_n
+		=T_n(x)+T_n(y)\\
+		& T_n(\lambda x)
+		=\frac{f_0(\lambda x)}{f_0(x_0)}y_n
+		= \lambda \frac{f_0(x)}{f_0(x_0)}y_n
+		=\lambda T_n(x)
+	\end{align*}
+	因此$T_n$为线性算子。
+	
+	由于
+	$$
+	\|T_n(x)\|
+	=\left\| \frac{f_0(x)}{f_0(x_0)}y_n \right\|
+	=\frac{\|y_n\|}{\|x_0\|}\|f_0(x)\|
+	\le \frac{\|y_n\|}{\|x_0\|}\|f_0\|\|x\|
+	= \frac{\|y_n\|}{\|x_0\|}\|x\|
+	\implies 
+	\|T_n\|\le \frac{\|y_n\|}{\|x_0\|}
+	$$
+	因此$T_n$为有界算子，进而$\{T_n\}_{n=1}^{\infty}\sub \mathcal{L}(X,Y)$。
+	
+	由于
+	\begin{align*}
+		\|T_m-T_n\|
+		& = \sup_{\|x\|\le 1}\|T_m(x)-T_n(x)\|\\
+		& = \sup_{\|x\|\le 1}\left\| \frac{f_0(x)}{f_0(x_0)}(y_m-y_n) \right\|\\
+		& = \sup_{\|x\|\le 1}\frac{\|y_m-y_n\|}{\|x_0\|}\|f_0(x)\|\\
+		& \le \sup_{\|x\|\le 1}\frac{\|y_m-y_n\|}{\|x_0\|}\|f_0\|\|x\|\\
+		& = \frac{\|y_m-y_n\|}{\|x_0\|}
+	\end{align*}
+	因此$\{T_n\}_{n=1}^{\infty}$为Cauchy序列。由于$\mathcal{L}(X,Y)$为Banach空间，那么存在$T\in \mathcal{L}(X,Y)$，使得成立$T_n\to T$。由于对于任意$x\in X$​，成立
+	$$
+	\|T_n(x)-T(x)\|\le \|T_n-T\|\|x\|
+	$$
+	那么对于任意$x\in X$，成立$T_n(x)\to T(x)$。特别的，$T_n(x_0)\to T(x_0)$。记$y=T(x_0)\in Y$，那么$y_n\to y$，进而$Y$为Banach空间。
+\end{proof}
+
+\subsection{算子的逆}
+
+\begin{proposition}
+	对于赋范线性空间$X$与$Y$，如果$T:X\to Y$为线性算子，那么
+	$$
+	T\text{为单射且逆算子}T^{-1}:\im T\to X\text{为连续算子}\iff\text{存在}M>0\text{使得成立}\|T\|\ge M
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于充分性，如果存在$M>0$，使得成立$\|T\|\ge M$，那么对于任意$x\in X$，成立$\|T(x)\|\ge M\|x\|$，因此$T(x)=0$蕴含$x=0$，进而$\ker T=\{0\}$，因此$T$为单射。由此可知$T$存在逆算子$T^{-1}:\im T\to X$，且对于任意$x\in X$，成立$\|x\|\le \|T^{-1}(x)\|/M$，进而$\|T^{-1}\|\le1/M$，因此$T^{-1}$为有界算子$\iff T^{-1}$为连续算子。
+	
+	对于必要性，$T$为单射且逆算子$T^{-1}:\im T\to X$为连续算子，那么$T^{-1}$为有界算子，因此存在$M>0$，使得成立$\|T^{-1}\|\le1/M$，进而对于任意$x\in X$，成立$\|x\|\le \|T^{-1}(x)\|/M$，那么对于任意$x\in X$，成立$\|T(x)\|\ge M\|x\|$，进而$\|T\|\ge M$。
+\end{proof}
+
+\begin{proposition}
+	对于Banach空间$X$，如果$T:X\to X$为有界线性算子，且$\|T\|<1$，那么$I-T$有界可逆，且
+	$$
+	(I-T)^{-1}=\sum_{n=0}^{\infty}T^n,\qquad 
+	\|(I-T)^{-1}\|\le \frac{1}{1-\|T\|}
+	$$
+\end{proposition}
+
+\begin{proof}
+	由于$X$为Banach空间，那么$\mathcal{L}(X)$为Banach空间。由于$\|T^n\|\le \|T\|^n$，而
+	$$
+	\sum_{n=1}^{\infty}\|T^n\|\le\sum_{n=1}^{\infty}\|T\|^n=\frac{1}{1-\|T\|}<\infty
+	$$
+	因此数值级数$\displaystyle \sum_{n=1}^{\infty}\|T^n\|$收敛，进而序列级数$\displaystyle \sum_{n=1}^{\infty}T^n$收敛。
+	
+	注意到
+	$$
+	(I-T)\sum_{k=0}^{n}T^k=\sum_{k=0}^{n}T^k(I-T)=I-T^{n+1}
+	$$
+	而$\|T^{n+1}\|\le \|T\|^{n+1}\to 0$​，因此
+	$$
+	(I-T)\sum_{n=0}^{\infty}T^n=\sum_{n=0}^{\infty}T^n(I-T)=I
+	$$
+	从而$I-A$有界可逆，且
+	$$
+	(I-T)^{-1}=\sum_{n=0}^{\infty}T^n
+	$$
+	从而
+	$$
+	\|(I-T)^{-1}\|=\left\| \sum_{n=0}^{\infty}T^n \right\|\le\sum_{n=1}^{\infty}\|T^n\|\le\sum_{n=1}^{\infty}\|T\|^n=\frac{1}{1-\|T\|}
+	$$
+\end{proof}
+
+\begin{proposition}
+	对于Banach空间$X$，如果$T:X\to X$为有界线性算子，那么
+	$$
+	\lim_{n\to\infty}\|T^n\|^{1/n}=\inf_{n\in\N^*}\|T^n\|^{1/n}
+	$$
+\end{proposition}
+
+\begin{proof}
+	一方面
+	$$
+	\lim_{n\to\infty}\|T^n\|^{1/n}=\liminf_{n\to\infty}\|T^n\|^{1/n}\ge\inf_{n\in\N^*}\|T^n\|^{1/n}
+	$$
+	
+	另一方面，对于任意$\varepsilon>0$，存在$N\in\N^*$，使得成立
+	$$
+	\|T^N\|^{1/N}<\inf_{n\in\N^*}\|T^n\|^{1/n}+\varepsilon
+	$$
+	对于任意$n\in\N^*$，存在$0\le r_n<N$以及$k_n\in\N^*$，使得成立$n=k_nN+r_n$，那么
+	$$
+	\|T^n\|=\|T^{k_nN+r_n}\|\le\|T^{k_nN}\|\|T^{r_n}\|\le\|T^N\|^{k_n}\|T\|^{r_n}
+	$$
+	从而
+	$$
+	\|T^n\|^{1/n}\le \|T^N\|^{k_n/n}\|T\|^{r_n/n}\le\left(\inf_{n\in\N^*}\|T^n\|^{1/n}+\varepsilon\right)^{k_nN/n}\|T\|^{r_n/n}
+	$$
+	注意到
+	$$
+	\frac{k_nN}{n}\to1,\qquad \frac{r_n}{n}\to0
+	$$
+	那么
+	$$
+	\lim_{n\to\infty}\|T^n\|^{1/n}\le \inf_{n\in\N^*}\|T^n\|^{1/n}+\varepsilon
+	$$
+	由$\varepsilon$​的任意性
+	$$
+	\lim_{n\to\infty}\|T^n\|^{1/n}\le \inf_{n\in\N^*}\|T^n\|^{1/n}
+	$$
+	
+	综合两方面
+	$$
+	\lim_{n\to\infty}\|T^n\|^{1/n}=\inf_{n\in\N^*}\|T^n\|^{1/n}
+	$$
+\end{proof}
+
+\begin{proposition}{Volterra积分算子}
+	定义Volterra积分算子
+	\begin{align*}
+		V:\begin{aligned}[t]
+			C[a,b]&\longrightarrow C[a,b]\\
+			f&\longmapsto F,\text{ 其中 }F(x)=\int_a^xK(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	其中$K(x,y)$为$[a,b]^2$上的连续函数，那么
+	$$
+	\lim_{n\to\infty}\|V^n\|^{1/n}=0
+	$$
+\end{proposition}
+
+\begin{proof}
+	记$\mu=\sup\limits_{a\le x,y\le b}|K(x,y)|$，递归证明
+	$$
+	|(V^n(f))(x)|\le \mu^n\|f\|\frac{(x-a)^n}{n!},\qquad n\in\N^*
+	$$
+	当$n=1$时
+	\begin{align*}
+		|(V(f))(x)|
+		& = \left|\int_a^xK(x,y)f(y)\mathrm{d}y\right|\\
+		& \le \int_a^x|K(x,y)||f(y)|\mathrm{d}y\\
+		& \le \mu\|f\|(x-a)
+	\end{align*}
+	假设当$n=k$时成立
+	$$
+	|(V^k(f))(x)|\le \mu^k\|f\|\frac{(x-a)^k}{k!}
+	$$
+	那么当$n=k+1$时
+	\begin{align*}
+		|(V^{k+1}(f))(x)|
+		& = \left|\int_a^xK(x,y)(V^k(f))(y)\mathrm{d}y\right|\\
+		& \le \int_a^x|K(x,y)||(V^k(f))(y)|\mathrm{d}y\\
+		& \le \int_a^b\mu \cdot \mu^k\|f\|\frac{(y-a)^k}{k!}\mathrm{d}y\\
+		& = \mu^{k+1}\|f\|\frac{(x-a)^{k+1}}{({k+1})!}
+	\end{align*}
+	由数学归纳法
+	$$
+	|(V^n(f))(x)|\le \mu^n\|f\|\frac{(x-a)^n}{n!},\qquad n\in\N^*
+	$$
+	因此
+	$$
+	\|V^n(f)\|=\sup_{a\le x\le b}|(V^n(f))(x)|\le \mu^n\|f\|\frac{(b-a)^n}{n!}
+	$$
+	进而
+	$$
+	\|V^n\|\le \mu^n\frac{(b-a)^n}{n!}
+	$$
+	由于
+	$$
+	\lim_{n\to\infty}(n!)^{1/n}=\infty
+	$$
+	那么
+	$$
+	\lim_{n\to\infty}\|V^n\|^{1/n}=0
+	$$
+\end{proof}
+
+\begin{proposition}
+	对于赋范线性空间$X$，定义
+	$$
+	\mathcal{L}_0(X)=\{ \text{有界可逆线性算子}T:X\to X \}
+	$$
+	定义
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			\mathcal{L}_0(X)&\longrightarrow \mathcal{L}_0(X)\\
+			T&\longmapsto T^{-1}
+		\end{aligned}
+	\end{align*}
+	那么$\mathcal{L}_0(X)$为$\mathcal{L}(X)$的开子集，且$\tau$为连续算子。
+\end{proposition}
+
+\begin{proof}
+	任取$T_0\in \mathcal{L}_0(X)$，注意到$T=T_0(I-T_0^{-1}(T_0-T))$，因此当$\|T_0^{-1}\|\|T_0-T\|\le1$时，$T\in \mathcal{L}_0(X)$，进而$\mathcal{L}_0(X)$为$\mathcal{L}(X)$的开子集，且
+	$$
+	T^{-1}=T_0^{-1}+\sum_{n=0}^{\infty}(T_0^{-1}(T_0-T))^nT_0^{-1}
+	$$
+	
+	当$\|T_0^{-1}\|\|T_0-T\|\le1$时，$I-T_0^{-1}(T_0-T)\in\mathcal{L}_0(X)$，且上式级数收敛，于是
+	\begin{align*}
+		\|\tau(T)-\tau(T_0)\|=&\|T^{-1}-T_0^{-1}\|\\
+		\le & \sum_{n=0}^{\infty}\|T_0^{-1}(T_0-T)\|^n\|T_0^{-1}\|\\
+		\le & \frac{\|T_0^{-1}(T_0-T)\|\|T_0^{-1}\|}{1-\|T_0^{-1}(T_0-T)\|}\\
+		\le & \frac{\|T_0^{-1}\|^2}{1-\|T_0^{-1}\|\|T_0-T\|}\|T_0-T\|
+	\end{align*}
+	因此$\tau$为连续算子。
+\end{proof}
+
+\section{Hahn-Banach定理}
+
+\subsection{Hahn-Banach定理}
+
+\begin{proposition}
+	对于$l^2$中的线性无关的向量序列$\{ \{ a_n^{(m)} \}_{n=1}^{\infty} \}_{m=1}^{\infty}\sub l^2$，如果存在$M>0$，使得对于任意$m\in\N^*$，以及数列$\{\lambda_m\}_{m=1}^{\infty}\sub\C$，成立
+	$$
+	\left| \sum_{k=1}^{m}\lambda_k b_k \right|
+	\le M\left\| \sum_{k=1}^{m}\lambda_k \{a_n^{(k)}\}_{n=1}^{\infty} \right\|
+	$$
+	那么线性方程
+	$$
+	\left(\{a_n^{(m)}\}_{n=1}^{\infty},\{x_n\}_{n=1}^{\infty}\right)=b_m,\qquad m\in\N^*
+	$$
+	在$l^2$中存在解$\{x_n\}_{n=1}^{\infty}\in l^2$。
+\end{proposition}
+
+\begin{proof}
+	定义$l^2$的子空间
+	$$
+	M=\text{Sp }\{ \{ a_n^{(m)} \}_{n=1}^{\infty} \}_{m=1}^{\infty}
+	$$
+	构造函数
+	\begin{align*}
+		f:\begin{aligned}[t]
+			l^2&\longrightarrow \C\\
+			\sum_{k=1}^{m}\lambda_k\{a_n^{(k)}\}_{n=1}^{\infty}&\longmapsto \sum_{k=1}^{m}\lambda_k b_k
+		\end{aligned}
+	\end{align*}
+	由条件
+	$$
+	\left| f\left(\sum_{k=1}^{m}\lambda_k\{a_n^{(k)}\}_{n=1}^{\infty}\right) \right|=
+	\left| \sum_{k=1}^{m}\lambda_k b_k \right|
+	\le M\left\| \sum_{k=1}^{m}\lambda_k \{a_n^{(k)}\}_{n=1}^{\infty} \right\|
+	$$
+\end{proof}
+
+\begin{theorem}{Banach扩张定理}{Banach扩张定理}
+	对于实线性空间$X$的子空间$M$上的线性泛函$f:M\to \R$，如果存在$X$上的泛函$p:X\to \R$，使得成立
+	\begin{align*}
+		&p(x+y)\le p(x)+p(y),&& x,y\in X\\
+		&p(\lambda x)=\lambda p(x),&& x\in X,\lambda\ge 0\\
+		&f(x)\le p(x),&& x\in M
+	\end{align*}
+	那么存在线性泛函$F:X\to\R$，使得成立
+	\begin{align*}
+		& F(x)=f(x),&& x\in M\\
+		& F(x)\le p(x),&& x\in X
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}{Bohnenblust-Sobczyk定理}{Bohnenblust-Sobczyk定理}
+	对于复线性空间$X$的子空间$M$上的线性泛函$f:M\to \C$，如果存在$X$上的泛函$p:X\to \R$，使得成立
+	\begin{align*}
+		&p(x+y)\le p(x)+p(y),&& x,y\in X\\
+		&p(\lambda x)=|\lambda| p(x),&& x\in X,\lambda\in \C\\
+		&|f(x)|\le p(x),&& x\in M
+	\end{align*}
+	那么存在线性泛函$F:X\to\C$，使得成立
+	\begin{align*}
+		& F(x)=f(x),&& x\in M\\
+		& |F(x)|\le p(x),&& x\in X
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}{Hahn-Banach定理}{Hahn-Banach定理}
+	对于赋范线性空间$X$的子空间$M$上的有界线性泛函$f:M\to\C$，存在有界线性泛函$F:X\to\C$，使得成立
+	$$
+	F|_M=f,\qquad 
+	\|F\|=\|f\|
+	$$
+\end{theorem}
+
+\begin{proof}
+	定义
+	$$
+	p(x)=\|f\|\|x\|,\qquad x\in X
+	$$
+	容易知道
+	\begin{align*}
+		&p(x+y)\le p(x)+p(y),&& x,y\in X\\
+		&p(\lambda x)=|\lambda| p(x),&& x\in X,\lambda\in \C\\
+		&|f(x)|\le p(x),&& x\in M
+	\end{align*}
+	那么由Bohnenblust-Sobczyk定理\ref{thm:Bohnenblust-Sobczyk定理}，存在线性泛函$F:X\to\C$​，使得成立
+	$$
+	\|F\|\le\|f\|,\qquad F(x)=f(x),\qquad  x\in M
+	$$
+	而
+	$$
+	\|F\|=\sup_{x\in X}\frac{|F(x)|}{\|x\|}\ge \sup_{x\in M}\frac{|f(x)|}{\|x\|}=\|f\|
+	$$
+	因此
+	$$
+	\|F\|=\|f\|
+	$$
+\end{proof}
+
+\begin{corollary}{}{命题2.1}
+	如果$X$为赋范线性空间，那么对于任意$x\in X\setminus\{0\}$，存在有界线性泛函$f:X\to \C$，使得成立
+	$$
+	\|f\|=1,\qquad f(x)=\|x\|
+	$$
+\end{corollary}
+
+\begin{proposition}{}{2.1}
+	对于赋范线性空间$X$，如果$E$为$X$的真闭子空间，那么对于任意$x\in X\setminus E$，存在有界线性泛函$f:X\to\C$，使得成立
+	$$
+	f|_E=0,\qquad f(x)=1,\qquad \|f\|=\frac{1}{d(x, E)}
+	$$
+\end{proposition}
+
+\begin{proof}
+	定义$X$中的子空间
+	$$
+	M=\{ \lambda x_0+x:\lambda\in\C,x\in E \}
+	$$
+	构造$M$上的线性泛函
+	\begin{align*}
+		g:\begin{aligned}[t]
+			M&\longrightarrow \C\\
+			\lambda x_0+x&\longmapsto \lambda
+		\end{aligned}
+	\end{align*}
+	
+	一方面，对于任意$\lambda x_0+x\in M$，若$\lambda\ne 0$，那么
+	$$
+	\frac{|g(\lambda x_0+x)|}{\|\lambda x_0+x\|}
+	=\frac{|\lambda|}{\|\lambda x_0+x\|}\le\frac{|\lambda|}{|\lambda|\|x_0+x/\lambda\|}\le\frac{1}{d(x_0,E)}
+	$$
+	因此
+	$$
+	\|g\|\le \frac{1}{d(x_0,E)}
+	$$
+	
+	另一方面，对于任意$\varepsilon>0$，存在$y\in E$，使得成立
+	$$
+	\|x_0-y\|<d(x_0,E)+\varepsilon
+	$$
+	因此对于任意$\lambda\in\C$，成立
+	$$
+	\|g\|\ge\frac{|g(\lambda x_0-\lambda y)|}{\|\lambda x_0-\lambda y\|}
+	=\frac{|\lambda|}{|\lambda|\|x_0-y\|}>\frac{1}{d(x_0,E)+\varepsilon}
+	$$
+	由$\varepsilon$​的任意性
+	$$
+	\|g\|\ge\frac{1}{d(x_0,E)}
+	$$
+	
+	综合两方面
+	$$
+	\|g\|=\frac{1}{d(x_0,E)}
+	$$
+	由Hahn-Banach定理\ref{thm:Hahn-Banach定理}，对于赋范线性空间$X$是子空间$M$上的有界线性泛函$f:M\to\C$，存在有界线性泛函$f:X\to\C$，使得成立
+	$$
+	f(x)=0,\quad x\in E;\qquad f(x_0)=1;\qquad \|f\|=\frac{1}{d(x_0, E)}
+	$$
+\end{proof}
+
+\begin{corollary}{}{命题2.3}
+	对于赋范线性空间$X$，如果$M$为$X$中的子空间，且$x_0\in X$，那么$x_0\in\overline{M}\iff$对于任意线性泛函$f:X\to\C$成立
+	$$
+	f(x)=0,\forall x\in M\implies f(x_0)=0
+	$$
+\end{corollary}
+
+\begin{proof}
+	要性由$f$的连续性保证。对于充分性，如果$x_0\in X\setminus\overline{M}$，那么由Hahn-Banach定理的推论\ref{pro:2.1}，存在有界线性泛函$f:X\to\C$​，使得成立
+	$$
+	f(x)=0,\quad x\in \overline{M};\qquad f(x_0)=1
+	$$
+\end{proof}
+
+\begin{corollary}
+	对于赋范线性空间$X$，如果$S$为$X$中的子集，且$x_0\in X$，那么$x_0\in\overline{\text{Sp}(S)}\iff$对于任意有界线性泛函$f:X\to\C$​，成立
+	$$
+	f(x)=0,\forall x\in \text{Sp}(S)\implies f(x_0)=0
+	$$
+\end{corollary}
+
+\begin{proposition}
+	如果$M$为Banach空间$X$的有限维子空间，那么存在$X$的闭子空间$N$，使得成立$X=M\oplus N$。
+\end{proposition}
+
+\begin{proof}
+	假设$M$为$n$维子空间，基为$\{ e_k \}_{k=1}^n$。记$M_i=\text{Sp }\{e_k\}_{k\ne i}$，那么那么存在有界线性泛函$f_i:X\to\C$​，使得成立
+	$$
+	f_i(e_k)=\begin{cases}
+		1,\qquad & k=i\\
+		0,\qquad & k\ne i
+	\end{cases}
+	$$
+	构造满的连续线性算子
+	\begin{align*}
+		P:\begin{aligned}[t]
+			X&\longrightarrow M\\
+			x&\longmapsto \sum_{i=1}^{n}f_i(x)e_i
+		\end{aligned}
+	\end{align*}
+	注意到
+	$$
+	(f_i\circ P)(x)=f_i(P(x))=\sum_{j=1}^{n}f_j(x)f_i(e_j)=f_i(x)
+	$$
+	因此
+	$$
+	P^2(x)=\sum_{i=1}^{n}(f_i\circ P)(x)e_i=\sum_{i=1}^{n}f_i(x)e_i=P(x)\implies P^2=P
+	$$
+	记$N=\ker P$。任取$x\in M\cap N$，从而存在$y\in M$，使得成立
+	$$
+	x=P(y)=P(P(y))=P(x)=0
+	$$
+	因此
+	$$
+	M\cap N=\{0\}
+	$$
+	对于任意$x\in X$，成立
+	$$
+	x=P(x)+(x-P(x))
+	$$
+	而$P(x)\in M$，注意到
+	$$
+	P((x-P(x)))=P(x)-P^2(x)=P(x)-P(x)=0
+	$$
+	因此$x-P(x)\in N$，进而
+	$$
+	X=M\cup N
+	$$
+\end{proof}
+
+\subsection{投影}
+
+\begin{definition}{投影}
+	称向量空间$X$上的线性映射$p:X\to X$为投影，如果$p^2=p$。
+\end{definition}
+
+\begin{definition}{Banach空间上的投影}
+	称Banach空间$X$上的有界线性算子$P:X\to X$为投影，如果$P^2=P$。
+\end{definition}
+
+\begin{definition}{Hilbert空间上的正交投影}
+	称HIlbert空间$\mathcal{H}$上的线性映射$P:\mathcal{H}\to \mathcal{H}$为正交投影，如果$P=P^2=P^*$。
+\end{definition}
+
+\begin{definition}{代数补}
+	对于向量空间$X$，称子空间$M$的代数补为$N$，如果$X=M\oplus N$。
+\end{definition}
+
+\begin{definition}{拓扑补}
+	对于度量空间$X$，称闭子空间$M$的代数补为闭子空间$N$，如果$X=M\oplus N$。
+\end{definition}
+
+\begin{example}
+	$c_{0}$在$l^\infty$中不存在拓扑补。
+\end{example}
+
+\begin{example}
+	Hilbert空间中的闭子空间存在拓扑补。
+\end{example}
+
+\begin{theorem}{Hahn-Banach定理的几何形式}
+	对于赋范线性空间$X$，$M$为$X$的闭子空间，$x_0\in X\setminus M$，如果$x_0+M$与单位开球$\mathbb{D}$不相交，那么存在连续线性泛函$f:X\to\C$，使得成立$x_0+M\sub\ker f$，且$\ker f\cap \mathbb{D}=\varnothing$。
+\end{theorem}
+
+\section{Baire纲推理}
+
+\subsection{Baire纲定理}
+
+\begin{proposition}
+	对于赋范线性空间$X$与$Y$，线性算子$T:X\to Y$为有界线性算子$\iff T^{-1}(\{ y\in Y:\|y\|\le 1 \})$的内部非空。
+\end{proposition}
+
+\begin{proof}
+	对于充分性，如果$\{ x\in X:\|x-x_0\|<\varepsilon \}\sub T^{-1}(\{ y\in Y:\|y\|\le 1 \})$，那么对于任意$\|x\|<\varepsilon$，成立$x+x_0\in \{ x\in X:\|x-x_0\|<\varepsilon \}$，从而
+	$$
+	\|T(x)\|\le \|T(x+x_0)\|+\|T(x_0)\|\le 1+\|T(x_0)\|
+	$$
+	进而对于任意$x\in X\setminus\{0\}$，成立
+	$$
+	\left\| T\left(\frac{\varepsilon}{2\|x\|}x\right) \right\| \le 1+\|T(x_0)\|
+	$$
+	即
+	$$
+	\frac{\|T(x)\|}{\|x\|}\le\frac{2}{\varepsilon}(1+\|T(x_0)\|)
+	$$
+	因此$T$为有界线性算子。
+	
+	对于必要性，如果$T:X\to Y$为有界线性算子，注意到对于任意$\|x\|\le1/\|T\|$，那么
+	$$
+	\|T(x)\|\le\|T\|\|x\|\le 1
+	$$
+	因此
+	$$
+	\{ x\in X:\|x\|\le1/\|T\| \}\sub T^{-1}(\{ y\in Y:\|y\|\le 1 \})
+	$$
+\end{proof}
+
+\begin{definition}{无处稠密的}
+	称度量空间$X$的子集$S$为无处稠密的，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $\left(\overline{S}\right)^\circ=\varnothing$
+		\item 不存在$X$的开集$U$，使得成立$U\sub \overline{S}$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{第一纲的}
+	称度量空间$X$的子集$E$为第一纲的，如果存在无处稠密子集族$\{ S_n \}_{n=1}^{\infty}$，使得成立$\displaystyle E=\bigcup_{n=1}^{\infty}S_n$。
+\end{definition}
+
+\begin{definition}{第二纲的}
+	称度量空间$X$的子集$E$为第二纲的，如果$E$不为第一纲的。
+\end{definition}
+
+\begin{theorem}{Baire纲定理}{Baire纲定理}
+	完备度量空间为第二纲的。
+\end{theorem}
+
+\begin{proof}
+	若不然，存在无处稠密子集族$\{ S_n \}_{n=1}^{\infty}$，使得成立$\displaystyle E=\bigcup_{n=1}^{\infty}S_n$。因为$S_1$无处稠密，所以存在$x_1\in X\setminus \overline{S}_1$，以及$0<r_1<1$，使得成立$B_{x_1}(r_1)\cap \overline{S}_1=\varnothing$。因为$S_2$无处稠密，所以存在$x_2\in B_{x_1}(r_1)\setminus \overline{S}_1$，以及$0<r_2<1/2$，使得成立$B_{x_2}(r_2)\cap \overline{S}_2=\varnothing$，且$\overline{B}_{x_2}(r_2)\sub B_{x_1}(r_1)$。递归的，存在$\{ x_n \}_{n=1}^{\infty}\sub X$，与$\{ r_n \}_{n=1}^{\infty}\sub \R$，使得对于任意$n\in\N^*$，成立
+	$$
+	x_{n+1}\in B_{x_n}(r_n)\setminus\overline{S}_n,\quad 
+	0<r_n<2^{1-n},\quad
+	B_{x_n}(r_n)\cap \overline{S}_n=\varnothing,\quad 
+	\overline{B}_{x_{n+1}}(r_{n+1})\sub B_{x_n}(r_n)
+	$$
+	由于对于任意$m\ge n$，成立
+	$$
+	d(x_m,x_n)<2^{1-n}
+	$$
+	因此$\{ x_n \}_{n=1}^{\infty}\sub X$为Cauchy序列，因此存在$x\in X$，使得成立$x_n\to x$。由于对于任意$n\in\N^*$，当$m>n$时，成立$x_m\in B_{x_{n+1}}(r_{n+1})$，因此$x\in \overline{B}_{x_{n+1}}(r_{n+1})\sub B_{x_{n}}(r_{n})$，进而$x\notin \overline{S}_{n}$，此时$\displaystyle x\notin\bigcup_{n=1}^{\infty}\overline{S}_n=X$，矛盾！
+\end{proof}
+
+\begin{proposition}
+	$[0,1]$上存在处处连续但处处不可微的函数。
+\end{proposition}
+
+\begin{proof}
+	构造函数空间
+	$$
+	\mathscr{F}=\{ f:\R\to\R\text{为周期为}1\text{的连续函数} \},\qquad 
+	\|f\|=\sup_{[0,1]}|f|
+	$$
+	因此$(\mathscr{F},\|\cdot\|)$为完备赋范线性空间。构造子集
+	$$
+	\mathscr{F}_n=\left\{ f\in \mathscr{F}:\exists x_0\in[0,1],\forall h>0,\frac{|f(x_0+h)-f(x_0)|}{h}\le n \right\}
+	$$
+	
+	断言：对于任意$f\in \mathscr{F}$，若存在$x_0\in [0,1]$，使得$f$在$x_0$处可微，则存在$n_0\in\N^*$，使得成立$f\in\mathscr{F}_{n_0}$。事实上，若$f$在$x_0$处可微，则存在$\delta>0$，使得对于任意$0<h\le \delta$，成立%
+	$$
+	\frac{|f(x_0+h)-f(x_0)|}{h}\le |f'(x_0)|+1
+	$$
+	而对于任意$h>\delta$，成立
+	$$
+	\frac{|f(x_0+h)-f(x_0)|}{h}
+	<\frac{|f(x_0+h)|+|f(x_0)|}{\delta}
+	\le\frac{2\|f\|}{\delta}
+	$$
+	记$n_0=\max\{ [|f'(x_0)|+1],[2\|f\|/\delta] \}+1$，则
+	$$
+	\frac{|f(x_0+h)-f(x_0)|}{h}\le n_0
+	$$
+	因此$f\in \mathscr{F}_{n_0}$，断言得证！断言意味着：$\mathscr{F}$中在某点处可微的函数$\in$某个$\mathscr{F}_n$，因此$\dis\mathscr{F}-\bigcup_{n=1}^{\infty}\mathscr{F}_n$中的函数均为处处不可微的连续函数，下面证明$\dis\mathscr{F}-\bigcup_{n=1}^{\infty}\mathscr{F}_n$非空。
+	
+	任取$n\in\N^*$，考察子集$\mathscr{F}_n$。任取函数序列$\{f_k\}_{k=1}^{\infty}\sub \mathscr{F}_n$，使得$f_k\to f\in\mathscr{F}$。由$\|\cdot\|$的定义，$f_k\rightrightarrows f$。由$\mathscr{F}_n$的定义，对于任意$k\in\N^*$，存在$x_k\in[0,1]$，使得对于任意$h>0$，成立
+	$$
+	\frac{|f_k(x_k+h)-f_k(x_k)|}{h}\le n
+	$$
+	由于$\{ x_k \}_{k=1}^{\infty}$存在收敛子序列，不妨$x_k\to x_0\in [0,1]$。由于对于任意$h\ge 0$，成立
+	\begin{gather*}
+		|(f_k(x_k+h)-f_k(x_k))-(f(x+h)-f(x))|\le |f_k(x_k+h)-f(x+h)|+|f_k(x_k)-f(x)|\\
+		|f_k(x_k+h)-f(x+h)|\le |f_k(x_k+h)-f(x_k+h)|+|f(x_k+h)-f(x+h)|\\
+		|f_k(x_k)-f(x)|\le |f_k(x_k)-f(x_k)|+|f(x_k)-f(x)|
+	\end{gather*}
+	因此
+	$$
+	f_k(x_k+h)-f_k(x_k)\to f(x+h)-f(x)
+	$$
+	从而
+	$$
+	\frac{|f(x+h)-f(x)|}{h}\le n
+	$$
+	进而$f\in \mathscr{F}_n$。由$\{f_k\}_{k=1}^{\infty}$的任意性，$\mathscr{F}_n$为闭集。
+	
+	任取$n\in\N^*$，继续考察子集$\mathscr{F}_n$。若$(\overline{\mathscr{F}}_n)^\circ=\mathscr{F}_n^\circ\ne\varnothing$，则存在$B_{\varphi}(\varepsilon)\sub \mathscr{F}_n$。注意到存在折线函数$\psi\in B_{\varphi}(\varepsilon)$，使得$\psi$的每一段斜率的绝对值大于$n$，因此$\psi\notin \mathscr{F}_n$，矛盾！从而$(\overline{\mathscr{F}}_n)^\circ=\varnothing$，即$\mathscr{F}_n$为无处稠密集。
+	
+	由Baire纲定理\ref{thm:Baire纲定理}，$\mathscr{F}$为第二纲的，而$\dis\bigcup_{n=1}^{\infty}\mathscr{F}_n$为第一纲的，因此$\dis\mathscr{F}-\bigcup_{n=1}^{\infty}\mathscr{F}_n\ne\varnothing$，进而存在$\displaystyle F\in \mathscr{F}-\bigcup_{n=1}^{\infty}\mathscr{F}_n$，此为处处连续但处处不可微的函数。
+\end{proof}
+
+\subsection{一致有界原理}
+
+\begin{theorem}{一致有界原理/共鸣定理}{一致有界原理}
+	对于第二纲的赋范线性空间$X$与赋范线性空间$Y$，$\{ T_\lambda:X\to Y \}_{\lambda\in\Lambda}$为一族有界线性算子，如果对于任意$x\in X$，成立$\displaystyle \sup_{\lambda\in\Lambda}\|T_\lambda(x)\|<\infty$，那么$\displaystyle \sup_{\lambda\in\Lambda}\|T_\lambda\|<\infty$。
+\end{theorem}
+
+\begin{proof}
+	记$\displaystyle S_n=\{ x\in X:\sup_{\lambda\in\Lambda}\|T_\lambda(x)\|\le n \}$，那么$\displaystyle X=\bigcup_{n=1}^{\infty}S_n$。对于任意$\lambda\in\Lambda$，$T_\lambda$为连续算子，那么$S_n$为闭集。由于$X$为第二纲的，那么存在$N\in\N^*$，使得$S_N$不为无处稠密的，即$(S_N)^\circ\ne\varnothing$，从而存在$B_\varepsilon(x_0)\sub S_N$。
+	
+	如果$\|x\|<\varepsilon$，那么$x+x_0\in B_\varepsilon(x_0)$，因此对于任意$\lambda\in\Lambda$，成立
+	$$
+	\|T_\lambda(x)\|\le \|T_\lambda(x+x_0)\|+\|T_\lambda(x_0)\|\le 2N
+	$$
+	由于对于任意$x\in X\setminus\{0\}$，成立$\displaystyle \left\| \frac{\varepsilon}{2\|x\|}x \right\|<\varepsilon$，那么对于任意$\lambda\in\Lambda$，成立
+	$$
+	\left\| T_\lambda\left( \frac{\varepsilon}{2\|x\|}x \right) \right\|\le 2N
+	\iff 
+	\|T_\lambda(x)\|\le\frac{4N}{\varepsilon}\|x\|
+	\iff 
+	\|T_\lambda\|\le\frac{4N}{\varepsilon}
+	$$
+\end{proof}
+
+\begin{theorem}{有界线性算子的极限为有界线性算子}{有界线性算子的极限为有界线性算子}
+	对于Banach空间$X$与赋范线性空间$Y$，以及有界线性算子序列$\{T_n:X\to Y\}_{n=1}^{\infty}$，如果对于任意$x\in X$，存在极限$\displaystyle\lim_{n\to\infty}T_n(x)$，那么算子$\displaystyle T=\lim_{n\to\infty}T_n$为有界线性算子，且
+	$$
+	\|T\|\le \liminf_{n\to\infty}\|T_n\|
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于对于任意$x\in X$，存在极限$\displaystyle\lim_{n\to\infty}T_n(x)$，那么$\displaystyle\sup_{n\in\N^*}\|T_n(x)\|<\infty$。由一致有界原理\ref{thm:一致有界原理}，存在$M>0$，使得成立$\displaystyle\sup_{n\in\N^*}\|T_n\|\le M$。
+	
+	由于对于任意$n\in\N^*$，$T_n$为线性算子，那么
+	\begin{align*}
+		&T(x+y)
+		=\lim_{n\to\infty}T_n(x+y)
+		=\lim_{n\to\infty}T_n(x)+T_n(y)
+		=\lim_{n\to\infty}T_n(x)+\lim_{n\to\infty}T_n(y)
+		=T(x)+T(y)\\
+		&T(\lambda x)
+		=\lim_{n\to\infty}T_n(\lambda x)
+		=\lambda\lim_{n\to\infty}T_n(x)
+		=\lambda T(x)
+	\end{align*}
+	因此$T$为线性算子。
+	
+	由于
+	$$
+	\|T(x)\|
+	=\|\lim_{n\to\infty}T_n(x)\|
+	=\lim_{n\to\infty}\|T_n(x)\|
+	\le \lim_{n\to\infty}\|T_n\|\|x\|
+	\le M\|x\|
+	$$
+	因此$T$为有界算子，进而
+	\begin{align*}
+		\|T\|
+		& = \sup_{\|x\|=1}\|T(x)\|\\
+		& = \sup_{\|x\|=1}\|\lim_{n\to\infty}T_n(x)\|\\
+		& = \sup_{\|x\|=1}\lim_{n\to\infty}\|T_n(x)\|\\
+		& = \sup_{\|x\|=1}\liminf_{n\to\infty}\|T_n(x)\|\\
+		& \le \sup_{\|x\|=1}\liminf_{n\to\infty}\|T_n\|\|x\|\\
+		& = \liminf_{n\to\infty}\|T_n\|
+	\end{align*}
+	
+	综上所述$T$为有界线性算子，且
+	$$
+	\|T\|\le \liminf_{n\to\infty}\|T_n\|
+	$$
+\end{proof}
+
+\begin{proposition}
+	对于Banach空间$X$上的点列$\{x_n\}_{n=1}^{\infty}\sub X$，如果对于任意连续线性泛函$f:X\to\C$，成立
+	$$
+	\sum_{n=1}^{\infty}|f(x_n)|^p<\infty
+	$$
+	其中$p\ge 1$，那么存在$\mu>0$，使得对于连续线性泛函$f:X\to\C$，成立
+	$$
+	\sum_{n=1}^{\infty}|f(x_n)|^p<\mu\|f\|^p
+	$$
+\end{proposition}
+
+\begin{proof}
+	对于任意$n\in\mathbb{N}^*$，定义线性算子
+	\begin{align*}
+		T_n:\begin{aligned}[t]
+			X^*&\longrightarrow l^p\\
+			f&\longmapsto \{ f(x_1),\cdots,f(x_n),0,0,\cdots \}
+		\end{aligned}
+	\end{align*}
+	由于
+	$$
+	\|T_n(f)\|_p
+	= \left(\sum_{k=1}^{n}|f(x_k)|^p\right)^{1/p}
+	\le \left(\sum_{k=1}^{n}\|f\|^p\|x_k\|^p\right)^{1/p}
+	= \|f\|\left(\sum_{k=1}^{n}\|x_k\|^p\right)^{1/p}
+	$$
+	那么对于任意$n\in\N^*$，$T_n$为有界线性算子。由于对于任意连续线性泛函$f:X\to\C$，成立
+	$$
+	\sup_{n\in\N^*}\|T_n(f)\|_p
+	= \sup_{n\in\N^*}\left(\sum_{k=1}^{n}|f(x_k)|^p\right)^{1/p}
+	= \left(\sum_{n=1}^{\infty}|f(x_n)|^p\right)^{1/p}
+	<\infty
+	$$
+	那么由一致有界原理\ref{thm:一致有界原理}，存在$\mu^{1/p}>0$，使得成立$\displaystyle \sup_{n\in\N^*}\|T_n\|<\mu^{1/p}$，因此对于任意连续线性泛函$f:X\to\C$，成立
+	$$
+	\sum_{n=1}^{\infty}|f(x_n)|^p
+	= \sup_{n\in\N^*}\sum_{k=1}^{n}|f(x_k)|^p
+	= \sup_{n\in\N^*}\|T_n(f)\|_p^p
+	\le \sup_{n\in\N^*}\|T_n\|^p\|f\|^p
+	< \mu \|f\|^p
+	$$
+\end{proof}
+
+\begin{definition}{Lebesgue函数}
+	对于$L^2[a,b]$上的正规正交基$\{e_n\}_{n=1}^{\infty}$，称$\displaystyle\rho_n(x)=\int_a^b\left| \sum_{k=1}^{n}e_k(x)e_k(y) \right|\mathrm{d}y$为Lebesgue函数。
+\end{definition}
+
+\begin{proposition}
+	对于$L^2[-\pi,\pi]$上的正规正交基
+	$$
+	\left\{ \frac{1}{\sqrt{2\pi}},\frac{1}{\sqrt{\pi}}\cos x,\frac{1}{\sqrt{\pi}}\sin x,\cdots \frac{1}{\sqrt{\pi}}\cos nx,\frac{1}{\sqrt{\pi}}\sin nx,\cdots \right\}
+	$$
+	以及任意$-\pi<x<\pi$，成立
+	$$
+	\lim_{n\to\infty}\rho_n(x)=\infty
+	$$
+\end{proposition}
+
+\begin{proof}
+	\begin{align*}
+		\rho_n(x)
+		& = \int_{-\pi}^{\pi}\left| \frac{1}{2\pi}+\frac{1}{\pi}\sum_{k=1}^{n}(\cos kx\cos ky+\sin kx\sin ky) \right|\mathrm{d}y\\
+		& = \int_{-\pi}^{\pi}\left| \frac{1}{2\pi}+\frac{1}{\pi}\sum_{k=1}^{n}\cos k(x-y) \right|\mathrm{d}y\\
+		& = \frac{1}{2\pi}\int_{-\pi}^{\pi}\left| \frac{\sin\frac{2n+1}{2}(x-y)}{\sin\frac{x-y}{2}} \right|\mathrm{d}y\\
+		& = \frac{1}{2\pi}\int_{-\pi}^{\pi}\left| \frac{\sin\left(n+\frac{1}{2}\right)y}{\sin\frac{1}{2}y} \right|\mathrm{d}y\\
+		& \ge \frac{1}{2\pi}\int_{0}^{\pi}\left| \frac{\sin\left(n+\frac{1}{2}\right)y}{\sin\frac{1}{2}y} \right|\mathrm{d}y\\
+		& \ge \frac{1}{2\pi}\int_{0}^{\pi}\left| \frac{\sin\left(n+\frac{1}{2}\right)y}{\frac{1}{2}y} \right|\mathrm{d}y\\
+		& = \frac{1}{\pi}\int_{0}^{\left(n+\frac{1}{2}\right)\pi}\left| \frac{\sin y}{y} \right|\mathrm{d}y\\
+		& \ge \frac{1}{\pi}\int_{0}^{n\pi}\left| \frac{\sin y}{y} \right|\mathrm{d}y\\
+		& = \frac{1}{\pi}\sum_{k=1}^{n}\int_{(k-1)\pi}^{k\pi}\left| \frac{\sin y}{y} \right|\mathrm{d}y\\
+		& \ge \frac{1}{\pi^2}\sum_{k=1}^{n}\frac{1}{k}\int_{(k-1)\pi}^{k\pi}|\sin y|\mathrm{d}y\\
+		& = \frac{1}{\pi^2}\sum_{k=1}^{n}\frac{1}{k}\int_{0}^{\pi}\sin y\mathrm{d}y\\
+		& = \frac{2}{\pi^2}\sum_{k=1}^{n}\frac{1}{k}
+	\end{align*}
+\end{proof}
+
+\begin{proposition}
+	对于$L^2[a,b]$上的正规正交基$\{e_n\}_{n=1}^{\infty}$，如果$\rho_n(x_0)\to \infty$，那么存在连续函数$f$，使得$f$的Fourier级数在$x_0$处发散。
+\end{proposition}
+
+\begin{proof}
+	定义$f$的Fourier级数的部分和算子
+	\begin{align*}
+		S_n:\begin{aligned}[t]
+			C[a,b]&\longrightarrow C[a,b]\\
+			f&\longmapsto T(f), \text{其中} (S_n(f))(x)=\int_a^b\sum_{k=1}^{n}e_k(x)e_k(y)f(y)\mathrm{d}y 
+		\end{aligned}
+	\end{align*}
+	由命题\ref{pro:积分算子}
+	$$
+	\|S_n\|=\int_a^b\left| \sum_{k=1}^{n}e_k(x)e_k(y) \right|\mathrm{d}y
+	$$
+	如果对于任意$f\in C[a,b]$，$f$的Fourier级数在$x_0$处收敛，那么$S_n(f)$在$C[a,b]$上处处收敛，因此对于任意$f\in C[a,b]$，成立
+	$$
+	\sup_{n\in\N^*}|(S_n(f))(x_0)|<\infty
+	$$
+	由一致有界原理，成立
+	$$
+	\rho_n(x_0)=\|S_n\|<\infty
+	$$
+	矛盾！
+\end{proof}
+
+\begin{corollary}
+	对于数列$\{x_n\}_{n=1}^{\infty}\sub(-\pi,\pi)$，存在$f\in C[-\pi,\pi]$，使得对于任意$n\in\N^*$，$f$的Fourier级数在$x_n$处发散。
+\end{corollary}
+
+\begin{proof}
+	考察
+	$$
+	H_m=\{ f\in C[-\pi,\pi]:(S_n(f))(x_m)\text{收敛} \}
+	$$
+	对于$L^2[-\pi,\pi]$上的正规正交基
+	$$
+	\left\{ \frac{1}{\sqrt{2\pi}},\frac{1}{\sqrt{\pi}}\cos x,\frac{1}{\sqrt{\pi}}\sin x,\cdots \frac{1}{\sqrt{\pi}}\cos nx,\frac{1}{\sqrt{\pi}}\sin nx,\cdots \right\}
+	$$
+	成立
+	$$
+	\| (S_n(f))(x_m)\|=\rho_n(x_m)\to\infty
+	$$
+	
+	断言$H_m$为第一纲的。事实上，首先, 因为收敛点数列是有界的，因此
+	$$
+	H_m=\bigcup_{k=1}^{\infty}\Big\{f \in C[-\pi, \pi]\Big|(S_n(f))(x_m)|\leq k,  \forall n\in \mathbb{N}^{+} \Big\}
+	$$
+	记$A_{k}=\Big\{f \in C[-\pi, \pi]:\Big|(S_n(f))(x_m)|\leq k,  \forall n\in \mathbb{N}^{+} \Big\}$, 则
+	$$
+	A_{k}=\bigcap_{n=1}^{\infty}\Big\{f \in C[-\pi, \pi]\Big||(S_n(f))(x_m)|\leq k,  \Big\}
+	$$
+	固定$n$, $S_{n}(\cdot)(x_{m})$是$C[-\pi, \pi]$上的连续线性泛函(范数是$\rho_{n}(x_{m})$), 复合取绝对值或者取模，是连续映射，则
+	$$
+	\Big\{f \in C[-\pi, \pi]\Big||(S_n(f))(x_m)|\leq k,  \Big\}=|S_{n}(\cdot)(x_{m})|^{-1}([0, k])
+	$$
+	是闭集。闭集的任意交是闭集，故$A_{k}$是闭集。
+	
+	其次，下证$A_{k}=\overline{A_{k}}$内部为空， 即$A_{K}$没有内点。其中$f_{0}$是内点的含义是：存在$r>0$使得开球$B(f_{0}, r)$ 包含于$A_{k}$。由一致有界原理\ref{thm:一致有界原理}可知，对任意一点$x_{m}$, 存在连续函数$f_{m}$的Fourier级数在$x_{m}$发散。对任意的$f\in A_{K}$和$r>0$，
+	$$
+	\frac{r}{2\|f_{m}\|}f_{m}+f \in B(f, r)
+	$$ 
+	$\frac{r}{2\|f_{m}\|}f_{m}+f$的Fourier级数也发散。因此$B(f, r)\nsubseteqq A_{K}$
+	因此$A_{k}$中每一个$f$都不是内点，即内部为空，是无处稠密集。进而$H_m$为第一纲的。
+	
+	从而$\displaystyle \bigcup_{m=1}^{\infty}H_m$为第一纲的，但是$C[-\pi,\pi]$为第二纲的，从而存在
+	$$
+	f\in C[-\pi,\pi]\setminus \bigcup_{m=1}^{\infty}H_m
+	$$
+	如此对于任意$n\in\N^*$，$f$的Fourier级数在$x_n$处发散。
+\end{proof}
+
+\begin{theorem}
+	定义线性泛函
+	\begin{align*}
+		T_n:\begin{aligned}[t]
+			C[0,1]&\longrightarrow \R\\
+			f&\longmapsto F,\text{其中}F(x)=\sum_{k=0}^{n}A_k^{(n)}f(x_k^{(n)})
+		\end{aligned}
+	\end{align*}
+	那么对于任意$f\in C[0,1]$，$\displaystyle \lim_{n\to\infty}T_n(f)=\int_0^1f(x)\mathrm{d}x\iff$存在$M>0$，使得对于任意$n\in\N$，成立$\displaystyle \sum_{k=0}^{n}|A_k^{(n)}|\le M$，且对于任意多项式函数$p(x)$，成立$\displaystyle \lim_{n\to\infty}T_n(p)=\int_0^1p(x)\mathrm{d}x$。
+\end{theorem}
+
+\subsection{开映射定理}
+
+\begin{definition}{集合的和与数乘}
+	定义线性空间$X$的子集的和与数乘如下
+	$$
+	A+B=\{ x+y:x\in A,y\in B \},\qquad \lambda A=\{ \lambda x:x\in A \}
+	$$
+\end{definition}
+
+\begin{lemma}{}{引理1}
+	在赋范线性空间中，成立$\overline{A}+\overline{B}\sub\overline{A+B}$，且$A^\circ +B^\circ\sub (A+B)^\circ$。
+\end{lemma}
+
+\begin{proof}
+	一方面，任取$x\in\overline{A},y\in\overline{B}$，那么存在$\{x_n\}_{n=1}^{\infty}\sub A,\{y_n\}_{n=1}^{\infty}\sub B$，使得成立$x_n\to x,y_n\to y$，那么$\{ x_n+y_n \}_{n=1}^{\infty}\sub A+B$，且$x_n+y_n\to x+y$，因此$x+y\in\overline{A+B}$，进而$\overline{A}+\overline{B}\sub\overline{A+B}$。
+	
+	另一方面，任取$x\in A^\circ,y\in B^\circ$，那么存在$r>0$，使得成立$B_{r}(x)\sub A$，那么
+	$$
+	x+y\in B_r(x+y)=y+B_r(x)\sub y+A\sub A+B
+	$$
+	因此$x+y\in (A+B)^\circ$，进而$A^\circ +B^\circ\sub (A+B)^\circ$。
+\end{proof}
+
+\begin{theorem}{}{定理3.4}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，且$\im T$为第二纲的，那么对于任意$\varepsilon>0$，存在$\delta>0$，使得成立$B(\delta)\sub T(B(\varepsilon))$。
+\end{theorem}
+
+\begin{proof}
+	首先证明，对于任意$r>0$，存在$\eta>0$，使得成立$B(\eta)\sub \overline{T(B(r))}$。容易知道$0\in \overline{T(B(r))}$，只需证明$0$为$\overline{T(B(r))}$的内点。由于$\displaystyle\bigcup_{n=1}^{\infty}n B(r/2)=X$，于是
+	$$
+	\bigcup_{n=1}^{\infty}T(nB(r/2))=T\left(\bigcup_{n=1}^{\infty}nB(r/2)\right)=T(X)=\im T
+	$$
+	由于$\im T$为第二纲的，那么$\displaystyle \bigcup_{n=1}^{\infty}T(nB(r/2))$为第二纲的，因此存在$n_0$，使得$T(n_0B(r/2))$不为无处稠密集，那么$\overline{T(n_0B(r/2))}$存在内点，进而$\overline{T(B(r/2))}$存在内点$y_0$。由于对于任意$|\lambda|\le 1$，成立
+	$$
+	\lambda B(r/2))\sub B(r/2)\implies 
+	\lambda T(B(r/2)))=T(\lambda B(r/2)))\sub T(B(r/2))\implies
+	\lambda \overline{T(B(r/2)))}\sub \overline{T(B(r/2)))}
+	$$
+	从而$-y_0$为$\overline{T(B(r/2))}$的内点，由引理\ref{lem:引理1}
+	$$
+	0=y_0-y_0\in \left(\overline{T(B(r/2))}\right)^\circ+\left(\overline{T(B(r/2))}\right)^\circ\subset
+	\left(\overline{T(B(r/2))}+\overline{T(B(r/2))}\right)^\circ\subset
+	\left(\overline{T(B(r))}\right)^\circ
+	$$
+	进而存在$\eta>0$，使得成立$B(\eta)\sub \overline{T(B(r))}$。
+	
+	其次证明，对于任意$\varepsilon>0$，以及任意$n\in\N^*$，存在$\delta_n$，使得成立$B(\delta_n)\sub \overline{T(B(\varepsilon/2^n))}$。不妨假设$\{\delta_n\}_{n=1}^{\infty}$单调递减趋于$0$。取$\delta=\delta_1$，断言$B(\delta)\sub T(B(\varepsilon))$，换言之对于任意$\|y\|<\delta$，存在$\|x\|<\varepsilon$，使得成立$T(x)=y$。
+	
+	事实上，任取$\|y\|<\delta=\delta_1$，由于$y\in \overline{T(B(\varepsilon/2))}$，那么存在$\|x_1\|<\varepsilon/2$，以及$y_1=T(x_1)$，使得成立$\|y_1-y\|<\delta_2$。
+	
+	如果已得到$\{x_k\}_{k=1}^{n}\sub X$与$\{y_k\}_{k=1}^{n}\sub \im T$，使得对于任意$1\le k\le n$，成立$\|x_k\|<\varepsilon/2^k$，且
+	$$
+	\left\| y-\sum_{k=1}^{n}y_k \right\|<\delta_{n+1}
+	$$
+	那么由$\displaystyle y-\sum_{k=1}^{n}y_k\in \overline{T(B(\varepsilon/2^n))}$，存在$\|x_{n+1}\|<\varepsilon/2^{n+1}$，以及$y_{n+1}=T(x_{n+1})$，使得成立
+	$$
+	\left\| y-\sum_{k=1}^{n+1}y_k \right\|<\delta_{n+2}
+	$$
+	
+	递归的，得到$\{x_n\}_{n=1}^{\infty}\sub X$与$\{y_n\}_{n=1}^{\infty}\sub \im T$，使得对于任意$n\in\N^*$，成立$\|x_n\|<\varepsilon/2^n$，且
+	$$
+	\left\| y-\sum_{k=1}^{n}y_k \right\|<\delta_{n+1}
+	$$
+	由于$\{\delta_n\}_{n=1}^{\infty}$单调递减趋于$0$，那么级数$\displaystyle y=\sum_{n=1}^{\infty}y_n$收敛。由于
+	$$
+	\left\| \sum_{k=1}^{n+p}x_k-\sum_{k=1}^{n}x_k \right\|=
+	\left\| \sum_{k=n++1}^{n+p}x_k \right\|\le
+	\sum_{k=n+1}^{n+p}\|x_k\|<
+	\sum_{k=n+1}^{n+p}\frac{\varepsilon}{2^k}=\frac{\varepsilon}{2^n}-\frac{\varepsilon}{2^{n+p}}
+	$$
+	因此$\displaystyle\left\{ \sum_{k=1}^{n}x_k \right\}_{n=1}^{\infty}\sub X$为Cauchy序列。而$X$为Banach空间，因此级数$\displaystyle x=\sum_{n=1}^{\infty}x_n$收敛，且
+	$$
+	\|x\|=\left\| \sum_{n=1}^{\infty}x_n \right\|\le\sum_{n=1}^{\infty}\|x_n\|<\sum_{n=1}^{\infty}\frac{\varepsilon}{2^n}<\varepsilon\implies x\in B(\varepsilon)
+	$$
+	因此
+	$$
+	T(x)=T\left( \sum_{n=1}^{\infty}x_n \right)=\sum_{n=1}^{\infty}T(x_n)=\sum_{n=1}^{\infty}y_n=y
+	$$
+\end{proof}
+
+\begin{corollary}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，且$\im T$为第二纲的，那么$T$为满射。
+\end{corollary}
+
+\begin{proof}
+	由定理\ref{thm:定理3.4}，存在$\delta>0$，使得成立$B(\delta)\sub T(B(1))$，那么
+	$$
+	Y=\bigcup_{n=1}^{\infty}nB(\delta)
+	\subset \bigcup_{n=1}^{\infty}nT(B(1))
+	=T\left( \bigcup_{n=1}^{\infty}nB(1) \right)
+	=T\left( \bigcup_{n=1}^{\infty}B(n) \right)
+	=T(X)
+	=\im T
+	$$
+	因此$T$为满射。
+\end{proof}
+
+\begin{theorem}{开映射定理}{开映射定理}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，且$\im T$为第二纲的，那么$T$为开映射。
+\end{theorem}
+
+\begin{proof}
+	假设$G$为$X$的开集。对于任意$y\in T(G)$，存在$x\in G$，使得成立$y=T(x)$。由于$G$为开集，那么$x$为$G$的内点，因此存在$\varepsilon>0$，使得成立$B_\varepsilon(x)\sub G$。注意到$B_\varepsilon(x)=x+B(\varepsilon)$，且$T$为线性算子，那么
+	$$
+	T(G)\supset T(B_\varepsilon(x))=T(x+B(\varepsilon))=T(x)+T(B(\varepsilon))=y+T(B(\varepsilon))
+	$$
+	由定理\ref{thm:定理3.4}，存在$\delta>0$，使得成立$B(\delta)\sub T(B(\varepsilon))$，于是
+	$$
+	T(G)\supset y+B(\delta)=B_{\delta}(y)
+	$$
+	因此$y$为$T(G)$的内点。由$y$的任意性，$T(G)$为开集，进而$T$为开映射。
+\end{proof}
+
+\begin{theorem}{Banach逆算子定理}{Banach逆算子定理}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为一一对应的有界线性算子，那么$T^{-1}$为有界线性算子。
+\end{theorem}
+
+\begin{proof}
+	对于任意$X$的开集$G$，由开映射定理\ref{thm:开映射定理}，$T$为开映射$\iff T^{-1}$为连续算子，进而$T^{-1}$为有界线性算子。
+\end{proof}
+
+\begin{corollary}{}{强范数推论}
+	对于向量空间$X$上的范数$\|\cdot\|_1$与$\|\cdot\|_2$，如果$(X,\|\cdot\|_1)$与$(X,\|\cdot\|_2)$为Banach空间，且范数$\|\cdot\|_1$强于$\|\cdot\|_2$，那么范数$\|\cdot\|_1$与$\|\cdot\|_2$等价。
+\end{corollary}
+
+\begin{proof}
+	由定义$\ref{def:强范数}$与$\ref{def:等价范数}$以及Banach逆算子定理\ref{thm:Banach逆算子定理}，命题得证！
+\end{proof}
+
+\subsection{闭图形定理}
+
+\begin{definition}{闭算子}
+	对于赋范线性空间$X$与$Y$，$M$为$X$的线性子空间，称线性算子$T:M\to Y$为闭算子，如果
+	$$
+	\lim_{n\to\infty}x_n=x\text{且}
+	\lim_{n\to\infty}T(x_n)=y
+	\implies x\in M\text{且}T(x)=y
+	$$
+\end{definition}
+
+\begin{definition}{图形}
+	对于赋范线性空间$X$与$Y$，$M$为$X$的线性子空间，定义线性算子$T:M\to Y$的图形为
+	$$
+	G(T)=\{ (x,T(x)):x\in M \}
+	$$
+\end{definition}
+
+\begin{theorem}{闭算子的几何意义}
+	对于赋范线性空间$X$与$Y$，$M$为$X$的线性子空间，$T:M\to Y$为线性算子，定义向量空间$X\times Y$上的范数为
+	$$
+	\|(x,y)\|=\|x\|+\|y\|
+	$$
+	那么
+	$$
+	T\text{为闭算子}\iff G(T)\text{为闭集}
+	$$
+\end{theorem}
+
+\begin{proof}
+	对于必要性，如果$T$为闭算子，那么任取$(x,y)\in \overline{G(T)}$，因此存在$\{x_n\}_{n=1}^{\infty}\sub M$，使得成立
+	\begin{align*}
+		& \lim_{n\to\infty}(x_n,T(x_n))=(x,y)\\
+		\iff & \lim_{n\to\infty}\|(x_n-x,T(x_n)-y)\|=0\\
+		\iff & \lim_{n\to\infty}\|x_n-x\|+\|T(x_n)-y\|=0\\
+		\iff &  \lim_{n\to\infty}\|x_n-x\|=\lim_{n\to\infty}\|T(x_n)-y\|=0\\
+		\iff & \lim_{n\to\infty}x_n=x,\qquad 
+		\lim_{n\to\infty}T(x_n)=y
+	\end{align*}
+	由于$T$为闭算子，那么$x\in M$且$T(x)=y$，因此$(x,y)\in G(T)$。由$(x,y)$的任意性，$G(T)$为闭集。
+	
+	对于充分性，如果$G(T)$为闭集，那么任取$\{x_n\}_{n=1}^{\infty}\sub M$，使得成立
+	\begin{align*}
+		& \lim_{n\to\infty}x_n=x,\qquad 
+		\lim_{n\to\infty}T(x_n)=y\\
+		\iff &  \lim_{n\to\infty}\|x_n-x\|=\lim_{n\to\infty}\|T(x_n)-y\|=0\\
+		\iff & \lim_{n\to\infty}\|x_n-x\|+\|T(x_n)-y\|=0\\
+		\iff & \lim_{n\to\infty}\|(x_n-x,T(x_n)-y)\|=0\\
+		\iff & \lim_{n\to\infty}(x_n,T(x_n))=(x,y)\\
+		\implies& (x,y)\in \overline{G(T)}
+	\end{align*}
+	由于$G(T)$为闭集，那么$(x,y)\in G(T)$，因此$x\in M$且$T(x)=y$。由$\{x_n\}_{n=1}^{\infty}$的任意性，$T$为闭算子。
+\end{proof}
+
+\begin{proposition}
+	$C[a,b]$上的微分算子为无界闭算子。
+\end{proposition}
+
+\begin{proof}
+	令
+	$$
+	M=\{ f\in C[a,b]:f'\in C[a,b] \}
+	$$
+	那么$M$为$C[a,b]$的线性子空间。定义微分算子
+	\begin{align*}
+		T:\begin{aligned}[t]
+			M&\longrightarrow C[a,b]\\
+			f&\longmapsto f'
+		\end{aligned}
+	\end{align*}
+
+	对于无界性，取
+	$$
+	f_n(x)=\sin\frac{2\pi}{b-a}nx,\qquad x\in [a,b]
+	$$
+	那么$\|f_n\|=1$，但是
+	$$
+	\|T(f_n)\|=\|f_n'\|=n
+	$$
+	因此$T$为无界算子。
+	
+	对于闭性，任取$\{f_n\}_{n=1}^{\infty}\sub M$，使得满足
+	$$
+	\lim_{n\to\infty}f_n=f,\qquad 
+	\lim_{n\to\infty}f_n'=g
+	$$
+	由命题\ref{pro:C[a,b]空间的收敛}，$f_n$一致收敛于$f$，$f'$一致收敛于$g$，进而$f'=g$。由于$C[a,b]$为Banach空间，那么$f,g\in C[a,b]$，从而$f\in M$，且$T(f)=g$，即$T$为闭算子。
+\end{proof}
+
+\begin{theorem}{闭图形定理}{闭图形定理}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为闭线性算子，那么$T$为有界算子。
+\end{theorem}
+
+\begin{proof}
+	在Banach空间$X$上引入范数
+	\begin{align*}
+		[\![\;\cdot\;]\!]:\begin{aligned}[t]
+			X&\longrightarrow\R\\
+			x&\longmapsto \|x\|+\|T(x)\|
+		\end{aligned}
+	\end{align*}
+	依范数$[\![\;\cdot\;]\!]$取Cauchy序列$\{x_n\}_{n=1}^{\infty}\sub X$，那么对于任意$\varepsilon>0$，存在$N\in\N^*$，使得对于任意$m,n\ge N$成立
+	$$
+	[\![x_m-x_n]\!]=\|x_m-x_n\|+\|T(x_m)-T(x_n)\|\le\varepsilon
+	$$
+	因此$\{x_n\}_{n=1}^{\infty}\sub X$依范数$\|\cdot\|$构成Cauchy序列，$\{T(x_n)\}_{n=1}^{\infty}\sub Y$依范数$\|\cdot\|$构成Cauchy序列。由于$X$依范数$\|\cdot\|$构成Banach空间且$Y$依范数$\|\cdot\|$构成Banach空间，因此存在$x\in X$与$y\in Y$，使得成立
+	$$
+	\lim_{n\to\infty}x_n=x,\qquad 
+	\lim_{n\to\infty}T(x_n)=y
+	$$
+	由于$T$为闭算子，那么$T(x)=y$，因此
+	$$
+	\lim_{n\to\infty}[\![x_n-x]\!]=\lim_{n\to\infty}\|x_n-x\|+\lim_{n\to\infty}\|T(x_n)-T(x)\|=0
+	$$
+	进而$X$依范数$[\![\;\cdot\;]\!]$构成Banach空间。由于范数$[\![\;\cdot\;]\!]$强于$\|\cdot\|$，那么由推论\ref{cor:强范数推论}，范数$[\![\;\cdot\;]\!]$与$\|\cdot\|$等价。对于$z\in X$，任取$\{z_n\}_{n=1}^{\infty}\sub X$，使得满足
+	$$
+	\lim_{n\to\infty}\|z_n-z\|=0\iff \lim_{n\to\infty}[\![z_n-z]\!]=0
+	$$
+	由于
+	$$
+	\lim_{n\to\infty}\|T(z_n)-T(z)\|\le \lim_{n\to\infty}[\![z_n-z]\!]=0
+	$$
+	那么$T$在$z$处连续，由定理\ref{thm:有界线性算子的等价条件}，$T$为有界算子。
+\end{proof}
+
+\begin{theorem}{Hellinger-Toeplitz定理}{Hellinger-Toeplitz定理}
+	对于Hilbert空间$\mathcal{H}$上的线性算子$T:\mathcal{H}\to\mathcal{H}$，如果对于任意$x,y\in\mathcal{H}$，成立$(T(x),y)=(x,T(y))$，那么$T$为有界算子。
+\end{theorem}
+
+\begin{proof}
+	（法一）对于任意$y\in\mathcal{H}$，构造线性泛函
+	\begin{align*}
+		f_y:\begin{aligned}[t]
+			\mathcal{H}&\longrightarrow \C\\
+			x&\longmapsto (x,T(y))
+		\end{aligned}
+	\end{align*}
+	由Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	\|f_y\|=\sup_{\|x\|=1}|f_y(x)|=\sup_{\|x\|=1}|(x,T(y))|\le \sup_{\|x\|=1}\|x\|\|T(y)\|=\|T(y)\|
+	$$
+	因此$f_y\in\mathcal{H}^*$。由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，成立$\|f_y\|=\|T(y)\|$。由于对于任意$x\in\mathcal{H}$，由Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	\sup_{\|y\|=1}|f_y(x)|
+	=\sup_{\|y\|=1}|(x,T(y))|
+	=\sup_{\|y\|=1}|(T(x),y)|
+	\le\sup_{\|y\|=1}\|T(x)\|\|y\|
+	=\|T(x)\|<\infty
+	$$
+	因此由一致有界原理\ref{thm:一致有界原理}，成立$\displaystyle\sup_{\|y\|=1}\|f_y\|<\infty$，因此
+	$$
+	\|T\|=\sup_{\|y\|=1}\|T(y)\|=\sup_{\|y\|=1}\|f_y\|<\infty
+	$$
+	进而$T$为有界算子。
+	
+	（法二）任取$\{x_n\}_{n=1}^{\infty}\sub X$，使得成立
+	$$
+	\lim_{n\to\infty}x_n=x,\qquad 
+	\lim_{n\to\infty}T(x_n)=y
+	$$
+	那么对于任意$z\in\mathcal{H}$以及$n\in\N^*$，成立
+	$$
+	(T(x_n),z)=(x_n,T(z))
+	$$
+	由内积的连续性
+	$$
+	(y,z)=(x,T(z))=(T(x),z)
+	$$
+	由命题\ref{pro:内积判断为零}，$T(x)=y$，因此$T$为闭算子。由闭图形定理\ref{thm:闭图形定理}，$T$为有界算子。
+\end{proof}
+
+\section{对偶空间,二次对偶,自反空间}
+
+\subsection{对偶空间}
+
+\begin{definition}{赋范线性空间的对偶空间}
+	定义赋范线性空间$X$的对偶空间为$X^*=\{ \text{有界线性泛函}f:X\to \C \}$。
+\end{definition}
+
+\begin{theorem}{}{有限维赋范线性空间的对偶空间为有限维赋范线性空间}
+	$n$维赋范线性空间的对偶空间为$n$维赋范线性空间。
+\end{theorem}
+
+\begin{proof}
+	对于$n$维赋范线性空间$X$，其基为$\{e_k\}_{k=1}^{n}$，由Hahn-Banach定理的推论\ref{pro:2.1}，存在$\{f_k\}_{k=1}^{n}\sub X^*$，使得成立
+	$$
+	f_i(e_j)=\begin{cases}
+		1,\qquad & i=j\\
+		0,\qquad & i\ne j
+	\end{cases}
+	$$
+	令
+	$$
+	\mu_1f_1+\cdots+\mu_nf_n=0
+	$$
+	那么对于任意$1\le k \le n$，成立
+	$$
+	\mu_k
+	=\mu_1f_1(e_k)+\cdots+\mu_nf_n(e_k)
+	=(\mu_1f_1+\cdots+\mu_nf_n)(e_k)=0
+	$$
+	因此
+	$$
+	\mu_1=\cdots=\mu_n=0
+	$$
+	进而$\{f_k\}_{k=1}^{n}$线性无关。对于任意$x\in X$，令
+	$$
+	x=\sum_{k=1}^{n}\lambda_ke_k
+	$$
+	那么对于任意$1\le i \le n$，成立
+	$$
+	f_i(x)
+	= f_i\left(\sum_{j=1}^{n}\lambda_je_j\right)
+	= \sum_{j=1}^{n}\lambda_jf_i(e_j)
+	= \lambda_i
+	$$
+	因此对于任意$f\in X^*$，成立
+	$$
+	f(x)
+	= f\left(\sum_{k=1}^{n}\lambda_ke_k\right)
+	= \sum_{k=1}^{n}\lambda_kf(e_k)
+	= \sum_{k=1}^{n}f_k(x)f(e_k)
+	= \left(\sum_{k=1}^{n}f(e_k)f_k\right)(x)
+	$$
+	从而
+	$$
+	f=\sum_{k=1}^{n}f(e_k)f_k
+	$$
+	进而$\{f_k\}_{k=1}^{n}$为$X^*$的基，于是$X^*$为$n$维赋范线性空间。
+\end{proof}
+
+\begin{corollary}
+	无穷维赋范线性空间的对偶空间为无穷维赋范线性空间。
+\end{corollary}
+
+\begin{proof}
+	对于无穷维赋范线性空间$X$，如果$X^*$为$n$维赋范线性空间，那么由定理\ref{thm:有限维赋范线性空间的对偶空间为有限维赋范线性空间}，$X^{**}$为$n$维赋范线性空间。由定理\ref{thm:典型映射为保范线性单射}，典型映射$\tau$为单的保范线性空间，那么由同构定理
+	$$
+	X/\ker\tau\cong\im\tau\iff X\cong \tau(X)
+	$$
+	因此$\tau(X)$为无穷维赋范线性空间。但是$\tau(X)\sub X^{**}$，矛盾！因此$X^*$为无穷维赋范线性空间。
+\end{proof}
+
+\begin{theorem}{}{对偶空间可分则原空间可分}
+	对于Banach空间$X$，如果$X^*$为可分空间，那么$X$为可分空间。
+\end{theorem}
+
+\begin{proof}
+	由于$X^*$为可分空间，那么球面$\{f\in X^*:\|f\|=1\}$存在可数稠密子集$\{f_n\}_{n=1}^{\infty}$，那么存在$\{x_n\}_{n=1}^{\infty}\sub X$，使得对于任意$n\in\N^*$，成立
+	$$
+	\|x_n\|\le 1,\qquad 
+	|f_n(x_n)|>\frac{1}{2}
+	$$
+	
+	如果$\overline{\text{Sp}\{x_n\}_{n=1}^{\infty}}\subsetneq X$。由Hahn-Banach定理的推论\ref{pro:2.1}，存在$f\in X^*$，使得对于任意$n\in\N^*$，成立
+	$$
+	f(x_n)=0,\qquad \|f\|=1
+	$$
+	从而
+	$$
+	\|f_n-f\|\ge |f_n(x_n)-f(x_n)|=|f_n(x_n)|>\frac{1}{2}
+	$$
+	与$\{f_n\}_{n=1}^{\infty}$为球面$\{f\in X^*:\|f\|=1\}$的可数稠密子集矛盾！
+	
+	进而$\overline{\text{Sp}\{x_n\}_{n=1}^{\infty}}=X$，构造可数集合
+	$$
+	S=\{ r_1x_1+\cdots+r_nx_n:r_k\in \Q,n\in\N^* \}\sub \text{Sp}\{x_n\}_{n=1}^{\infty}
+	$$
+	任取$x\in \text{Sp}\{x_n\}_{n=1}^{\infty}$，那么不妨假设
+	$$
+	x=\lambda_1x_1+\cdots+\lambda_nx_n,\qquad \lambda_k\in\C
+	$$
+	对于任意$1\le k \le n$，取$\{ r_k^{(m)} \}_{m=1}^{\infty}\sub \Q$，使得成立
+	$$
+	\lim_{m\to\infty}r_k^{(m)}=\lambda_k
+	$$
+	记
+	$$
+	x_r^{(m)}=r_1^{(m)}x_1+\cdots +r_n^{(m)}x_n
+	$$
+	取$\displaystyle M=\max_{1\le k\le n}\|x_k\|$，那么
+	$$
+	\|x_r^{(m)}-x\|
+	=\left\| \sum_{k=1}^{n}(r_k^{(m)}-\lambda_k)x_k \right\|
+	\le \sum_{k=1}^{n}|r_k^{(m)}-\lambda_k|\|x_k\|
+	\le M\sum_{k=1}^{n}|r_k^{(m)}-\lambda_k|
+	$$
+	因此
+	$$
+	\lim_{m\to\infty}x_r^{(m)}=x
+	$$
+	于是$x\in \overline{S}$。由$x$的任意性，$\text{Sp}\{x_n\}_{n=1}^{\infty}\sub\overline{S}$，进而
+	$$
+	X=\overline{\text{Sp}\{x_n\}_{n=1}^{\infty}}\sub \overline{S}\sub X\implies X=\overline{S}
+	$$
+	进而$X$为可分空间。
+\end{proof}
+
+\begin{theorem}
+	对于自反Banach空间$X$，成立
+	$$
+	X\text{为可分空间}\iff X^*\text{为可分空间}
+	$$
+\end{theorem}
+
+\begin{proof}
+	充分性由定理\ref{thm:对偶空间可分则原空间可分}保证。对于必要性，由于$X$为自反空间，那么由定理\ref{thm:典型映射为保范线性单射}与定义\ref{def:自反空间}，存在保范线性双射$\tau:X\to X^{**}$。由于$X$为可分空间，那么由定理\ref{thm:同构保可分性}，$X^{**}$为可分空间。由定理\ref{thm:有界线性算子空间为Banach空间}，$X^{**}$为Banach空间。由定理\ref{thm:对偶空间可分则原空间可分}，$X^*$为可分空间。
+\end{proof}
+
+\begin{theorem}{$l^1$空间的对偶空间}{l1空间的对偶空间}
+	对于$l^1$空间，成立
+	$$
+	(l^1)^*\cong l^\infty
+	$$
+	其保范线性双射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			(l^1)^*&\longrightarrow l^\infty\\
+			f&\longmapsto \{a_n\}_{n=1}^{\infty}
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		f:\begin{aligned}[t]
+			l^1&\longrightarrow \C\\
+			\{x_n\}_{n=1}^{\infty}&\longmapsto \sum_{n=1}^{\infty}a_nx_n
+		\end{aligned}
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	任取$f\in (l^1)^*$。考察$l^1$空间的正规正交基$\{e_n\}_{n=1}^{\infty}$，其中$e_n=\{0,\cdots,0,\underset{\text{第}n\text{个}}{1},0,0,\cdots\}$，对于任意$\{x_n\}_{n=1}^{\infty}\in l^1$，成立
+	$$
+	\{x_n\}_{n=1}^{\infty}=\sum_{n=1}^{\infty}x_ne_n
+	$$
+	该级数在$l^1$中收敛，因此
+	$$
+	f(\{x_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}x_nf(e_n)
+	$$
+	由于$\|e_n\|=1$，那么$|f(e_n)|\le \|f\|$。令
+	$$
+	a_n=f(e_n),\qquad n\in\N^*
+	$$
+	那么$\{a_n\}_{n=1}^{\infty}$为由$f$决定的有界数列，进而
+	$$
+	f(\{x_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}a_nx_n
+	$$
+	
+	一方面
+	$$
+	\|f\|\le\sup_{n\in\N^*}|a_n|
+	$$
+	另一方面
+	$$
+	|f(\{x_n\}_{n=1}^{\infty})|
+	\le \sum_{n=1}^{\infty}|a_n||x_n|
+	\le \sup_{n\in\N^*}|a_n|\sum_{n=1}^{\infty}|x_n|
+	= \sup_{n\in\N^*}|a_n|\| \{x_n\}_{n=1}^{\infty} \|
+	\implies 
+	\|f\|\le \sup_{n\in\N^*}|a_n|
+	$$
+	综合两方面
+	$$
+	\|f\|=\sup_{n\in\N^*}|a_n|
+	$$
+\end{proof}
+
+\begin{theorem}{$l^p$空间的对偶空间}{lp空间的对偶空间}
+	对于$l^p$空间，其中$1<p<\infty$，成立
+	$$
+	(l^p)^*\cong l^q
+	$$
+	其中$\frac{1}{p}+\frac{1}{q}=1$，且保范线性双射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			(l^p)^*&\longrightarrow l^q\\
+			f&\longmapsto \{a_n\}_{n=1}^{\infty}
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		f:\begin{aligned}[t]
+			l^p&\longrightarrow \C\\
+			\{x_n\}_{n=1}^{\infty}&\longmapsto \sum_{n=1}^{\infty}a_nx_n
+		\end{aligned}
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	考察$l^p$空间的正规正交基$\{e_n\}_{n=1}^{\infty}$，其中$e_n=\{0,\cdots,0,\underset{\text{第}n\text{个}}{1},0,0,\cdots\}$，对于任意$\{x_n\}_{n=1}^{\infty}\in l^p$，成立
+	$$
+	\{x_n\}_{n=1}^{\infty}=\sum_{n=1}^{\infty}x_ne_n
+	$$
+	该级数在$l^p$中收敛，因此
+	$$
+	f(\{x_n\}_{n=1}^{\infty}=\sum_{n=1}^{\infty}x_nf(e_n)
+	$$
+	令
+	$$
+	a_n=f(e_n),\qquad n\in\N^*
+	$$
+	那么$\{a_n\}_{n=1}^{\infty}$由$f$唯一确定，且
+	$$
+	f(\{x_n\}_{n=1}^{\infty})=\sum_{n=1}^{\infty}a_nx_n
+	$$
+	
+	令
+	$$
+	y_{k}^{(n)}=\begin{cases}
+		|a_k|^{q-1}\text{sgn}(a_k),\qquad & k\le n\\
+		0,\qquad & k>n
+	\end{cases}
+	$$
+	那么
+	$$
+	f(\{y_k^{(n)}\}_{k=1}^{\infty})=\sum_{k=1}^{n}|a_k|^q
+	$$
+	而
+	$$
+	f(\{y_k^{(n)}\}_{k=1}^{\infty})
+	\le \|f\|\| \{y_k^{(n)}\}_{k=1}^{\infty} \|_p
+	= \|f\|\left(\sum_{k=1}^{\infty}|y_k^{(n)}|^p\right)^{1/p}
+	= \|f\|\left(\sum_{k=1}^{n}|a_k|^q\right)^{1/p}
+	$$
+	因此
+	$$
+	\left(\sum_{k=1}^{n}|a_k|^q\right)^{1/q}\le \|f\|
+	$$
+	令$n\to\infty$
+	$$
+	\left(\sum_{n=1}^{\infty}|a_n|^q\right)^{1/q}\le \|f\|
+	$$
+	因此$\{a_n\}_{n=1}^{\infty}\in l^q$，且
+	$$
+	\|f\|\ge \| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+	由Hölder不等式\ref{thm:数列Hölder不等式}
+	$$
+	|f(\{x_n\}_{n=1}^{\infty})|
+	\le \sum_{n=1}^{\infty}|a_n||x_n|
+	\le \|\{a_n\}_{n=1}^{\infty}\|_q \|\{x_n\}_{n=1}^{\infty}\|_p \implies
+	\|f\|\le \| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+	从而
+	$$
+	\|f\|=\| \{a_n\}_{n=1}^{\infty} \|_q
+	$$
+\end{proof}
+
+\begin{theorem}{$L^p[a,b]$空间的对偶空间}{Lp空间的对偶空间}
+	对于$L^p[a,b]$空间，其中$1\le p<\infty$，存在保范线性双射$\tau:(L^p[a,b])^*\to L^q[a,b]$，其中$\frac{1}{p}+\frac{1}{q}=1$，且对于任意$F\in (L^p[a,b])^*$与$f\in L^q[a,b]$，成立
+	$$
+	F(f)=\int_a^b \tau(F)f
+	$$
+\end{theorem}
+
+\begin{definition}{划分}
+	定义区间$[a,b]$的划分为
+	$$
+	a=t_0<\cdots<t_n=b
+	$$
+	区间$[a,b]$的所有划分记为集合
+	$$
+	\Delta_a^b=\{ (t_0,\cdots,t_n):t_0=a,t_n=b,t_0<\cdots<t_n,n\in\N^* \}
+	$$
+\end{definition}
+
+\begin{definition}{变差}
+	定义连续函数$f:[a,b]\to \C$关于划分$\Delta\in\Delta_a^b$的变差为
+	$$
+	V_{\Delta}(f)=\sum_{k=1}^{n}{|f(t_k)-f(t_{k-1})|}
+	$$
+\end{definition}
+
+\begin{definition}{全变差}
+	定义连续函数$f:[a,b]\to \C$的全变差为
+	$$
+	V_a^b(f)=\sup_{\Delta\in \Delta_a^b}V_{\Delta}(f)
+	$$
+\end{definition}
+
+\begin{definition}{有界变差函数}
+	称连续函数$f:[a,b]\to \C$为有界变差的，如果存在$M<\infty$，使得成立$V_a^b(f)\le M$。
+\end{definition}
+
+\begin{definition}{有界变差函数空间}
+	\begin{align*}
+		& V[a,b]=\{ f:[a,b]\to \C:V_a^b(f)<\infty \}
+		& V_0[a,b]=\{ f\in V[a,b]:f(a)=0,f\text{与}(a,b)\text{内右连续} \}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{$C[0,1]$空间的对偶空间}{C[0,1]空间的对偶空间1}
+	一方面，对于任意$T\in (C[0,1])^*$，存在$g\in V[0,1]$，使得成立
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow \C\\
+			f&\longmapsto \int_0^1 f(x)\mathrm{d}g(x)
+		\end{aligned}
+	\end{align*}
+
+	另一方面，对于任意$g\in V[0,1]$，泛函
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow \C\\
+			f&\longmapsto \int_0^1 f(x)\mathrm{d}g(x)
+		\end{aligned}
+	\end{align*}
+	成立$T\in (C[0,1])^*$。
+	
+	两方面同时成立
+	$$
+	\|T\|=V_0^1(g)
+	$$
+\end{theorem}
+
+\begin{proof}
+	设$g\in V[0,1]$，对于任意$f\in C[0,1]$，Lebesgue-Stielthes积分$\displaystyle \int_0^1 f(x)\mathrm{d}g(x)$存在。对于任意$n\in\N^*$，取阶层函数
+	$$
+	\Phi_n(x)=\sum_{k=1}^{n}f\left(\frac{k}{n}\right)\left(\varphi_{\frac{k}{n}}(x)-\varphi_{\frac{k-1}{n}}(x)\right)
+	$$
+	其中$\varphi_0=0$，且当$t\in (0,1]$时，成立
+	$$
+	\varphi_t(x)=\begin{cases}
+		1,\qquad & 0\le x\le t\\
+		0,\qquad & t<x\le 1
+	\end{cases}
+	$$
+	由于$f$在$[0,1]$上一致连续，那么$\Phi$在$[0,1]$上一致收敛于$f$。而
+	\begin{align*}
+		\int_0^1 \Phi_n(x)\mathrm{d}g(x)
+		= & \sum_{k=1}^{n}\int_{\frac{k-1}{n}}^{\frac{k}{n}}\Phi_n(x)\mathrm{d}g(x)\\
+		= & \sum_{k=1}^{n}f\left(\frac{k}{n}\right)\int_{\frac{k-1}{n}}^{\frac{k}{n}}\mathrm{d}g(x)\\
+		= & \sum_{k=1}^{n}f\left(\frac{k}{n}\right)\left(g\left(\frac{k}{n}\right)-g\left(\frac{k-1}{n}\right)\right)
+	\end{align*}
+	由于对于任意$0\le x\le 1$与$n\in\N^*$，成立$|\Phi_n(x)|\le\|f\|$，那么
+	$$
+	\int_0^1f(x)\mathrm{d}g(x)
+	= \lim_{n\to\infty}\int_0^1\Phi_n(x)\mathrm{d}g(x)
+	= \lim_{n\to\infty}\sum_{k=1}^{n}f\left(\frac{k}{n}\right)\left(g\left(\frac{k}{n}\right)-g\left(\frac{k-1}{n}\right)\right)
+	$$
+	从而
+	\begin{align*}
+		\left|\int_0^1f(x)\mathrm{d}g(x)\right|
+		\le & \sup_{n\in\N^*}\sum_{k=1}^{n}\left|f\left(\frac{k}{n}\right)\right|\left|g\left(\frac{k}{n}\right)-g\left(\frac{k-1}{n}\right)\right|\\
+		\le & \|f\|\sup_{n\in\N^*}\sum_{k=1}^{n}\left|g\left(\frac{k}{n}\right)-g\left(\frac{k-1}{n}\right)\right|\\
+		\le & \|f\| V_0^1(g)
+	\end{align*}
+
+	一方面，对于任意$g\in V[0,1]$，容易知道
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow \C\\
+			f&\longmapsto \int_0^1 f(x)\mathrm{d}g(x)
+		\end{aligned}
+	\end{align*}
+	成立$T\in (C[0,1])^*$，且
+	$$
+	|T(f)|=\left|\int_0^1f(x)\mathrm{d}g(x)\right|
+	\le \|f\| V_0^1(g)\implies
+	\|T\|\le V_0^1(g)
+	$$
+	
+	另一方面，对于任意$T\in (C[0,1])^*$，由于$C[0,1]$为$M[0,1]$的闭子空间，其中
+	$$
+	M[0,1]=\{\text{有界函数}f:[0,1]\to \C\}
+	$$
+	由Hahn-Banach定理\ref{thm:Hahn-Banach定理}，$T$可延拓为$M[0,1]$上的连续线性泛函$\tilde{T}$，且$\|\tilde{T}\|=\|T\|$。对于任意$f\in C[0,1]$，由于$\Phi_n,\varphi_t\in M[0,1]$，且在$M[0,1]$中$\Phi_n\to f$，那么
+	$$
+	\tilde{T}(f)
+	= \lim_{n\to\infty}\tilde{T}(\Phi_n)
+	= \lim_{n\to\infty}\sum_{k=1}^{n}f\left(\frac{k}{n}\right)\left(\tilde{T}\left(\varphi_{\frac{k}{n}}\right)-\tilde{T}\left(\varphi_{\frac{k-1}{n}}\right)\right)
+	$$
+	令
+	$$
+	g(t)=\tilde{T}(\varphi_t),\qquad t\in [0,1]
+	$$
+	对于$[0,1]$的任意划分
+	$$
+	\Delta:0=t_0<\cdots<t_n=1
+	$$
+	成立
+	\begin{align*}
+		V_\Delta(g)
+		= & \sum_{i=1}^{n}|g(t_i)-g(t_{i-1})|\\
+		= & \sum_{i=1}^{n}\varepsilon_i(g(t_i)-g(t_{i-1}))\\
+		= & \sum_{i=1}^{n}\varepsilon_i(\tilde{T}(\varphi_{t_i})-\tilde{T}(\varphi_{t_{i-1}}))\\
+		= & \tilde{T}\left(\sum_{i=1}^{n}\varepsilon_i(\varphi_{t_i}-\varphi_{t_{i-1}})\right)
+	\end{align*}
+	其中
+	$$
+	\varepsilon_i=\frac{|g(t_i)-g(t_{i-1})|}{g(t_i)-g(t_{i-1})},\qquad 1\le i\le n
+	$$
+	由于
+	$$
+	\left\| \varepsilon_i(\varphi_{t_i}-\varphi_{t_{i-1}}) \right\|=1
+	$$
+	那么
+	$$
+	V_\Delta(g)\le \|\tilde{T}\| = \|T\|
+	$$
+	由$\Delta$的任意性
+	$$
+	V_0^1(g)\le \|T\|\implies g\in V[0,1]
+	$$
+	进而
+	$$
+	\|T\|=V_0^1(g)
+	$$
+	此时
+	$$
+	T(f)=\tilde{T}(f)
+	= \lim_{n\to\infty}\sum_{k=1}^{n}f\left(\frac{k}{n}\right)\left(g\left(\frac{k}{n}-g\left(\frac{k-1}{n}\right)-\right)\right)
+	= \int_0^1f(x)\mathrm{d}g(x)
+	$$
+\end{proof}
+
+\begin{theorem}{$C[0,1]$空间的对偶空间}{C[0,1]空间的对偶空间2}
+	对于$C[0,1]$空间，成立
+	$$
+	(C[0,1])^*\cong V_0[0,1]
+	$$
+	其保范线性双射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			(C[0,1])^*&\longrightarrow V_0[0,1]\\
+			T&\longmapsto g
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		T:\begin{aligned}[t]
+			C[0,1]&\longrightarrow \C\\
+			f&\longmapsto \int_0^1 f(x)\mathrm{d}g(x)
+		\end{aligned}
+	\end{align*}
+\end{theorem}
+
+\subsection{二次对偶空间}
+
+\begin{definition}{二次对偶空间}
+	定义向量空间$X$的二次对偶空间为$X^{**}=(X^*)^*$。
+\end{definition}
+
+\begin{definition}{典型映射}
+	定义Banach空间$X$的典型映射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x,\text{ 其中 }F_x(f)=f(x)
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{}{典型映射为保范线性单射}
+	Banach空间的典型映射为保范线性单射。
+\end{theorem}
+
+\begin{proof}
+	Banach空间$X$的典型映射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		F_x:\begin{aligned}[t]
+			X^*&\longrightarrow \C\\
+			f&\longmapsto f(x)
+		\end{aligned}
+	\end{align*}
+	显然$\tau$为线性单射。
+	
+	一方面
+	$$
+	\|\tau(x)\|=\|F_x\|=\sup_{\|f\|=1}|F_x(f)|
+	=\sup_{\|f\|=1}|f(x)|
+	\le \|x\|
+	$$
+	另一方面，由命题\ref{cor:命题2.1}，存在$f_x\in X^*$，使得成立
+	$$
+	\|f_x\|=1,\qquad f_x(x)=\|x\|
+	$$
+	因此
+	$$
+	\|\tau(x)\|=\|F_x\|=\sup_{\|f\|=1}|F_x(f)|
+	=\sup_{\|f\|=1}|f(x)|
+	\ge |f_x(x)|
+	= \|x\|
+	$$
+	综合两方面
+	$$
+	\|\tau(x)\|=\|x\|
+	$$
+	
+	综上所述，$\tau$为保范线性单射。
+\end{proof}
+
+\begin{corollary}{}{典型映射的推论}
+	如果$X$为Banach空间，那么对于任意$x\in X$，成立
+	$$
+	\|x\|=\sup_{\substack{f\in X^*\\\|f\|\le 1}}|f(x)|
+	$$
+\end{corollary}
+
+\begin{proposition}
+	对于Banach空间$X$的子集$A\sub X$，如果对于任意$f\in X^*$，存在$M_f>0$，使得成立
+	$$
+	\sup_{x\in A}|f(x)|\le M_f
+	$$
+	那么
+	$$
+	\sup_{x\in A}\|x\|<\infty
+	$$
+\end{proposition}
+
+\begin{proof}
+	考虑$X$的典型映射
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		F_x:\begin{aligned}[t]
+			X^*&\longrightarrow \C\\
+			f&\longmapsto f(x)
+		\end{aligned}
+	\end{align*}
+	由定理\ref{thm:典型映射为保范线性单射}，$\|\tau(x)\|=\|x\|$。由一致有界原理\ref{thm:一致有界原理}
+	$$
+	\sup_{x\in A}\|x\|=\sup_{x\in A}\|\tau(x)\|=\sup_{x\in A}\|F_x\|<\infty
+	$$
+\end{proof}
+
+\subsection{自反空间}
+
+\begin{definition}{自反空间}{自反空间}
+	称Banach空间$X$为自反空间，如果$\tau(X)= X^{**}$，其中$\tau$为$X$的典型映射。
+\end{definition}
+
+\begin{note}
+	对于Banach空间$X$，成立
+	\begin{align*}
+		&X\text{为自反空间}\implies X\cong X^{**}\\
+		&X\cong X^{**}\centernot\implies X\text{为自反空间}
+	\end{align*}
+	换言之，存在Banach空间$X$，使得成立$X\cong X^{**}$，但是$\tau(X)\subsetneq X^{**}$。
+\end{note}
+
+\begin{example}
+	$l^1$空间不为自反空间。
+\end{example}
+
+\begin{proof}
+	由定理\ref{thm:l1空间的对偶空间}，$(l^1)^*\cong l^\infty$，从而$(l^1)^{**}\cong (l^\infty)^*$。如果$l^1$空间为自反空间，那么$(l^1)^{**}\cong l^1$，因此$l^1\cong (l^\infty)^*$。由于$l^1$空间为可分空间，因此$(l^\infty)^*$空间为可分空间。由定理\ref{thm:对偶空间可分则原空间可分}，$l^\infty$空间为可分空间，与定理\ref{thm:lp空间的可分性}矛盾！因此$l^1$空间不为自反空间。
+\end{proof}
+
+\begin{theorem}{}{有限维赋范线性空间为自反空间}
+	有限维赋范线性空间为自反空间。
+\end{theorem}
+
+\begin{proof}
+	对于$n$维赋范线性空间$X$，由定理\ref{thm:有限维赋范线性空间的对偶空间为有限维赋范线性空间}，$X^*$为$n$维赋范线性空间，那么$X^{**}$为$n$维赋范线性空间。由定理\ref{thm:典型映射为保范线性单射}，典型映射$\tau$为单的保范线性空间，那么由同构定理
+	$$
+	X/\ker\tau\cong\im\tau\iff X\cong \tau(X)
+	$$
+	因此$\tau(X)$为$n$维赋范线性空间。而$\tau(X)\sub X^{**}$，那么$\tau(X)=X^{**}$，进而$X$为自反空间。
+\end{proof}
+
+\begin{theorem}
+	$L^p[a,b]$空间为自反空间，其中$1<p<\infty$。
+\end{theorem}
+
+\begin{proof}
+	$L^p[a,b]$空间的典型映射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			L^p[a,b]&\longrightarrow (L^p[a,b])^{**}\\
+			f&\longmapsto \mathscr{F},\text{ 其中 }\mathscr{F}(F)=F(f)
+		\end{aligned}
+	\end{align*}
+	由定理\ref{thm:典型映射为保范线性单射}，$\tau$为保范线性单射。
+	
+	由定理\ref{thm:Lp空间的对偶空间}，存在保范线性双射
+	$$
+	\varphi:(L^p[a,b])^*\longrightarrow L^q[a,b] ,\qquad 
+	\psi:(L^q[a,b])^*\longrightarrow L^p[a,b]
+	$$
+	使得对于任意$F\in (L^p[a,b])^*$与$f\in L^p[a,b]$，以及任意$G\in (L^q[a,b])^*$与$g\in L^q[a,b]$，成立
+	$$
+	F(f)=\int_a^b \varphi(F)f,\qquad 
+	G(g)=\int_a^b \psi(G)g
+	$$
+	
+	任取$\mathscr{F}\in (L^p[a,b])^{**}$，由于对于任意$F\in (L^p[a,b])^*$，成立
+	$$
+	\mathscr{F}(F)
+	=(\mathscr{F}\circ \varphi^{-1})(\varphi(F))
+	=\int_a^b  \psi(\mathscr{F}\circ \varphi^{-1})\varphi(F)
+	=F(\psi(\mathscr{F}\circ \varphi^{-1}))
+	=F((\psi\circ (\varphi^{-1})^*)(\mathscr{F}))
+	$$
+	因此
+	$$
+	(\tau\circ \psi \circ (\varphi^{-1})^*)(\mathscr{F})=
+	\tau((\psi\circ (\varphi^{-1})^*)(\mathscr{F}))
+	=\mathscr{F}
+	$$
+	由$\mathscr{F}$的任意性
+	$$
+	\tau\circ \psi \circ (\varphi^{-1})^*=\mathbbm{1}
+	$$
+	因此$\tau$为满射，进而$L^p[a,b]$空间为自反空间。
+\end{proof}
+
+\begin{theorem}
+	Hilbert空间为自反空间。
+\end{theorem}
+
+\begin{proof}
+	对于Hilbert空间$\mathcal{H}$，由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\varphi:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}^*$，成立$f(x)=(x,\varphi(f))$。
+	
+	
+	由定理\ref{thm:Hilbert空间的对偶空间为Hilbert空间}，$\mathcal{H}^*$为Hilbert空间，因此由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\Phi:\mathcal{H}^{**}\to \mathcal{H}^*$，使得对于任意$f\in \mathcal{H}^*$与$F\in \mathcal{H}^{**}$，成立$F(f)=(f,\Phi(F))$。进而$\varphi\circ\Phi$为保范线性双射。
+
+	Hilbert空间$\mathcal{H}$的典型映射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			\mathcal{H}&\longrightarrow \mathcal{H}^{**}\\
+			x&\longmapsto F_x,\text{ 其中 }F_x(f)=f(x)
+		\end{aligned}
+	\end{align*}
+	任取$F\in \mathcal{H}^{**}$，由于对于任意$f\in\mathcal{H}^*$，成立
+	$$
+	F(f)
+	=(f,\Phi(F))
+	=\overline{(\varphi(f),\varphi(\Phi(F)))}
+	=(\varphi(\Phi(F)),\varphi(f))
+	=f(\varphi(\Phi(F)))
+	=f((\varphi\circ\Phi)(F))
+	$$
+	那么$(\tau\circ\varphi\circ\Phi)(F)=F$，因此
+	$$
+	\tau\circ\varphi\circ\Phi=\mathbbm{1}
+	$$
+	于是$\tau$为满射，进而$\mathcal{H}$为自反空间。
+\end{proof}
+
+\begin{theorem}{}{自反空间的闭子空间为自反空间}
+	对于Banach空间$X$，如果$X$为自反空间，那么$X$的闭子空间$M$为自反空间。
+\end{theorem}
+
+\begin{proof}
+	$M$的典型映射为
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			M&\longrightarrow M^{**}\\
+			x&\longmapsto F_x
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		F_x:\begin{aligned}[t]
+			M^*&\longrightarrow \C\\
+			f&\longmapsto f(x)
+		\end{aligned}
+	\end{align*}
+	任取$F\in M^{**}$，构造$X^*$上的线性泛函
+	\begin{align*}
+		\mathscr{F}:\begin{aligned}[t]
+			X^*&\longrightarrow \C\\
+			f&\longmapsto F(f|_{M})
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		f|_{M}:\begin{aligned}[t]
+			M&\longrightarrow \C\\
+			x&\longmapsto f(x)
+		\end{aligned}
+	\end{align*}
+	由于
+	$$
+	|\mathscr{F}(f)|
+	=|F(f|_{M})|
+	\le \|F\|\|f|_{M}\|
+	\le \|F\|\|f\|
+	$$
+	因此$\mathscr{F}\in X^{**}$。由于$X$为自反空间，那么存在$x\in X$，使得对于任意$f\in X^*$，成立$\mathscr{F}(f)=f(x)$。特别的，如果$f\in X^*$满足$f|_M=0$，那么
+	$$
+	f(x)=\mathscr{F}(f)=F(f|_M)=0
+	$$
+	由Hahn-Banach定理的推论\ref{cor:命题2.3}，$x\in M$。对于任意$f\in M^*$，设$\mathfrak{f}$为$f$的扩张，那么
+	$$
+	F(f)=F(\mathfrak{f}|_M)=\mathscr{F}(\mathfrak{f})=\mathfrak{f}(x)=f(x)
+	$$
+	因此$\tau(x)=F$，于是$\tau$为满射，进而$M$为自反空间。
+\end{proof}
+
+\begin{theorem}{}{同构的保自反性}
+	对于Banach空间$X$与$Y$，如果存在保范线性双射$T:X\to Y$，那么
+	$$
+	X\text{为自反空间}\iff 
+	Y\text{为自反空间}
+	$$
+\end{theorem}
+
+\begin{proof}
+	由定理\ref{thm:Banach共轭算子与典型映射的关系}，命题显然！
+	
+	事实上，仅证明必要性，考虑$X$的典型映射
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x,\text{ 其中 }F_x(f)=f(x)
+		\end{aligned}
+	\end{align*}
+	$Y$​的典型映射
+	\begin{align*}
+		\psi:\begin{aligned}[t]
+			Y&\longrightarrow Y^{**}\\
+			y&\longmapsto G_y,\text{ 其中 }G_y(g)=g(y)
+		\end{aligned}
+	\end{align*}
+	$T:X\to Y$的Banach共轭算子
+	\begin{align*}
+		T^*:\begin{aligned}[t]
+			Y^*&\longrightarrow X^*\\
+			f&\longmapsto f\circ T
+		\end{aligned}
+	\end{align*}
+	$T^{*}:Y^*\to X^*$的Banach共轭算子
+	\begin{align*}
+		T^{**}:\begin{aligned}[t]
+			X^{**}&\longrightarrow Y^{**}\\
+			F&\longmapsto F\circ T^*
+		\end{aligned}
+	\end{align*}
+	由定理\ref{thm:同构保证Banach共轭算子为同构}，$T^{*}$与$T^{**}$为保范线性双射。
+	
+	如果$X$为自反空间，那么$\varphi$为保范线性双射。交换图为
+	$$
+	\xymatrix{
+		X \ar[d]^{T}_{\sim} \ar@/^1pc/[rr]^{\varphi}_{\sim} & X^{*} & X^{**} \ar[d]^{T^{**}}_{\sim}\\
+		Y \ar@/_1pc/@{^{(}->}[rr]_{\psi} & Y^{*}  \ar[u]_{T^*}^{\sim} & Y^{**}
+	}
+	$$
+	任取$G\in Y^{**}$，对于任意$g\in Y^*$，存在且存在唯一
+	$$
+	x\in X,\qquad 
+	f\in X^{*},\qquad F\in X^{**},\qquad y\in Y
+	$$
+	使得成立
+	$$
+	T^{**}(F)=G,\qquad
+	T^{*}(g)=f,\qquad 
+	\varphi(x)=F,\qquad 
+	T(x)=y
+	$$
+	因此
+	$$
+	y=T(x)=T(\varphi^{-1}(F))
+	=T(\varphi^{-1}((T^{**})^{-1}(G)))
+	=(T\circ \varphi^{-1}\circ (T^{**})^{-1})(G)
+	$$
+	此时
+	\begin{align*}
+		G(g)
+		& = (T^{**}(F))((T^{*})^{-1}(f))\\
+		& = (F\circ T^{*})((T^{*})^{-1}(f))\\
+		& = (F\circ T^{*}\circ (T^{*})^{-1})(f)\\
+		& = F(f)\\
+		& = f(x)\\
+		& = (T^*(g))(T^{-1}(y))\\
+		& = (g\circ T)(T^{-1}(y))\\
+		& = (g\circ T\circ T^{-1})(y)\\
+		& = g(y)
+	\end{align*}
+	因此
+	$$
+	\psi(y)=G
+	$$
+	进而$Y$为自反空间。
+\end{proof}
+
+\begin{theorem}
+	对于Banach空间$X$，成立
+	$$
+	X\text{为自反空间}\iff X^*\text{为自反空间}
+	$$
+\end{theorem}
+
+\begin{proof}
+	$X$的典型映射为
+	\begin{align*}
+		\psi:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x,\text{ 其中 }F_x(f)=f(x)
+		\end{aligned}
+	\end{align*}
+	$X^{*}$的典型映射为
+	\begin{align*}
+		\Psi:\begin{aligned}[t]
+			X^{*}&\longrightarrow X^{***}\\
+			f&\longmapsto \mathscr{F}_f,\text{ 其中 }\mathscr{F}_f(F)=F(f)
+		\end{aligned}
+	\end{align*}
+	
+	对于必要性，如果$X$为自反空间，那么$\psi$为满射。任取$\mathscr{F}\in X^{***}$，对于任意$F\in X^{**}$，存在$x\in X$，使得成立$\psi(x)=F$，因此对于任意$f\in X^*$，成立$F(f)=f(x)$，于是
+	$$
+	\mathscr{F}(F)
+	=\mathscr{F}(\psi(x))
+	=(\mathscr{F}\circ\psi)(x)
+	=F(\mathscr{F}\circ\psi)
+	$$
+	所以$\Psi(\mathscr{F}\circ\psi)=\mathscr{F}$，那么$\Psi$为满射，进而$X^*$为自反空间。
+	
+	对于充分性，如果$X^*$为自反空间，那么由必要性，$X^{**}$为自反空间。由定理\ref{thm:典型映射为保范线性单射}，$\psi$为下有界连续算子。由命题\ref{pro:下有界连续线性算子的像为闭子集}，$\im \psi$为$X^{**}$的闭子空间。由定理\ref{thm:自反空间的闭子空间为自反空间}，$\im\psi$为自反空间。由定理\ref{thm:典型映射为保范线性单射}，$\psi$为单射，因此$X\cong\im\psi$。由定理\ref{thm:同构的保自反性}，$X$为自反空间。
+\end{proof}
+
+\section{Banach共轭算子}
+
+\begin{definition}{Banach共轭算子}
+	对于Banach空间$X$与$Y$，定义有界线性算子$T:X\to Y$的Banach共轭算子为
+	\begin{align*}
+		T^*:\begin{aligned}[t]
+			Y^*&\longrightarrow X^*\\
+			g&\longmapsto g\circ T
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{example}
+	对于$n$维Banach空间$X$，其基矩阵为$e=(e_1,\cdots,e_n)$，定义线性算子$T:X\to X$的矩阵表示为$Te=eA$。由定理\ref{thm:有限维赋范线性空间的对偶空间为有限维赋范线性空间}，存在$X^*$的基矩阵$f=(f_1,\cdots,f_n)$，使得成立$T^*f=fA^T$，且
+	$$
+	f_i(e_j)=\begin{cases}
+		1,\qquad & i=j\\
+		0,\qquad & i\ne j
+	\end{cases}
+	$$
+\end{example}
+
+\begin{example}\label{例题1}
+	对于$1<p<\infty$且$\frac{1}{p}+\frac{1}{q}=1$，$K(x,y)$为定义在矩形$a\le x,y\le b$上的复值可测函数，且
+	$$
+	\int_{a}^{b}\int_{a}^{b}|K(x,y)|^q\mathrm{d}x\mathrm{d}y<\infty
+	$$
+	定义以$K(x,y)$为核的积分算子
+	\begin{align*}
+		\mathscr{T}:\begin{aligned}[t]
+			L^p[a,b]&\longrightarrow L^q[a,b]\\
+			f&\longmapsto \mathscr{T}(f),\text{其中}(\mathscr{T}(f))(x)=\int_a^bK(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	由Hölder不等式\ref{thm:函数Hölder不等式}
+	\begin{align*}
+		\int_a^b |(\mathscr{T}(f))(x)|^q\mathrm{d}x
+		& = \int_a^b \left|\int_a^bK(x,y)f(y)\mathrm{d}y\right|^q\mathrm{d}x\\
+		& \le \int_a^b \left(\int_a^b|K(x,y)|^q\mathrm{d}y\right)\left(\int_a^b|f(y)|^p\mathrm{d}y\right)^{q/p}\mathrm{d}x\\
+		& = \|f\|_p^q\|K(x,y)\|_q^q
+	\end{align*}
+	因此
+	\begin{align*}
+		\|\mathscr{T}(f)\|_q
+		& = \left(\int_a^b |(\mathscr{T}(f))(x)|^q\mathrm{d}x\right)^{1/q}\\
+		& \le \|f\|_p\|K(x,y)\|_q
+	\end{align*}
+	于是$\mathscr{T}$为有界线性算子。
+	
+	由定理\ref{thm:Lp空间的对偶空间}，存在保范线性双射
+	\begin{align*}
+		\tau:\begin{aligned}[t]
+			(L^q[a,b])^*&\longrightarrow L^p[a,b]\\
+			T&\longmapsto g
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		T:\begin{aligned}[t]
+			L^q[a,b]&\longrightarrow \C\\
+			f&\longmapsto \int_a^b f(x)g(x)\mathrm{d}x
+		\end{aligned}
+	\end{align*}
+	因此对于任意$T\in (L^q[a,b])^*$，以及$f\in L^p[a,b]$，记$g=\tau(T)$，成立
+	\begin{align*}
+		(\mathscr{T}^*(T))(f)
+		& = (T\circ \mathscr{T})(f)\\
+		& = T(\mathscr{T}(f))\\
+		& = \int_a^b (\mathscr{T}(f))(x)g(x)\mathrm{d}x\\
+		& = \int_a^b \left(\int_a^bK(x,y)f(y)\mathrm{d}y\right)g(x)\mathrm{d}x\\
+		& = \int_a^b f(y) \left(\int_a^bK(x,y)g(x)\mathrm{d}x\right)\mathrm{d}y
+	\end{align*}
+	又因为
+	$$
+	(\mathscr{T}^*(T))(f)=\int_a^b f(y)(\mathscr{T}g)(y)\mathrm{d}y
+	$$
+	因此
+	$$
+	(\mathscr{T}g)(y)=\int_a^bK(x,y)g(x)\mathrm{d}x
+	$$
+	即
+	$$
+	(\mathscr{T}g)(x)=\int_a^bK(y,x)g(y)\mathrm{d}y
+	$$
+	那么$\mathscr{T}^*$的核为$K(y,x)$。
+\end{example}
+
+\begin{example}
+	由例题\ref{例题1}，以$K(x,y)\in L^2[0,1]^2$为核的积分算子
+	\begin{align*}
+		T:\begin{aligned}[t]
+			L^2[0,1]&\longrightarrow L^2[0,1]\\
+			f&\longmapsto T(f),\text{其中}(T(f))(x)=\int_0^1K(x,y)f(y)\mathrm{d}y
+		\end{aligned}
+	\end{align*}
+	为有界线性算子，那么
+	\begin{align*}
+		(T^*(f),g)
+		& = (f,T(g))\\
+		& = \int_0^1f(x)\overline{(T(g))(x)}\mathrm{d}x\\
+		& = \int_0^1f(x)\left(\overline{\int_0^1K(x,y)g(y)\mathrm{d}y}\right)\mathrm{d}x\\
+		& = \int_0^1\overline{g(y)}\left(\int_0^1\overline{K(x,y)}f(x)\mathrm{d}x\right)\mathrm{d}y
+	\end{align*}
+	因此对于任意$f,g\in L^2[0,1]$，成立
+	$$
+	(T^*(f))(y)=\int_0^1\overline{K(x,y)}f(x)\mathrm{d}x
+	$$
+	即
+	$$
+	(T^*(f))(x)=\int_0^1\overline{K(y,x)}f(y)\mathrm{d}y
+	$$
+	那么$T^*$的核为$\overline{K(y,x)}$。
+\end{example}
+
+\begin{proposition}
+	$$
+	(T+S)^*=T^*+S^*,\qquad 
+	(\lambda T)^*=\lambda T^*
+	$$
+\end{proposition}
+
+\begin{proposition}
+	对于Banach空间$X$，如果$T,S:X\to X$为有界线性算子，那么
+	$$
+	(S\circ T)^*=T^*\circ S^*
+	$$
+\end{proposition}
+
+\begin{proposition}
+	对于Banach空间$X$，如果$T:X\to X$为有界可逆线性算子，那么
+	$$
+	(T^*)^{-1}=(T^{-1})^*
+	$$
+\end{proposition}
+
+\begin{theorem}{}{Banach共轭算子的有界性}
+	有界线性算子$T:X\to Y$的Banach共轭算子$T^*:Y^*\to X^*$为有界线性算子，且$\|T\|=\|T^*\|$，其中$X,Y$为Banach空间。
+\end{theorem}
+
+\begin{proof}
+	由推论\ref{cor:典型映射的推论}
+	$$
+	\|T(x)\|=\sup_{\substack{g\in Y^*\\\|f\|\le 1}}|f(T(x))|
+	$$
+	因此
+	\begin{align*}
+		\|T\|
+		& = \sup_{\|x\|\le1 }\|T(x)\|\\
+		& = \sup_{\|x\|\le1 }\sup_{\substack{g\in Y^*\\\|f\|\le 1}}|g(T(x))|\\
+		& = \sup_{\|x\|\le1 }\sup_{\substack{g\in Y^*\\\|g\|\le 1}}|(g\circ T)(x)|\\
+		& = \sup_{\|x\|\le1 }\sup_{\|g\|\le 1}|(T^*(g))(x)|\\
+		& = \sup_{\|g\|\le 1}\sup_{\|x\|\le1 }|(T^*(g))(x)|\\
+		& = \sup_{\|g\|\le 1}\|T^*(g)\|\\
+		& = \|T^*\|
+	\end{align*}
+\end{proof}
+
+\begin{theorem}{}{同构保证Banach共轭算子为同构}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为保范线性双射，那么$T^*:Y^*\to X^*$为保范线性双射。
+\end{theorem}
+
+\begin{proof}
+	对于线性
+	\begin{align*}
+		& T^*(f+g)=(f+g)\circ T=f\circ T+g\circ T=T^*(f)+T^*(g)\\
+		& T^*(\lambda g)=(\lambda g)\circ T=\lambda(g\circ T)=\lambda T^*(g)
+	\end{align*}
+	
+	对于双射性，构造算子
+	\begin{align*}
+		(T^*)^{-1}:\begin{aligned}[t]
+			X^*&\longrightarrow Y^*\\
+			f&\longmapsto f\circ T^{-1}
+		\end{aligned}
+	\end{align*}
+	由于
+	\begin{align*}
+		& ((T^*)^{-1}\circ T^*)(g)
+		= (T^*)^{-1}(T^*(g))
+		= (T^*)^{-1}(g\circ T)
+		= g\circ T\circ T^{-1}
+		= g
+		\implies
+		(T^*)^{-1}\circ T^*=\mathbbm{1}_{Y^*}\\
+		& (T^*\circ (T^*)^{-1})(f)
+		= T^*((T^*)^{-1}(f))
+		= T^*(f\circ T^{-1})
+		= f\circ T^{-1}\circ T
+		= f
+		\implies
+		T^*\circ (T^*)^{-1} = \mathbbm{1}_{X^*}
+	\end{align*}
+	那么$T^*$为双射。
+	
+	对于保范性，一方面
+	$$
+	|(T^*(g))(x)|
+	= |(g\circ T)(x)|
+	= |g(T(x))|
+	\le \|g\|\|T(x)\|
+	= \|g\|\|x\|\implies
+	\|T^*(g)\|\le \|g\|
+	$$
+	另一方面，对于任意$n\in\N^*$，由于$\displaystyle\|g\|=\sup_{\|y\|\le 1}|g(y)|$，那么存在$y_n\in Y$，使得成立
+	$$
+	\|y_n\|\le 1,\qquad |g(y_n)|\ge \|g\|-\frac{1}{n}
+	$$
+	由于$T$为双射，那么存在$\{x_n\}_{n=1}^{\infty}\sub X$，使得对于任意$n\in\N^*$，成立
+	$$
+	T(x_n)=y_n,\qquad \|x_n\|=\|T(x_n)\|=\|y_n\|\le 1
+	$$
+	因此
+	$$
+	|(T^*(g))(x_n)|
+	= |(g\circ T)(x_n)|
+	= |g(T(x_n))|
+	= |g(y_n)|
+	\ge \|g\|-\frac{1}{n}
+	$$
+	进而
+	$$
+	\|T^*(g)\|
+	= \sup_{\|x\|\le 1}|(T^*(g))(x)|
+	\ge \sup_{n\in\N^*}|(T^*(g))(x_n)|
+	\ge \sup_{n\in\N^*}\|g\|-\frac{1}{n}
+	= \|g\|
+	$$
+	综合两方面，$\|T^*(g)\|=\|g\|$，因此$T^*$为保范算子。
+	
+	综上所述，$T^*$为保范线性双射。
+\end{proof}
+
+\begin{theorem}{}{Banach共轭算子与典型映射的关系}
+	对于Banach空间$X,Y$，如果$T:X\to Y$为有界线性算子，那么
+	$$
+	T^{**}\circ \varphi = \psi \circ T
+	$$
+	其中$\varphi:X\to X^{**}$与$\psi:Y\to Y^{**}$为典型映射。
+\end{theorem}
+
+\begin{proof}
+	由于
+	\begin{align*}
+		T^*:\begin{aligned}[t]
+			Y^*&\longrightarrow X^*\\
+			g&\longmapsto g\circ T
+		\end{aligned}
+	\end{align*}
+	那么
+	\begin{align*}
+		T^{**}:\begin{aligned}[t]
+			X^{**}&\longrightarrow Y^{**}\\
+			F&\longmapsto F\circ T^*
+		\end{aligned}
+	\end{align*}
+	由定理\ref{thm:Banach共轭算子的有界性}，$T^{**}:X^{**}\to Y^{**}$为有界线性泛函。由于
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			X&\longrightarrow X^{**}\\
+			x&\longmapsto F_x
+		\end{aligned}
+		\qquad \qquad
+		\psi:\begin{aligned}[t]
+			Y&\longrightarrow Y^{**}\\
+			y&\longmapsto G_y
+		\end{aligned}
+	\end{align*}
+	其中
+	\begin{align*}
+		F_x:\begin{aligned}[t] 
+			X^*&\longrightarrow \C\\
+			f&\longmapsto f(x)
+		\end{aligned}
+		\qquad \qquad
+		G_y:\begin{aligned}[t]
+			Y^*&\longrightarrow \C\\
+			g&\longmapsto g(y)
+		\end{aligned}
+	\end{align*}
+	那么任取$x\in X$与$g\in Y^*$，成立
+	\begin{align*}
+		& ((T^{**}\circ \varphi)(x))(g)
+		= (T^{**}(\varphi(x)))(g)
+		= ((\varphi(x))\circ T^*)(g)
+		= (\varphi(x))(T^*(g))
+		= (T^*(g))(x)
+		= (g\circ T)(x)
+		= g(T(x))\\
+		& ((\psi\circ T)(x))(g)
+		= (\psi(T(x)))(g)
+		= g(T(x))
+	\end{align*}
+	因此
+	$$
+	T^{**}\circ \varphi = \psi \circ T
+	$$
+\end{proof}
+
+\begin{theorem}
+	对于Hilbert空间$X$与$Y$，如果$T_{\text{H}}^*$与$T_{\text{B}}^*$分别为有界线性算子$T:X\to Y$的Hilbert共轭算子与Banach共轭算子，那么存在保范共轭线性双射$\varphi:X^*\to X$与$\psi:Y^*\to Y$，使得成立
+	$$
+	T_{\text{H}}^*\circ \psi=\varphi\circ T_{\text{B}}^*
+	$$
+\end{theorem}
+
+\begin{proof}
+	由Frechet-Riesz表现定理\ref{thm:Frechet-Riesz表现定理}，存在保范共轭线性双射$\varphi:X^*\to X$，使得对于任意$x\in X$与$f\in X^*$，成立$f(x)=(x,\varphi(f))$。同理，存在保范共轭线性双射$\psi:Y^*\to Y$，使得对于任意$y\in Y$与$g\in Y^*$，成立$g(y)=(y,\psi(g))$。
+	
+	对于任意$x\in X$与任意$g\in Y^*$，成立
+	\begin{align*}
+		& (x,(\varphi\circ T_{\text{B}}^*)(g))
+		= (x,\varphi(T_{\text{B}}^*(g)))
+		= (x,\varphi(g\circ T))
+		= (g\circ T)(x)
+		= g(T(x))\\
+		& (x,(T_{\text{H}}^*\circ \psi)(g))
+		= (x,T_{\text{H}}^*(\psi(g)))
+		= (T(x),\psi(g))
+		= g(T(x))
+	\end{align*}
+	由命题\ref{pro:内积判断为零}
+	$$
+	T_{\text{H}}^*\circ \psi=\varphi\circ T_{\text{B}}^*
+	$$
+\end{proof}
+
+\appendix
+
+\chapter{空间}
+
+\begin{definition}{拓扑空间 topological space}
+	称$(X,\tau)$为拓扑空间，如果拓扑$\tau\sub\mathscr{P}(X)$满足如下性质。
+	\begin{enumerate}
+		\item $\varnothing,X\in \tau$
+		\item $\tau$对于任意并运算封闭。
+		\item $\tau$对于有限交运算封闭。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{向量空间 vector space / 线性空间 linear space}
+	称$(V,+,\;\cdot\;)$为数域$\mathbb{F}$上的向量空间/线性空间，如果加法运算$+:V\times V\to V$和数乘运算$\cdot:\mathbb{F}\times V\to V$满足如下性质。
+	\begin{enumerate}
+		\item 加法单位元：存在$0\in V$，使得对于任意$x\in V$，成立$0+x=x+0=x$。
+		\item 数乘单位元：存在$1\in \mathbb{F}$，使得对于任意$x\in V$，成立$1\cdot x=x$。
+		\item 加法逆元：对于任意$x\in V$，存在$y\in V$，使得成立$x+y=y+x=0$。
+		\item 加法交换律：$x+y=y+x$
+		\item  加法结合律：$x+(y+z)=(x+y)+z$
+		\item 数乘结合律：$\lambda\cdot (\mu\cdot x)=(\lambda\mu)\cdot x$
+		\item  数乘左分配律：$(\lambda+\mu)\cdot x=\lambda \cdot x+\mu \cdot x$
+		\item 数乘右分配律：$\lambda\cdot(x+y)=\lambda \cdot x+\lambda \cdot y$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{度量空间 metric space}
+	称$(X,d)$为数域$\mathbb{F}$上的度量空间，如果度量$d:X\times X\to \mathbb{F}$满足如下性质。
+	\begin{enumerate}
+		\item 正定性：$d(x,y)\ge 0$，当且仅当$x=y$时等号成立。
+		\item 对称性：$d(x,y)=d(y,x)$
+		\item 三角不等式：$d(x,z)\le d(x,y)+d(y,z)$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{度量线性空间 metric linear space}
+	称数域$\mathbb{F}$上的度量空间$(X,d)$为度量线性空间，如果度量$d$对于加法和数乘运算连续；换言之
+	\nonumber\begin{align}
+		&x_n\xlongrightarrow{d}x\text{且}y_n\xlongrightarrow{d}y \implies x_n+y_n\xlongrightarrow{d}x+y\\
+		&x_n\xlongrightarrow{d}x\text{且}\lambda_n\to\lambda\implies \lambda_n x_n\xlongrightarrow{d}\lambda x
+	\end{align}
+\end{definition}
+
+\begin{definition}{赋范空间 normed space}
+	称数域$\mathbb{F}$上的向量空间$(V,\Vert \cdot \Vert)$为赋范空间，如果范数$\Vert \cdot \Vert:V\to\mathbb{F}$满足如下性质。
+	\begin{enumerate}
+		\item 正定性：$\Vert x \Vert\ge 0$，当且仅当$x=0$时等号成立。
+		\item 绝对齐次性：$\Vert\lambda\cdot x\Vert=|\lambda|\Vert x \Vert$
+		\item 三角不等式：$\Vert x+y \Vert\le\Vert x \Vert+\Vert y \Vert$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{内积空间 inner product space}
+	称数域$\mathbb{F}$上的向量空间$(V,(\;\cdot\;,\;\cdot\;))$为内积空间，如果内积$(\;\cdot\;,\;\cdot\;):V\times V\to\mathbb{F}$满足如下性质。
+	\begin{enumerate}
+		\item 正定性：$(x,x)\ge 0$，当且仅当$x=0$时等号成立。
+		\item 共轭对称性：$(x,y)=\overline{(y,x)}$
+		\item 左线性：$(\lambda\cdot x+\mu\cdot y,z)=\lambda(x,z)+\mu(y,z)$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{Banach空间}
+	称完备的赋范空间为Banach空间。
+\end{definition}
+
+\begin{definition}{Hilbert空间}
+	称完备的内积空间为Hilbert空间。
+\end{definition}
+
+\begin{proposition}{空间关系}
+	$$
+	\text{内积空间}
+	\sub\text{赋范空间}
+	\sub\text{度量线性空间}
+	\sub\text{度量空间}
+	\sub\text{向量空间},\text{拓扑空间}
+	$$
+\end{proposition}
+
+\chapter{弱收敛与弱*收敛}
+
+\section{弱收敛}
+
+\begin{definition}{弱收敛}
+	对于Banach空间$X$，称序列$\{x_n\}_{n=1}^{\infty}\sub X$弱收敛于$x\in X$，并记作$x_n\xlongrightarrow{w}x$，如果对于任意有界线性泛函$f:X\to\C$，成立
+	$$
+	\lim_{n\to\infty}f(x_n)=f(x)
+	$$
+\end{definition}
+
+\begin{definition}{弱收敛}
+	对于Hilbert空间$\mathcal{H}$，称序列$\{x_n\}_{n=1}^{\infty}\sub \mathcal{H}$弱收敛于$x\in\mathcal{H}$，并记作$x_n\xlongrightarrow{w}x$，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意有界线性泛函$f:\mathcal{H}\to\C$，成立
+		$$
+		\lim_{n\to\infty}f(x_n)=f(x)
+		$$
+		\item 对于任意$y\in \mathcal{H}$，成立
+		$$
+		\lim_{n\to\infty}(x_n,y)=(x,y)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{弱列紧性}
+	称Banach空间$X$的子集$K\sub X$为弱列紧的，如果$K$中任意序列存在弱收敛子序列。
+\end{definition}
+
+\begin{definition}{弱连续}
+	对于Hilbert空间$\mathcal{H}$，称泛函$f:\mathcal{H}\to\C$为弱连续的，如果对于任意弱收敛于$x\in\mathcal{H}$的序列$\{x_n\}_{n=1}^{\infty}\sub \mathcal{H}$，成立$f(x_n)\to f(x)$。
+\end{definition}
+
+\begin{theorem}{Pettis定理}{Pettis定理}
+	自反空间中的单位开球为弱列紧的。
+\end{theorem}
+
+\section{弱*收敛}
+
+\begin{definition}{弱*收敛}
+	对于Banach空间$X$，称序列$\{f_n\}_{n=1}^{\infty}\sub X^*$弱*收敛于$f\in X^*$，并记作$f_n\xlongrightarrow{w^*}f$，如果对于任意$x\in X$，成立
+	$$
+	\lim_{n\to\infty}f_n(x)=f(x)
+	$$
+\end{definition}
+
+\begin{definition}{弱*列紧性}
+	称Banach空间$X$的对偶空间$X^*$的子集$K\sub X^*$为弱*列紧的，如果$K$中任意序列存在弱*收敛子序列。
+\end{definition}
+
+\begin{theorem}{Alaoglu定理}{Alaoglu定理}
+	Banach空间的对偶空间中的单位闭球为弱*列紧的。
+\end{theorem}
+
+\chapter{广义函数}
+
+\begin{definition}{支集}
+	定义函数$\varphi$的支集为%
+	$$
+	\text{supp}(\varphi)=\overline{\{ x:\varphi(x)\ne 0 \}}
+	$$
+\end{definition}
+
+\begin{definition}{基本函数空间$\mathscr{D}$}
+	$$
+	\mathscr{D}=\{ \varphi:\R\to\R\text{为无穷此连续可微函数且}\text{supp}(\varphi)\text{为紧集} \}
+	$$
+\end{definition}
+
+\begin{definition}{基本函数空间$\mathscr{D}$中的收敛}
+	称序列$\{ \varphi_n \}_{n=1}^{\infty}\sub\mathscr{D}$收敛于$\varphi\in \mathscr{D}$，并记作$\varphi_n\toD \varphi$，如果存在紧集$K$，使得成立$\dis\bigcup_{n=1}^{\infty}\text{supp}(\varphi_n)\sub K$，且对于任意$k\in\N$，数列$\{ \varphi_n^{(k)}(x) \}_{n=1}^{\infty}$关于$x\in\R$一致收敛于$\varphi(x)$。
+\end{definition}
+
+\begin{definition}{$\mathscr{D}$广义函数}
+	称泛函
+	\begin{align*}
+		f:\begin{aligned}[t]
+			\mathscr{D} &\longrightarrow \R\\
+			\varphi &\longmapsto \langle f,\varphi \rangle
+		\end{aligned}
+	\end{align*}
+	为$\mathscr{D}$广义函数，如果成立如下命题。
+	\begin{enumerate}
+		\item 线性性：对于任意$\varphi,\psi\in \mathscr{D}$与$\lambda\in\R$，成立
+		$$
+		\langle f,\varphi+\psi \rangle
+		=\langle f,\varphi \rangle
+		+\langle f,\psi \rangle,\qquad
+		\langle f,\lambda\varphi \rangle
+		=\lambda\langle f,\varphi \rangle
+		$$
+		\item 连续性：对于任意序列$\{ \varphi_n \}_{n=1}^{\infty}\sub\mathscr{D}$，成立%
+		$$
+		\varphi_n\toD \varphi\implies
+		\langle f,\varphi_n \rangle\to\langle f,\varphi \rangle
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}{局部可积函数为$\mathscr{D}$广义函数}{局部可积函数为广义函数}
+	如果$f:\R\to\R$为局部可积函数，那么存在且存在唯一$\mathscr{D}$广义函数
+	\begin{align*}
+		T_f:\begin{aligned}[t]
+			\mathscr{D} &\longrightarrow \R\\
+			\varphi &\longmapsto \int_{\R}f\varphi
+		\end{aligned}
+	\end{align*}
+\end{proposition}
+
+\begin{proposition}{Dirac函数}
+	Dirac函数
+	\begin{align*}
+		\delta:\begin{aligned}[t]
+			\mathscr{D} &\longrightarrow \R\\
+			\varphi &\longmapsto \varphi(0)
+		\end{aligned}
+	\end{align*}
+	为$\mathscr{D}$广义函数，其显性表达为
+	$$
+	\delta(x)=\begin{cases}
+		0,\qquad & x\ne 0\\
+		\infty,\qquad & x=0
+	\end{cases},\qquad
+	\int_{-\infty}^{+\infty}\delta(x)\dd x=1
+	$$
+\end{proposition}
+
+\begin{definition}{$\mathscr{D}$广义函数的导数}
+	定义$\mathscr{D}$广义函数
+	\begin{align*}
+		f:\begin{aligned}[t]
+			\mathscr{D} &\longrightarrow \R\\
+			\varphi &\longmapsto \langle f,\varphi \rangle
+		\end{aligned}
+	\end{align*}
+	为$\mathscr{D}$广义函数
+	\begin{align*}
+		f':\begin{aligned}[t]
+			\mathscr{D} &\longrightarrow \R\\
+			\varphi &\longmapsto \langle f',\varphi \rangle=-\langle f,\varphi' \rangle
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{proposition}{Heaviside函数}
+	Heaviside函数%
+	$$
+	H(x)=\begin{cases}
+		0,\qquad & x<0\\
+		1,\qquad & x\ge 0
+	\end{cases}
+	$$
+	为$\mathscr{D}$广义函数，且其导数为$H'=\delta$。
+\end{proposition}
+
+\begin{proof}
+	由于$H$为局部可积函数，因此由命题\ref{pro:局部可积函数为广义函数}，$H$为$\mathscr{D}$广义函数。注意到，对于任意$\varphi\in \mathscr{D}$，成立%
+	$$
+	\langle H',\varphi \rangle
+	=-\langle H,\varphi' \rangle
+	=-\int_{\R}H\varphi'
+	=-\int_{\R_{\ge 0}}\varphi'
+	=\varphi(0)
+	=\langle \delta,\varphi \rangle
+	$$
+	由$\varphi$的任意性，$H'=\delta$。
+\end{proof}
+
+\begin{theorem}
+	对于$\mathscr{D}$广义函数序列$\{ f_n \}_{n=1}^{\infty}$与$\mathscr{D}$广义函数$f$，如果对于任意$\varphi\in\mathscr{D}$，成立%
+	$$
+	\lim_{n\to\infty}\langle f_n,\varphi \rang
+	=\langle f,\varphi \rang
+	$$
+	那么对于任意$k\in\N$与$\varphi\in\mathscr{D}$，成立%
+	$$
+	\lim_{n\to\infty}\langle f_n^{(k)},\varphi \rang
+	=\langle f^{(k)},\varphi \rang
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于$\mathscr{D}$广义函数序列$\{ f_n \}_{n=1}^{\infty}$，如果对于任意$\varphi\in\mathscr{D}$，存在极限$\dis\lim_{n\to\infty}\langle f_n,\varphi \rang$，那么存在$\mathscr{D}$广义函数$f$，使得对于任意$\varphi\in\mathscr{D}$，成立%
+	$$
+	\lim_{n\to\infty}\langle f_n^{(k)},\varphi \rang
+	=\langle f^{(k)},\varphi \rang
+	$$
+\end{theorem}
+
+\chapter{经典定理}
+
+\begin{theorem}{Frechet-Riesz表现定理}
+	对于Hilbert空间$\mathcal{H}$，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}^*$，成立$f(x)=(x,\tau(f))$。
+\end{theorem}
+
+\begin{proof}
+	首先证明存在映射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}$，成立$f(x)=(x,\tau(f))$。任取$f\in \mathcal{H}^*$，如果$f=0$，那么定义$\tau(f)=0$，因此对于任意$x\in \mathcal{H}$，成立
+	$$
+	f(x)=0=(x,0)=(x,\tau(f))
+	$$
+	如果$f\ne 0$，那么$\ker f\subsetneq \mathcal{H}$。由命题\ref{pro:有界线性算子的核为闭子集}，$\ker f$为$\mathcal{H}$的闭子空间。取$x_0\in \mathcal{H}\setminus\ker f$，由射影定理\ref{thm:射影定理}，存在且存在唯一$(y_0,z_0)\in\ker f\times(\ker f)^\perp$，使得成立$x_0=y_0+z_0$，因此$z_0\ne0$且$f(z_0)\ne0$。任取$x\in\mathcal{H}$，令$\beta_x=f(x)/f(z_0)$，那么
+	$$
+	f(x)=\beta_xf(z_0)=f(\beta_x z_0)\iff f(x-\beta_xz_0)\in\ker f\iff x-\beta_xz_0\in\ker f
+	$$
+	由于$x=(x-\beta_xz_0)+\beta_xz_0$，那么$\mathcal{H}=\text{span }(\ker f\cup\{z_0\})$。由于
+	$$
+	(x,z_0)=((x-\beta_xz_0)+\beta_xz_0,z_0)=(x-\beta_xz_0,z_0)+\beta_x(z_0,z_0)
+	=\beta_x\|z_0\|^2
+	$$
+	因此$\beta_x=(x,z_0/\|z_0\|^2)$，进而$f(x)=(x,z_0\overline{f(z_0)}/\|z_0\|^2)$，此时定义$\tau(f)=z_0\overline{f(z_0)}/\|z_0\|^2$，那么对于任意$x\in \mathcal{H}$，成立$f(x)=(x,\tau(f))$。
+	
+	其次证明映射$\tau$为保范共轭线性双射。对于保范性，任取$f\in\mathcal{H}^*$，如果$f=0$，那么$\tau(f)=0$，因此
+	$$
+	\|\tau(f)\|=\|f\|=0
+	$$
+	如果$f\ne 0$，那么由Scharz不等式\ref{thm:Scharz不等式}
+	$$
+	\begin{align*}
+		&\| \tau(f)\|
+		=\left|\left(\frac{\tau(f)}{\|\tau(f)\|},\tau(f)\right)\right|
+		=\left|f\left(\frac{\tau(f)}{\|\tau(f)\|}\right)\right|
+		\le \|f\|\\
+		&\|f\|
+		=\sup_{\|x\|\le 1}|f(x)|
+		=\sup_{\|x\|\le 1}|(x,\tau(f))|
+		\le\sup_{\|x\|=1}\|x\|\|\tau(f)\|=\|\tau(f)\|
+	\end{align*}
+	$$
+	因此$\|f\|=\|\tau(f)\|$，进而该映射为保范映射。
+	
+	对于单射性，由命题\ref{pro:下有界线性算子为单射}，结合$\tau$的保范性，$\tau$为单射。
+	
+	对于满射性，对于任意$x\in\mathcal{H}$，定义$f_x\in\mathcal{H}^*$，使得对于任意$y\in\mathcal{H}$，成立$f_x(y)=(y,x)$，那么$\tau(f_x)=x$，进而$\tau$为满射。
+	
+	对于共轭线性，由于
+	\begin{align*}
+		&(x,\tau(f+g))=(f+g)(x)=f(x)+g(x)=(x,\tau(f))+(x,\tau(g))=(x,\tau(f)+\tau(g))\\
+		&(x,\tau(\lambda f))=(\lambda f)(x)=\lambda f(x)=\lambda (x,\tau(f))=(x,\overline{\lambda}\tau(f))
+	\end{align*}
+	那么由命题\ref{pro:内积判断为零}
+	$$
+	\tau(f+g)=\tau(f)+\tau(g),\qquad 
+	\tau(\lambda f)=\overline{\lambda }\tau(f)
+	$$
+	
+	综上所述，对于Hilbert空间$\mathcal{H}$，存在保范共轭线性双射$\tau:\mathcal{H}^*\to \mathcal{H}$，使得对于任意$x\in \mathcal{H}$与$f\in \mathcal{H}^*$，成立$f(x)=(x,\tau(f))$，命题得证！
+\end{proof}
+
+\begin{theorem}{Hahn-Banach定理}
+	对于赋范线性空间$X$的子空间$M$上的有界线性泛函$f:M\to\C$，存在有界线性泛函$F:X\to\C$，使得成立
+	$$
+	F|_M=f,\qquad 
+	\|F\|=\|f\|
+	$$
+\end{theorem}
+
+\begin{proof}
+	定义
+	$$
+	p(x)=\|f\|\|x\|,\qquad x\in X
+	$$
+	容易知道
+	\begin{align*}
+		&p(x+y)\le p(x)+p(y),&& x,y\in X\\
+		&p(\lambda x)=|\lambda| p(x),&& x\in X,\lambda\in \C\\
+		&|f(x)|\le p(x),&& x\in M
+	\end{align*}
+	那么由Bohnenblust-Sobczyk定理\ref{thm:Bohnenblust-Sobczyk定理}，存在线性泛函$F:X\to\C$​，使得成立
+	$$
+	\|F\|\le\|f\|,\qquad F(x)=f(x),\qquad  x\in M
+	$$
+	而
+	$$
+	\|F\|=\sup_{x\in X}\frac{|F(x)|}{\|x\|}\ge \sup_{x\in M}\frac{|f(x)|}{\|x\|}=\|f\|
+	$$
+	因此
+	$$
+	\|F\|=\|f\|
+	$$
+\end{proof}
+
+\begin{theorem}{Baire纲定理}
+	完备度量空间为第二纲的。
+\end{theorem}
+
+\begin{proof}
+	若不然，存在无处稠密子集族$\{ S_n \}_{n=1}^{\infty}$，使得成立$\displaystyle E=\bigcup_{n=1}^{\infty}S_n$。因为$S_1$无处稠密，所以存在$x_1\in X\setminus \overline{S}_1$，以及$0<r_1<1$，使得成立$B_{x_1}(r_1)\cap \overline{S}_1=\varnothing$。因为$S_2$无处稠密，所以存在$x_2\in B_{x_1}(r_1)\setminus \overline{S}_1$，以及$0<r_2<1/2$，使得成立$B_{x_2}(r_2)\cap \overline{S}_2=\varnothing$，且$\overline{B}_{x_2}(r_2)\sub B_{x_1}(r_1)$。递归的，存在$\{ x_n \}_{n=1}^{\infty}\sub X$，与$\{ r_n \}_{n=1}^{\infty}\sub \R$，使得对于任意$n\in\N^*$，成立
+	$$
+	x_{n+1}\in B_{x_n}(r_n)\setminus\overline{S}_n,\quad 
+	0<r_n<2^{1-n},\quad
+	B_{x_n}(r_n)\cap \overline{S}_n=\varnothing,\quad 
+	\overline{B}_{x_{n+1}}(r_{n+1})\sub B_{x_n}(r_n)
+	$$
+	由于对于任意$m\ge n$，成立
+	$$
+	d(x_m,x_n)<2^{1-n}
+	$$
+	因此$\{ x_n \}_{n=1}^{\infty}\sub X$为Cauchy序列，因此存在$x\in X$，使得成立$x_n\to x$。由于对于任意$n\in\N^*$，当$m>n$时，成立$x_m\in B_{x_{n+1}}(r_{n+1})$，因此$x\in \overline{B}_{x_{n+1}}(r_{n+1})\sub B_{x_{n}}(r_{n})$，进而$x\notin \overline{S}_{n}$，此时$\displaystyle x\notin\bigcup_{n=1}^{\infty}\overline{S}_n=X$，矛盾！
+\end{proof}
+
+\begin{theorem}{一致有界原理/共鸣定理}
+	对于第二纲的赋范线性空间$X$与赋范线性空间$Y$，$\{ T_\lambda:X\to Y \}_{\lambda\in\Lambda}$为一族有界线性算子，如果对于任意$x\in X$，成立$\displaystyle \sup_{\lambda\in\Lambda}\|T_\lambda(x)\|<\infty$，那么$\displaystyle \sup_{\lambda\in\Lambda}\|T_\lambda\|<\infty$。
+\end{theorem}
+
+\begin{proof}
+	记$\displaystyle S_n=\{ x\in X:\sup_{\lambda\in\Lambda}\|T_\lambda(x)\|\le n \}$，那么$\displaystyle X=\bigcup_{n=1}^{\infty}S_n$。对于任意$\lambda\in\Lambda$，$T_\lambda$为连续算子，那么$S_n$为闭集。由于$X$为第二纲的，那么存在$N\in\N^*$，使得$S_N$不为无处稠密的，即$(S_N)^\circ\ne\varnothing$，从而存在$B_\varepsilon(x_0)\sub S_N$。
+	
+	如果$\|x\|<\varepsilon$，那么$x+x_0\in B_\varepsilon(x_0)$，因此对于任意$\lambda\in\Lambda$，成立
+	$$
+	\|T_\lambda(x)\|\le \|T_\lambda(x+x_0)\|+\|T_\lambda(x_0)\|\le 2N
+	$$
+	由于对于任意$x\in X\setminus\{0\}$，成立$\displaystyle \left\| \frac{\varepsilon}{2\|x\|}x \right\|<\varepsilon$，那么对于任意$\lambda\in\Lambda$，成立
+	$$
+	\left\| T_\lambda\left( \frac{\varepsilon}{2\|x\|}x \right) \right\|\le 2N
+	\iff 
+	\|T_\lambda(x)\|\le\frac{4N}{\varepsilon}\|x\|
+	\iff 
+	\|T_\lambda\|\le\frac{4N}{\varepsilon}
+	$$
+\end{proof}
+
+\begin{theorem}{开映射定理}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为有界线性算子，且$\im T$为第二纲的，那么$T$为开映射。
+\end{theorem}
+
+\begin{proof}
+	假设$G$为$X$的开集。对于任意$y\in T(G)$，存在$x\in G$，使得成立$y=T(x)$。由于$G$为开集，那么$x$为$G$的内点，因此存在$\varepsilon>0$，使得成立$B_\varepsilon(x)\sub G$。注意到$B_\varepsilon(x)=x+B(\varepsilon)$，且$T$为线性算子，那么
+	$$
+	T(G)\supset T(B_\varepsilon(x))=T(x+B(\varepsilon))=T(x)+T(B(\varepsilon))=y+T(B(\varepsilon))
+	$$
+	由定理\ref{thm:定理3.4}，存在$\delta>0$，使得成立$B(\delta)\sub T(B(\varepsilon))$，于是
+	$$
+	T(G)\supset y+B(\delta)=B_{\delta}(y)
+	$$
+	因此$y$为$T(G)$的内点。由$y$的任意性，$T(G)$为开集，进而$T$为开映射。
+\end{proof}
+
+\begin{theorem}{闭图形定理}
+	对于Banach空间$X$与$Y$，如果$T:X\to Y$为闭线性算子，那么$T$为有界算子。
+\end{theorem}
+
+\begin{proof}
+	在Banach空间$X$上引入范数
+	\begin{align*}
+		[\![\;\cdot\;]\!]:\begin{aligned}[t]
+			X&\longrightarrow\R\\
+			x&\longmapsto \|x\|+\|T(x)\|
+		\end{aligned}
+	\end{align*}
+	依范数$[\![\;\cdot\;]\!]$取Cauchy序列$\{x_n\}_{n=1}^{\infty}\sub X$，那么对于任意$\varepsilon>0$，存在$N\in\N^*$，使得对于任意$m,n\ge N$成立
+	$$
+	[\![x_m-x_n]\!]=\|x_m-x_n\|+\|T(x_m)-T(x_n)\|\le\varepsilon
+	$$
+	因此$\{x_n\}_{n=1}^{\infty}\sub X$依范数$\|\cdot\|$构成Cauchy序列，$\{T(x_n)\}_{n=1}^{\infty}\sub Y$依范数$\|\cdot\|$构成Cauchy序列。由于$X$依范数$\|\cdot\|$构成Banach空间且$Y$依范数$\|\cdot\|$构成Banach空间，因此存在$x\in X$与$y\in Y$，使得成立
+	$$
+	\lim_{n\to\infty}x_n=x,\qquad 
+	\lim_{n\to\infty}T(x_n)=y
+	$$
+	由于$T$为闭算子，那么$T(x)=y$，因此
+	$$
+	\lim_{n\to\infty}[\![x_n-x]\!]=\lim_{n\to\infty}\|x_n-x\|+\lim_{n\to\infty}\|T(x_n)-T(x)\|=0
+	$$
+	进而$X$依范数$[\![\;\cdot\;]\!]$构成Banach空间。由于范数$[\![\;\cdot\;]\!]$强于$\|\cdot\|$，那么由推论\ref{cor:强范数推论}，范数$[\![\;\cdot\;]\!]$与$\|\cdot\|$等价。对于$z\in X$，任取$\{z_n\}_{n=1}^{\infty}\sub X$，使得满足
+	$$
+	\lim_{n\to\infty}\|z_n-z\|=0\iff \lim_{n\to\infty}[\![z_n-z]\!]=0
+	$$
+	由于
+	$$
+	\lim_{n\to\infty}\|T(z_n)-T(z)\|\le \lim_{n\to\infty}[\![z_n-z]\!]=0
+	$$
+	那么$T$在$z$处连续，由定理\ref{thm:有界线性算子的等价条件}，$T$为有界算子。
+\end{proof}
+
+\end{document}
