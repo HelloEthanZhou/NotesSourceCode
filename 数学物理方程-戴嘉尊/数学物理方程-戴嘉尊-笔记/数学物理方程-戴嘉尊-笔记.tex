@@ -1,0 +1,6360 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+%% 1.封面设置
+
+\title{数学物理方程 - 戴嘉尊 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref, cases}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\ee}[1]{\mathrm{e}^{#1}}   % e指数
+\newcommand{\dis}{\displaystyle}
+\newcommand{\Int}{\int\limits}
+\newcommand{\IInt}{\iint\limits}
+\newcommand{\IIInt}{\iiint\limits}
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+\begin{center}
+	
+	\large{感谢 \textbf{ 勇敢的 } 自己}
+	
+\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{数学物理中的典型方程}
+
+\section{典型方程}
+
+\subsection{定解问题}
+
+\begin{definition}{定解问题}
+	$$
+	\text{定解问题}=\text{泛定方程}+\text{定解条件}
+	$$
+	\begin{enumerate}
+		\item 初值问题(Cauchy问题)：
+		$$
+		\text{Cauchy问题}=\text{泛定方程}+\text{初始条件}
+		$$
+		\item 边值问题
+		$$
+		\text{边值问题}=\text{泛定方程}+\text{边界条件}
+		$$
+		\begin{itemize}
+			\item 第一边值问题(Direchlet问题)：
+			$$
+			\text{Direchlet问题}=\text{泛定方程}+\text{第一边界条件}
+			$$
+			\item 第二边值问题(Neuman问题)：
+			$$
+			\text{Neuman问题}=\text{泛定方程}+\text{第二边界条件}
+			$$
+			\item 第三边值问题(Robin问题)：
+			$$
+			\text{Robin问题}=\text{泛定方程}+\text{第三边界条件}
+			$$
+			\item 混合边值问题
+			$$
+			\text{混合边值问题}=\text{泛定方程}+\text{混合边界条件}
+			$$
+		\end{itemize}
+		\item 混合问题
+		$$
+		\text{混合问题}=\text{泛定方程}+\text{初始条件}+\text{边界条件}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\subsection{弦振动方程}
+
+\begin{definition}{弦振动方程}
+	物理问题：一根长$l$柔软均匀细弦，拉紧后让其离开平衡位置在垂直于弦线的外力作用下做微小横振动。
+	
+	取弦的平衡位置为$x$轴，垂直于平衡位置且通过弦线的一个端点的直线为$u$轴，弦振动方程$u(x,t)$为
+	$$
+	u_{tt}-a^2u_{xx}=f
+	$$
+	其中$a$与弦的材质有关，$f$与弦所受外力有关。
+	
+	\begin{enumerate}
+		\item 初始条件：
+		$$
+		u(x,0)=\varphi(x),\qquad 
+		u_t(x,0)=\psi(x)
+		$$
+		特别的，当$\varphi=\psi=0$时称之为齐次初始条件。
+		\item 边界条件：
+		\begin{itemize}
+			\item 第一边界条件(Direchlet边界条件)：
+			$$
+			u(0,t)=g_1(t),\qquad
+			u(l,t)=g_2(t)
+			$$
+			特别的，当$g_1=g_2=0$时称之为第一齐次边界条件。
+			\item 第二边界条件(Neuman边界条件)：
+			$$
+			u_x(0,t)=\mu(t),\qquad 
+			u_x(l,t)=\nu(t)
+			$$
+			特别的，当$\mu(t)=\nu(t)=0$时称之为第二齐次边界条件。
+			\item 第三边界条件(Robin边界条件)：
+			$$
+			\begin{cases}
+				Tu_x(0,t)-k_0u(0,t)=\mu(t)\\
+				Tu_x(l,t)+k_lu(l,t)=\nu(t)
+			\end{cases}
+			$$
+			其中$k_0,k_l,T>0$。特别的，当$k_0,k_l\gg T$时化为第一边界条件；当$k_0,k_l\ll T$时化为第二边界条件。
+		\end{itemize}
+	\end{enumerate}
+\end{definition}
+
+\subsection{热传导方程}
+
+\begin{definition}{热传导方程}
+	物理问题：在三维空间中，考虑均匀、各向同性的物体$\Omega$，假设其内部存在热源，且与周围介值存在热交换，研究物体内部温度的分布状态$u(x,y,z,t)$。
+	
+	热传导方程为
+	$$
+	u_t-a^2(u_{xx}+u_{yy}+u_{zz})=f
+	$$
+	其中$a$与物体材质有关，$f$与热源有关。
+	
+	\begin{enumerate}
+		\item 初始条件：
+		$$
+		u(x,y,z,0)=\varphi(x,y,z)
+		$$
+		\item 边界条件：
+		\begin{itemize}
+			\item 第一边界条件(Direchlet边界条件)：
+			$$
+			u(\partial\Omega,t)=\psi(x,y,z,t)
+			$$
+			\item 第二边界条件(Neuman边界条件)：
+			$$
+			\frac{\partial u}{\partial \bs{n}} \bigg|_{\partial\Omega}=\psi(x,y,z,t)
+			$$
+			其中$\bs{n}$表示$\partial\Omega$的外法线方向。
+			\item 第三边界条件(Robin边界条件)：
+			$$
+			\left(\frac{\partial u}{\partial \bs{n}}+hu\right)\bigg|_{\partial\Omega}=\psi(x,y,z,t)
+			$$
+			其中$\bs{n}$表示$\partial\Omega$的外法线方向。
+		\end{itemize}
+	\end{enumerate}
+\end{definition}
+
+\subsection{波动方程}
+
+\begin{definition}{Poisson方程}
+	$$
+	u_{xx}+u_{yy}+u_{zz}=f
+	$$
+\end{definition}
+
+\begin{definition}{Laplace方程}
+	$$
+	u_{xx}+u_{yy}+u_{zz}=0
+	$$
+\end{definition}
+
+\section{偏微分方程}
+
+\begin{definition}{偏微分方程 Partial Defferential Equation, PDE}
+	关于$n$元函数$f(x_1,\cdots,x_n)$的偏微分方程为
+	$$
+	\sum_{1\le n_1,\cdots,n_k\le n} a_{n_1,\cdots,n_k}^{(p_{n_1},\cdots,p_{n_k})}(x_1,\cdots,x_n)\frac{\partial^{p_{n_1}+\cdots+p_{n_k}} f}{\partial x_{n_1}^{p_{n_1}}\cdots \partial x_{n_k}^{p_{n_k}}}=b(x_1,\cdots,x_n)
+	$$
+\end{definition}
+
+\begin{theorem}
+	\begin{align*}
+		& u_{xy}=0 
+		\iff 
+		u(x,y)=f(x)+g(y)\\
+		& u_{xx}=0
+		\iff 
+		u(x,y)=a(y)x+b(y)\\
+		& u_{yy}=0
+		\iff 
+		u(x,y)=a(x)y+b(x)
+	\end{align*}
+\end{theorem}
+
+\section{二阶线性偏微分方程的化简与分类}
+
+\subsection{二元二阶线性偏微分方程的化简}
+
+\begin{definition}{二元二阶线性偏微分方程}
+	二元二阶线性偏微分方程如下
+	$$
+	au_{xx}
+	+2bu_{xy}
+	+cu_{yy}
+	+du_x
+	+eu_y
+	+fu
+	=g
+	$$
+	其中$a,b,c,d,e,f,g$为关于$x,y$的二元连续可微函数，且$a^2+b^2+c^2>0$。
+\end{definition}
+
+\begin{lemma}
+	如果$u=\varphi$为PDE
+	$$
+	au_x^2+2bu_xu_y+cu_y^2=0
+	$$
+	的解，那么$\varphi=C$为ODE
+	$$
+	ay_x^2-2by_x+c=0
+	$$
+	的通解。
+\end{lemma}
+
+\begin{definition}{特征方程}
+	称ODE
+	$$
+	ay_x^2-2by_x+c=0
+	\iff 
+	\frac{\dd y}{\dd x}=\frac{b\pm\sqrt{b^2-ac}}{a}
+	$$
+	为PDE
+	$$
+	au_{xx}
+	+2bu_{xy}
+	+cu_{yy}
+	+du_x
+	+eu_y
+	+fu
+	=g
+	$$
+	的特征方程。
+\end{definition}
+
+\begin{theorem}{二元二阶线性偏微分方程的分类与化简}
+	对于二元$2$阶线性偏微分方程如下
+	$$
+	au_{xx}
+	+2bu_{xy}
+	+cu_{yy}
+	+du_x
+	+eu_y
+	+fu
+	=g
+	$$
+	其中$a,b,c,d,e,f,g$为关于$x,y$的二元连续可微函数，且$a^2+b^2+c^2>0$，其分类如下。
+	\begin{enumerate}
+		\item 双曲型方程$b^2>ac$：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		存在两个实特征解
+		$$
+		\varphi(x,y)=C_1,\qquad
+		\psi(x,y)=C_2
+		$$
+		作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为{\bf{双曲型方程的第一标准型}}
+		$$
+		u_{\xi\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+		进一步，作变量代换
+		$$
+		\alpha=\xi+\eta,\qquad 
+		\beta=\xi-\eta
+		$$
+		那么原方程化为{\bf{双曲型方程的第二标准型}}
+		$$
+		u_{\alpha\alpha}-u_{\beta\beta}=Au_\alpha+Bu_\beta+Cu+D
+		$$
+		\item 抛物型方程$b^2=ac$：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		仅存在一个实特征解
+		$$
+		\varphi(x,y)=C
+		$$
+		任取与$\varphi$线性无关的函数$\psi$，作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为{\bf{抛物型方程的标准型}}
+		$$
+		u_{\eta\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+		进一步，作变量代换
+		$$
+		v=u\exp\left(-\frac{1}{2}\int B(\eta,\tau)\dd \tau\right)
+		$$
+		那么原方程化为{\bf{抛物型方程的标准型}}
+		$$
+		v_{\eta\eta}=Au_\xi+Cu+D
+		$$
+		\item 椭圆型方程$b^2<ac$：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		仅存在复特征解
+		$$
+		\varphi(x,y)+i\psi(x,y)=C_1,\qquad
+		\varphi(x,y)-i\psi(x,y)=C_2
+		$$
+		作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为{\bf{椭圆型方程的标准型}}
+		$$
+		u_{\xi\xi}+u_{\eta\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{二元一阶线性偏微分方程的特征线解法}
+	对于二元一阶线性偏微分方程
+	$$
+	au_x+bu_y+cu+d=0
+	$$
+	其中$a,b,c,d$为关于$x,y$的二元连续可微函数，且$a^2+b^2>0$，求解其特征方程
+	$$
+	a\dd y-b\dd x=0
+	$$
+	为
+	$$
+	y=y(x,C)\iff C=\varphi(x,y)
+	$$
+	从而得到ODE
+	$$
+	\frac{\dd u}{\dd x}=
+	\frac{\partial u}{\partial x}+\frac{\partial u}{\partial y}\frac{\dd y}{\dd x}
+	$$
+	解得$u=u(x,C)$，进而原PDE的解为
+	$$
+	u=u(x,\varphi(x,y))
+	$$
+\end{theorem}
+
+\subsection{多元二阶线性偏微分方程的化简}
+
+\begin{definition}{多元二阶线性偏微分方程}
+	多元二阶线性偏微分方程如下
+	$$
+	\sum_{i,j=1}^{n}a_{ij}\frac{\partial^2 u}{\partial x_i \partial x_j}+\sum_{k=1}^{n}b_k\frac{\partial u}{\partial x_k}+cu+d=0
+	$$
+	其中$a_{i,j},b_{k},c,d$为关于$x,y$的二元连续可微函数，且$\displaystyle\sum_{i,j=1}^{n}a_{ij}^2>0$。
+\end{definition}
+
+
+\begin{theorem}{多元二阶线性偏微分方程的分类}
+	对于多元二阶线性偏微分方程
+	$$
+	\sum_{i,j=1}^{n}a_{ij}\frac{\partial^2 u}{\partial x_i \partial x_j}+\sum_{k=1}^{n}b_k\frac{\partial u}{\partial x_k}+cu+d=0
+	$$
+	其中$a_{i,j},b_{k},c,d$为关于$x,y$的二元连续可微函数，且$a_{ij}=a_{ji}$，同时$\displaystyle\sum_{i,j=1}^{n}a_{ij}^2>0$，考虑其二次型
+	$$
+	Q(\bs{\xi})
+	=Q(\xi_1,\cdots,\xi_n)^T
+	=\sum_{i,j=1}^{n}a_{ij}\xi_i\xi_j
+	=\begin{pmatrix}
+		\xi_1 & \cdots & \xi_n
+	\end{pmatrix}
+	\begin{pmatrix}
+		a_{11} & \cdots & a_{1n}\\
+		\vdots & \ddots & \vdots\\
+		a_{n1} & \cdots & a_{nn}
+	\end{pmatrix}
+	\begin{pmatrix}
+		\xi_1 \\ \vdots \\ \xi_n
+	\end{pmatrix}
+	=\bs{\xi}^T\bs{A}\bs{\xi}
+	$$
+	\begin{enumerate}
+		\item 如果$\bs{A}$的特征根同号，那么该方程为椭圆型。
+		\item 如果$\bs{A}$存在$n-1$个同号的特征根，$1$个异号的特征根，那么该方程为双曲型。
+		\item 如果$\bs{A}$存在且存在唯一零特征根，且其余特征根同号，那么该方程为抛物型。
+	\end{enumerate}
+\end{theorem}
+
+\chapter{分离变量法}
+
+\section{Fourier级数}
+
+\subsection{三角函数的正交性}
+
+\begin{theorem}{三角函数的正交性}
+	\begin{align*}
+		& \int\cos nx\dd x=\begin{cases}
+			x,\qquad & n=0\\
+			\dis\frac{\sin nx}{n},\qquad & n\ne 0
+		\end{cases}\\
+		& \int\sin nx\dd x=\begin{cases}
+			0,\qquad & n=0\\
+			\dis-\frac{\cos nx}{n},\qquad & n\ne 0
+		\end{cases}\\
+		& \int\cos mx\cos nx \dd x=\begin{cases}
+			x,\qquad & m=n=0\\
+			\dis\frac{x}{2}+\frac{\sin 2nx}{4n},\qquad & |m|=|n|\ne 0\\
+			\dis\frac{\sin(m-n)x}{2(m-n)}+\frac{\sin(m+n)x}{2(m+n)},\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int\sin mx\sin nx \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			\dis\frac{x}{2}-\frac{\sin 2nx}{4n},\qquad & m=n\ne 0\\
+			\dis-\frac{x}{2}+\frac{\sin 2nx}{4n},\qquad & m=-n\ne 0\\
+			\dis\frac{\sin(m-n)x}{2(m-n)}-\frac{\sin(m+n)x}{2(m+n)},\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int\cos mx\sin nx \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			\dis-\frac{\cos^2nx}{2n},\qquad & |m|=|n|\ne 0\\
+			\dis\frac{\cos(m-n)x}{2(m-n)}-\frac{\cos(m+n)x}{2(m+n)},\qquad & |m|\ne |n|
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\subsubsection{以区间长度为周期的三角函数的正交性}
+
+\begin{theorem}{$[-\pi,\pi]$上且以$2\pi$为周期的三角函数的正交性}
+	\begin{align*}
+		& \int_{-\pi}^{\pi}\cos nx\dd x=\begin{cases}
+			2\pi,\qquad & n=0\\
+			0,\qquad & n\ne 0
+		\end{cases}\\
+		& \int_{-\pi}^{\pi}\sin nx\dd x=0,\qquad n\in\Z\\
+		& \int_{-\pi}^{\pi}\cos mx\cos nx \dd x=\begin{cases}
+			2\pi,\qquad & m=n=0\\
+			\pi,\qquad & |m|=|n|\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{-\pi}^{\pi}\sin mx\sin nx \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			\pi,\qquad & m=n\ne 0\\
+			-\pi,\qquad & m=-n\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{-\pi}^{\pi}\cos mx\sin nx\dd x=0,\qquad m,n\in\Z
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}{$[0,a]$上且以$a$为周期的三角函数的正交性}
+	\begin{align*}
+		& \int_{0}^{a}\cos \frac{2n\pi}{a}x\dd x=\begin{cases}
+			a,\qquad & n=0\\
+			0,\qquad & n\ne 0
+		\end{cases}\\
+		& \int_{0}^{a}\sin \frac{2n\pi}{a}x\dd x=0,\qquad n\in\Z\\
+		& \int_{0}^{a}\cos \frac{2m\pi}{a}x\cos \frac{2n\pi}{a}x \dd x=\begin{cases}
+			a,\qquad & m=n=0\\
+			a/2,\qquad & |m|=|n|\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{a}\sin \frac{2m\pi}{a}x\sin \frac{2n\pi}{a}x \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			a/2,\qquad & m=n\ne 0\\
+			-a/2,\qquad & m=-n\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{a}\cos \frac{2m\pi}{a}x\sin \frac{2n\pi}{a}x\dd x=0,\qquad m,n\in\Z
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}{$[a,b]$上且以$b-a$为周期的三角函数的正交性}
+	\begin{align*}
+		& \int_{a}^{b}\cos \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\dd x=\begin{cases}
+			b-a,\qquad & n=0\\
+			0,\qquad & n\ne 0
+		\end{cases}\\
+		& \int_{a}^{b}\sin \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\dd x=0,\qquad n\in\Z\\
+		& \int_{a}^{b}\cos \left(\frac{2m\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\cos \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right) \dd x=\begin{cases}
+			b-a,\qquad & m=n=0\\
+			(b-a)/2,\qquad & |m|=|n|\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{a}^{b}\sin \left(\frac{2m\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\sin \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right) \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			(b-a)/2,\qquad & m=n\ne 0\\
+			-(b-a)/2,\qquad & m=-n\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{a}^{b}\cos \left(\frac{2m\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\sin \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right) \dd x=0,\qquad m,n\in\Z
+	\end{align*}
+\end{theorem}
+
+\subsubsection{以两倍区间长度为周期的三角函数的正交性}
+
+\begin{theorem}{$[0,\pi]$上且以$2\pi$为周期的三角函数的正交性}
+	\begin{align*}
+		& \int_{0}^{\pi}\cos nx\dd x=\begin{cases}
+			\pi,\qquad & n=0\\
+			0,\qquad & n\ne 0
+		\end{cases}\\
+		& \int_{0}^{\pi}\sin nx\dd x=\begin{cases}
+			2/n,\qquad & 2\nmid n\\
+			0,\qquad & 2\mid n
+		\end{cases}\\
+		& \int_{0}^{\pi}\cos mx\cos nx \dd x=\begin{cases}
+			\pi,\qquad & m=n=0\\
+			\pi/2,\qquad & |m|=|n|\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{\pi}\sin mx\sin nx \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			\pi/2,\qquad & m=n\ne 0\\
+			-\pi/2,\qquad & m=-n\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{\pi}\cos mx\sin nx\dd x=\begin{cases}
+			\dis-\frac{2n}{m^2-n^2},\qquad & 2\nmid m-n\\
+			0,\qquad & 2\mid m-n
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\begin{theorem}{$[0,a]$上且以$2a$为周期的三角函数的正交性}
+	\begin{align*}
+		& \int_{0}^{a}\cos \frac{n\pi}{a}x\dd x=\begin{cases}
+			a,\qquad & n=0\\
+			0,\qquad & n\ne 0
+		\end{cases}\\
+		& \int_{0}^{a}\sin \frac{n\pi}{a}x\dd x=\begin{cases}
+			2a/(n\pi),\qquad & 2\nmid n\\
+			0,\qquad & 2\mid n
+		\end{cases}\\
+		& \int_{0}^{a}\cos \frac{m\pi}{a}x\cos \frac{n\pi}{a}x \dd x=\begin{cases}
+			a,\qquad & m=n=0\\
+			a/2,\qquad & |m|=|n|\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{a}\sin \frac{m\pi}{a}x\sin \frac{n\pi}{a}x \dd x=\begin{cases}
+			0,\qquad & m=n=0\\
+			a/2,\qquad & m=n\ne 0\\
+			-a/2,\qquad & m=-n\ne 0\\
+			0,\qquad & |m|\ne |n|
+		\end{cases}\\
+		& \int_{0}^{a}\cos \frac{m\pi}{a}x\sin \frac{n\pi}{a}x\dd x=\begin{cases}
+			\dis-\frac{2na}{(m^2-n^2)\pi},\qquad & 2\nmid m-n\\
+			0,\qquad & 2\mid m-n
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\subsection{Fourier级数}
+
+\subsubsection{以区间长度为周期的Fourier级数}
+
+\begin{theorem}{$[-\pi,\pi]$上且以$2\pi$为周期的Fourier级数}{Fourier级数}
+	$[-\pi,\pi]$上的绝对可积函数$f(x)$存在Fourier级数%
+	$$
+	f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}(a_n\cos nx+b_n\sin nx)
+	$$
+	其中%
+	$$
+	a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\cos n x\dd x,\qquad 
+	b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin n x\dd x
+	$$
+\end{theorem}
+
+\begin{theorem}{$[-T,T]$上且以$2T$为周期的Fourier级数}{一般周期的Fourier级数}
+	$[-T,T]$上的绝对可积函数$f(x)$存在Fourier级数%
+	$$
+	f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}\left(a_n\cos \frac{n\pi}{T}x+b_n\sin \frac{n\pi}{T}x\right)
+	$$
+	其中%
+	$$
+	a_n=\frac{1}{T}\int_{-T}^{T}f(x)\cos \frac{n\pi}{T} x\dd x,\qquad 
+	b_n=\frac{1}{T}\int_{-T}^{T}f(x)\sin \frac{n\pi}{T} x\dd x
+	$$
+\end{theorem}
+
+\begin{theorem}{$[0,a]$上且以$a$为周期的Fourier级数}{常用Fourier级数}
+	$[0,a]$上的绝对可积函数$f(x)$存在Fourier级数
+	$$
+	f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}
+	\left(
+	a_n\cos\frac{2n\pi}{a}x
+	+b_n\sin\frac{2n\pi}{a}x
+	\right)
+	$$
+	其中%
+	$$
+	a_n=\frac{2}{a}\int_{0}^{a}f(x)\cos\frac{2n\pi}{a}x\dd x,\qquad
+	b_n=\frac{2}{a}\int_{0}^{a}f(x)\sin\frac{2n\pi}{a}x\dd x
+	$$
+\end{theorem}
+
+\begin{theorem}{$[a,b]$上且以$b-a$为周期的Fourier级数}{一般Fourier级数}
+	$[a,b]$上的绝对可积函数$f(x)$存在Fourier级数%
+	$$
+	f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}
+	\left(
+	a_n\cos \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)
+	+b_n\sin \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)
+	\right)
+	$$
+	其中
+	\begin{align*}
+		& a_n=\frac{2}{b-a}\int_{a}^{b}f(x)\cos \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\dd x\\
+		& b_n=\frac{2}{b-a}\int_{a}^{b}f(x)\sin \left(\frac{2n\pi}{b-a}\left(x-\frac{a+b}{2}\right)\right)\dd x
+	\end{align*}
+\end{theorem}
+
+\subsubsection{以两倍区间长度为周期的Fourier级数}
+
+\begin{theorem}{$[0,\pi]$上且以$2\pi$为周期的Fourier级数}
+	\begin{enumerate}
+		\item $[0,\pi]$上的绝对可积函数$f(x)$存在Fourier级数
+		$$
+		f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}a_n\cos nx
+		$$
+		其中%
+		$$
+		a_n=\frac{2}{\pi}\int_{0}^{\pi}f(x)\cos n x\dd x
+		$$
+		\item $[0,\pi]$上的绝对可积函数$f(x)$存在Fourier级数
+		$$
+		f(x)=\sum_{n=1}^{\infty}b_n\sin nx
+		$$
+		其中%
+		$$
+		b_n=\frac{2}{\pi}\int_{0}^{\pi}f(x)\sin n x\dd x
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{$[0,a]$上且以$2a$为周期的Fourier级数}{[0,a]的Fourier级数}
+	\begin{enumerate}
+		\item $[0,a]$上的绝对可积函数$f(x)$存在Fourier级数
+		$$
+		f(x)=\frac{a_0}{2}+\sum_{n=1}^{\infty}a_n\cos \frac{n\pi}{a}x
+		$$
+		其中%
+		$$
+		a_n=\frac{2}{a}\int_{0}^{a}f(x)\cos \frac{n\pi}{a} x\dd x
+		$$
+		\item $[0,a]$上的绝对可积函数$f(x)$存在Fourier级数
+		$$
+		f(x)=\sum_{n=1}^{\infty}b_n\sin \frac{n\pi}{a}x
+		$$
+		其中%
+		$$
+		b_n=\frac{2}{a}\int_{0}^{a}f(x)\sin \frac{n\pi}{a} x\dd x
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\section{Sturm-Liouville问题}
+
+\begin{definition}{Sturm-Liouville方程}
+	Sturm-Liouville方程为
+	$$
+	(p(x)y'(x))'-q(x)y(x)+\lambda r(x)y(x)=0,\qquad a<x<b
+	$$
+	其中$\lambda$为未知参数，$p(x)>0$为一阶可微函数，$q(x)\ge 0$与$r(x)>0$为连续函数。
+\end{definition}
+
+\begin{definition}{Sturm-Liouville问题}
+	称Sturm-Liouville方程
+	$$
+	(p(x)y'(x))'-q(x)y(x)+\lambda r(x)y(x)=0,\qquad a<x<b
+	$$
+	与齐次边界条件构成的两点边值问题为Sturm-Liouville问题。
+	称使得问题存在非零解的参数$\lambda$为{\bf 特征值}，相应的非零解为{\bf 特征函数}。
+\end{definition}
+
+\begin{theorem}{Sturm-Liouville问题的解}
+	Sturm-Liouville问题的特征值存在且存在可数，同时为非负实数；相应的特征函数系为正交函数系。
+\end{theorem}
+
+\begin{theorem}{特殊Sturm-Liouville问题的解}{特殊Sturm-Liouville问题的解}
+	Sturm-Liouville问题%
+	\begin{equation}
+		X''(x)+\lambda X(x)=0
+		\label{二阶线性微分方程}
+		\tag{*}
+	\end{equation}
+	\begin{enumerate}
+		\item 若$X(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X'(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		\item 若$X'(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 若$\lambda>0$，则线性微分方程(\ref{二阶线性微分方程})的特征方程为%
+		$$
+		t^2+\lambda=0
+		$$
+		其解为%
+		$$
+		t_1=i\sqrt{\lambda},\qquad
+		t_2=-i\sqrt{\lambda}
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程})的通解为%
+		$$
+		X(x)=A\cos(\sqrt{\lambda}x)+B\sin(\sqrt{\lambda}x),\qquad
+		X'(x)=-A\sqrt{\lambda}\sin(\sqrt{\lambda}x)+B\sqrt{\lambda}\cos(\sqrt{\lambda}x)
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$A=0$，因此%
+			$$
+			X(x)=B\sin(\sqrt{\lambda}x),\qquad
+			X'(x)=B\sqrt{\lambda}\cos(\sqrt{\lambda}x)
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$B\sin(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+				X_n(x)=B_n\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+				$$
+				\item 若$X'(l)=0$，则$B\sqrt{\lambda}\cos(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+				X_n(x)=B_n\sin\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$B=0$，因此%
+			$$
+			X(x)=A\cos(\sqrt{\lambda}x),\qquad
+			X'(x)=-A\sqrt{\lambda}\sin(\sqrt{\lambda}x)
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\cos(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+				X_n(x)=A_n\cos\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+				$$
+				\item 若$X'(l)=0$，则$-A\sqrt{\lambda}\sin(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+				X_n(x)=A_n\cos\frac{n\pi}{l}x,\qquad n\in\N^*
+				$$
+			\end{enumerate}
+		\end{enumerate}
+		\item 若$\lambda=0$，则线性微分方程(\ref{二阶线性微分方程})的特征方程为%
+		$$
+		t^2=0
+		$$
+		其解为%
+		$$
+		t_1=t_2=0
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程})的通解为%
+		$$
+		X(x)=Ax+B,\qquad
+		X'(x)=A
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$B=0$，因此
+			$$
+			X(x)=Ax,\qquad
+			X'(x)=A
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$Al=0$，因此%
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$A=0$，因此
+			$$
+			X(x)=B,\qquad
+			X'(x)=0
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$B=0$，因此%
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$0=0$，因此
+				$$
+				X(x)=B
+				$$
+			\end{enumerate}
+		\end{enumerate}
+		\item 若$\lambda<0$，则线性微分方程(\ref{二阶线性微分方程})的特征方程为%
+		$$
+		t^2+\lambda=0
+		$$
+		其解为%
+		$$
+		t_1=\sqrt{-\lambda},\qquad
+		t_2=-\sqrt{-\lambda}
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程})的通解为%
+		$$
+		X(x)=A\ee{\sqrt{-\lambda}x}+B\ee{-\sqrt{-\lambda}x},\qquad
+		X'(x)=A\sqrt{-\lambda}\ee{\sqrt{-\lambda}x}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}x}
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$A+B=0$。
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A+B=0\\
+					A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A+B=0\\
+					A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$A\sqrt{-\lambda}-B\sqrt{-\lambda}=0$。
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A\sqrt{-\lambda}-B\sqrt{-\lambda}=0\\
+					A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A\sqrt{-\lambda}-B\sqrt{-\lambda}=0\\
+					A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+\end{proof}
+
+\section{分离变量法求解弦振动方程与热传导方程}
+
+\subsection{弦振动方程}
+
+\begin{theorem}{弦振动方程}
+	对于弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		{\scriptsize{
+				$$
+				u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+				$$
+		}}
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T''(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T''(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T''(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X(0)=X(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		代入原方程
+		$$
+		T''_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N^*
+		$$
+		通解为
+		$$
+		T_n(t)=A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x,\qquad 
+		n\in\N^*
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\sum_{n=1}^{\infty}A_n\sin\frac{n\pi}{l}x,\qquad 
+		\psi(x)=\sum_{n=1}^{\infty}B_n\frac{an\pi}{l}\sin\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		A_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		B_n=\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T''(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T''(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T''(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X'(0)=X'(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		代入原方程
+		$$
+		T''_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N
+		$$
+		通解为
+		$$
+		T_n(t)=A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t,\qquad 
+		n\in\N
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x,\qquad 
+		n\in\N
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\frac{A_0}{2}+\sum_{n=1}^{\infty}\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\frac{A_0}{2}+\sum_{n=1}^{\infty}A_n\cos\frac{n\pi}{l}x,\qquad 
+		\psi(x)=\sum_{n=1}^{\infty}B_n\frac{an\pi}{l}\cos\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		A_n=\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		B_n=\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N
+		$$
+		从而原微分方程的形式解为
+		{\scriptsize{
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+		$$
+		}}
+	\end{enumerate}
+\end{proof}
+
+\subsection{热传导方程}
+
+\begin{theorem}{热传导方程}
+	对于热传导方程
+	$$
+	\begin{cases}
+		u_{t}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T'(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T'(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T'(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X(0)=X(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		代入原方程
+		$$
+		T'_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N^*
+		$$
+		通解为
+		$$
+		T_n(t)=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t},\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x,\qquad 
+		n\in\N^*
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\sum_{n=1}^{\infty}C_n\sin\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		C_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T'(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T'(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T'(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X'(0)=X'(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		代入原方程
+		$$
+		T'_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N
+		$$
+		通解为
+		$$
+		T_n(t)=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t},\qquad n\in\N
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x,\qquad 
+		n\in\N
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\cos\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		C_n=\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad n\in\N
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+	\end{enumerate}
+\end{proof}
+
+\section{弦振动方程}
+
+\subsection{齐次边界条件齐次方程}
+
+\begin{theorem}{齐次边界条件齐次弦振动方程}{双曲型方程定解问题的形式解}
+	齐次边界条件齐次弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	$$
+\end{theorem}
+
+\begin{proof}
+	令$u(x,t)=T(t)X(x)$，代入方程
+	$$
+	T''(t)X(x)=a^2T(t)X''(x)
+	$$
+	于是存在$\lambda\in\R$，使得成立
+	$$
+	\frac{T''(t)}{a^2T(t)}
+	=\frac{X''(x)}{X(x)}
+	=-\lambda
+	$$
+	即%
+	$$
+	\begin{cases}
+		T''(t)+a^2\lambda T(t)=0\\
+		X''(x)+\lambda X(x)=0
+	\end{cases}
+	$$
+	考虑到边界条件
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		X(0)=X(l)=0
+	\end{cases}
+	$$
+	由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+	$$
+	\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+	X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+	$$
+	代入原方程
+	$$
+	T''_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N^*
+	$$
+	通解为
+	$$
+	T_n(t)=A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t,\qquad 
+	n\in\N^*
+	$$
+	从而原微分方程的解为
+	$$
+	u_n(x,t)
+	=\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x,\qquad 
+	n\in\N^*
+	$$
+	由迭加原理
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	$$
+	考虑到初始条件
+	$$
+	\varphi(x)=\sum_{n=1}^{\infty}A_n\sin\frac{n\pi}{l}x,\qquad 
+	\psi(x)=\sum_{n=1}^{\infty}B_n\frac{an\pi}{l}\sin\frac{n\pi}{l}x
+	$$
+	由Fourier级数\ref{thm:常用Fourier级数}
+	$$
+	A_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi,\qquad 
+	B_n=\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi
+	$$
+	从而原微分方程的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	$$
+\end{proof}
+
+\subsection{齐次边界条件方程}
+
+\subsubsection{齐次化原理}
+
+\begin{theorem}{齐次化原理/Duhamel原理}{齐次化原理}
+	如果$w(x,t;\tau)$是混合问题
+	$$
+	\begin{cases}
+		w_{tt}=a^2w_{xx},\qquad & 0<x<l,t> \tau\\
+		w(x,\tau;\tau)=0,\qquad & 0\le x \le l\\
+		w_t(x,\tau;\tau)=f(x,\tau),\qquad & 0\le x \le l\\
+		w(0,t;\tau)=w(l,t;\tau)=0,\qquad & t\ge \tau
+	\end{cases}
+	$$
+	的解，其中$t\ge \tau\ge 0$为参数，且$f(0,\tau)=f(l,\tau)=0$，那么函数
+	$$
+	u(x,t)=\int_{0}^{t}w(x,t;\tau)\dd \tau
+	$$
+	是混合问题
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u(x,0)=0,\qquad & 0\le x \le l\\
+		u_t(x,0)=0,\qquad & 0\le x \le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的解。
+\end{theorem}
+
+\begin{proof}
+	由于
+	$$
+	u(x,t)=\int_{0}^{t}w(x,t;\tau)\dd \tau
+	$$
+	那么
+	\begin{align*}
+		& u_x(x,t)=\int_{0}^{t}w_x(x,t;\tau)\dd \tau\\
+		& u_{xx}(x,t)=\int_{0}^{t}w_{xx}(x,t;\tau)\dd \tau\\
+		& u_t(x,t)=w(x,t;t)+\int_{0}^{t}w_t(x,t;\tau)\dd \tau=\int_{0}^{t}w_t(x,t;\tau)\dd \tau\\
+		& u_{tt}(x,t)=w_t(x,t;t)+\int_{0}^{t}w_{tt}(x,t;\tau)\dd \tau=f(x,t)+\int_{0}^{t}w_{tt}(x,t;\tau)\dd \tau
+	\end{align*}
+	从而%
+	$$
+	u_{tt}(x,t)=f(x,t)+\int_{0}^{t}w_{tt}(x,t;\tau)\dd \tau
+	=f(x,t)+a^2\int_{0}^{t}w_{xx}(x,t;\tau)\dd \tau
+	=f(x,t)+a^2u_{xx}(x,t)
+	$$
+	且
+	\begin{align*}
+		& u(x,0)=\int_0^0 w(x,t;\tau)\dd \tau=0\\
+		& u_t(x,0)=\int_{0}^{t}w_t(x,t;\tau)\dd \tau=0\\
+		& u(0,t)=\int_{0}^{t}w(0,t;\tau)\dd \tau=0\\
+		& u(l,t)=\int_{0}^{t}w(l,t;\tau)\dd \tau=0
+	\end{align*}
+	进而那么函数
+	$$
+	u(x,t)=\int_{0}^{t}w(x,t;\tau)\dd \tau
+	$$
+	是混合问题
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u(x,0)=0,\qquad & 0\le x \le l\\
+		u_t(x,0)=0,\qquad & 0\le x \le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的解。
+\end{proof}
+
+\begin{theorem}{齐次边界条件弦振动方程}{齐次边界条件有界弦强迫振动方程}
+	齐次边界条件弦振动方程
+	\begin{align*}\label{齐次边界条件有界弦强迫振动方程}
+		\begin{cases}
+			u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+			u(x,0)=\varphi(x),\qquad & 0\le x \le l\\
+			u_t(x,0)=\psi(x),\qquad & 0\le x \le l\\
+			u(0,t)=u(l,t)=0,\qquad & t\ge 0
+		\end{cases}\tag{*}
+	\end{align*}
+	的形式解为
+	\begin{align*}
+		u(x,t)
+		= & \sum_{n=1}^{\infty}\left(\int_{0}^{t}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\dd \tau\right)\sin\frac{n\pi}{l}x\\
+		& + \sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	考虑辅助问题
+	\begin{align*}\label{齐次化原理辅助方程}
+		\begin{cases}
+			w_{tt}=a^2w_{xx},\qquad & 0<x<l,t> \tau\\
+			w(x,\tau;\tau)=0,\qquad & 0\le x \le l\\
+			w_t(x,\tau;\tau)=f(x,\tau),\qquad & 0\le x \le l\\
+			w(0,t;\tau)=w(l,t;\tau)=0,\qquad & t\ge \tau
+		\end{cases}\tag{**}
+	\end{align*}
+	其中$t\ge \tau\ge 0$为参数。令$s=t-\tau$，那么上述问题化为
+	\begin{align*}\label{齐次化原理辅助方程的转化}
+		\begin{cases}
+			w_{ss}=a^2w_{xx},\qquad & 0<x<l,s>0\\
+			w(x,0)=0,\qquad & 0\le x \le l\\
+			w_s(x,0)=f(x,\tau),\qquad & 0\le x \le l\\
+			w(0,s)=w(l,s)=0,\qquad & s\ge 0
+		\end{cases}\tag{***}
+	\end{align*}
+	由定理\ref{thm:双曲型方程定解问题的形式解}，问题(\ref{齐次化原理辅助方程的转化})的形式解为
+	$$
+	w(x,s)=\sum_{n=1}^{\infty}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}s\sin\frac{n\pi}{l}x
+	$$
+	从而问题(\ref{齐次化原理辅助方程})的形式解为
+	$$
+	w(x,t;\tau)=\sum_{n=1}^{\infty}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\sin\frac{n\pi}{l}x
+	$$
+	由齐次化原理\ref{thm:齐次化原理}，问题
+	\begin{align*}
+		\begin{cases}
+			u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+			u(x,0)=0,\qquad & 0\le x \le l\\
+			u_t(x,0)=0,\qquad & 0\le x \le l\\
+			u(0,t)=u(l,t)=0,\qquad & t\ge 0
+		\end{cases}
+	\end{align*}
+	的形式解为
+	$$
+	u(x,t)=\int_{0}^{t}\sum_{n=1}^{\infty}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\sin\frac{n\pi}{l}x\dd \tau
+	$$
+	进而由定理\ref{thm:双曲型方程定解问题的形式解}与迭加原理，原问题(\ref{齐次边界条件有界弦强迫振动方程})的形式解为
+	\begin{align*}
+		u(x,t)
+		= & \int_{0}^{t}\sum_{n=1}^{\infty}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\sin\frac{n\pi}{l}x\dd \tau\\
+		& + \sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x\\
+		= & \sum_{n=1}^{\infty}\left(\int_{0}^{t}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\dd \tau\right)\sin\frac{n\pi}{l}x\\
+		& + \sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	\end{align*}
+\end{proof}
+
+\subsubsection{特征函数展开法}
+
+\begin{theorem}{齐次边界条件弦振动方程}{齐次边界条件有界弦强迫振动非齐次方程}
+	齐次边界条件弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x \le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x \le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	\begin{align*}
+		u(x,t)
+		= & \sum_{n=1}^{\infty}\left(\int_{0}^{t}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\dd \tau\right)\sin\frac{n\pi}{l}x\\
+		& + \sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	假设定解问题的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}u_n(t)\sin\frac{n\pi}{l}x
+	$$
+	记
+	\begin{align*}
+		& f(x,t)=\sum_{n=1}^{\infty}f_n(t)\sin\frac{n\pi}{l}x\\
+		& \varphi(x)=\sum_{n=1}^{\infty}\varphi_n\sin\frac{n\pi}{l}x\\
+		& \psi(x)=\sum_{n=1}^{\infty}\psi_n\sin\frac{n\pi}{l}x
+	\end{align*}
+	其中
+	\begin{align*}
+		& f_n(t)=\frac{2}{l}\int_0^lf(\xi,t)\sin\frac{n\pi \xi}{l}\dd \xi\\
+		& \varphi_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\\
+		& \psi_n=\frac{2}{l}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi
+	\end{align*}
+	代入方程$u_{tt}=a^2u_{xx}+f(x,t)$可得
+	$$
+	\sum_{n=1}^{\infty}u_n''(t)\sin\frac{n\pi}{l}x
+	=-\sum_{n=1}^{\infty}\left(\frac{an\pi}{l}\right)^2u_n(t)\sin\frac{n\pi}{l}x+\sum_{n=1}^{\infty}f_n(t)\sin\frac{n\pi}{l}x
+	$$
+	即
+	$$
+	\sum_{n=1}^{\infty}\left( u_n''(t)+\left(\frac{an\pi}{l}\right)^2u_n(t)-f_n(t) \right)\sin\frac{n\pi}{l}x=0
+	$$
+	于是
+	$$
+	u_n''(t)+\left(\frac{an\pi}{l}\right)^2u_n(t)-f_n(t)=0,\qquad 
+	n\in\N^*
+	$$
+	由初始条件
+	\begin{align*}
+		& \varphi(x)=u(x,0)=\sum_{n=1}^{\infty}u_n(0)\sin\frac{n\pi}{l}x\\
+		& \psi(x)=u_t(x,0)=\sum_{n=1}^{\infty}u_n'(0)\sin\frac{n\pi}{l}x
+	\end{align*}
+	从而
+	$$
+	u_n(0)=\varphi_n,\qquad 
+	u_n'(0)=\psi_n,\qquad n\in\N^*
+	$$
+	由常数变易法解得
+	$$
+	u_n(t)=\varphi_n\cos\frac{an\pi}{l}t+\frac{l}{an\pi}\psi_n\sin\frac{an\pi}{l}t+\frac{l}{an\pi}\int_{0}^{t}f_n(\tau)\sin\frac{an\pi}{l}(t-\tau)\dd \tau,\qquad n\in\N^*
+	$$
+	进而原定解问题的形式解为
+	\begin{align*}
+		u(x,t)
+		= & \sum_{n=1}^{\infty}\left(\int_{0}^{t}\left(\frac{2}{an\pi}\int_0^lf(\xi,\tau)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}(t-\tau)\dd \tau\right)\sin\frac{n\pi}{l}x\\
+		& + \sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi \xi}{l}\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	\end{align*}
+\end{proof}
+
+\subsection{一般方程}
+
+\begin{theorem}{弦振动方程}
+	求解弦振动方程
+	\begin{align*}
+		\begin{cases}
+			u_{tt}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+			u(x,0)=\varphi(x),\qquad & 0\le x \le l\\
+			u_t(x,0)=\psi(x),\qquad & 0\le x \le l\\
+			u(0,t)=\mu(t),\qquad & t\ge 0\\
+			u(l,t)=\nu(t),\qquad & t\ge 0
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	令
+	$$
+	u(x,t)=v(x,t)+w(x,t)
+	$$
+	其中
+	$$
+	w(0,t)=\mu(t),\qquad 
+	w(l,t)=\nu(t)
+	$$
+	不妨令
+	$$
+	w(x,t)=\frac{\nu(t)-\mu(t)}{l}x+\mu(t)
+	$$
+	因此$v(x,t)$满足的定解问题为
+	$$
+	\begin{cases}
+		v_{tt}=a^2v_{xx}-\frac{l-x}{l}\mu''(t)-\frac{x}{l}\nu''(t)+f(x,t),\qquad & 0<x<l,t>0\\
+		v(x,0)=\varphi(x)-\frac{l-x}{l}\mu(0)-\frac{x}{l}\nu(0),\qquad & 0\le x \le l\\
+		v_t(x,0)=\psi(x)-\frac{l-x}{l}\mu'(0)-\frac{x}{l}\nu'(0),\qquad & 0\le x \le l\\
+		v(0,t)=v(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{proof}
+
+\begin{table}[H]
+	\centering
+	\caption{常见非齐次边界条件齐次化所使用辅助函数}
+	\begin{tabular}{cc}
+		\toprule
+		非齐次边界条件 & 齐次化所使用辅助函数 \\
+		\midrule
+		$u(0,t)=\mu(t),u(l,t)=\nu(t)$ & $w(x,t)=\frac{\nu(t)-\mu(t)}{l}x+\mu(t)$ \\
+		$u(0,t)=\mu(t),u_x(l,t)=\nu(t)$ & $w(x,t)=\nu(t)x+\mu(t)$ \\
+		$u_x(0,t)=\mu(t),u(l,t)=\nu(t)$ & $w(x,t)=\mu(t)(x-l)+\nu(t)$ \\
+		$u_x(0,t)=\mu(t),u_x(l,t)=\nu(t)$ & $w(x,t)=\frac{\nu(t)-\mu(t)}{2l}x^2+\mu(t)x$ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{theorem}
+	求解弦振动方程
+	\begin{align*}
+		\begin{cases}
+			u_{tt}=a^2u_{xx}+f(x),\qquad & 0<x<l,t>0\\
+			u(x,0)=\varphi(x),\qquad & 0\le x \le l\\
+			u_t(x,0)=\psi(x),\qquad & 0\le x \le l\\
+			u(0,t)=A,\qquad & t\ge 0\\
+			u(l,t)=B,\qquad & t\ge 0
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	取$w(x)$成立%
+	$$
+	\begin{cases}
+		a^2w_{xx}+f(x)=0\\
+		w(0)=A\\
+		w(l)=B
+	\end{cases}
+	$$
+	令$u(x,t)=v(x,t)+w(x)$，那么
+	\begin{align*}
+		\begin{cases}
+			v_{tt}=a^2v_{xx},\qquad & 0<x<l,t>0\\
+			u(x,0)=\varphi(x)-w(x),\qquad & 0\le x \le l\\
+			u_t(x,0)=\psi(x),\qquad & 0\le x \le l\\
+			u(0,t)=u(l,t)=0,\qquad & t\ge 0
+		\end{cases}
+	\end{align*}
+\end{proof}
+
+\section{热传导方程}
+
+\subsection{齐次边界条件齐次方程}
+
+\begin{theorem}{齐次边界条件齐次热传导方程}{齐次方程与齐次边界条件的热传导方程的混合问题}
+	齐次边界条件齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x \le l\\
+		u(0,t)=u(t,l)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{n\pi\xi}{l}\dd \xi\right)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+	$$
+\end{theorem}
+
+\begin{proof}
+	令$u(x,t)=T(t)X(x)$，代入方程
+	$$
+	T'(t)X(x)=a^2T(t)X''(x)
+	$$
+	于是存在$\lambda\in\R$，使得成立
+	$$
+	\frac{T'(t)}{a^2T(t)}
+	=\frac{X''(x)}{X(x)}
+	=-\lambda
+	$$
+	即%
+	$$
+	\begin{cases}
+		T'(t)+a^2\lambda T(t)=0\\
+		X''(x)+\lambda X(x)=0
+	\end{cases}
+	$$
+	考虑到边界条件%
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		X(0)=X(l)=0
+	\end{cases}
+	$$
+	由定理\ref{thm:特殊Sturm-Liouville问题的解}
+	$$
+	\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+	X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+	$$
+	代入原方程
+	$$
+	T'_n(t)+\left(\frac{an\pi}{l}\right)^2 T_n(t)=0,\qquad n\in\N^*
+	$$
+	通解为
+	$$
+	T_n(t)=C_n\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2t},\qquad n\in\N^*
+	$$
+	进而原微分方程的解为
+	$$
+	u_n(x,t)=C_n\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+	$$
+	由迭加原理
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}C_n\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+	$$
+	考虑到初始条件
+	$$
+	\varphi(x)=\sum_{n=1}^{\infty}C_n\sin\frac{n\pi}{l}x
+	$$
+	由Fourier级数\ref{thm:常用Fourier级数}
+	$$
+	C_n=\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{n\pi\xi}{l}\dd\xi
+	$$
+	从而原微分方程的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{n\pi\xi}{l}\dd \xi\right)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+	$$
+\end{proof}
+
+\subsection{齐次边界条件方程}
+
+\subsubsection{齐次化原理}
+
+\begin{theorem}{齐次化原理/Duhamel原理}{齐次化原理2}
+	如果函数$ w(x,t;\tau) $是混合问题
+	$$
+	\begin{cases}
+		w_t=a^2w_{xx},\qquad & 0<x <l,t>\tau\\
+		w(x,\tau;\tau)=f(x,\tau),\qquad & 0\le x \le l\\
+		w(0,t;\tau)=w(l,t;\tau)=0,\qquad & t\ge \tau
+	\end{cases}
+	$$
+	的解，其中$\tau\ge 0$为参数，那么函数
+	$$
+	u(x,t)=\int_{0}^{t}w(x,t;\tau)\dd \tau
+	$$
+	是混合问题%
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u(x,0)=0,\qquad & 0\le x \le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的解。
+\end{theorem}
+
+\begin{theorem}{齐次边界条件热传导方程}{齐次边界条件非齐次热传导方程}
+	齐次边界条件热传导方程
+	\begin{align*}\label{齐次方程与齐次边界条件的热传导方程的混合问题}
+		\begin{cases}
+			u_t=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+			u(x,0)=0,\qquad & 0\le x \le l\\
+			u(0,t)=u(l,t)=0,\qquad & t\ge 0
+		\end{cases}\tag{*}
+	\end{align*}
+	的形式解为
+	$$
+	u(x,t)
+	= \int_{0}^{t}\int_{0}^{l}
+	\left(\frac{2}{l}\sum_{n=1}^{\infty}\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi\xi}{l}\sin\frac{n\pi}{l}x\right)
+	f(\xi,\tau)\dd \xi\dd \tau
+	$$
+\end{theorem}
+
+\begin{proof}
+	考虑混合问题
+	\begin{align*}\label{齐次方程与齐次边界条件的热传导方程的混合问题的齐次化原理}
+		\begin{cases}
+			w_t=a^2w_{xx},\qquad & 0<x <l,t>\tau\\
+			w(x,\tau;\tau)=f(x,\tau),\qquad & 0\le x \le l\\
+			w(0,t;\tau)=w(l,t;\tau)=0,\qquad & t\ge \tau
+		\end{cases}\tag{**}
+	\end{align*}
+	其中$t\ge\tau$为参数。令$ s=t-\tau $，那么上述问题化为
+	$$
+	\begin{cases}
+		w_s=a^2w_{xx},\qquad & 0<x <l,s>0\\
+		w(x,0)=f(x,\tau),\qquad & 0\le x \le l\\
+		w(0,s)=w(l,s)=0,\qquad & t\ge \tau
+	\end{cases}
+	$$
+	由定理\ref{thm:齐次方程与齐次边界条件的热传导方程的混合问题}，该问题的形式解为
+	$$
+	w(x,s)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}f(\xi,\tau)\sin\frac{n\pi\xi}{l}\dd \xi\right)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2s}\sin\frac{n\pi}{l}x
+	$$
+	从而(\ref{齐次方程与齐次边界条件的热传导方程的混合问题的齐次化原理})的形式解为
+	$$
+	w(x,t;\tau)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}f(\xi,\tau)\sin\frac{n\pi\xi}{l}\dd \xi\right)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi}{l}x
+	$$
+	因此由齐次化原理\ref{thm:齐次化原理2}，原问题(\ref{齐次方程与齐次边界条件的热传导方程的混合问题})的形式解为
+	\begin{align*}
+		u(x,t)
+		& = 
+		\int_{0}^{t}w(x,t;\tau)\dd \tau\\
+		& = \int_{0}^{t}\left(\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}f(\xi,\tau)\sin\frac{n\pi\xi}{l}\dd \xi\right)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi}{l}x\right)\dd \tau\\
+		& = \int_{0}^{t}\int_{0}^{l}
+		\left(\frac{2}{l}\sum_{n=1}^{\infty}\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi\xi}{l}\sin\frac{n\pi}{l}x\right)
+		f(\xi,\tau)\dd \xi\dd \tau
+	\end{align*}
+\end{proof}
+
+\subsubsection{特征函数展开法}
+
+\begin{theorem}{齐次边界条件热传导方程}{齐次边界条件非齐次热传导方程}
+	齐次边界条件热传导方程
+	\begin{align*}
+		\begin{cases}
+			u_t=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+			u(x,0)=0,\qquad & 0\le x \le l\\
+			u(0,t)=u(l,t)=0,\qquad & t\ge 0
+		\end{cases}
+	\end{align*}
+	的形式解为
+	$$
+	u(x,t)
+	= \int_{0}^{t}\int_{0}^{l}
+	\left(\frac{2}{l}\sum_{n=1}^{\infty}\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi\xi}{l}\sin\frac{n\pi}{l}x\right)
+	f(\xi,\tau)\dd \xi\dd \tau
+	$$
+\end{theorem}
+
+\begin{proof}
+	记
+	\begin{align*}
+		& u(x,t)=\sum_{n=1}^{\infty}u_n(t)\sin\frac{n\pi}{l}x\\
+		& f(x,t)=\sum_{n=1}^{\infty}f_n(t)\sin\frac{n\pi}{l}x
+	\end{align*}
+	其中%
+	$$
+	f_n(t)=\frac{2}{l}\int_{0}^{l}f(\xi,t)\sin\frac{n\pi\xi}{l}\dd \xi
+	$$
+	从而$u_n(t)$成立%
+	$$
+	\begin{cases}
+		u_n'(t)=-\left(\frac{an\pi}{l}\right)u_n(t)+f_n(t)\\
+		u_n(0)=0
+	\end{cases}
+	$$
+	解得%
+	$$
+	u_n(t)=\int_{0}^{t}f_n(\tau)\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\dd \tau
+	$$
+	由此%
+	$$
+	u(x,t)
+	 = \int_{0}^{t}\int_{0}^{l}
+	\left(\frac{2}{l}\sum_{n=1}^{\infty}\mathrm{e}^{-\left(\frac{an\pi}{l}\right)^2(t-\tau)}\sin\frac{n\pi\xi}{l}\sin\frac{n\pi}{l}x\right)
+	f(\xi,\tau)\dd \xi\dd \tau
+	$$
+\end{proof}
+
+\subsection{一般方程}
+
+\begin{theorem}{热传导方程}{非齐次边界条件非齐次热传导方程}
+	求解热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u(0,t)=\mu(t),\qquad & t\ge 0\\
+		u(l,t)=\nu(t),\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{proof}
+	令%
+	$$
+	u(x,t)=v(x,t)+w(x,t)
+	$$
+	其中%
+	$$
+	w(x,t)=\frac{l-x}{l}\mu(x)+\frac{x}{l}\nu(x)
+	$$
+	那么$v(x,t)$满足的定解问题为
+	$$
+	\begin{cases}
+		v_t=a^2v_{xx}+f(x,t)-\left(\frac{l-x}{l}\mu'(x)+\frac{x}{l}\nu'(x)\right),\qquad & 0<x<l,t>0\\
+		v(x,0)=\varphi(x)-\left(\frac{l-x}{l}\mu(0)+\frac{x}{l}\nu(0)\right),\qquad & 0\le x\le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{proof}
+
+\begin{table}[H]
+	\centering
+	\caption{常见非齐次边界条件齐次化所使用辅助函数}
+	\begin{tabular}{cc}
+		\toprule
+		非齐次边界条件 & 齐次化所使用辅助函数 \\
+		\midrule
+		$u(0,t)=\mu(t),u(l,t)=\nu(t)$ & $w(x,t)=\frac{\nu(t)-\mu(t)}{l}x+\mu(t)$ \\
+		$u(0,t)=\mu(t),u_x(l,t)=\nu(t)$ & $w(x,t)=\nu(t)x+\mu(t)$ \\
+		$u_x(0,t)=\mu(t),u(l,t)=\nu(t)$ & $w(x,t)=\mu(t)(x-l)+\nu(t)$ \\
+		$u_x(0,t)=\mu(t),u_x(l,t)=\nu(t)$ & $w(x,t)=\frac{\nu(t)-\mu(t)}{2l}x^2+\mu(t)x$ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{theorem}
+	求解热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}-bu,\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{proof}
+	令$u(x,t)=v(x,t)\ee{-bt}$，那么
+	$$
+	\begin{cases}
+		v_t=a^2v_{xx},\qquad & 0<x<l,t>0\\
+		v(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		v(0,t)=v(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{proof}
+
+\subsection{第三边界条件方程}
+
+\begin{theorem}{第三边界条件热传导方程}
+	第三边界条件热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u(0,t),\qquad & t\ge 0\\
+		u_x(l,t)+\sigma u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{v_n\xi}{l}\dd\xi\right)\mathrm{e}^{-\left(\frac{av_n}{l}\right)^2t}\sin\frac{n\pi}{l}x
+	$$
+\end{theorem}
+
+\begin{proof}
+	令$u(x,t)=T(t)X(x)$，代入方程
+	$$
+	T'(t)X(x)=a^2T(t)X''(x)
+	$$
+	于是存在$\lambda\in\R$，使得成立
+	$$
+	\frac{T'(t)}{a^2T(t)}
+	=\frac{X''(x)}{X(x)}
+	=-\lambda
+	$$
+	即%
+	$$
+	\begin{cases}
+		T'(t)+a^2\lambda T(t)=0\\
+		X''(x)+\lambda X(x)=0
+	\end{cases}
+	$$
+	考虑到边界条件%
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		X(0)=X(l)=0
+	\end{cases}
+	$$
+	求解Sturm-Liouville问题
+	$$
+	\lambda_n=\frac{v_n^2}{l^2},\qquad 
+	X_n(x)=\sin\frac{v_n}{l}x,\qquad n\in\N^*
+	$$
+	代入原方程
+	$$
+	T'_n(t)+\left(\frac{av_n}{l}\right)^2 T_n(t)=0,\qquad n\in\N^*
+	$$
+	通解为
+	$$
+	T_n(t)=C_n\mathrm{e}^{-\left(\frac{av_n}{l}\right)^2t},\qquad n\in\N^*
+	$$
+	进而原微分方程的解为
+	$$
+	u_n(x,t)=C_n\mathrm{e}^{-\left(\frac{av_n}{l}\right)^2t}\sin\frac{v_n}{l}x,\qquad n\in\N^*
+	$$
+	由迭加原理
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}C_n\mathrm{e}^{-\left(\frac{av_n}{l}\right)^2t}\sin\frac{v_n}{l}x
+	$$
+	考虑到初始条件
+	$$
+	\varphi(x)=\sum_{n=1}^{\infty}C_n\sin\frac{v_n}{l}x
+	$$
+	由Fourier级数\ref{thm:常用Fourier级数}
+	$$
+	C_n=\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{v_n\xi}{l}\dd\xi
+	$$
+	从而原微分方程的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_{0}^{l}\varphi(\xi)\sin\frac{v_n\xi}{l}\dd\xi\right)\mathrm{e}^{-\left(\frac{av_n}{l}\right)^2t}\sin\frac{n\pi}{l}x
+	$$
+\end{proof}
+
+\section{Laplace方程}
+
+\subsection{矩形区域上的Laplace方程}
+
+\begin{theorem}
+	Laplace方程%
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad & 0<x<a,0<y<b\\
+		u(x,0)=\varphi(x),\qquad & 0\le x \le a\\
+		u(x,b)=\psi(x),\qquad & 0\le x \le a\\
+		u(0,y)=u(a,y)=0,\qquad & 0\le y \le b
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,y)=\sum_{n=1}^{\infty}\left(A_n\ee{\frac{n\pi}{a}y}+B_n\ee{-\frac{n\pi}{a}y}\right)\sin\frac{n\pi}{a}x
+	$$
+	其中
+	\begin{align*}
+		& A_n=\frac{\psi_n\ee{\frac{n\pi b}{a}}-\varphi_n}{\ee{\frac{2n\pi b}{a}}-1},\qquad 
+		B_n=\frac{\psi_n\ee{-\frac{n\pi b}{a}}-\varphi_n}{\ee{-\frac{2n\pi b}{a}}-1}\\
+		& \varphi_n=\frac{2}{a}\int_{0}^{a}\varphi(x)\sin\frac{n\pi x}{a}\dd x,\qquad 
+		\psi_n=\frac{2}{a}\int_{0}^{a}\psi(x)\sin\frac{n\pi x}{a}\dd x
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	令$u(x,y)=X(x)Y(y)$，代入方程
+	$$
+	X''(x)Y(y)+X(x)Y''(y)=0
+	$$
+	于是存在$\lambda\in\R$，使得成立
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		Y''(y)-\lambda Y(y)=0
+	\end{cases}
+	$$
+	考虑到边界条件%
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		X(0)=X(a)=0
+	\end{cases}
+	$$
+	由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+	$$
+	\lambda_n=\frac{n^2\pi^2}{a^2},\qquad 
+	X_n(x)=\sin\frac{n\pi}{a}x,\qquad n\in\N^*
+	$$
+	代入原方程%
+	$$
+	Y''_n(y)-\left(\frac{n\pi}{a}\right)^2 Y_n(y)=0,\qquad n\in\N^*
+	$$
+	通解为%
+	$$
+	Y_n(y)=A_n\ee{\frac{n\pi}{a}y}+B_n\ee{-\frac{n\pi}{a}y},\qquad n\in\N^*
+	$$
+	从而原微分方程的解为%
+	$$
+	u_n(x,y)=\left(A_n\ee{\frac{n\pi}{a}y}+B_n\ee{-\frac{n\pi}{a}y}\right)\sin\frac{n\pi}{a}x,\qquad n\in\N^*
+	$$
+	由迭加原理
+	$$
+	u(x,y)=\sum_{n=1}^{\infty}\left(A_n\ee{\frac{n\pi}{a}y}+B_n\ee{-\frac{n\pi}{a}y}\right)\sin\frac{n\pi}{a}x
+	$$
+	考虑到$y$的边界条件%
+	$$
+	\varphi(x)=\sum_{n=1}^{\infty}(A_n+B_n)\sin\frac{n\pi}{a}x,\qquad 
+	\psi(x)=\sum_{n=1}^{\infty}\left(A_n\ee{\frac{n\pi}{a}b}+B_n\ee{-\frac{n\pi}{a}b}\right)\sin\frac{n\pi}{a}x
+	$$
+	由Fourier级数\ref{thm:常用Fourier级数}，记%
+	$$
+	\varphi_n=\frac{2}{a}\int_{0}^{a}\varphi(x)\sin\frac{n\pi x}{a}\dd x,\qquad 
+	\psi_n=\frac{2}{a}\int_{0}^{a}\psi(x)\sin\frac{n\pi x}{a}\dd x,\qquad 
+	n\in\N^*
+	$$
+	由此%
+	$$
+	A_n+B_n=\varphi_n,\qquad 
+	A_n\ee{\frac{n\pi}{a}b}+B_n\ee{-\frac{n\pi}{a}b}=\psi_n,\qquad 
+	n\in\N^*
+	$$
+	解得%
+	$$
+	A_n=\frac{\psi_n\ee{\frac{n\pi b}{a}}-\varphi_n}{\ee{\frac{2n\pi b}{a}}-1},\qquad 
+	B_n=\frac{\psi_n\ee{-\frac{n\pi b}{a}}-\varphi_n}{\ee{-\frac{2n\pi b}{a}}-1},\qquad 
+	n\in\N^*
+	$$
+	进而可得原方程的形式解。
+\end{proof}
+
+\subsection{Laplace方程的Dirichlet问题}
+
+\begin{theorem}
+	Laplace方程%
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=\varphi(x,y)
+	\end{cases}
+	$$
+	的形式解为
+	\begin{align*}
+		u(\rho,\theta)
+		& = \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)\\
+		& = \frac{1}{2\pi}\int_{0}^{2\pi}\frac{a^2-\rho^2}{a^2-\rho^2-2a\rho\cos(\theta-\tau)}f(\tau)\dd \tau
+	\end{align*}
+	其中
+	$$
+	f(\theta)=\varphi(a\cos\theta,a\sin\theta),\qquad 
+	A_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\cos n \tau\dd \tau,\qquad 
+	B_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\sin n \tau\dd \tau
+	$$
+\end{theorem}
+
+\begin{proof}
+	引入极坐标变换%
+	$$
+	\begin{cases}
+		x=\rho\cos\theta\\
+		y=\rho\sin\theta
+	\end{cases}
+	$$
+	那么原方程化为
+	$$
+	\begin{cases}
+		u_{\rho\rho}+\frac{1}{\rho}u_\rho+\frac{1}{\rho^2}u_{\theta\theta}=0,\qquad 0<\rho<a\\
+		u|_{\rho=a}=\varphi(a\cos\theta,a\sin\theta)=f(\theta)
+	\end{cases}
+	$$
+	分离变量%
+	$$
+	u(\rho,\theta)=R(\rho)\Phi(\theta)
+	$$
+	代入方程%
+	$$
+	R''(\rho)\Phi(\theta)+\frac{1}{\rho}R'(\rho)\Phi(\theta)+\frac{1}{\rho^2}R(\rho)\Phi''(\theta)=0
+	$$
+	于是存在$\lambda\in\R$，使得成立%
+	$$
+	\begin{cases}
+		\Phi''(\theta)+\lambda\Phi(\theta)=0\\
+		\rho^2R''(\rho)+\rho R'(\rho)-\lambda R(\rho)=0
+	\end{cases}
+	$$
+	考虑到边界条件
+	$$
+	\begin{cases}
+		\Phi''(\theta)+\lambda\Phi(\theta)=0\\
+		\Phi(\theta+2\pi)=\Phi(\theta)
+	\end{cases}
+	$$
+	求解周期特征值问题%
+	$$
+	\lambda_n=n^2,\qquad 
+	\Phi_n(\theta)=A_n\cos n\theta+B_n\sin n\theta,\qquad 
+	n\in\N
+	$$
+	代入原方程%
+	$$
+	\rho^2R_n''(\rho)+\rho R_n'(\rho)-n^2 R_n(\rho)=0,\qquad n\in\N
+	$$
+	通解为%
+	$$
+	R_0(\rho)=C_0+D_0\ln\rho,\qquad 
+	R_n(\rho)=C_n\rho^n+D_n\rho^{-n},\qquad 
+	n\in\N^*
+	$$
+	结合$|R(0)|<\infty$，可知%
+	$$
+	R_n(\rho)=C_n\rho^n,\qquad 
+	n\in\N
+	$$
+	从而原微分方程的解为%
+	$$
+	u_n(\rho,\theta)=\rho^n\left(A_n\cos n\theta+B_n\sin n\theta\right),\qquad n\in\N
+	$$
+	由迭加原理%
+	$$
+	u(\rho,\theta)=\frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)
+	$$
+	考虑到$\rho$的边界条件%
+	$$
+	f(\theta)=\frac{A_0}{2}+\sum_{n=1}^{\infty}\left(A_n\cos n\theta+B_n\sin n\theta\right)
+	$$
+	由Fourier级数\ref{thm:Fourier级数}
+	$$
+	A_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\cos n \tau\dd \tau,\qquad 
+	B_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\sin n \tau\dd \tau
+	$$
+	进而可得原方程的形式解
+	\begin{align*}
+		u(\rho,\theta)
+		& = \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)\\
+		& = \frac{1}{2\pi}\int_{0}^{2\pi}f(\tau)\dd \tau
+		+\frac{1}{\pi}\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\int_{0}^{2\pi}f(\tau)\left(
+		\cos n\tau\cos n\theta+\sin n\tau\sin n\theta
+		\right)\dd \tau\\
+		& = \frac{1}{2\pi}\int_{0}^{2\pi}\left(
+		1+2\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\cos n(\theta-\tau)
+		\right)f(\tau)\dd \tau\\
+		& = \frac{1}{2\pi}\int_{0}^{2\pi}\frac{a^2-\rho^2}{a^2-\rho^2-2a\rho\cos(\theta-\tau)}f(\tau)\dd \tau
+	\end{align*}
+\end{proof}
+
+\begin{theorem}
+	Poisson方程
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=-4,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=0
+	\end{cases}
+	$$
+	的特解为
+	$$
+	u(x,y)=a^2-(x^2+y^2)
+	$$
+\end{theorem}
+
+\begin{proof}
+	令$u=v+w$，其中取$w$满足Laplace方程，即%
+	$$
+	w_{xx}+w_{yy}=-4
+	$$
+	不妨取$w=-(x^2+y^2)$，那么原方程化为
+	$$
+	\begin{cases}
+		v_{xx}+v_{yy}=0,\qquad x^2+y^2<a^2\\
+		v|_{x^2+y^2=a^2}=a^2
+	\end{cases}
+	$$
+	容易知道$v=a^2$，从而原方程的特解为%
+	$$
+	u(x,y)=a^2-(x^2+y^2)
+	$$
+\end{proof}
+
+\chapter{积分变换法}
+
+\section{Fourier变换的理论基础与基本性质}
+
+\begin{definition}{Fourier积分}
+	定义函数$f(x)$的Fourier积分为%
+	$$
+	\frac{1}{\pi}\int_{0}^{+\infty}\dd\lambda\int_{-\infty}^{+\infty}f(\xi)\cos\lambda(x-\xi)\dd \xi
+	$$
+	其复数形式为%
+	$$
+	\frac{1}{2\pi}\int_{-\infty}^{+\infty}\dd \lambda\int_{-\infty}^{+\infty} f(\xi)\ee{i\lambda(x-\xi)}\dd\xi
+	$$
+\end{definition}
+
+\begin{theorem}{Fourier积分定理}
+	如果函数$f(x)$在$\R$上连续、分段光滑且绝对可积，那么%
+	$$
+	f(x)=\frac{1}{\pi}\int_{0}^{+\infty}\dd\lambda\int_{-\infty}^{+\infty}f(\xi)\cos\lambda(x-\xi)\dd \xi
+	$$
+\end{theorem}
+
+\begin{definition}{Fourier变换}
+	定义函数$f(x)$的Fourier变换为%
+	$$
+	F(\lambda)=\int_{-\infty}^{+\infty}f(\xi)\ee{-i\lambda\xi}\dd\xi
+	$$
+	记作$\mathscr{F}[f]$。
+\end{definition}
+
+\begin{definition}{Fourier逆变换}
+	定义函数$F(\lambda)$的Fourier逆变换为%
+	$$
+	f(x)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}F(\lambda)\ee{i\lambda x}\dd\lambda
+	$$
+	记作$\mathscr{F}^{-1}[F]$。
+\end{definition}
+
+\begin{theorem}
+	如果函数$f(x)$在$\R$上连续、分段光滑且绝对可积，那么$f(x)$的Fourier变换$\mathscr{F}[f]$存在，且逆变换为$\mathscr{F}^{-1}[F]$。
+\end{theorem}
+
+\begin{theorem}
+	\begin{align*}
+		& \mathscr{F}\left[\ee{-\alpha|x|}\right]=\frac{2\alpha}{\lambda^2+\alpha^2}\\
+		& \mathscr{F}\left[\frac{\sin ax}{x}\right]=\begin{cases}
+			\pi,\qquad & |\lambda|<a\\
+			\pi/2,\qquad & |\lambda|=a\\
+			0,\qquad & |\lambda|>a
+		\end{cases}
+	\end{align*}
+\end{theorem}
+
+\begin{proposition}{Fourier变换的基本性质}
+	\begin{enumerate}
+		\item 线性性：Fourier变换与Fourier逆变换为线性变换。
+		\item 位移性：%
+		$$
+		\mathscr{F}[f(x-b)]=\ee{-i\lambda b}\mathscr{F}[f(x)],\qquad b\in\R
+		$$
+		\item 相似性：%
+		$$
+		\mathscr{F}[f(\alpha x)]=\frac{1}{|\alpha|}\mathscr{F}[f](\lambda/\alpha),\qquad \alpha\in\R\setminus\{0\}
+		$$
+		\item 微分性：如果$f(x)$在$\R$上连续可微且绝对可积，且$f'(x)$在$\R$上绝对可积，那么%
+		$$
+		\mathscr{F}[f']=i\lambda \mathscr{F}[f]
+		$$
+		\item 积分性：%
+		$$
+		\mathscr{F}\left[\int_{-\infty}^{x}f(\xi\dd\xi)\right]=\frac{1}{i\lambda}\mathscr{F}[f]
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{definition}{卷积}
+	定义函数$f(x)$与$g(x)$的卷积为%
+	$$
+	(f*g)(x)=\int_{-\infty}^{+\infty}f(x-t)g(t)\dd t
+	$$
+\end{definition}
+
+\begin{proposition}{卷积的性质}
+	\begin{enumerate}
+		\item 交换律：%
+		$$
+		f*g=g*f
+		$$
+		\item 结合律：%
+		$$
+		f*(g*h)=(f*g)*h
+		$$
+		\item 分配律：%
+		$$
+		f*(g+h)=f*g+f*h
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{卷积的Fourier变换}
+	对于绝对可积的连续函数$f(x)$与$g(x)$，成立%
+	$$
+	\mathscr{F}[f*g]=\mathscr{F}[f]\cdot\mathscr{F}[g],\qquad 
+	\mathscr{F}[f\cdot g]=\frac{1}{2\pi}\mathscr{F}[f]*\mathscr{F}[g]
+	$$
+\end{theorem}
+
+\section{Fourier变换的应用}
+
+\subsection{热传导方程}
+
+\subsubsection{齐次热传导方程}
+
+\begin{theorem}{齐次热传导方程}{齐次热传导方程}
+	齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	将未知函数$u(x,t)$和初始条件$\varphi(x)$关于$x$作Fourier变换%
+	$$
+	\mathscr{F}[u(x,t)]=\tilde{u}(\lambda,t),\qquad
+	\mathscr{F}[\varphi(x)]=\tilde{\varphi}(\lambda) 
+	$$
+	对$u_t=a^2u_{xx}$两边关于$x$进行Fourier变换，那么
+	$$
+	\begin{cases}
+		\tilde{u}_t=(i\lambda a)^2\tilde{u},\qquad & \lambda\in\R,t>0\\
+		\tilde{u}(\lambda,0)=\tilde{\varphi}(\lambda),\qquad & \lambda\in\R
+	\end{cases}
+	$$
+	由$\tilde{u}_t=-(\lambda a)^2\tilde{u}$解得%
+	$$
+	\tilde{u}(\lambda,t)=C\ee{-\lambda^2a^2t}
+	$$
+	由初始条件，得%
+	$$
+	\tilde{u}(\lambda,t)=\tilde{\varphi}(\lambda)\ee{-\lambda^2a^2t}
+	$$
+	进而%
+	$$
+	u(x,t)=\mathscr{F}^{-1}\left[\tilde{\varphi}(\lambda)\ee{-\lambda^2a^2t}\right]
+	=\mathscr{F}^{-1}[\tilde{\varphi}(\lambda)]*
+	\mathscr{F}^{-1}\left[\ee{-\lambda^2a^2t}\right]
+	=\varphi(x)*\mathscr{F}^{-1}\left[\ee{-\lambda^2a^2t}\right]
+	$$
+	而令$\tilde{\lambda}=\lambda a\sqrt{t},\tilde{y}=\frac{x}{2a\sqrt{t}}$，那么
+	\begin{align*}
+		\mathscr{F}^{-1}\left[\ee{-\lambda^2a^2t}\right]
+		& =\frac{1}{2\pi}\int_{-\infty}^{+\infty}\ee{i\lambda x-\lambda^2a^2t}\dd\lambda\\
+		& =\frac{1}{2a\pi\sqrt{t}}\ee{-\frac{x^2}{4a^2t}}\int_{-\infty}^{+\infty}\ee{-(\tilde{\lambda}-i\tilde{y})^2}\dd\tilde{\lambda}\\
+		& =\frac{1}{2a\pi\sqrt{t}}\ee{-\frac{x^2}{4a^2t}}\int_{-\infty}^{+\infty}\ee{-\tilde{\lambda}^2}\dd\tilde{\lambda}\\
+		& =\frac{1}{2a\sqrt{\pi t}}\ee{-\frac{x^2}{4a^2t}}
+	\end{align*}
+	因此原方程的形式解为%
+	$$
+	u(x,t)=\varphi(x)*\frac{1}{2a\sqrt{\pi t}}\ee{-\frac{x^2}{4a^2t}}
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	$$
+\end{proof}
+
+\subsubsection{非齐次热传导方程}
+
+\begin{theorem}{非齐次热传导方程}{非齐次热传导方程}
+	非齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	+\frac{1}{2a\sqrt{\pi}}\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\frac{f((\xi,\tau))}{\sqrt{t-\tau}}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	（Fourier变换法）关于$x$作Fourier变换%
+	$$
+	\mathscr{F}[u(x,t)]=\tilde{u}(\lambda,t),\qquad
+	\mathscr{F}[f(x,t)]=\tilde{f}(\lambda,t),\qquad
+	\mathscr{F}[\varphi(x)]=\tilde{\varphi}(\lambda) 
+	$$
+	对$u_t=a^2u_{xx}$两边关于$x$进行Fourier变换，那么
+	$$
+	\begin{cases}
+		\tilde{u}_t=(i\lambda a)^2\tilde{u}+\tilde{f}(\lambda,t),\qquad & \lambda\in\R,t>0\\
+		\tilde{u}(\lambda,0)=\tilde{\varphi}(\lambda),\qquad & \lambda\in\R
+	\end{cases}
+	$$
+	解得
+	$$
+	\tilde{u}(\lambda,t)=
+	\int_{0}^{t}\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\dd\tau
+	+\tilde{\varphi}(\lambda)\ee{-\lambda^2a^2t}
+	$$
+	进而%
+	$$
+	u(x,t)=\mathscr{F}^{-1}\left[\int_{0}^{t}\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\dd\tau
+	\right]+\mathscr{F}^{-1}\left[\tilde{\varphi}(\lambda)\ee{-\lambda^2a^2t}\right]
+	$$
+	由于
+	\begin{align*}
+		\mathscr{F}^{-1}\left[\int_{0}^{t}\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\dd\tau
+		\right]
+		& = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\left(\int_{0}^{t}\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\dd\tau\right)\ee{i\lambda x}\dd \lambda\\
+		& = \int_{0}^{t}\left(\frac{1}{2\pi}\int_{-\infty}^{+\infty}\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\right)\ee{i\lambda x}\dd \tau\\
+		& = \int_{0}^{t}\mathscr{F}^{-1}\left[\tilde{f}(\lambda,\tau)\ee{-\lambda^2 a^2(t-\tau)}\right]\dd\tau\\
+		& = \int_{0}^{t}\left(f(\lambda,\tau)*\mathscr{F}^{-1}\left[\ee{-\lambda^2 a^2(t-\tau)}\right]\right)\dd\tau\\
+		& = \int_{0}^{t}\left(f(\lambda,\tau)*\frac{1}{2a\sqrt{\pi(t-\tau)}}\ee{-\frac{x^2}{4a^2(t-\tau)}}\right)\dd\tau\\
+		& = \int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\frac{1}{2a\sqrt{\pi}}\frac{1}{\sqrt{t-\tau}}f(\xi,\tau)\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}\dd\xi
+	\end{align*}
+	从而原方程的形式解为%
+	$$
+	u(x,t)=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	+\frac{1}{2a\sqrt{\pi}}\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\frac{f((\xi,\tau))}{\sqrt{t-\tau}}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}\dd\xi
+	$$
+	
+	（齐次化原理）令$u=w+v$，其中
+	$$
+	\begin{cases}
+		w_t=a^2w_{xx},\qquad & x\in\R,t>0\\
+		w(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases},\qquad 
+	\begin{cases}
+		v_t=a^2v_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+		v(x,0)=0,\qquad & x\in\R
+	\end{cases}
+	$$
+	那么
+	$$
+	w(x,t)
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\ee{-\frac{(x-\xi)^2}{4a^2t}}\varphi(\xi)\dd\xi
+	$$
+	由齐次化原理，设$\omega(x,t;\tau)$成立%
+	$$
+	\begin{cases}
+		\omega_t=a^2\omega_{xx},\qquad & x\in\R,t>\tau\\
+		\omega(x,\tau;\tau)=f(x,\tau),\qquad & x\in\R
+	\end{cases}
+	$$
+	即%
+	$$
+	\omega(x,t;\tau)=\frac{1}{2a\sqrt{\pi (t-\tau)}}\int_{-\infty}^{+\infty}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}f(\xi,\tau)\dd \xi
+	$$
+	那么%
+	$$
+	v(x,t)=\int_{0}^{t}\frac{\dd\tau}{2a\sqrt{\pi (t-\tau)}}\int_{-\infty}^{+\infty}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}f(\xi,\tau)\dd \xi
+	$$
+	从而原方程的形式解为%
+	$$
+	u(x,t)=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	+\frac{1}{2a\sqrt{\pi}}\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\frac{f((\xi,\tau))}{\sqrt{t-\tau}}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}\dd\xi
+	$$
+\end{proof}
+
+\begin{example}
+	齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\begin{cases}
+			0,\qquad & x<0\\
+			c,\qquad & x\ge 0
+		\end{cases}
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	=\frac{c}{2}\left(1+\text{erf}\left(\frac{x}{2\sqrt{t}}\right)\right)
+	$$
+	其中误差函数%
+	$$
+	\text{erf}(x)=\frac{2}{\sqrt{\pi}}\int_{0}^{x}\ee{-t^2}\dd t
+	$$
+\end{example}
+
+\begin{example}
+	非齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}+A,\qquad & x\in\R,t>0\\
+		u(x,0)=\sin 3x,\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\ee{-9a^2t}\sin 3t+At
+	$$
+\end{example}
+
+\subsubsection{半无界问题}
+
+\begin{lemma}{}{齐次热传导方程的延拓}
+	对于齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	如果$\varphi(x)$为奇、偶、周期函数，那么$u(x,t)$关于$x$为奇、偶、周期函数。
+\end{lemma}
+
+\begin{theorem}{半无界齐次热传导方程}{半无界齐次热传导方程}
+	齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x>0,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\ge 0\\
+		u(0,t)=0,\qquad t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于$u(0,t)=0$为奇函数，那么由引理\ref{lem:齐次热传导方程的延拓}，将$u(x,t)$关于$x$奇延拓为$U(x,t)$，$\varphi(x)$奇延拓为$\Phi(x)$，从而原问题的形式解为
+	$$
+	u(x,t)=U(x,t)\Big|_{x>0}
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\Phi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\Phi(\xi)\left(\ee{-\frac{(x-\xi)^2}{4a^2t}}-\ee{-\frac{(x+\xi)^2}{4a^2t}}\right)\dd\xi
+	$$
+\end{proof}
+
+\subsubsection{三维热传导方程}
+
+\begin{theorem}{三维齐次热传导方程}{三维齐次热传导方程}
+	三维齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2\Delta u,\qquad & (x,y,z)\in\R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in\R^3
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,y,z,t)
+	=\left(\frac{1}{2a\sqrt{\pi t}}\right)^3
+	\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+	\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}\varphi(\xi,\eta,\zeta)\dd\xi\dd\eta\dd\zeta
+	$$
+\end{theorem}
+
+\begin{proof}
+	作Fourier变换%
+	\begin{align*}
+		& \mathscr{F}[u]=\tilde{u}(\lambda,\mu,\nu,t)=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}u(x,y,z,t)\ee{-(\lambda x+\mu y+\nu z)}\dd x\dd y\dd z\\
+		& \mathscr{F}[\varphi]=\tilde{\varphi}(\lambda,\mu,\nu)=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\varphi(x,y,z)\ee{-(\lambda x+\mu y+\nu z)}\dd x\dd y\dd z
+	\end{align*}
+	代入方程
+	$$
+	\begin{cases}
+		\tilde{u}_t=-a^2(\lambda^2+\mu^2+\nu^2)\tilde{u},\qquad & (\lambda,\mu,\nu)\in\R^3,t>0\\
+		\tilde{u}(x,y,z,0)=\tilde{\varphi}(x,y,z),\qquad & (\lambda,\mu,\nu)\in\R^3
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(\lambda,\mu,\nu,t)=
+	\tilde{\varphi}(\lambda,\mu,\nu)\ee{-a^2(\lambda^2+\mu^2+\nu^2)t}
+	$$
+	从而%
+	\begin{align*}
+		u(x,y,z,t)
+		& = \varphi(x,y,z)*\mathscr{F}^{-1}\left[\ee{-a^2(\lambda^2+\mu^2+\nu^2)t}\right]\\
+		& =\varphi(x,y,z)*\left(\frac{1}{2a\sqrt{\pi t}}\right)^3\ee{-\frac{x^2+y^2+z^2}{4a^2t}}\\
+		& =\left(\frac{1}{2a\sqrt{\pi t}}\right)^3
+		\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}
+		\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}\varphi(\xi,\eta,\zeta)\dd\xi\dd\eta\dd\zeta
+	\end{align*}
+\end{proof}
+
+\subsection{波动方程}
+
+\subsubsection{齐次波动方程}
+
+\begin{theorem}{齐次波动方程}{齐次波动方程}
+	齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		u_t(x,0)=\psi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	= \frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	将未知函数$u(x,t)$和初始条件$\varphi(x),\psi(x)$关于$x$作Fourier变换%
+	$$
+	\mathscr{F}[u(x,t)]=\tilde{u}(\lambda,t),\qquad
+	\mathscr{F}[\varphi(x)]=\tilde{\varphi}(\lambda) ,\qquad 
+	\mathscr{F}[\psi(x)]=\tilde{\psi}(\lambda)
+	$$
+	对原方程关于$x$进行Fourier变换，那么
+	$$
+	\begin{cases}
+		\tilde{u}_{tt}=-a^2\lambda^2\tilde{u},\qquad & \lambda\in\R,t>0\\
+		\tilde{u}(\lambda,0)=\tilde{\varphi}(\lambda),\qquad & \lambda\in\R\\
+		\tilde{u}_t(\lambda,0)=\tilde{\psi}(\lambda),\qquad & \lambda\in\R
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(\lambda,t)
+	=\frac{1}{2}\tilde{\varphi}(\lambda)(\ee{i\lambda a t}+\ee{-i\lambda a t})+
+	\frac{1}{2i\lambda a}\tilde{\psi}(\lambda)(\ee{i\lambda a t}-\ee{-i\lambda a t})
+	$$
+	进而
+	\begin{align*}
+		u(x,t)
+		& = \mathscr{F}^{-1}\left[\frac{1}{2}\tilde{\varphi}(\lambda)(\ee{i\lambda a t}+\ee{-i\lambda a t})+
+		\frac{1}{2i\lambda a}\tilde{\psi}(\lambda)(\ee{i\lambda a t}-\ee{-i\lambda a t})\right]\\
+		& = \frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	\end{align*}
+\end{proof}
+
+\subsubsection{非齐次波动方程}
+
+\begin{theorem}{非齐次波动方程}{非齐次波动方程}
+	非齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		u_t(x,0)=\psi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	= \frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi+\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	由齐次化原理，若$w=w(x,t;\tau)$为
+	$$
+	\begin{cases}
+		w_{tt}=a^2w_{xx},\qquad & x\in\R,t>\tau\\
+		w(x,\tau)=0,\qquad & x\in\R\\
+		w_t(x,\tau)=f(x,\tau),\qquad & x\in\R
+	\end{cases}
+	$$
+	的解，那么%
+	$$
+	u(x,t)=\int_{0}^{t}w(x,t;\tau)\dd\tau
+	$$
+	为
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+		u(x,0)=0,\qquad & x\in\R\\
+		u_t(x,0)=0,\qquad & x\in\R
+	\end{cases}
+	$$
+	
+	由齐次波动方程\ref{thm:齐次波动方程}
+	$$
+	w(x,t;\tau)=\frac{1}{2a}\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+	$$
+	因此
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+		u(x,0)=0,\qquad & x\in\R\\
+		u_t(x,0)=0,\qquad & x\in\R
+	\end{cases}
+	$$
+	的解为
+	$$
+	u(x,t)=\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+	$$
+	进而原问题的形式解为
+	$$
+	u(x,t)
+	= \frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi+\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+	$$
+\end{proof}
+
+\subsubsection{半无界问题}
+
+\begin{lemma}{}{齐次波动方程的延拓}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		u_t(x,0)=\psi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	如果$\varphi(x),\psi(x)$为奇、偶、周期函数，那么$u(x,t)$关于$x$为奇、偶、周期函数。
+\end{lemma}
+
+\begin{theorem}{半无界齐次波动方程}{半无界齐次波动方程}
+	齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x>0,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\ge 0\\
+		u_t(x,0)=\psi(x),\qquad & x\ge 0\\
+		u(0,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式奇函数解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		,\qquad & x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\int_{at-x}^{x+at}\psi(\xi)\dd\xi
+		,\qquad & x-at< 0
+	\end{cases}
+	$$
+	形式偶函数解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		,\qquad & x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\left(\int_{0}^{at-x}\psi(\xi)\dd\xi+\int_{0}^{x+at}\psi(\xi)\dd\xi\right)
+		,\qquad & x-at< 0
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{proof}
+	奇延拓：由于$u(0,t)=0$为奇函数，那么由引理\ref{lem:齐次波动方程的延拓}，将$u(x,t)$关于$x$奇延拓为$U(x,t)$，$\varphi(x)$奇延拓为$\Phi(x)$，$\psi(x)$奇延拓为$\Psi(x)$，从而原问题的形式解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		,\qquad&  x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\int_{at-x}^{x+at}\psi(\xi)\dd\xi
+		,\qquad & x-at< 0
+	\end{cases}
+	$$
+	
+	偶延拓：由于$u(0,t)=0$为偶函数，那么由引理\ref{lem:齐次波动方程的延拓}，将$u(x,t)$关于$x$偶延拓为$U(x,t)$，$\varphi(x)$偶延拓为$\Phi(x)$，$\psi(x)$偶延拓为$\Psi(x)$，从而原问题的形式解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		,\qquad  & x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\left(\int_{0}^{at-x}\psi(\xi)\dd\xi+\int_{0}^{x+at}\psi(\xi)\dd\xi\right)
+		,\qquad& x-at< 0
+	\end{cases}
+	$$
+\end{proof}
+
+\begin{theorem}{半无界非齐次波动方程}{半无界非齐次波动方程}
+	非齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+f(x,t),\qquad & x>0,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\ge 0\\
+		u_t(x,0)=\psi(x),\qquad & x\ge 0\\
+		u(0,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi\\
+		\dis+\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+		,\qquad&  x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\int_{at-x}^{x+at}\psi(\xi)\dd\xi\\\dis+\frac{1}{2a}\int_{t-\frac{x}{a}}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi+\frac{1}{2a}\int_{0}^{t-\frac{x}{a}}\dd\tau\int_{a(t-\tau)-x}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+		,\qquad & x-at< 0
+	\end{cases}
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于$u(0,t)=0$为奇函数，那么由引理\ref{lem:齐次波动方程的延拓}，将$u(x,t)$关于$x$奇延拓为$U(x,t)$，$f(x,t)$关于$x$奇延拓为$F(x,t)$，$\varphi(x)$奇延拓为$\Phi(x)$，$\psi(x)$奇延拓为$\Psi(x)$，从而原问题的形式解为
+	$$
+	u(x,t)=\begin{cases}
+		\dis
+		\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi\\
+		\dis+\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+		,\qquad&  x-at\ge 0\\
+		\dis
+		\frac{1}{2}(\varphi(x+at)-\varphi(at-x))+\frac{1}{2a}\int_{at-x}^{x+at}\psi(\xi)\dd\xi\\\dis+\frac{1}{2a}\int_{t-\frac{x}{a}}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi+\frac{1}{2a}\int_{0}^{t-\frac{x}{a}}\dd\tau\int_{a(t-\tau)-x}^{x+a(t-\tau)}f(\xi,\tau)\dd\xi
+		,\qquad & x-at< 0
+	\end{cases}
+	$$
+\end{proof}
+
+\subsection{Laplace方程}
+
+\begin{theorem}
+	上半平面上的静电场电势问题
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad & x\in\R,y>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		\lim\limits_{x^2+y^2\to\infty}u(x,y)=0
+	\end{cases}
+	$$
+	的形式解为%
+	$$
+	u(x,t)
+	= \frac{1}{\pi}\int_{-\infty}^{+\infty}\varphi(\xi)\frac{y}{(x-\xi)^2+y^2}\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	将未知函数$u(x,y)$和初始条件$\varphi(x)$关于$x$作Fourier变换%
+	$$
+	\mathscr{F}[u(x,y)]=\tilde{u}(\lambda,y),\qquad
+	\mathscr{F}[\varphi(x)]=\tilde{\varphi}(\lambda)
+	$$
+	对原方程关于$x$进行Fourier变换，那么
+	$$
+	\begin{cases}
+		-\lambda^2\tilde{u}+\tilde{u}_{yy}=0,\qquad & \lambda\in\R,y>0\\
+		\tilde{u}(\lambda,0)=\tilde{\varphi}(\lambda),\qquad & \lambda\in\R\\
+		\lim\limits_{y\to\infty}\tilde{u}(\lambda,y)=0
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(\lambda,y)
+	=\tilde(\varphi)(\lambda)\ee{-|\lambda|y}
+	$$
+	进而
+	\begin{align*}
+		u(x,t)
+		& = \mathscr{F}^{-1}\left[\tilde(\varphi)(\lambda)\ee{-|\lambda|y}\right]\\
+		& = \varphi(x)*\mathscr{F}^{-1}\left[\ee{-|\lambda|y}\right]\\
+		& = \varphi(x)*\frac{1}{\pi}\frac{y}{x^2+y^2}\\
+		& = \frac{1}{\pi}\int_{-\infty}^{+\infty}\varphi(\xi)\frac{y}{(x-\xi)^2+y^2}\dd\xi
+	\end{align*}
+\end{proof}
+
+\section{Laplace变换的引入与应用}
+
+\subsection{Laplace变换的引入}
+
+\begin{definition}{Laplace变换}
+	对于$[0,+\infty)$上的函数$f(t)$，定义其Laplace变换为%
+	$$
+	F(p)=\int_{0}^{+\infty}f(t)\ee{-pt}\dd t,\qquad p\in\C
+	$$
+	记作$\mathscr{L}[f(t)]$。
+\end{definition}
+
+\begin{theorem}{Laplace变换存在的充分条件}
+	如果$\R$上的函数$f(t)$成立如下条件：
+	\begin{enumerate}
+		\item 当$t<0$时，$f(t)=0$；
+		\item 当$t\ge 0$时，$f(t)$连续，$f'(t)$分段连续。
+		\item 存在$M>0$与$\alpha\ge 0$，以及$T\ge 0$，使得当$t\ge T$时，成立%
+		$$
+		|f(t)|\le M\ee{\alpha t}
+		$$
+	\end{enumerate}
+	那么$f(t)$的Laplace变换
+	$$
+	\mathscr{L}[f(t)]=\int_{0}^{+\infty}f(t)\ee{-pt}\dd t,\qquad p\in\C
+	$$
+	对于$\text{Re}(p)>\alpha$存在。
+\end{theorem}
+
+\begin{theorem}{初等函数的Laplace变换}
+	\begin{enumerate}
+		\item 常值函数：%
+		$$
+		\mathscr{L}[c]=\frac{c}{p},\qquad \text{Re}(p)>0
+		$$
+		\item 指数函数：%
+		$$
+		\mathscr{L}[\ee{\alpha t}]=\frac{1}{p-\alpha},\qquad \text{Re}(p)>\text{Re}(\alpha)
+		$$
+		\item 三角函数：
+		\begin{align*}
+			& \mathscr{L}[\cos\omega t]=\frac{p}{p^2+\omega^2},\qquad \text{Re}(p)>0\\
+			& \mathscr{L}[\sin\omega t]=\frac{p}{p^2+\omega^2},\qquad \text{Re}(p)>0
+		\end{align*}
+		\item 幂函数：%
+		$$
+		\mathscr{L}[t^n]=\frac{n!}{p^{n+1}},\qquad \text{Re}(p)>0
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Laplace变换的性质}
+	\begin{enumerate}
+		\item 线性性：%
+		$$
+		\mathscr{L}[f(t)+g(t)]=\mathscr{L}[f(t)]+\mathscr{L}[g(t)],\qquad 
+		\mathscr{L}[\lambda f(t)]=\lambda \mathscr{L}[f(t)]
+		$$
+		\item 位移性：%
+		$$
+		\mathscr{L}[\ee{at}f(t)]=F(p-a),\qquad \text{Re}(p)>a
+		$$
+		\item 延迟性：%
+		$$
+		\mathscr{L}[f(t-\tau)]=\ee{-p\tau}\mathscr{L}[f(t)],\qquad t\ge \tau
+		$$
+		\item 相似性：%
+		$$
+		\mathscr{L}[f(ct)]=\frac{1}{c}F\left(\frac{p}{c}\right)
+		$$
+		\item 微分性：%
+		$$
+		\mathscr{L}[f'(t)]=p\mathscr{L}[f(t)]-f(0)
+		$$
+		进而%
+		$$
+		\mathscr{L}[f^{(n)}(t)]
+		=p^n\mathscr{L}[f(t)]-(p^{n-1}f(0)+\cdots+pf^{(n-2)}(0)-f^{(n-1)}(0))
+		$$
+		\item 卷积性：%
+		$$
+		\mathscr{L}[f(t)*g(t)]=\mathscr{L}[f(t)]\cdot\mathscr{L}[g(t)]
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{Laplace变换的应用}
+
+\begin{example}
+	求解半无限长细杆的热传导定解问题
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx}+hu,\qquad & x>0,t>0\\
+		u(x,0)=0,\qquad & x\ge 0\\
+		u(0,t)=u_0,\qquad & t\ge 0\\
+		\lim\limits_{x\to+\infty}u(x,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{example}
+
+\begin{proof}
+	对方程和定解条件关于$t$进行Laplace变换%
+	$$
+	\tilde{u}(x,p)=\mathscr{L}[u(x,t)]
+	$$
+	那么%
+	$$
+	\begin{cases}
+		p\tilde{u}=a^2\tilde{u}_{xx}-h\tilde{u}\\
+		\tilde{u}(0,p)=\frac{u_0}{p}\\
+		\lim\limits_{x\to+\infty}\tilde{u}(x,p)=0
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(x,p)=\frac{u_0}{p}\ee{-\frac{\sqrt{p+h}}{a}x}
+	$$
+	进而%
+	$$
+	u(x,t)=
+	\frac{xu_0}{2a\sqrt{\pi}}\int_{0}^{t}\frac{1}{\tau^{\frac{3}{2}}}\ee{-\frac{x^2}{4a^2\tau}-h\tau}\dd\tau
+	$$
+\end{proof}
+
+\begin{example}
+	求解定解问题
+	$$
+	\begin{cases}
+		u_t=u_{xx},\qquad & 0<x<1,t>0\\
+		u(0,t)=u(1,t)=0,\qquad & t\ge 0\\
+		u(x,0)=\sin\pi x,\qquad 0\le x \le 1
+	\end{cases}
+	$$
+\end{example}
+
+\begin{proof}
+	对方程和定解条件关于$t$进行Laplace变换%
+	$$
+	\tilde{u}(x,p)=\mathscr{L}[u(x,t)]
+	$$
+	那么%
+	$$
+	\begin{cases}
+		p\tilde{u}-\sin\pi x=\tilde{u}_{xx}\\
+		\tilde{u}(0,t)=\tilde{u}(1,t)=0
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(x,p)=\frac{\sin\pi x}{p+\pi^2}
+	$$
+	进而%
+	$$
+	u(x,t)=
+	\ee{-\pi^2t}\sin\pi x
+	$$
+\end{proof}
+
+\begin{example}
+	求解定解问题
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx}+b,\qquad & x>0,t>0\\
+		u(0,t)=0,\qquad & t\ge 0\\
+		\lim\limits_{x\to+\infty}u_x(x,t)=0,\qquad & t\ge 0\\
+		u(x,0)=u_t(x,0)=0,\qquad & x\ge 0
+	\end{cases}
+	$$
+\end{example}
+
+\begin{proof}
+	对方程和定解条件关于$t$进行Laplace变换%
+	$$
+	\tilde{u}(x,p)=\mathscr{L}[u(x,t)]
+	$$
+	那么%
+	$$
+	\begin{cases}
+		p^2\tilde{u}=a^2\tilde{u}_{xx}+\frac{b}{p}\\
+		\tilde{u}(0,t)=0\\
+		\lim\limits_{x\to+\infty}\tilde{u}_x(x,t)=0
+	\end{cases}
+	$$
+	解得%
+	$$
+	\tilde{u}(x,p)=\frac{b}{p^3}\left(1-\ee{-\frac{p}{a}x}\right)
+	$$
+	进而%
+	$$
+	u(x,t)=\begin{cases}
+		\dis\frac{b}{2}t^2,\qquad & \dis0<t\le\frac{x}{a}\\
+		\dis\frac{b}{2}\left(t^2-\left(t-\frac{x}{a}\right)^2\right),\qquad & \dis t>\frac{x}{a}
+	\end{cases}
+	$$
+\end{proof}
+
+\chapter{波动方程}
+
+\section{一维波动方程的特征线法}
+
+\subsection{齐次波动方程}
+
+\begin{theorem}{齐次波动方程}
+	齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{theorem}
+
+\begin{proof}
+	作特征变换%
+	$$
+	\xi=x+at,\qquad \eta=x-at
+	$$
+	则方程化为%
+	$$
+	u_{\xi\eta}=0
+	$$
+	解得%
+	$$
+	u(\xi,\eta)=F(\xi)+G(\eta)
+	$$
+	其中$F,G$为任意二阶连续可微函数，进而原方程通解为%
+	$$
+	u(x,t)=F(x+at)+G(x-at)
+	$$
+	由初始条件
+	\begin{align*}
+		& F(x)=\frac{1}{2}\varphi(x)+\frac{1}{2a}\int_{x_0}^{x}\psi(\xi)\dd\xi+C\\
+		& G(x)=\frac{1}{2}\varphi(x)-\frac{1}{2a}\int_{x_0}^{x}\psi(\xi)\dd\xi-C
+	\end{align*}
+	从而原方程的形式解为%
+	$$
+	u(x,t)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{proof}
+
+\subsection{齐次波动方程解的性质}
+
+\begin{theorem}{解的存在性定理}
+	对于齐次波动方程%
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	如果$\varphi$为二阶连续可微函数，$\psi$为一阶连续可微函数，那么D'Alembert公式
+	$$
+	u(x,t)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+	为原方程的解。
+\end{theorem}
+
+\begin{theorem}{解的唯一性定理}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	如果存在解，那么解存在唯一。
+\end{theorem}
+
+\begin{theorem}{解的稳定性定理}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	如果存在解，那么解具有稳定性；换言之，对于任意$\varepsilon>0$，存在$\delta>0$，使得成立%
+	$$
+	|\varphi|<\delta,|\psi|<\delta\implies|u|<\varepsilon
+	$$
+\end{theorem}
+
+\subsection{齐次波动方程的广义解}
+
+\begin{definition}{广义解}
+	对于函数空间$(\mathscr{F},\|\cdot\|)$，以及齐次弦振动方程%
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	其中$\varphi,\psi\in \mathscr{F}$，记$\{ \varphi_n,\psi_n \}_{n=1}^{\infty}\sub\mathscr{F}$对应的齐次弦振动方程%
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi_n(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi_n(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	的解为$u_n$，若在$\R\times\R^+$中内闭成立
+	$$
+	\|\varphi_n-\varphi\|\to0,\qquad \|\psi_n-\psi\|\to 0
+	$$
+	则存在$u\in \mathscr{F}$，使得在$\R\times\R^+$中内闭成立%
+	$$
+	\|u_n-u\|\to 0
+	$$
+	称$u$为原方程的广义解。
+\end{definition}
+
+\subsection{D'Alembert公式的物理意义}
+
+\begin{definition}{D'Alembert公式}{D'Alembert公式}
+	$$
+	u(x,t)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{definition}
+
+\begin{definition}{依赖区间}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	解$u(x,t)$在点$(x,t)$处的值由闭区间$[x-at,x+at]$对应的初值决定，称闭区间$[x-at,x+at]$为点$(x,t)$的依赖区间。
+\end{definition}
+
+\begin{definition}{决定区域}
+	对于齐次波方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	解在%
+	$$
+	D_1=\{ (x,t):x_1+at\le x \le x_2-at,t\ge 0 \}
+	$$
+	中的值只依赖于区间$[x_1,x_2]$上的初值，称区域$D_1$为区间$[x_1,x_2]$的决定区域。
+\end{definition}
+
+\begin{definition}{影响区域}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	区间$[x_1,x_2]$上的初值可以影响区域%
+	$$
+	D_2=\{ (x,t):x_1-at\le x \le x_2+at,t\ge 0 \}
+	$$
+	点$x_0$的初值可以影响区域%
+	$$
+	D_3=\{ (x,t):x_0-at\le x \le x_0+at,t\ge 0 \}
+	$$
+	称区域$D_2$为区间$[x_1,x_2]$的影响区域，区域$D_3$为区间$x_0$的影响区域。
+\end{definition}
+
+\subsection{D'Alembert公式的进一步思考}
+
+对于齐次弦振动方程
+$$
+\begin{cases}
+	u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+	u(x,0)=\varphi(x),\qquad & x\in \R\\
+	u_t(x,0)=\psi(x),\qquad & x\in \R
+\end{cases}
+$$
+以$(\varphi,0)$为初值的问题的解为
+$$
+u(\varphi,0)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))
+$$
+以$(0,\varphi)$为初值的问题的解为
+$$
+u(0,\varphi)=\frac{1}{2a}\int_{x-at}^{x+at}\varphi(\xi)\dd\xi
+$$
+那么
+$$
+\frac{\partial }{\partial t}u(0,\varphi)=u(\varphi,0)
+$$
+因此%
+$$
+u(x,t)=u(\varphi,0)+u(0,\psi)=u_t(0,\varphi)+u(0,\psi)
+$$
+
+\section{三维波动方程的球面平均法}
+
+\subsection{齐次波动方程}
+
+\begin{definition}{球面平均}
+	定义函数$h$在点$P(x,y,z)$处，以$r$为半径的球面平均值为
+	$$
+	\overline{h}(P,r)=\frac{1}{4\pi r^2}\IInt_{\partial B_r(P)}h\dd S
+	$$
+	换言之%
+	$$
+	\overline{h}(x,y,z,r)
+	=\frac{1}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+	h(x+r\sin\theta\cos\varphi,\eta=y+r\sin\theta\sin\varphi,z+r\cos\theta)\sin\theta\dd\theta
+	$$
+\end{definition}
+
+\begin{proof}
+	对于$(\xi,\eta,\zeta)\in \partial B_r(P)$作换元%
+	$$
+	\xi=x+r\sin\theta\cos\varphi,\qquad
+	\eta=y+r\sin\theta\sin\varphi,\qquad
+	\zeta=z+r\cos\theta
+	$$
+	那么%
+	$$
+	E=\xi_\theta^2+\eta_\theta^2+\zeta_\theta^2=r^2,\qquad
+	F=\xi_\theta\xi_\varphi+\eta_\theta\eta_\varphi+\zeta_\theta\zeta_\varphi=0,\qquad
+	G=\xi_\varphi^2+\eta_\varphi^2+\zeta_\varphi^2=r^2\sin^2\theta
+	$$
+	因此%
+	$$
+	\dd S=\sqrt{EG-F^2}\dd\theta\dd\varphi
+	=r^2\sin\theta\dd\theta\dd\varphi
+	$$
+	因此%
+	\begin{align*}
+		\overline{h}(x,y,y,r)
+		& = \frac{1}{4\pi r^2}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+		h(x+r\sin\theta\cos\varphi,\eta=y+r\sin\theta\sin\varphi,z+r\cos\theta)r^2\sin\theta\dd\theta\\
+		& = \frac{1}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+		h(x+r\sin\theta\cos\varphi,\eta=y+r\sin\theta\sin\varphi,z+r\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{proof}
+
+\begin{theorem}{三维波动方程}
+	三维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(P,t)
+	=\frac{\partial}{\partial t}(t\overline{\varphi}(P,at))
+	+t\overline{\psi}(P,at)
+	$$
+	换言之
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	任取一点$P(x_0,y_0,z_0)$，对于波动方程的两边同时在球$B_r(P)$上积分，则
+	\begin{align*}
+		\text{LHS}
+		& = \IIInt_{B_r(P)}u_{tt}\dd x\dd y \dd z\\
+		& = \frac{\partial^2}{\partial t^2}\IIInt_{B_r(P)}u\dd x\dd y \dd z\\
+		& = \frac{\partial^2}{\partial t^2}\int_{0}^{r}\rho^2\dd\rho\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}u(x_0+\rho\sin\theta\cos\varphi,y_0+\rho\sin\theta\sin\varphi,z_0+\rho\cos\theta,t)\sin\theta\dd\theta
+	\end{align*}
+	\begin{align*}
+		\text{RHS}
+		& = \IIInt_{B_r(P)}a^2(u_{xx}+u_{yy}+u_{zz})\dd x\dd y \dd z\\
+		& =  a^2\IIInt_{B_r(P)}\left(\frac{\partial u_x}{\partial x}+\frac{\partial u_y}{\partial y}+\frac{\partial u_z}{\partial z}\right)\dd x\dd y \dd z\\
+		& = a^2\IInt_{\partial B_r(P)}u_x\dd y\dd z+u_y\dd z\dd x+u_z\dd x\dd y\\
+		& = a^2\IInt_{\partial B_r(P)}\nabla u\cdot\dd\bs{S}\\
+		& = a^2r^2\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\frac{\partial}{\partial r}u(x_0+r\sin\theta\cos\varphi,y_0+r\sin\theta\sin\varphi,z_0+r\cos\theta)\sin\theta\dd\theta\\
+		& = 4\pi a^2r^2\frac{\partial}{\partial r}\overline{u}\\
+		& = 4\pi a^2r^2\overline{u}_r
+	\end{align*}
+	两边再对$t$求导
+	\begin{align*}
+		\text{LHS}
+		& = r^2\frac{\partial^2}{\partial t^2}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}u(x_0+r\sin\theta\cos\varphi,y_0+r\sin\theta\sin\varphi,z_0+r\cos\theta,t)\sin\theta\dd\theta\\
+		& = 4\pi r^2\frac{\partial^2}{\partial t^2}\overline{u}\\
+		& = 4\pi r^2\overline{u}_{tt}\\
+		\text{RHS}
+		& = 4\pi a^2\frac{\partial}{\partial r}r^2\overline{u}_r\\
+		& = 4\pi a^2 r(r\overline{u})_{rr}
+	\end{align*}
+	因此$r\overline{u}_{tt}=a^2(r\overline{u})_{rr}$。记$V=r\overline{u}$，则$V_{tt}=a^2V_{rr}$。显然%
+	$$
+	V|_{r=0}=0,\qquad 
+	V|_{t=0}=r\overline{\varphi},\qquad 
+	V_t|_{t=0}=r\overline{\psi}
+	$$
+	从而%
+	$$
+	\begin{cases}
+		V_{tt}=a^2V_{rr},\qquad & r>0,t>0\\
+		V|_{r=0}=0,\qquad & t\ge 0\\
+		V|_{t=0}=r\overline{\varphi},\qquad & t\ge 0\\
+		V_t|_{t=0}=r\overline{\psi},\qquad & t\ge 0
+	\end{cases}
+	$$
+	由D'Alembert公式\ref{def:D'Alembert公式}%
+	$$
+	V=\begin{cases}
+		\dis\frac{1}{2}\left((r+at)\overline{\varphi}(P,r+at)+(r-at)\overline{\varphi}(P,r-at)\right)+\frac{1}{2a}\int_{r-at}^{r+at}\xi\overline{\psi}(P,\xi)\dd\xi,\qquad & r-at\ge 0\\
+		\dis\frac{1}{2}\left((r+at)\overline{\varphi}(P,r+at)-(at-r)\overline{\varphi}(P,at-r)\right)+\frac{1}{2a}\int_{at-r}^{r+at}\xi\overline{\psi}(P,\xi)\dd\xi,\qquad & r-at< 0
+	\end{cases}
+	$$
+	从而
+	\begin{align*}
+		u(P,t)
+		& = \lim_{r\to 0}\overline{u}\\
+		& = \lim_{r\to 0}\frac{V}{r}\\
+		& = \lim_{r\to 0}\frac{(r+at)\overline{\varphi}(P,r+at)-(at-r)\overline{\varphi}(P,at-r)}{2r}+\lim_{r\to 0}\frac{1}{2ar}\int_{at-r}^{r+at}\xi\overline{\psi}(P,\xi)\dd\xi\\
+		& = \frac{\partial}{\partial t}\left(t\overline{\varphi}(P,at)\right)+t\overline{\psi}(P,at)\\
+		& = \frac{\partial}{\partial t}\left(\frac{t}{4\pi r^2}\IInt_{\partial B_{at}(P)}\varphi\dd S\right)+\frac{t}{4\pi r^2}\IInt_{\partial B_{at}(P)}\psi\dd S
+	\end{align*}
+	进而原方程的形式解为%
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{proof}
+
+\begin{definition}{Poisson公式}{Poisson公式}
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{definition}
+
+\subsection{非齐次波动方程}
+
+\begin{theorem}{三维波动方程}
+	三维波动方程
+	\begin{equation}
+		\begin{cases}\label{三维波动方程1}
+			u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz})+f(x,y,z,t),\qquad & (x,y,z)\in \R^3,t>0\\
+			u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+			u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+		\end{cases}\tag{*}
+	\end{equation}
+	的形式解为
+	{\small{
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\\
+		& + \int_{0}^{t}\frac{t-\tau}{4\pi}\dd\tau\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}f(x+a(t-\tau)\sin\theta\cos\varphi,y+a(t-\tau)\sin\theta\sin\varphi,z+a(t-\tau)\cos\theta,\tau)\sin\theta\dd\theta
+	\end{align*}
+	}}
+\end{theorem}
+
+\begin{proof}
+	设三维波动方程
+	\begin{equation}
+		\begin{cases}\label{三维波动方程2}
+			w_{tt}=a^2(w_{xx}+w_{yy}+w_{zz}),\qquad & (x,y,z)\in \R^3,t>\tau\\
+			w(x,y,z,\tau)=0,\qquad & (x,y,z)\in \R^3\\
+			w_t(x,y,z,\tau)=f(x,y,z,\tau),\qquad & (x,y,z)\in \R^3
+		\end{cases}\tag{**}
+	\end{equation}
+	的解为$w(x,y,z,t;\tau)$，那么由齐次化原理，三维波动方程
+	\begin{equation}
+		\begin{cases}\label{三维波动方程3}
+			u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz})+f(x,y,z,t),\qquad & (x,y,z)\in \R^3,t>0\\
+			u(x,y,z,0)=0,\qquad & (x,y,z)\in \R^3\\
+			u_t(x,y,z,0)=0,\qquad & (x,y,z)\in \R^3
+		\end{cases}\tag{***}
+	\end{equation}
+	的解为%
+	$$
+	u(x,y,z,t)=\int_{0}^{t}w(x,y,z,t;\tau)\dd\tau
+	$$
+	
+	考察三维波动方程(\ref{三维波动方程2})，令$s=t-\tau$，则
+	\begin{equation}
+		\begin{cases}
+			w_{ss}=a^2(w_{xx}+w_{yy}+w_{zz}),\qquad & (x,y,z)\in \R^3,s>0\\
+			w(x,y,z,0)=0,\qquad & (x,y,z)\in \R^3\\
+			w_t(x,y,z,0)=f(x,y,z,0),\qquad & (x,y,z)\in \R^3
+		\end{cases}
+	\end{equation}
+	从而由Poisson公式\ref{def:Poisson公式}%
+	$$
+	w(x,y,z,s)
+	=\frac{s}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}f(x+as\sin\theta\cos\varphi,y+as\sin\theta\sin\varphi,z+as\cos\theta,0)\sin\theta\dd\theta
+	$$
+	因此%
+	{\small{
+	$$
+	w(x,y,z,t;\tau)
+	=\frac{t-\tau}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}f(x+a(t-\tau)\sin\theta\cos\varphi,y+a(t-\tau)\sin\theta\sin\varphi,z+a(t-\tau)\cos\theta,\tau)\sin\theta\dd\theta
+	$$
+	}}
+	由齐次化原理三维波动方程(\ref{三维波动方程3})的解为%
+	{\small{
+	$$
+	u(x,y,z,t)=\int_{0}^{t}\frac{t-\tau}{4\pi}\dd\tau\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}f(x+a(t-\tau)\sin\theta\cos\varphi,y+a(t-\tau)\sin\theta\sin\varphi,z+a(t-\tau)\cos\theta,\tau)\sin\theta\dd\theta
+	$$
+	}}
+	进而原三维波动方程(\ref{三维波动方程1})的形式解为
+	{\small{
+		\begin{align*}
+			u(x,y,z,t)
+			= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+			& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\\
+			& + \int_{0}^{t}\frac{t-\tau}{4\pi}\dd\tau\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}f(x+a(t-\tau)\sin\theta\cos\varphi,y+a(t-\tau)\sin\theta\sin\varphi,z+a(t-\tau)\cos\theta,\tau)\sin\theta\dd\theta
+		\end{align*}
+	}}
+\end{proof}
+
+\subsection{依赖区域、决定区域、影响区域}
+
+\begin{definition}{依赖区域}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	称球面
+	$$
+	(x-x_0)^2+(y-y_0)^2+(z-z_0)^2=(at_0)^2
+	$$
+	为点$(x_0,y_0,z_0,t_0)$的依赖区域。
+\end{definition}
+
+\begin{definition}{决定区域}
+	对于齐次波方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	称特征锥
+	$$
+	(x-x_0)^2+(y-y_0)^2+(z-z_0)^2\le a^2(t_0-t)^2,\qquad t_0\ge t
+	$$
+	为球域
+	$$
+	(x-x_0)^2+(y-y_0)^2+(z-z_0)^2\le (at_0)^2,\qquad t=0
+	$$
+	的决定区域。
+\end{definition}
+
+\begin{definition}{影响区域}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	点$(x_0,y_0,z_0,0)$的影响区域为%
+	$$
+	(x-x_0)^2+(y-y_0)^2+(z-z_0)^2=(at)^2,\qquad t\ge 0
+	$$
+\end{definition}
+
+\section{二维波动方程的降维法}
+
+\subsection{齐次波动方程}
+
+\begin{theorem}{二维波动方程}
+	二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的形式解为
+	\begin{align*}
+		u(x,y,t)
+		= & \frac{\partial}{\partial t}\left(\frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\varphi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta\right)\\
+		& + \frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\psi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	将$\R^2$看作$\R^3$的子空间，由Poisson公式\ref{def:Poisson公式}，三维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\Phi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\Psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	的形式解为
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\Phi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\Psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+	因此原二维波动方程的形式解为
+	\begin{align*}
+		u(x,y,t)
+		= & \frac{\partial}{\partial t}\left(\frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\varphi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta\right)\\
+		& + \frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\psi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta
+	\end{align*}
+\end{proof}
+
+\subsection{非齐次波动方程}
+
+\begin{theorem}{二维波动方程}
+	二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f(x,y,t),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的形式解为
+	\begin{align*}
+		u(x,y,t)
+		= & \frac{\partial}{\partial t}\left(\frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\varphi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta\right)\\
+		& + \frac{1}{2\pi a}\int_{0}^{at}\rho\dd\rho\int_{0}^{2\pi}\frac{\psi(x+\rho\cos\theta,y+\rho\sin\theta)}{\sqrt{(at)^2-\rho^2}}\dd\theta\\
+		& + \frac{1}{2\pi a}\int_{0}^{t}\dd\tau\int_{0}^{a(t-\tau)}\rho\dd\rho\int_{0}^{2\pi}\frac{f(x+\rho\cos\theta,y+\rho\sin\theta,\tau)}{\sqrt{a^2(t-\tau)^2-\rho^2}}\dd\tau
+	\end{align*}
+\end{theorem}
+
+\subsection{依赖区域、决定区域、影响区域}
+
+\begin{definition}{依赖区域}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	称圆域%
+	$$
+	(x-x_0)^2+(y-y_0)^2\le (at_0)^2
+	$$
+	为点$(x_0,y_0,t_0)$的依赖区域。
+\end{definition}
+
+\begin{definition}{决定区域}
+	对于齐次波方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	称特征锥体
+	$$
+	(x-x_0)^2+(y-y_0)^2\le a^2(t_0-t)^2,\qquad t_0\ge t
+	$$
+	为圆域
+	$$
+	(x-x_0)^2+(y-y_0)^2\le (at_0)^2
+	$$
+	的决定区域。
+\end{definition}
+
+\begin{definition}{影响区域}
+	对于齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^3\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^3
+	\end{cases}
+	$$
+	点$(x_0,y_0,0)$的影响区域为
+	$$
+	(x-x_0)^2+(y-y_0)^2\le (at)^2,\qquad t\ge 0
+	$$
+\end{definition}
+
+\section{能量积分}
+
+\subsection{能量不等式}
+
+\begin{lemma}{Gronwall不等式}{Gronwall不等式}
+	如果函数$G(x)$满足%
+	$$
+	\frac{\dd G(x)}{\dd x}\le A(x)+cG(x)
+	$$
+	其中$A(x)$为非负单调递增函数，$c>0$为常数，那么成立Gronwall不等式%
+	$$
+	G(x)\le G(0)\ee{cx}+\frac{\ee{cx}-1}{c}A(x)
+	$$
+\end{lemma}
+
+\begin{proof}
+	不等式两边乘以$\ee{-cx}$，成立%
+	$$
+	\frac{\dd}{\dd x}\left(\ee{-cx}G(x)\right)\le\ee{-cx}A(x)
+	$$
+	从$0$到$x$积分，成立%
+	$$
+	\ee{-cx}G(x)-G(0)\le \int_{0}^{x}\ee{-ct}A(t)\dd t
+	$$
+	由$A(x)$的单调性%
+	$$
+	G(x)
+	\le \ee{cx}\left(G(0)+\int_{0}^{x}\ee{-ct}A(t)\dd t\right)
+	\le \ee{cx}\left(G(0)+A(x)\int_{0}^{x}\ee{-ct}\dd t\right)
+	= G(0)\ee{cx}+\frac{\ee{cx}-1}{c}A(x)
+	$$
+\end{proof}
+
+\begin{lemma}{能量不等式}{能量不等式}
+	对于区域%
+	$$
+	\Omega:(x,y)\in \R^2,t>0
+	$$
+	如果在$\Omega$上的二阶连续可微、在$\overline{\Omega}$上一阶连续可微的函数$u$为二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f(x,y,t),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解，那么成立能量不等式%
+	$$
+	\IInt_{\Omega_\tau}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y
+	\le
+	M\left( 
+	\IInt_{\Omega_0}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y+\int_{0}^{\tau}\dd t\IInt_{\Omega_r}f^2\dd x\dd y
+	 \right)
+	$$
+	其中
+	\begin{align*}
+		& (x_0,y_0,t_0)\in\Omega,\qquad 
+		M=4\max\{ 1,t_0 \},\qquad
+		0\le \tau \le t_0\\
+		& \Omega_\tau:(x-x_0)^2+(y-y_0)^2= a^2(\tau-t_0)^2,\qquad
+		\Omega_0:(x-x_0)^2+(y-y_0)^2= a^2t_0^2
+	\end{align*}
+\end{lemma}
+
+\begin{theorem}{波动方程解的唯一性}
+	二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f(x,y,t),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解存在且存在唯一。
+\end{theorem}
+
+\begin{proof}
+	如果方程存在两个解$u_1,u_2$，那么$u=u_1-u_2$为二维齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=0,\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=0,\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解。由能量不等式\ref{lem:能量不等式}
+	$$
+	\IInt_{\Omega_\tau}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y
+	\le
+	M\left( 
+	\IInt_{\Omega_0}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y
+	\right)
+	$$
+	其中
+	\begin{align*}
+		& (x_0,y_0,t_0)\in\Omega,\qquad 
+		M=4\max\{ 1,t_0 \},\qquad
+		0\le \tau \le t_0\\
+		& \Omega_\tau:(x-x_0)^2+(y-y_0)^2= a^2(\tau-t_0)^2,\qquad
+		\Omega_0:(x-x_0)^2+(y-y_0)^2= a^2t_0^2
+	\end{align*}
+	由初值条件
+	$$
+	\IInt_{\Omega_\tau}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y
+	\le0
+	$$
+	因此%
+	$$
+	\IInt_{\Omega_\tau}\left(u_{t}^2+a^2\left(u_x^2+u_y^2\right)\right)\dd x\dd y=0
+	$$
+	从而在$\Omega_r$上，成立%
+	$$
+	u_x=u_y=u_t=0
+	$$
+	因此$u$为常数。由初始条件，$u\equiv0$，进而原方程解唯一。
+\end{proof}
+
+\subsection{解对初值条件的连续依赖性}
+
+\begin{lemma}{}{解对初值条件的连续依赖性引理}
+	对于区域%
+	$$
+	\Omega:(x,y)\in \R^2,t>0
+	$$
+	如果在$\Omega$上的二阶连续可微、在$\overline{\Omega}$上一阶连续可微的函数$u$为二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f(x,y,t),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解，那么成立不等式%
+	$$
+	\IIInt_{K_\tau}u^2\dd x\dd y\dd t
+	\le
+	N\left( 
+	\IInt_{\Omega_0}\left(\varphi^2+\psi^2+a^2(\varphi_x^2+\varphi_y^2)\right)\dd x\dd y+\IIInt_{K_\tau}f^2\dd x\dd y\dd t
+	\right)
+	$$
+	其中
+	\begin{align*}
+		& (x_0,y_0,t_0)\in\Omega,&&
+		0\le \tau \le t_0\\
+		& M=4\max\{ 1,t_0 \},&&
+		N= 3\max\{ t_0,t_0^3M \}\\
+		& K_\tau:(x-x_0)^2+(y-y_0)^2\le a^2(\tau-t_0)^2,&&
+		\Omega_0:(x-x_0)^2+(y-y_0)^2= a^2t_0^2
+	\end{align*}
+\end{lemma}
+
+\begin{theorem}{解对初值条件的连续依赖性}
+	对于任意$\varepsilon>0$，存在$\delta>0$，使得若
+	{\scriptsize{
+	$$
+	\max\left\{ \IInt_{\Omega_0}|\varphi_1-\varphi_2|^2\dd x\dd y,
+	\IInt_{\Omega_0}\left|\frac{\partial \varphi_1}{\partial x}-\frac{\partial \varphi_2}{\partial x}\right|^2\dd x\dd y,
+	\IInt_{\Omega_0}\left|\frac{\partial \varphi_1}{\partial y}-\frac{\partial \varphi_2}{\partial y}\right|^2\dd x\dd y,
+	\IInt_{\Omega_0}|\psi_1-\psi_2|^2\dd x\dd y,
+	\IIInt_{K_\tau}|f_1-f_2|^2\dd x\dd y\dd t \right\}<\delta
+	$$}}
+	则相应的二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f(x,y,t),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解$u_1,u_2$成立%
+	$$
+	\IIInt_{K_\tau}|u_1-u_2|^2\dd x\dd y\dd t<\varepsilon
+	$$
+	其中
+	\begin{align*}
+		& (x_0,y_0,t_0)\in\Omega,\qquad 
+		M=4\max\{ 1,t_0 \},\qquad
+		0\le \tau \le t_0\\
+		& K_\tau:(x-x_0)^2+(y-y_0)^2\le a^2(\tau-t_0)^2,\qquad
+		\Omega_0:(x-x_0)^2+(y-y_0)^2= a^2t_0^2
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	由于$u_1-u_2$为二维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy})+f_1(x,y,t)-f_2(x,y,t),\qquad & \Omega:(x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi_1(x,y)-\varphi_2(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi_1(x,y)-\psi_2(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	的解，由引理\ref{lem:解对初值条件的连续依赖性引理}
+	\begin{align*}
+		& \IIInt_{K_\tau}|u_1-u_2|^2\dd x\dd y\dd t\\
+		\le & 
+		N\left( 
+		\IInt_{\Omega_0}\left(|\varphi_1-\varphi_2|^2+|\psi_1-\psi_2|^2+a^2\left(\left|\frac{\partial \varphi_1}{\partial x}-\frac{\partial \varphi_2}{\partial x}\right|^2+\left|\frac{\partial \varphi_1}{\partial y}-\frac{\partial \varphi_2}{\partial y}\right|^2\right)\right)\dd x\dd y+\IIInt_{K_\tau}|f_1-f_2|^2\dd x\dd y\dd t
+		\right)\\
+		< & N(2a^2+3)\delta^2
+	\end{align*}
+	其中
+	\begin{align*}
+		& (x_0,y_0,t_0)\in\Omega,&&
+		0\le \tau \le t_0\\
+		& M=4\max\{ 1,t_0 \},&&
+		N= 3\max\{ t_0,t_0^3M \}\\
+		& K_\tau:(x-x_0)^2+(y-y_0)^2\le a^2(\tau-t_0)^2,&&
+		\Omega_0:(x-x_0)^2+(y-y_0)^2= a^2t_0^2
+	\end{align*}
+\end{proof}
+
+\chapter{椭圆型方程}
+
+\section{调和函数}
+
+\begin{definition}{调和函数}
+	称二阶连续可微函数$u$为调和函数，如果$\Delta u=0$。
+\end{definition}
+
+\begin{definition}{Laplace方程}
+	令$\Omega\sub\R^3$或$\Omega\sub\R^2$为有界连通区域。
+	\begin{enumerate}
+		\item 内问题
+		\begin{enumerate}
+			\item 第一边值问题（Dirichlet问题）：%
+			$$
+			\begin{cases}
+				\Delta u=0\\
+				u\mid_{\partial \Omega}=\varphi
+			\end{cases}
+			$$
+			\item 第二边值问题（Neumann问题）：%
+			$$
+			\begin{cases}
+				\Delta u=0\\
+				\frac{\partial u}{\partial\bs{n}}\mid_{\partial \Omega}=\varphi
+			\end{cases}
+			$$
+			\item 第三边值问题（Robin问题）：%
+			$$
+			\begin{cases}
+				\Delta u=0\\
+				\left(u\mid_{\partial \Omega}+\sigma u\right)=\varphi
+			\end{cases}
+			$$
+		\end{enumerate}
+		\item 外问题
+		\begin{enumerate}
+			\item 对于$\Omega\sub\R^3$，要求无穷远处一致收敛于$0$：
+			$$
+			\begin{cases}
+				\Delta u=0\\
+				\dis\lim_{r\to\infty}\sup_{\sqrt{x^2+y^2+z^2}=r}|u(x,y,z)|=0
+			\end{cases}
+			$$
+			\item 对于$\Omega\sub\R^2$，要求无穷远处有界：
+			$$
+			\begin{cases}
+				\Delta u=0\\
+				\dis\lim_{r\to\infty}\sup_{\sqrt{x^2+y^2+z^2}=r}|u(x,y,z)|\le M
+			\end{cases}
+			$$
+		\end{enumerate}
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	三维外问题
+	$$
+	\begin{cases}
+		\Delta u=0\\
+		u\mid_{\partial B_3}=1
+	\end{cases}
+	$$
+	的解为%
+	$$
+	u(x,y,z)=1,\qquad 
+	u(x,y,z)=\frac{1}{\sqrt{x^2+y^2+z^2}}
+	$$
+\end{example}
+
+\begin{theorem}{调和函数的基本积分表达式}
+	\begin{enumerate}
+		\item 
+		$$
+		\frac{1}{4\pi}\IInt_{\partial\Omega}\left(\frac{1}{|PP_0|}\frac{\partial u}{\partial \bs{n}}-u\frac{\partial }{\partial\bs{n}}\frac{1}{|PP_0|}\right)\dd S=\begin{cases}
+			u(P_0),\qquad & P_0\in\Omega\\
+			u(P_0)/2,\qquad & P_0\in\partial\Omega\\
+			u(P_0),\qquad & P_0\notin\overline{\Omega}
+		\end{cases}
+		$$
+		\item $\Delta u=0$的解为
+		$$
+		u(P_0)=\frac{1}{4\pi}\IInt_{\partial\Omega}\left(\frac{1}{|PP_0|}\frac{\partial u}{\partial \bs{n}}-u\frac{\partial }{\partial\bs{n}}\frac{1}{|PP_0|}\right)\dd S
+		$$
+		\item $\Delta u=f$的解为
+		$$
+		u(P_0)=\frac{1}{4\pi}\IInt_{\partial\Omega}\left(\frac{1}{|PP_0|}\frac{\partial u}{\partial \bs{n}}-u\frac{\partial }{\partial\bs{n}}\frac{1}{|PP_0|}\right)\dd S-\frac{1}{4\pi}\IIInt_{\Omega}\frac{f}{|PP_0|}\dd V
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	Laplace方程的Dirichlet内问题的解是唯一的，且连续依赖于边界条件。
+\end{theorem}
+
+\section{调和函数的基本性质}
+
+\subsection{Neumann问题有解的等价条件}
+
+\begin{lemma}
+	对于在$\Omega$上二阶连续可微、在$\overline{\Omega}$上一阶连续可微的调和函数$u$，成立%
+	$$
+	\IInt_{\partial\Omega}\frac{\partial u}{\partial \bs{n}}\dd S=0
+	$$
+\end{lemma}
+
+\begin{theorem}{Neumann问题有解的等价条件}
+	Neumann内问题
+	$$
+	\begin{cases}
+		\Delta u=0\\
+		\frac{\partial u}{\partial\bs{n}}\mid_{\partial \Omega}=\varphi
+	\end{cases}
+	$$
+	有界的充分必要条件为：%
+	$$
+	\IInt_{\partial\Omega}\varphi\dd S=0
+	$$
+\end{theorem}
+
+\subsection{平均值性质}
+
+\begin{theorem}{平均值性质}
+	调和函数$u$在其定义域$\Omega$内任一点$P$的值等于其在以该点为球心且包含于$\Omega$内的任意球面上的平均值。
+\end{theorem}
+
+\subsection{极值原理}
+
+\begin{theorem}{极值原理}
+	对于非常数调和函数$u$，在其定义域$\Omega$内部不达到其上界或下界。
+\end{theorem}
+
+\begin{corollary}{极值原理}
+	设$u$在$\Omega$内调和，且连续到边界，则$u$的最大值和最小值必在边界上达到。
+\end{corollary}
+
+\begin{corollary}{比较原理}
+	设$u,v$在$\Omega$内都调和，且连续到边界，若在$\partial\Omega$上成立$u\le v$，则在$\overline{\Omega}$上成立$u\le v$。
+\end{corollary}
+
+\begin{corollary}{比较原理}
+	设$u,v$在$\Omega$内都调和，且连续到边界，若在$\partial\Omega$上成立$u= v$，则在$\overline{\Omega}$上成立$u=v$。
+\end{corollary}
+
+\section{Green函数}
+
+\subsection{Green公式}
+
+\begin{theorem}{Green第一公式}
+	$$
+	\IIInt_\Omega(\nabla u\cdot\nabla v+u\Delta v)\dd V
+	=\IInt_{\partial\Omega}u\frac{\nabla v\cdot\nabla v}{|\nabla v|}\dd S
+	$$
+\end{theorem}
+
+\begin{theorem}{Green第二公式}
+	$$
+	\IIInt_\Omega(u\Delta v-v\Delta u)\dd V
+	=\IInt_{\partial\Omega}\left(u\frac{\nabla v\cdot\nabla v}{|\nabla v|}-v\frac{\nabla u\cdot\nabla u}{|\nabla u|}\right)\dd S
+	$$
+\end{theorem}
+
+\begin{definition}{Green函数}
+	$$
+	G(P,P_0)=\frac{1}{4\pi |PP_0|}-g(P,P_0),\qquad \begin{cases}
+		\Delta g=0,\qquad & P\in\Omega\\
+		g\mid_{\partial\Omega}=\frac{1}{4\pi |PP_0|}
+	\end{cases}
+	$$
+\end{definition}
+
+\begin{theorem}{三维Laplace方程Dirichlet问题}
+	Laplace方程Dirichlet问题
+	$$
+	\begin{cases}
+		\Delta u=0\\
+		u\mid_{\partial \Omega}=\varphi
+	\end{cases}
+	$$
+	的解为%
+	$$
+	u(P_0)
+	=-\IInt_{\partial\Omega}u\frac{\partial G}{\partial \bs{n}}\dd S
+	=-\IInt_{\partial\Omega}\varphi(P)\frac{\partial G(P,P_0)}{\partial\bs{n}}\dd S
+	$$
+\end{theorem}
+
+\textbf{Green函数的优点}
+\begin{enumerate}
+	\item Green函数只与区域有关，与边界条件无关。一旦求出了某区域上的Green函数，就可以一劳永逸地解决这个区域上的所有Dirichlet边值问题，且其解可以用积分的形式表出。
+	\item Green函数只与区域有关，与边界条件无关。一旦求出了某区域上的Green函数，就可以一劳永逸地解决这个区域上的所有Dirichlet边值问题，且其解可以用积分的形式表出
+\end{enumerate}
+
+\begin{theorem}
+	Poisson方程Dirichlet问题
+	$$
+	\begin{cases}
+		\Delta u=f\\
+		u\mid_{\partial \Omega}=\varphi
+	\end{cases}
+	$$
+	的解为%
+	$$
+	u(P_0)
+	=-\IInt_{\partial\Omega}\varphi(P)\frac{\partial G(P,P_0)}{\partial\bs{n}}\dd S
+	-\IIInt_{\Omega}G(P,P_0)f(P)\dd V
+	$$
+\end{theorem}
+
+\begin{theorem}{Green函数的性质}
+	\begin{enumerate}
+		\item $G(P,P_0)$除$P=P_0$点外处处成立$\Delta G=0$。
+		\item $\dis\lim_{P\to P_0}G(P,P_0)=\infty$
+		\item $G(P,P_0)\mid_{\partial\Omega}=0$
+		\item $\dis 0<G(P,P_0)<\frac{1}{4\pi |PP_0|}$
+		\item $G(P,Q)=G(Q,P)$
+		\item $\dis\IInt_{\partial\Omega}\frac{\partial G}{\partial\bs{n}}\dd S=-1$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{特殊区域上的Green公式}
+
+\begin{theorem}{球域$B_R$上的Green公式}
+	\begin{align*}
+		G(P,P_0)
+		& = \frac{1}{4\pi}\left(\frac{1}{|PP_0|}-\frac{R}{|OP_0|}\frac{1}{|PP_i|}\right)\\
+		& = \frac{1}{4\pi}\left(\frac{1}{\sqrt{\rho^2+\rho_0^2}-2\rho\rho_0\cos\gamma}-\frac{R}{\sqrt{R^4+\rho_0^2\rho^2-2R^2\rho_0\rho\cos\gamma}}\right)
+	\end{align*}
+	其中$P_i$为$P_0$关于$\partial B_R$的反演点%
+	$$
+	\rho=|OP|,\qquad
+	\rho_0=|OP_0|,\qquad
+	\gamma=\langle OM_0,OM \rangle
+	$$
+\end{theorem}
+
+\begin{theorem}{球域$B_R$上的Poisson公式}
+	球域上的Laplace方程Dirichlet问题
+	$$
+	\begin{cases}
+		\Delta u=0,\qquad \Omega:x^2+y^2+z^2<R^2\\
+		u\mid_{\partial \Omega}=\varphi
+	\end{cases}
+	$$
+	的解为%
+	\begin{align*}
+		u(P_0)
+		& = -\IInt_{\partial B_R}\varphi(P)\frac{\partial G(P,P_0)}{\partial\bs{n}}\dd S\\
+		& = \frac{1}{4\pi R}\IInt_{\partial B_R}\frac{\varphi(P)(R^2-\rho_0^2)}{(R^2+\rho_0^2-2R\rho\cos\gamma)^{3/2}}\dd S
+	\end{align*}
+	称之为球域的Poisson公式。
+\end{theorem}
+
+\subsection{二维问题}
+
+\begin{theorem}{二维Laplace方程Dirichlet问题}
+	Laplace方程Dirichlet问题%
+	$$
+	\begin{cases}
+		\Delta u=f,\qquad (x,y)\in\Omega\\
+		u\mid_{\partial\Omega}=\varphi
+	\end{cases}
+	$$
+	的解为%
+	$$
+	u(P_0)=-\int_{\partial\Omega}\varphi(P)\frac{\partial G(P,P_0)}{\partial\bs{n}}\dd s-\IInt_{\Omega}G(P,P_0)f(P)\dd S
+	$$
+	称之为Poission公式，其中
+	$$
+	G(P,P_0)=\frac{1}{2\pi}\ln\frac{1}{|PP_0|}-g(P,P_0),\qquad
+	\begin{cases}
+		\Delta g=0,\qquad (x,y)\in\Omega\\
+		g\mid_{\partial\Omega}=\frac{1}{2\pi}\ln\frac{1}{|PP_0|}
+	\end{cases}
+	$$
+	称之为Green公式。
+\end{theorem}
+
+\begin{theorem}{球域$B_R$上的Green公式}
+	\begin{align*}
+		G(P,P_0)
+		& = \frac{1}{2\pi}\left(\ln\frac{1}{|PP_0|-\ln\frac{R}{\rho_0|PP_i|}}\right)\\
+		& = \frac{1}{2\pi}\left(
+		\ln\frac{1}{\sqrt{\rho_0^2+\rho^2-2\rho_0\cos\gamma}}-\ln\frac{R}{\sqrt{R^4+\rho_0^2\rho^2-2R^2\rho_0\rho\cos\gamma}}
+		\right)
+	\end{align*}
+	其中$P_i$为$P_0$关于$\partial B_R$的反演点%
+	$$
+	\rho=|OP|,\qquad
+	\rho_0=|OP_0|,\qquad
+	\gamma=\langle OM_0,OM \rangle
+	$$
+\end{theorem}
+
+\begin{theorem}{球域$B_R$上的Poission公式}
+	Laplace方程Dirichlet问题%
+	$$
+	\begin{cases}
+		\Delta u=0,\qquad (x,y)\in B_R\\
+		u\mid_{\partial\Omega}=\varphi
+	\end{cases}
+	$$
+	的解为
+	\begin{align*}
+		u(P_0)
+		& = \frac{1}{2\pi R}\int_{\partial B_R}\frac{R^2-\rho_0^2}{R^2+\rho_0^2-2R\rho_0\cos\gamma}\varphi(P)\dd s\\
+		& = \frac{1}{2\pi}\int_{0}^{2\pi}\frac{R^2-\rho_0^2}{R^2+\rho_0^2-2R\rho_0\cos(\theta-\theta_0)}\varphi(\theta)\dd\theta
+	\end{align*}
+\end{theorem}
+
+\section{调和函数的进一步性质——Poisson公式的应用}
+
+\begin{theorem}{调和函数的解析性}
+	区域$\Omega$中的调和函数$u$为解析函数。
+\end{theorem}
+
+\begin{theorem}{Harnack第一定理}
+	对于在区域$\Omega$上调和、在$\overline{\Omega}$上连续的函数序列$\{ u_n \}_{n=1}^{\infty}$，如果$u_n$在$\partial\Omega$上一致收敛，那么$u_n$在$\Omega$内一致收敛，且其极限函数在$\Omega$内为调和函数。
+\end{theorem}
+
+\begin{theorem}{Harnack不等式}
+	如果$u$在球$B_R(Q)$内非负、调和，那么对于任意$P\in B_R(Q)$，成立不等式%
+	$$
+	\frac{R(R-|OP|)}{(R+|OP|)^2}u(Q)
+	\le u(P)
+	\le \frac{R(R+|OP|)}{(R-|OP|)^2}u(Q)
+	$$
+\end{theorem}
+
+\begin{theorem}{Liouville定理}
+	在$\R^2$上有上界或有下界的调和函数为常数。
+\end{theorem}
+
+\chapter{抛物型方程}
+
+\section{齐次热传导方程的极值原理}
+
+\begin{theorem}{极值原理}
+	对于矩形开域$R:0<x<l,0<t<T$，抛物边界%
+	$$
+	\Gamma=
+	\{ 0\le x\le l,t=0 \}\cup
+	\{ x=0,0\le t\le T \}\cup
+	\{ x=l,0\le t\le T \}
+	$$
+	如果$u(x,t)$在$\overline{R}$上连续，在$\overline{R}\setminus \Gamma$内二阶连续可微，且在$R$内成立$u_t=a^2u_{xx}$，那么$u(x,t)$在$\overline{R}$上的最大值于最小值在抛物边界$\Gamma$上达到。
+\end{theorem}
+
+\section{热传导方程混合问题的适定性}
+
+\begin{theorem}
+	热传导方程第一边值问题%
+	$$
+	\begin{cases}
+		u_{t}=a^2u_{xx}+f(x,t),\qquad & 0<x<l,t>0\\
+		u|_{t=0}=\varphi(x),\qquad & 0\le x\le l\\
+		u|_{x=0}=\mu_1(x),\qquad & t\ge 0\\
+		u|_{x=l}=\mu_2(x),\qquad & t\ge 0
+	\end{cases}
+	$$
+	的解唯一且连续依赖于定解条件。
+\end{theorem}
+
+\section{热传导方程柯西问题的适定性}
+
+\begin{theorem}
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u|_{t=0}=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为%
+	$$
+	u(x,t)=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd \xi
+	$$
+\end{theorem}
+
+\begin{theorem}
+	齐次热传导方程柯西问题解在有界函数类中唯一且连续依赖于初始条件。
+\end{theorem}
+
+\chapter{基本解与解的积分表达式}
+
+\section{广义函数及其性质}
+
+\subsection{广义函数与$\delta$函数的引出}
+
+\begin{definition}{支集}
+	定义函数$\varphi(x)$的支集为%
+	$$
+	\text{supp}(\varphi)=\overline{\{ x:\varphi(x)\ne 0 \}}
+	$$
+\end{definition}
+
+\begin{definition}{基本函数空间}
+	对于$a<b\in\overline{\R}$，定义基本函数空间
+	$$
+	\mathscr{D}(a,b)=\{ \varphi:(a,b)\to\R\text{为无穷此连续可微函数且}\text{supp}(\varphi)\text{为紧集} \}
+	$$
+\end{definition}
+
+\begin{definition}{弱收敛意义下的基本列}
+	称$(a,b)$上的可积函数序列$\{ u_n(x) \}_{n=1}^{\infty}$为弱收敛意义下的基本列，如果对于任意$\varphi(x)\in \mathscr{D}(a,b)$，存在极限%
+	$$
+	\lim_{n\to\infty}\int_{a}^{b}u_n(x)\varphi(x)\dd x
+	$$
+\end{definition}
+
+\begin{definition}{弱收敛意义下的基本列的等价}
+	称弱收敛意义下的基本列$\{ u_n(x) \}_{n=1}^{\infty}$与$\{ v_n(x) \}_{n=1}^{\infty}$等价，如果对于任意$\varphi(x)\in \mathscr{D}(a,b)$，成立
+	$$
+	\lim_{n\to\infty}\int_{a}^{b}u_n(x)\varphi(x)\dd x
+	=\lim_{n\to\infty}\int_{a}^{b}v_n(x)\varphi(x)\dd x
+	$$
+\end{definition}
+
+\begin{definition}{广义函数}
+	对于弱收敛意义下的基本列$\{ u_n(x) \}_{n=1}^{\infty}$，称泛函
+	\begin{align*}
+		u:\begin{aligned}[t]
+			\mathscr{D}(a,b) &\longrightarrow \R\\
+			\varphi(x) &\longmapsto \lim_{n\to\infty}\int_{a}^{b}u_n(x)\varphi(x)\dd x
+		\end{aligned}
+	\end{align*}
+	为广义函数。引入记号
+	$$
+	\langle u,\varphi \rangle
+	=\int_{a}^{b}u(x)\varphi(x)\dd x
+	=\lim_{n\to\infty}\int_{a}^{b}u_n(x)\varphi(x)\dd x
+	$$
+\end{definition}
+
+\begin{remark}
+	可积函数为广义函数。
+\end{remark}
+
+\begin{definition}{Dirac函数}
+	\begin{align*}
+		\delta(x):\begin{aligned}[t]
+			\mathscr{D}(a,b) &\longrightarrow \R\\
+			\varphi(x) &\longmapsto \varphi(0)
+		\end{aligned}
+	\end{align*}
+	\begin{align*}
+		\delta(x-x_0):\begin{aligned}[t]
+			\mathscr{D}(a,b) &\longrightarrow \R\\
+			\varphi(x) &\longmapsto \varphi(x_0)
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\subsection{广义函数与$\delta$函数的基本性质}
+
+\begin{proposition}{广义函数与$\delta$函数的基本性质}
+	\begin{enumerate}
+		\item 对称性：$\delta(x)=\delta(-x)$
+		\item $x\delta(x)=0$
+		\item $\delta(ax)=\delta(x)/|a|$
+		\item Fourier变换：$\mathscr{F}[\delta(x)]=1,\mathscr{F}[\delta(x-x_0)]=\ee{-i\lambda x_0}$
+	\end{enumerate}
+\end{proposition}
+
+\subsection{广义函数的导数}
+
+\begin{definition}{广义函数的导数}
+	称广义函数$f(x)$的导数为广义函数$f'(x)$，如果对于任意$\varphi(x)\in\mathscr{D}(\R)$，成立%
+	$$
+	\langle f'(x),\varphi(x) \rangle=-\langle f(x),\varphi'(x) \rangle
+	$$
+	对于多元广义函数$f(x)$，成立
+	$$
+	\langle f^{(\bs{\alpha})}(x),\varphi(x) \rangle=(-1)^{|\bs{\alpha}|}\langle f(x),\varphi^{\bs{\alpha}}(x) \rangle
+	$$
+	其中%
+	$$
+	f^{(\bs{\alpha})}=\frac{\partial^{\alpha_1+\cdots+\alpha_n}}{\partial x_1^{\alpha_1}\cdots\partial x_n^{\alpha_n}}
+	$$
+\end{definition}
+
+\begin{proposition}{广义函数导数的性质}
+	\begin{enumerate}
+		\item 广义函数的任意阶导数存在。
+		\item 广义函数的导数与求导次序无关。
+		\item 广义函数的微分运算具有连续性。
+	\end{enumerate}
+\end{proposition}
+
+\subsection{广义函数的卷积}
+
+\begin{theorem}
+	$$
+	\langle f*g,\varphi \rangle=
+	\langle f,\langle g,\varphi \rangle \rangle
+	$$
+\end{theorem}
+
+\begin{proposition}{广义函数卷积的性质}
+	\begin{enumerate}
+		\item $f*g=g*f$
+		\item $(f*g)*h=f*(g*h)$
+		\item $\delta*f=f$
+		\item $\dis\frac{\partial}{\partial x_k}f=\frac{\partial}{\partial x_k}\delta *f$
+		\item $\dis\frac{\partial}{\partial x_k}(f*g)=\frac{\partial}{\partial x_k}f*g=f*\frac{\partial}{\partial x_k}g$
+	\end{enumerate}
+\end{proposition}
+
+\section{基本解与解的积分表达式}
+
+\subsection{$L(u)=0$型方程的基本解}
+
+\begin{definition}{$L(u)=0$型方程的基本解}
+	对于常系数线性微分算子$L$，称方程%
+	$$
+	L(u)=\delta(P-P_0)
+	$$
+	的解$u(P,P_0)$为方程%
+	$$
+	L(u)=f(M)
+	$$
+	的基本解。此时%
+	$$
+	u(P)=\int_{\R^3}u(P,P_0)f(P_0)\dd V
+	$$
+	为方程$L(u)=f(M)$的解。
+\end{definition}
+
+\begin{theorem}{Laplace方程的基本解}
+	\begin{enumerate}
+		\item 三维Laplace方程%
+		$$
+		\frac{\partial^2 u}{\partial x^2}
+		+\frac{\partial^2 u}{\partial y^2}
+		+\frac{\partial^2 u}{\partial y^2}
+		=\delta(x-x_0,y-y_0,z-z_0)
+		$$
+		的基本解为%
+		$$
+		u(P,P_0)=-\frac{1}{4\pi}\frac{1}{|PP_0|}
+		$$
+		\item 二维Laplace方程%
+		$$
+		\frac{\partial^2 u}{\partial x^2}
+		+\frac{\partial^2 u}{\partial y^2}
+		=\delta(x-x_0,y-y_0)
+		$$
+		的基本解为%
+		$$
+		u(P,P_0)=-\frac{1}{2\pi}\ln\frac{1}{|PP_0|}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{$u_t=L(u)$型方程的基本解}
+
+\begin{theorem}{一维热传导方程的基本解}
+	称方程%
+	$$
+	\begin{cases}
+		v_t=a^2v_{xx},\qquad & x\in\R,t>0\\
+		v(x,0)=\delta(x-\xi),\qquad & x\in\R
+	\end{cases}
+	$$
+	的解%
+	$$
+	v(x,t;\xi)=\frac{1}{2a\sqrt{\pi t}}\ee{-\frac{(x-\xi)^2}{4a^2t}}
+	$$
+	为一维热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的基本解。
+	\begin{enumerate}
+		\item 一维齐次热传导方程
+		$$
+		\begin{cases}
+			u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+			u(x,0)=\varphi(x),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为%
+		$$
+		u(x,t)
+		=\int_{-\infty}^{+\infty}\varphi(\xi)v(x,t;\xi)\dd\xi
+		=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+		$$
+		\item 一维非齐次热传导方程
+		$$
+		\begin{cases}
+			u_t=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+			u(x,0)=\varphi(x),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为%
+		\begin{align*}
+			u(x,t)
+			& = \int_{-\infty}^{+\infty}\varphi(\xi)v(x,t;\xi)\dd\xi+\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}v(x,t-\tau;\xi)f(\xi,\tau)\dd\xi\\
+			& = \frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+			+\frac{1}{2a\sqrt{\pi }}\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\frac{1}{\sqrt{t-\tau}}\ee{-\frac{(x-\xi)^2}{4a^2(t-\tau)}}f(\xi,\tau)\dd\xi
+		\end{align*}
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{三维热传导方程的基本解}
+	称方程%
+	$$
+	\begin{cases}
+		v_t=a^2(v_{xx}+v_{yy}+v_{zz}),\qquad & (x,y,z)\in\R^3,t>0\\
+		v(x,y,z,0)=\delta(x-\xi,y-\eta,z-\zeta),\qquad & (x,y,z)\in\R^3
+	\end{cases}
+	$$
+	的解%
+	$$
+	v(x,y,z,t;\xi,\eta,\zeta)=\frac{1}{(2a\sqrt{\pi t})^3}\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}
+	$$
+	为三维热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in\R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & x\in\R
+	\end{cases}
+	$$
+	的基本解。
+	\begin{enumerate}
+		\item 三维齐次热传导方程
+		$$
+		\begin{cases}
+			u_t=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in\R^3,t>0\\
+			u(x,y,z,0)=\varphi(x,y,z),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为
+		\begin{align*}
+			u(x,y,z,t)
+			& = \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\varphi(\xi,\eta,\zeta)v(x,y,z,t;\xi,\eta,\zeta)\dd\xi\dd\eta\dd\zeta\\
+			& = \frac{1}{(2a\sqrt{\pi t})^3}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\varphi(\xi,\eta,\zeta)\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}\dd\xi\dd\eta\dd\zeta
+		\end{align*}
+		\item 三维非齐次热传导方程
+		$$
+		\begin{cases}
+			u_t=a^2(u_{xx}+u_{yy}+u_{zz})+f(x,y,z,t),\qquad & (x,y,z)\in\R^3,t>0\\
+			u(x,y,z,0)=\varphi(x,y,z),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为
+		\begin{align*}
+			u(x,y,z,t)
+			= &  \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\varphi(\xi,\eta,\zeta)v(x,y,z,t;\xi,\eta,\zeta)\dd\xi\dd\eta\dd\zeta\\
+			& +  \int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}v(x,y,z,t-\tau;\xi,\eta,\zeta)f(\xi,\eta,\zeta,\tau)\dd\xi\dd\eta\dd\zeta\\
+			= & \frac{1}{(2a\sqrt{\pi t})^3}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\varphi(\xi,\eta,\zeta)\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}\dd\xi\dd\eta\dd\zeta\\
+			& + \frac{1}{(2a\sqrt{\pi })^3}\int_{0}^{t}\dd\tau\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\frac{1}{(\sqrt{ t-\tau})^3}\ee{-\frac{(x-\xi)^2+(y-\eta)^2+(z-\zeta)^2}{4a^2t}}f(\xi,\eta,\zeta,\tau)\dd\xi\dd\eta\dd\zeta
+		\end{align*}
+	\end{enumerate}
+\end{theorem}
+
+\subsection{$u_{tt}=L(u)$型方程的基本解}
+
+\begin{theorem}{一维波动方程的基本解}
+	称方程%
+	$$
+	\begin{cases}
+		v_{tt}=a^2v_{xx},\qquad & x\in\R,t>0\\
+		v(x,0)=0,\qquad & x\in\R\\
+		v_t(x,0)=\delta(x-\xi),\qquad & x\in\R
+	\end{cases}
+	$$
+	的解%
+	$$
+	v(x,t;\xi)=\begin{cases}
+		\frac{1}{2a},\qquad & |x-\xi|<at\\
+		\frac{1}{4a},\qquad & |x-\xi|=at\\
+		0,\qquad & |x-\xi|>at
+	\end{cases}
+	$$
+	为一维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		u_t(x,0)=\psi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的基本解。
+	\begin{enumerate}
+		\item 一维齐次波动方程
+		$$
+		\begin{cases}
+			u_{tt}=a^2u_{xx},\qquad & x\in\R,t>0\\
+			u(x,0)=\varphi(x),\qquad & x\in\R\\
+			u_t(x,0)=\psi(x),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为
+		\begin{align*}
+			u(x,t)
+			& = \frac{\partial}{\partial t}\int_{-\infty}^{+\infty}v(x,t;\xi)\varphi(\xi)\dd\xi+\int_{-\infty}^{+\infty}v(x,t;\xi)\psi(\xi)\dd\xi\\
+			& = \frac{1}{2}(\varphi(x-at)+\varphi(x+at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		\end{align*}
+		\item 一维非齐次波动方程
+		$$
+		\begin{cases}
+			u_{tt}=a^2u_{xx}+f(x,t),\qquad & x\in\R,t>0\\
+			u(x,0)=\varphi(x),\qquad & x\in\R\\
+			u_t(x,0)=\psi(x),\qquad & x\in\R
+		\end{cases}
+		$$
+		的解为%
+		$$
+		u(x,t)
+		=\frac{1}{2}(\varphi(x-at)+\varphi(x+at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+		+\frac{1}{2a}\int_{0}^{t}\dd\tau\int_{x-a(t-\tau)}^{x+a(t+\tau)}f(\xi,\tau)\dd\xi
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\appendix
+
+\chapter{期末复习}
+
+\section{填空题}
+
+填空题共10题，20分，每题2分，仅涉及前五章内容。
+
+\subsection{二元二阶线性偏微分方程的分类}
+
+\begin{note}
+	对于如下二元$2$阶线性偏微分方程
+	$$
+	au_{xx}+2bu_{xy}+cu_{yy}+du_x+eu_y+fu=g
+	$$
+	其中$a,b,c,d,e,f,g$为关于$x,y$的二元连续可微函数，且$a^2+b^2+c^2>0$，其判别式为%
+	$$
+	\Delta=b^2-ac
+	$$
+	\begin{enumerate}
+		\item $\Delta>0$：双曲型方程
+		\item $\Delta=0$：抛物型方程
+		\item $\Delta<0$：椭圆型方程
+	\end{enumerate}
+\end{note}
+
+\subsection{简单二元二阶线性偏微分方程的通解}
+
+\begin{note}
+	\begin{enumerate}
+		\item $u_{xy}=0 \iff u(x,y)=f(x)+g(y)$
+		\item $u_{xx}=0 \iff u(x,y)=a(y)x+b(y)$
+		\item $u_{yy}=0 \iff u(x,y)=a(x)y+b(x)$
+	\end{enumerate}
+\end{note}
+
+\subsection{一维弦振动方程的通解}
+
+\begin{note}
+	弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l\\
+		u(0,t)=u(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+	$$
+\end{note}
+
+\begin{note}
+	弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l\\
+		u_x(0,t)=u_x(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+	的形式解为
+	{\small{
+			$$
+			u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+			$$
+	}}
+\end{note}
+
+\subsection{特征值问题}
+
+\begin{note}
+	特征值问题%
+	$$
+	X''(x)+\lambda X(x)=0
+	$$
+	\begin{enumerate}
+		\item 若$X(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X'(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		\item 若$X'(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+	\end{enumerate}
+\end{note}
+
+\subsection{Fourier变换}
+
+\begin{note}
+	\begin{enumerate}
+		\item Fourier变换：%
+		$$
+		F(\lambda)=\int_{-\infty}^{+\infty}f(\xi)\ee{-i\lambda\xi}\dd\xi
+		$$
+		\item Fourier逆变换：%
+		$$
+		f(x)=\frac{1}{2\pi}\int_{-\infty}^{+\infty}F(\lambda)\ee{i\lambda x}\dd\lambda
+		$$
+		\item Fourier积分：
+		\begin{align*}
+			& \frac{1}{\pi}\int_{0}^{+\infty}\dd\lambda\int_{-\infty}^{+\infty}f(\xi)\cos\lambda(x-\xi)\dd \xi\\
+			& \frac{1}{2\pi}\int_{-\infty}^{+\infty}\dd \lambda\int_{-\infty}^{+\infty} f(\xi)\ee{i\lambda(x-\xi)}\dd\xi
+		\end{align*}
+	\end{enumerate}
+\end{note}
+
+\begin{example}
+	\begin{align*}
+		& \mathscr{F}\left[\ee{-\alpha|x|}\right]=\frac{2\alpha}{\lambda^2+\alpha^2}\\
+		& \mathscr{F}\left[\frac{\sin ax}{x}\right]=\begin{cases}
+			\pi,\qquad & |\lambda|<a\\
+			\pi/2,\qquad & |\lambda|=a\\
+			0,\qquad & |\lambda|>a
+		\end{cases}
+	\end{align*}
+\end{example}
+
+\begin{property}
+	\begin{enumerate}
+		\item 线性性：
+		$$
+		\mathscr{F}[f(x)+g(x)]=\mathscr{F}[f(x)]+\mathscr{F}[g(x)],\qquad 
+		\mathscr{F}[\lambda f(x)]=\lambda \mathscr{F}[f(x)]
+		$$
+		\item 位移性：%
+		$$
+		\mathscr{F}[f(x-b)]=\ee{-i\lambda b}\mathscr{F}[f(x)],\qquad b\in\R
+		$$
+		\item 相似性：%
+		$$
+		\mathscr{F}[f(\alpha x)]=\frac{1}{|\alpha|}\mathscr{F}[f](\lambda/\alpha),\qquad \alpha\in\R\setminus\{0\}
+		$$
+		\item 微分性：
+		$$
+		\mathscr{F}[f']=i\lambda \mathscr{F}[f]
+		$$
+		\item 积分性：%
+		$$
+		\mathscr{F}\left[\int_{-\infty}^{x}f(\xi)\dd\xi\right]=\frac{1}{i\lambda}\mathscr{F}[f]
+		$$
+	\end{enumerate}
+\end{property}
+
+\subsection{Laplace变换}
+
+\begin{note}
+	Laplace变换：
+	$$
+	F(p)=\int_{0}^{+\infty}f(t)\ee{-pt}\dd t,\qquad p\in\C
+	$$
+\end{note}
+
+\begin{example}
+	\begin{enumerate}
+		\item 常值函数：%
+		$$
+		\mathscr{L}[c]=\frac{c}{p},\qquad \text{Re}(p)>0
+		$$
+		\item 指数函数：%
+		$$
+		\mathscr{L}[\ee{\alpha t}]=\frac{1}{p-\alpha},\qquad \text{Re}(p)>\text{Re}(\alpha)
+		$$
+		\item 三角函数：
+		\begin{align*}
+			& \mathscr{L}[\cos\omega t]=\frac{p}{p^2+\omega^2},\qquad \text{Re}(p)>0\\
+			& \mathscr{L}[\sin\omega t]=\frac{p}{p^2+\omega^2},\qquad \text{Re}(p)>0
+		\end{align*}
+		\item 幂函数：%
+		$$
+		\mathscr{L}[t^n]=\frac{n!}{p^{n+1}},\qquad \text{Re}(p)>0
+		$$
+	\end{enumerate}
+\end{example}
+
+\begin{property}
+	\begin{enumerate}
+		\item 线性性：%
+		$$
+		\mathscr{L}[f(t)+g(t)]=\mathscr{L}[f(t)]+\mathscr{L}[g(t)],\qquad 
+		\mathscr{L}[\lambda f(t)]=\lambda \mathscr{L}[f(t)]
+		$$
+		\item 位移性：%
+		$$
+		\mathscr{L}[\ee{at}f(t)]=F(p-a),\qquad \text{Re}(p)>a
+		$$
+		\item 延迟性：%
+		$$
+		\mathscr{L}[f(t-\tau)]=\ee{-p\tau}\mathscr{L}[f(t)],\qquad t\ge \tau
+		$$
+		\item 相似性：%
+		$$
+		\mathscr{L}[f(ct)]=\frac{1}{c}F\left(\frac{p}{c}\right)
+		$$
+		\item 微分性：%
+		$$
+		\mathscr{L}[f'(t)]=p\mathscr{L}[f(t)]-f(0)
+		$$
+		进而%
+		$$
+		\mathscr{L}[f^{(n)}(t)]
+		=p^n\mathscr{L}[f(t)]-(p^{n-1}f(0)+\cdots+pf^{(n-2)}(0)-f^{(n-1)}(0))
+		$$
+		\item 卷积性：%
+		$$
+		\mathscr{L}[f(t)*g(t)]=\mathscr{L}[f(t)]\cdot\mathscr{L}[g(t)]
+		$$
+	\end{enumerate}
+\end{property}
+
+\begin{example}
+	求函数的Laptops变换：
+	$$
+	f(t)=\sinh \omega t
+	$$
+\end{example}
+
+\begin{solution}
+	\begin{align*}
+		\mathscr{L}[f(t)]
+		& = \int_{0}^{+\infty}\text{e}^{-pt}\sinh \omega t\dd t\\
+		& = \int_{0}^{+\infty}\text{e}^{-pt}\frac{\text{e}^{\omega t}-\text{e}^{-\omega t}}{2}\dd t\\
+		& = \frac{1}{2}\int_{0}^{+\infty}\text{e}^{-(p-\omega)t}\dd t
+		-\frac{1}{2}\int_{0}^{+\infty}\text{e}^{-(p+\omega)t}\dd t\\
+		& = \frac{\omega}{p^2-\omega^2},\qquad \text{Re}(p)>|\text{Re}(\omega)|
+	\end{align*}
+\end{solution}
+
+\subsection{卷积}
+
+\begin{note}
+	卷积：%
+	$$
+	(f*g)(x)=\int_{-\infty}^{+\infty}f(x-t)g(t)\dd t
+	$$
+\end{note}
+
+\begin{property}
+	\begin{enumerate}
+		\item 交换律：$f*g=g*f$
+		\item 结合律：$f*(g*h)=(f*g)*h$
+		\item 分配律：$f*(g+h)=f*g+f*h$
+		\item 卷积的Fourier变换：%
+		$$
+		\mathscr{F}[f*g]=\mathscr{F}[f]\cdot\mathscr{F}[g],\qquad 
+		\mathscr{F}[f\cdot g]=\frac{1}{2\pi}\mathscr{F}[f]*\mathscr{F}[g]
+		$$
+	\end{enumerate}
+\end{property}
+
+\subsection{D'Alembert公式}
+
+\begin{note}
+	齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	的形式解为D'Alembert公式：
+	$$
+	u(x,t)=\frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{note}
+
+\begin{example}
+	用D'Alembert公式求解定解问题：
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=x^2,\qquad & x\in \R\\
+		u_t(x,0)=x,\qquad & x\in \R
+	\end{cases}
+	$$
+\end{example}
+
+\begin{solution}
+	由D'Alembert公式
+	\begin{align*}
+		u(x,t)
+		& = \frac{1}{2}((x+at)^2+(x-at)^2)+\frac{1}{2a}\int_{x-at}^{x+at}\xi\dd\xi\\
+		& = x^2+a^2t^2+xt
+	\end{align*}
+\end{solution}
+
+\subsection{依赖区间}
+
+\begin{note}
+	一维齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in \R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in \R\\
+		u_t(x,0)=\psi(x),\qquad & x\in \R
+	\end{cases}
+	$$
+	\begin{enumerate}
+		\item 依赖区间：点$(x,t)$的依赖区间为$[x-at,x+at]$。
+		\item 决定区域：区间$[x_1,x_2]$的决定区域为
+		$$
+		D_1=\{ (x,t):x_1+at\le x \le x_2-at,t\ge 0 \}
+		$$
+		\item 影响区域：点$x_0$的影响区域为
+		$$
+		D_2=\{ (x,t):x_0-at\le x \le x_0+at,t\ge 0 \}
+		$$
+		区间$[x_1,x_2]$的影响区域为
+		$$
+		D_3=\{ (x,t):x_1-at\le x \le x_2+at,t\ge 0 \}
+		$$
+	\end{enumerate}
+\end{note}
+
+\begin{note}
+	二维齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}),\qquad & (x,y)\in \R^2,t>0\\
+		u(x,y,0)=\varphi(x,y),\qquad & (x,y)\in \R^2\\
+		u_t(x,y,0)=\psi(x,y),\qquad & (x,y)\in \R^2
+	\end{cases}
+	$$
+	\begin{enumerate}
+		\item 依赖区域：点$(x_0,y_0,t_0)$的依赖区域为圆域
+		$$
+		(x-x_0)^2+(y-y_0)^2\le (at_0)^2
+		$$
+		\item 决定区域：圆域
+		$$
+		(x-x_0)^2+(y-y_0)^2\le (at_0)^2
+		$$
+		的决定区域为特征锥体
+		$$
+		(x-x_0)^2+(y-y_0)^2\le a^2(t_0-t)^2,\qquad t_0\ge t
+		$$
+		\item 影响区域：点$(x_0,y_0,0)$的影响区域为
+		$$
+		(x-x_0)^2+(y-y_0)^2\le (at)^2,\qquad t\ge 0
+		$$
+	\end{enumerate}
+\end{note}
+
+\begin{example}
+	在上半平面$\{ (x,t):x\in\R,t>0 \}$上给出一点$M(2,5)$，对于弦振动$u_{tt}=u_{xx}$方程来说，点$M$的依赖区间是什么？它是否落在点$(1,0)$​的影响区间内？
+\end{example}
+
+\begin{solution}
+	由于点$(x,t)$的依赖区间为$[x-t,x+t]$，因此点$M$的依赖区间为$[-3,7]$。
+	
+	由于点$x_0$的影响区域为
+	$$
+	D_3=\{ (x,t):x_0-at\le x \le x_0+at,t\ge 0 \}
+	$$
+	因此点$(1,0)$的影响区域为
+	$$
+	D_3=\{ (x,t):1-t\le x \le 1+t,t\ge 0 \}
+	$$
+	显然$(2,5)\in D_3$，因此$M$落在点$(1,0)$的影响区域内。
+\end{solution}
+
+\subsection{Green公式}
+
+\begin{note}
+	Green公式：
+	$$
+	G(M,M_0)=\frac{1}{4\pi}\ln\frac{1}{r_{MM_0}}-g(M,M_0),\qquad
+	\begin{cases}
+		\Delta g=0,\qquad (x,y)\in\Omega\\
+		g\mid_{\partial\Omega}=\frac{1}{4\pi}\ln\frac{1}{r_{MM_0}}
+	\end{cases}
+	$$
+\end{note}
+
+\subsection{调和函数的基本解}
+
+\begin{note}
+	\begin{enumerate}
+		\item 三维：%
+		$$
+		v(M,M_0)=\frac{1}{r_{MM_0}}
+		$$
+		\item 二维：
+		$$
+		v(M,M_0)=\ln\frac{1}{r_{MM_0}}
+		$$
+	\end{enumerate}
+\end{note}
+
+\subsection{调和函数的积分表达式}
+
+\begin{note}
+	\begin{enumerate}
+		\item 三维
+		\begin{enumerate}
+			\item $\Delta u=0$：
+			$$
+			u(M_0)=\frac{1}{4\pi}\IInt_{\partial\Omega}\left(\frac{1}{r_{MM_0}}\frac{\partial u}{\partial \bs{n}}-u\frac{\partial }{\partial\bs{n}}\frac{1}{r_{MM_0}}\right)\dd S
+			$$
+			\item $\Delta u=f$：
+			$$
+			u(M_0)=\frac{1}{4\pi}\IInt_{\partial\Omega}\left(\frac{1}{r_{MM_0}}\frac{\partial u}{\partial \bs{n}}-u\frac{\partial }{\partial\bs{n}}\frac{1}{r_{MM_0}}\right)\dd S-\frac{1}{4\pi}\IIInt_{\Omega}\frac{f}{r_{MM_0}}\dd V
+			$$
+		\end{enumerate}
+		\item 二维
+		\begin{enumerate}
+			\item Laplace方程Dirichlet问题
+			$$
+			\begin{cases}
+				\Delta u=0,\qquad (x,y)\in\Omega\\
+				u\mid_{\partial\Omega}=\varphi
+			\end{cases}
+			$$
+			的解为
+			$$
+			u(M_0)=-\int_{\partial\Omega}\varphi(M)\frac{\partial G(M,M_0)}{\partial\bs{n}}\dd s
+			$$
+			\item Laplace方程Dirichlet问题
+			$$
+			\begin{cases}
+				\Delta u=f,\qquad (x,y)\in\Omega\\
+				u\mid_{\partial\Omega}=\varphi
+			\end{cases}
+			$$
+			的解为Poission公式
+			$$
+			u(M_0)=-\int_{\partial\Omega}\varphi(M)\frac{\partial G(M,M_0)}{\partial\bs{n}}\dd s-\IInt_{\Omega}G(M,M_0)f(M)\dd S
+			$$
+		\end{enumerate}
+	\end{enumerate}
+\end{note}
+
+\subsection{球面平均值公式}
+
+\begin{note}
+	球面平均值公式：
+	$$
+	\overline{h}(M,r)=\frac{1}{4\pi r^2}\IInt_{\partial B_r(M)}h\dd S
+	$$
+\end{note}
+
+\section{问答题}
+
+问答题共7题，80分，前六题每题10分，最后一题10分。
+
+\subsection{二元二阶线性偏微分方程的化简}
+
+\begin{proposition}
+	对于如下二元$2$阶线性偏微分方程
+	$$
+	au_{xx}+2bu_{xy}+cu_{yy}+du_x+eu_y+fu=g
+	$$
+	其中$a,b,c,d,e,f,g$为关于$x,y$的二元连续可微函数，且$a^2+b^2+c^2>0$，其判别式为%
+	$$
+	\Delta=b^2-ac
+	$$
+	\begin{enumerate}
+		\item $\Delta>0$：双曲型方程
+		\item $\Delta=0$：抛物型方程
+		\item $\Delta<0$：椭圆型方程
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item $\Delta>0$—双曲型方程：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		存在两个实特征解
+		$$
+		\varphi(x,y)=C_1,\qquad
+		\psi(x,y)=C_2
+		$$
+		作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为\textbf{双曲型方程的第一标准型}
+		$$
+		u_{\xi\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+		进一步，作变量代换
+		$$
+		\alpha=\xi+\eta,\qquad 
+		\beta=\xi-\eta
+		$$
+		那么原方程化为\textbf{双曲型方程的第二标准型}
+		$$
+		u_{\alpha\alpha}-u_{\beta\beta}=Au_\alpha+Bu_\beta+Cu+D
+		$$
+		\item $\Delta=0$—抛物型方程：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		仅存在一个实特征解
+		$$
+		\varphi(x,y)=C
+		$$
+		任取与$\varphi$线性无关的函数$\psi$，作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为\textbf{抛物型方程的标准型}
+		$$
+		u_{\eta\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+		进一步，作变量代换
+		$$
+		v=u\exp\left(-\frac{1}{2}\int B(\eta,\tau)\dd \tau\right)
+		$$
+		那么原方程化为\textbf{抛物型方程的标准型}
+		$$
+		v_{\eta\eta}=Au_\xi+Cu+D
+		$$
+		\item $\Delta<0$—椭圆型方程：特征方程
+		$$
+		ay_x^2-2by_x+c=0
+		$$
+		仅存在复特征解
+		$$
+		\varphi(x,y)+i\psi(x,y)=C_1,\qquad
+		\varphi(x,y)-i\psi(x,y)=C_2
+		$$
+		作变量代换
+		$$
+		\xi=\varphi(x,y),\qquad
+		\eta=\psi(x,y)
+		$$
+		那么原方程化为\textbf{椭圆型方程的标准型}
+		$$
+		u_{\xi\xi}+u_{\eta\eta}=Au_\xi+Bu_\eta+Cu+D
+		$$
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	判断方程的类型。
+	$$
+	u_{xx}+xyu_{yy}=0
+	$$
+\end{example}
+
+\begin{solution}
+	特征方程为
+	$$
+	y_x^2+xy=0
+	$$
+	判别式为
+	$$
+	\Delta =-xy
+	$$
+	\begin{enumerate}
+		\item $xy>0$​：椭圆型方程。
+		\item $xy=0$​：抛物型方程。
+		\item $xy<0$​：双曲型方程。
+	\end{enumerate}
+\end{solution}
+
+\begin{example}
+	化下列方程为标准形式。%
+	$$
+	u_{xx}+4u_{xy}+5u_{yy}+u_x+2u_y=0
+	$$
+\end{example}
+
+\begin{solution}
+	特征方程为
+	$$
+	y_x^2-4y_x+5=0
+	$$
+	特征解为
+	$$
+	(2x-y)+ix=C_1,\qquad 
+	(2x-y)-ix=C_2
+	$$
+	作变量代换
+	$$
+	\xi=2x-y,\qquad 
+	\eta=x
+	$$
+	那么
+	\begin{align*}
+		& u_x=\frac{\partial u}{\partial x}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial x}=2u_{\xi}+u_{\eta}\\
+		& u_y=\frac{\partial u}{\partial y}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial y}=-u_{\xi}\\
+		& u_{xx}=\frac{\partial u_x}{\partial x}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial x}=4u_{\xi\xi}+4u_{\xi\eta}+u_{\eta\eta}\\
+		& u_{yy}=\frac{\partial u_y}{\partial y}=\frac{\partial u_y}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_y}{\partial \eta}\frac{\partial \eta}{\partial y}=u_{\xi\xi}\\
+		& u_{xy}=\frac{\partial u_x}{\partial y}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial y}=-2u_{\xi\xi}-u_{\xi\eta}
+	\end{align*}
+	代入原方程，化为椭圆型方程的标准型
+	$$
+	u_{\xi\xi}+u_{\eta\eta}+u_{\eta}=0
+	$$
+\end{solution}
+
+\begin{example}
+	化下列方程为标准形式。%
+	$$
+	u_{xx}+yu_{yy}=0
+	$$
+\end{example}
+
+\begin{solution}
+	特征方程为
+	$$
+	y_x^2+y=0
+	$$
+	当$y>0$时，特征解为
+	$$
+	2\sqrt{y}+ix=C_1,\qquad
+	2\sqrt{y}-ix=C_2
+	$$
+	作变量代换
+	$$
+	\xi=x,\qquad 
+	\eta=2\sqrt{y}
+	$$
+	那么
+	\begin{align*}
+		& u_x=\frac{\partial u}{\partial x}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi}\\
+		& u_y=\frac{\partial u}{\partial y}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial y}=\frac{2}{\eta}u_\eta\\
+		& u_{xx}=\frac{\partial u_x}{\partial x}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi\xi}\\
+		& u_{yy}=\frac{\partial u_y}{\partial y}=\frac{\partial u_y}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_y}{\partial \eta}\frac{\partial \eta}{\partial y}=\frac{4}{\eta^2}u_{\eta\eta}-\frac{4}{\eta^3}u_\eta
+	\end{align*}
+	代入原方程，化为椭圆型方程的标准型
+	$$
+	u_{\xi\xi}+u_{\eta\eta}=\frac{u_\eta}{\eta}
+	$$
+	当$y<0$时，特征解为
+	$$
+	x+2\sqrt{-y}=C_1,\qquad
+	x-2\sqrt{-y}=C_2
+	$$
+	作变量代换
+	$$
+	\xi=x+2\sqrt{-y},\qquad 
+	\eta=x-2\sqrt{-y}
+	$$
+	那么
+	\begin{align*}
+		& u_x=\frac{\partial u}{\partial x}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi}+u_{\eta}\\
+		& u_y=\frac{\partial u}{\partial y}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial y}=\frac{4}{\xi-\eta}(u_\eta-u_\xi)\\
+		& u_{xx}=\frac{\partial u_x}{\partial x}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi\xi}+2u_{\xi\eta}+u_{\eta\eta}\\
+		& u_{yy}=\frac{\partial u_y}{\partial y}=\frac{\partial u_y}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_y}{\partial \eta}\frac{\partial \eta}{\partial y}=\frac{1}{y}(2u_{\xi\eta}-u_{\xi\xi}-u_{\eta\eta})
+	\end{align*}
+	代入原方程，化为双曲型方程的第一标准型
+	$$
+	u_{\xi\eta}=\frac{u_\eta-u_\xi}{2(\xi-\eta)}
+	$$
+\end{solution}
+
+\begin{example}
+	确定下列方程的通解。
+	$$
+	u_{xx}-3u_{xy}+2u_{yy}=0
+	$$
+\end{example}
+
+\begin{solution}
+	特征方程为
+	$$
+	y_x^2+3y_x+2=0
+	$$
+	特征解为
+	$$
+	x+y=C_1,\qquad 
+	2x+y=C_2
+	$$
+	作变量代换
+	$$
+	\xi=x+y,\qquad 
+	\eta=2x+y
+	$$
+	那么
+	\begin{align*}
+		& u_x=\frac{\partial u}{\partial x}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi}+2u_{\eta}\\
+		& u_y=\frac{\partial u}{\partial y}=\frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial y}=u_{\xi}+u_{\eta}\\
+		& u_{xx}=\frac{\partial u_x}{\partial x}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial x}=u_{\xi\xi}+4u_{\xi\eta}+4u_{\eta\eta}\\
+		& u_{yy}=\frac{\partial u_y}{\partial y}=\frac{\partial u_y}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_y}{\partial \eta}\frac{\partial \eta}{\partial y}=u_{\xi\xi}+2u_{\xi\eta}+u_{\eta\eta}\\
+		& u_{xy}=\frac{\partial u_x}{\partial y}=\frac{\partial u_x}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial u_x}{\partial \eta}\frac{\partial \eta}{\partial y}=u_{\xi\xi}+3u_{\xi\eta}+2u_{\eta\eta}
+	\end{align*}
+	代入原方程，化为双曲型方程的第一标准型
+	$$
+	u_{\xi\eta}=0
+	$$
+	从而通解为
+	$$
+	u(\xi,\eta)=f(\xi)+g(\eta)
+	$$
+	即
+	$$
+	u(x,y)=f(x+y)+g(2x+y)
+	$$
+	其中$f,g$​​为任意二阶连续可微函数。
+\end{solution}
+
+\subsection{特征值问题}
+
+\begin{proposition}
+	特征值问题
+	\begin{equation}
+		X''(x)+\lambda X(x)=0
+		\label{二阶线性微分方程程}
+		\tag{*}
+	\end{equation}
+	\begin{enumerate}
+		\item 若$X(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X'(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		\item 若$X'(0)=X(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=A_n\cos\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+		\item 若$X(0)=X'(l)=0$，则
+		$$
+		\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+		X_n(x)=B_n\sin\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 若$\lambda>0$，则线性微分方程(\ref{二阶线性微分方程程})的特征方程为%
+		$$
+		t^2+\lambda=0
+		$$
+		其解为%
+		$$
+		t_1=i\sqrt{\lambda},\qquad
+		t_2=-i\sqrt{\lambda}
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程程})的通解为%
+		$$
+		X(x)=A\cos(\sqrt{\lambda}x)+B\sin(\sqrt{\lambda}x),\qquad
+		X'(x)=-A\sqrt{\lambda}\sin(\sqrt{\lambda}x)+B\sqrt{\lambda}\cos(\sqrt{\lambda}x)
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$A=0$，因此%
+			$$
+			X(x)=B\sin(\sqrt{\lambda}x),\qquad
+			X'(x)=B\sqrt{\lambda}\cos(\sqrt{\lambda}x)
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$B\sin(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+				X_n(x)=B_n\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+				$$
+				\item 若$X'(l)=0$，则$B\sqrt{\lambda}\cos(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+				X_n(x)=B_n\sin\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$B=0$，因此%
+			$$
+			X(x)=A\cos(\sqrt{\lambda}x),\qquad
+			X'(x)=-A\sqrt{\lambda}\sin(\sqrt{\lambda}x)
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\cos(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{\left(n-\frac{1}{2}\right)^2\pi^2}{l^2},\qquad 
+				X_n(x)=A_n\cos\frac{\left(n-\frac{1}{2}\right)\pi}{l}x,\qquad n\in\N^*
+				$$
+				\item 若$X'(l)=0$，则$-A\sqrt{\lambda}\sin(\sqrt{\lambda}l)=0$，因此
+				$$
+				\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+				X_n(x)=A_n\cos\frac{n\pi}{l}x,\qquad n\in\N^*
+				$$
+			\end{enumerate}
+		\end{enumerate}
+		\item 若$\lambda=0$，则线性微分方程(\ref{二阶线性微分方程程})的特征方程为%
+		$$
+		t^2=0
+		$$
+		其解为%
+		$$
+		t_1=t_2=0
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程程})的通解为%
+		$$
+		X(x)=Ax+B,\qquad
+		X'(x)=A
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$B=0$，因此
+			$$
+			X(x)=Ax,\qquad
+			X'(x)=A
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$Al=0$，因此%
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$A=0$，因此
+			$$
+			X(x)=B,\qquad
+			X'(x)=0
+			$$
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$B=0$，因此%
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$0=0$，因此
+				$$
+				X(x)=B
+				$$
+			\end{enumerate}
+		\end{enumerate}
+		\item 若$\lambda<0$，则线性微分方程(\ref{二阶线性微分方程程})的特征方程为%
+		$$
+		t^2+\lambda=0
+		$$
+		其解为%
+		$$
+		t_1=\sqrt{-\lambda},\qquad
+		t_2=-\sqrt{-\lambda}
+		$$
+		因此线性微分方程(\ref{二阶线性微分方程程})的通解为%
+		$$
+		X(x)=A\ee{\sqrt{-\lambda}x}+B\ee{-\sqrt{-\lambda}x},\qquad
+		X'(x)=A\sqrt{-\lambda}\ee{\sqrt{-\lambda}x}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}x}
+		$$
+		\begin{enumerate}
+			\item 若$X(0)=0$，则$A+B=0$。
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A+B=0\\
+					A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A+B=0\\
+					A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+			\item 若$X'(0)=0$，则$A\sqrt{-\lambda}-B\sqrt{-\lambda}=0$。
+			\begin{enumerate}
+				\item 若$X(l)=0$，则$A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A\sqrt{-\lambda}-B\sqrt{-\lambda}=0\\
+					A\ee{\sqrt{-\lambda}l}+B\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+				\item 若$X'(l)=0$，则$A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0$。联立方程%
+				$$
+				\begin{cases}
+					A\sqrt{-\lambda}-B\sqrt{-\lambda}=0\\
+					A\sqrt{-\lambda}\ee{\sqrt{-\lambda}l}-B\sqrt{-\lambda}\ee{-\sqrt{-\lambda}l}=0
+				\end{cases}
+				$$
+				解得$A=B=0$，因此
+				$$
+				X(x)=0
+				$$
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+\end{proof}
+
+\subsection{分离变量法}
+
+\begin{proposition}
+	对于弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		{\scriptsize{
+				$$
+				u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+				$$
+		}}
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T''(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T''(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T''(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X(0)=X(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		代入原方程
+		$$
+		T''_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N^*
+		$$
+		通解为
+		$$
+		T_n(t)=A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x,\qquad 
+		n\in\N^*
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\sum_{n=1}^{\infty}A_n\sin\frac{n\pi}{l}x,\qquad 
+		\psi(x)=\sum_{n=1}^{\infty}B_n\frac{an\pi}{l}\sin\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		A_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		B_n=\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T''(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T''(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T''(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X'(0)=X'(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		代入原方程
+		$$
+		T''_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N
+		$$
+		通解为
+		$$
+		T_n(t)=A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t,\qquad 
+		n\in\N
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x,\qquad 
+		n\in\N
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\frac{A_0}{2}+\sum_{n=1}^{\infty}\left(A_n\cos\frac{an\pi}{l}t+B_n\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\frac{A_0}{2}+\sum_{n=1}^{\infty}A_n\cos\frac{n\pi}{l}x,\qquad 
+		\psi(x)=\sum_{n=1}^{\infty}B_n\frac{an\pi}{l}\cos\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		A_n=\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		B_n=\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N
+		$$
+		从而原微分方程的形式解为
+		{\scriptsize{
+				$$
+				u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+				$$
+		}}
+	\end{enumerate}
+\end{proof}
+
+\begin{proposition}
+	对于热传导方程
+	$$
+	\begin{cases}
+		u_{t}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T'(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T'(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T'(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X(0)=X(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\sin\frac{n\pi}{l}x,\qquad n\in\N^*
+		$$
+		代入原方程
+		$$
+		T'_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N^*
+		$$
+		通解为
+		$$
+		T_n(t)=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t},\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x,\qquad 
+		n\in\N^*
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\sum_{n=1}^{\infty}C_n\sin\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		C_n=\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi,\qquad 
+		n\in\N^*
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		\item 令$u(x,t)=T(t)X(x)$，代入方程
+		$$
+		T'(t)X(x)=a^2T(t)X''(x)
+		$$
+		于是存在$\lambda\in\R$，使得成立
+		$$
+		\frac{T'(t)}{a^2T(t)}
+		=\frac{X''(x)}{X(x)}
+		=-\lambda
+		$$
+		即%
+		$$
+		\begin{cases}
+			T'(t)+a^2\lambda T(t)=0\\
+			X''(x)+\lambda X(x)=0
+		\end{cases}
+		$$
+		考虑到边界条件
+		$$
+		\begin{cases}
+			X''(x)+\lambda X(x)=0\\
+			X'(0)=X'(l)=0
+		\end{cases}
+		$$
+		由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+		$$
+		\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+		X_n(x)=\cos\frac{n\pi}{l}x,\qquad n\in\N
+		$$
+		代入原方程
+		$$
+		T'_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N
+		$$
+		通解为
+		$$
+		T_n(t)=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t},\qquad n\in\N
+		$$
+		从而原微分方程的解为
+		$$
+		u_n(x,t)
+		=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x,\qquad 
+		n\in\N
+		$$
+		由迭加原理
+		$$
+		u(x,t)=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+		考虑到初始条件
+		$$
+		\varphi(x)=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\cos\frac{n\pi}{l}x
+		$$
+		由Fourier级数\ref{thm:[0,a]的Fourier级数}
+		$$
+		C_n=\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi,\qquad n\in\N
+		$$
+		从而原微分方程的形式解为
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	使用分离变量法求解定解问题：%
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=x,\qquad & 0\le x\le l\\
+		u_x(0,t)=u_x(l,t)=0,\qquad & t\ge 0
+	\end{cases}
+	$$
+\end{example}
+
+\begin{solution}
+	令$u(x,t)=T(t)X(x)$，代入方程
+	$$
+	T'(t)X(x)=a^2T(t)X''(x)
+	$$
+	于是存在$\lambda\in\R$，使得成立
+	$$
+	\frac{T'(t)}{a^2T(t)}
+	=\frac{X''(x)}{X(x)}
+	=-\lambda
+	$$
+	即%
+	$$
+	\begin{cases}
+		T'(t)+a^2\lambda T(t)=0\\
+		X''(x)+\lambda X(x)=0
+	\end{cases}
+	$$
+	考虑到边界条件
+	$$
+	\begin{cases}
+		X''(x)+\lambda X(x)=0\\
+		X'(0)=X'(l)=0
+	\end{cases}
+	$$
+	由定理\ref{thm:特殊Sturm-Liouville问题的解}%
+	$$
+	\lambda_n=\frac{n^2\pi^2}{l^2},\qquad 
+	X_n(x)=\cos\frac{n\pi}{l}x,\qquad n\in\N
+	$$
+	代入原方程
+	$$
+	T'_n(t)+\left(\frac{an\pi}{l}\right)^2T_n(t)=0,\qquad n\in\N
+	$$
+	通解为
+	$$
+	T_n(t)=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t},\qquad n\in\N
+	$$
+	从而原微分方程的解为
+	$$
+	u_n(x,t)
+	=C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x,\qquad 
+	n\in\N
+	$$
+	由迭加原理
+	$$
+	u(x,t)=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+	$$
+	考虑到初始条件
+	$$
+	x=\frac{C_0}{2}+\sum_{n=1}^{\infty}C_n\cos\frac{n\pi}{l}x
+	$$
+	由Fourier级数\ref{thm:[0,a]的Fourier级数}
+	$$
+	C_n=\frac{2}{l}\int_0^l\xi\cos\frac{n\pi }{l}\xi\dd \xi=\begin{cases}
+		l,\qquad & n=0\\
+		0,\qquad & n\ge 1\text{且}2\mid n\\
+		\frac{-4l}{n^2\pi^2},\qquad & n\ge 1\text{且}2\nmid n\\
+	\end{cases}
+	$$
+	从而原微分方程的形式解为
+	$$
+	u(x,t)=\frac{l}{2}-\frac{4l}{\pi^2}\sum_{n=1}^{\infty}\frac{\mathrm{e}^{-\left(\frac{a(2n-1)\pi}{l}\right)^2t}}{(2n-1)^2}\cos\frac{(2n-1)\pi}{l}x
+	$$
+\end{solution}
+
+\subsection{圆域上的Laplace方程}
+
+\begin{proposition}
+	Laplace方程%
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=\varphi(x,y)
+	\end{cases}
+	$$
+	的形式解为%
+	$$
+	u(\rho,\theta)= \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)
+	$$
+	其中
+	$$
+	f(\theta)=\varphi(a\cos\theta,a\sin\theta),\qquad 
+	A_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\cos n \theta\dd \theta,\qquad 
+	B_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\sin n \theta\dd \theta
+	$$
+\end{proposition}
+
+\begin{example}
+	求解Laplace方程
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=x+y
+	\end{cases}
+	$$
+\end{example}
+
+\begin{solution}
+	令$f(\theta)=a(\cos\theta+\sin\theta)$，求解其Fourier系数
+	\begin{align*}
+		& A_n
+		=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\cos n \theta\dd \theta
+		=\frac{a}{\pi}\int_{0}^{2\pi}(\cos\theta+\sin\theta)\cos n \theta\dd\theta
+		=\begin{cases}
+			0,\quad & n = 0\\
+			a,\quad & n = 1\\
+			0,\quad & n\ge 1
+		\end{cases}\\
+		& B_n
+		=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\sin n\theta\dd\theta
+		=\frac{a}{\pi}\int_{0}^{2\pi}(\cos\theta+\sin\theta)\sin n\theta\dd \theta
+		=\begin{cases}
+			0,\quad & n = 0\\
+			a,\quad & n = 1\\
+			0,\quad & n\ge 1
+		\end{cases}
+	\end{align*}
+	从而微分方程的形式解为
+	\begin{align*}
+		u(\rho,\theta)
+		& = \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)\\
+		& =\rho\cos\theta+\rho\sin\theta
+	\end{align*}
+	进而
+	$$
+	u(x,y)=x+y
+	$$
+\end{solution}
+
+\begin{example}
+	求解Laplace方程
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=\sin\theta\cos2\theta
+	\end{cases}
+	$$
+	其中$\theta=\arctan(y/x)$。
+\end{example}
+
+\begin{solution}
+	令$f(\theta)=\sin\theta\cos2\theta$，求解其Fourier系数
+	\begin{align*}
+		& A_n
+		=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\cos n \theta\dd \theta
+		=\frac{1}{\pi}\int_{0}^{2\pi}\sin\theta\cos2\theta\cos n \theta\dd\theta
+		=0\\
+		& B_n
+		=\frac{1}{\pi}\int_{0}^{2\pi}f(\theta)\sin n\theta\dd\theta
+		=\frac{1}{\pi}\int_{0}^{2\pi}\sin\theta\cos2\theta\sin n\theta\dd \theta
+		=\begin{cases}
+			-1/2,\quad & n = 1\\
+			0,\quad & n = 2\\
+			1/2,\quad & n = 3\\
+			0,\quad & n\ge 4
+		\end{cases}
+	\end{align*}
+	从而微分方程的形式解为
+	\begin{align*}
+		u(\rho,\theta)
+		& = \frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)\\
+		& =\frac{\rho^3}{2a^3}\sin 3\theta-\frac{\rho}{2a}\sin \theta
+	\end{align*}
+	进而
+	\begin{align*}
+		u(x,y)
+		& =\frac{\rho^3}{2a^3}\sin 3\theta-\frac{\rho}{2a}\sin \theta\\
+		& =\frac{\rho^3}{2a^3}(3\sin\theta-4\sin^3\theta)-\frac{\rho}{2a}\sin \theta\\
+		& =\frac{1}{2a^3}(3(x^2+y^2)y-4y^3)-\frac{y}{2a}\\
+		& = \frac{1}{2a^3}(3x^2y-y^3)-\frac{y}{2a}\\
+		& = \frac{3x^2y-y^3}{2a^3}-\frac{y}{2a}
+	\end{align*}
+\end{solution}
+
+\subsection{Fourier变换}
+
+\begin{note}
+	Fourier变换：%
+	$$
+	F(\lambda)=\int_{-\infty}^{+\infty}f(\xi)\ee{-i\lambda\xi}\dd\xi
+	$$
+\end{note}
+
+\begin{example}
+	对于$\eta>0$，求函数的Fourier变换：
+	$$
+	f(x)=\text{e}^{-\eta x^2},\qquad x\in\R
+	$$
+\end{example}
+
+\begin{solution}
+	\begin{align*}
+		\mathscr{F}[f]
+		& = \int_{-\infty}^{+\infty}f(\xi)\text{e}^{-i\lambda\xi}\dd\xi\\
+		& = \int_{-\infty}^{+\infty}\text{e}^{-\eta \xi^2-i\lambda\xi}\dd\xi\\
+		& = \frac{1}{\sqrt{\eta}}\text{e}^{-\frac{\lambda^2}{4\eta}}\int_{-\infty}^{+\infty}\text{e}^{-\zeta^2}\dd\zeta\qquad \left(\zeta=\sqrt{\eta}\left(\xi+\frac{i\lambda}{2\eta}\right)\right)\\
+		& = \frac{1}{\sqrt{\eta}}\text{e}^{-\frac{\lambda^2}{4\eta}}\Gamma(1/2)\\
+		& = \sqrt{\frac{\pi}{\eta}}\text{e}^{-\frac{\lambda^2}{4\eta}}
+	\end{align*}
+\end{solution}
+
+\subsection{三维波动方程}
+
+\begin{note}
+	球面平均值函数：
+	$$
+	\overline{h}(M,r)=\frac{1}{4\pi r^2}\IInt_{\partial B_r(M)}h\dd S
+	$$
+	
+	对于$(\xi,\eta,\zeta)\in \partial B_r(P)$作换元%
+	$$
+	\xi=x+r\sin\theta\cos\varphi,\qquad
+	\eta=y+r\sin\theta\sin\varphi,\qquad
+	\zeta=z+r\cos\theta
+	$$
+	那么%
+	$$
+	E=\xi_\theta^2+\eta_\theta^2+\zeta_\theta^2=r^2,\qquad
+	F=\xi_\theta\xi_\varphi+\eta_\theta\eta_\varphi+\zeta_\theta\zeta_\varphi=0,\qquad
+	G=\xi_\varphi^2+\eta_\varphi^2+\zeta_\varphi^2=r^2\sin^2\theta
+	$$
+	因此%
+	$$
+	\dd S=\sqrt{EG-F^2}\dd\theta\dd\varphi
+	=r^2\sin\theta\dd\theta\dd\varphi
+	$$
+	因此%
+	\begin{align*}
+		\overline{h}(x,y,z,r)
+		& = \frac{1}{4\pi r^2}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+		h(x+r\sin\theta\cos\varphi,y+r\sin\theta\sin\varphi,z+r\cos\theta)r^2\sin\theta\dd\theta\\
+		& = \frac{1}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+		h(x+r\sin\theta\cos\varphi,y+r\sin\theta\sin\varphi,z+r\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{note}
+
+\begin{proposition}
+	三维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	的形式解为%
+	$$
+	u(M,t)
+	=\frac{\partial}{\partial t}(t\overline{\varphi}(M,at))
+	+t\overline{\psi}(M,at)
+	$$
+	换言之
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{proposition}
+
+\begin{example}
+	求解三维波动方程初值问题
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=x^2+yz,\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=0,\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+\end{example}
+
+\begin{solution}
+	令$\psi(x,y,z)=x^2+yz$，求其平均值函数%
+	\begin{align*}
+		\overline{\psi}(x,y,z,r)
+		= & \frac{1}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}
+		\psi(x+r\cos\theta,y+r\sin\theta\cos\varphi,z+r\sin\theta\sin\varphi)\sin\theta\dd\theta\\
+		= &  \frac{1}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}((x+r\cos\theta)^2+(y+r\sin\theta\cos\varphi)(z+r\sin\theta\sin\varphi))
+		\sin\theta\dd\theta\\
+		= &  \frac{1}{4\pi}\left(\int_{0}^{2\pi}\dd\varphi\right)\left(\int_{0}^{\pi}((x+r\cos\theta)^2+yz)\sin\theta\dd\theta\right)\\
+		& +  \frac{r}{4\pi}\left(\int_{0}^{2\pi}(y\sin\varphi+z\cos\varphi)\dd\varphi\right)\left(\int_{0}^{\pi}\sin^2\theta\dd\theta\right)\\
+		& +  \frac{r^2}{4\pi}\left(\int_{0}^{2\pi}\sin\varphi\cos\varphi\dd\varphi\right)\left(\int_{0}^{\pi}\sin^3\theta\dd\theta\right)\\
+		= &  \frac{1}{2}\int_{0}^{\pi}((x+r\cos\theta)^2+yz)\sin\theta\dd\theta\\
+		= & x^2+yz+\frac{1}{3}r^2
+	\end{align*}
+	从而方程的形式解为%
+	$$
+	u(x,y,z,t)
+	=\frac{\partial}{\partial t}\left(t\overline{\psi}(x,y,z,at)\right)
+	=\frac{\partial}{\partial t}\left(t\left(x^2+yz+\frac{1}{3}a^2t^2\right)\right)
+	=x^2+yz+a^2t^2
+	$$
+\end{solution}
+
+\subsection{调和函数的定义}
+
+\begin{example}
+	判断函数$u(x,y)=x^3-3xy^2$是否为调和函数。
+\end{example}
+
+\begin{solution}
+	由于
+	$$
+	\Delta u
+	=\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}
+	=6x-6x=0
+	$$
+	因此$u$为调和函数。
+\end{solution}
+
+\begin{example}
+	判断函数$u(x,y)=3x^2y-y^3$是否为调和函数。
+\end{example}
+
+\begin{solution}
+	由于
+	$$
+	\Delta u
+	=\frac{\partial^2 u}{\partial x^2}+\frac{\partial^2 u}{\partial y^2}
+	=6y-6y=0
+	$$
+	因此$u$为调和函数。
+\end{solution}
+
+\subsection{Green函数的基本性质}
+
+\begin{proposition}
+	Green函数在区域$\Omega$内成立不等式
+	$$
+	0<G(M,M_0)<\frac{1}{4\pi r_{MM_0}}
+	$$
+\end{proposition}
+
+\begin{proof}
+	由Green函数的定义
+	$$
+	G(M,M_0)=\frac{1}{4\pi r_{MM_0}}-g(M,M_0),\qquad 
+	\begin{cases}
+		\Delta g=0,\qquad & P\in\Omega\\
+		g\mid_{\partial\Omega}=\frac{1}{4\pi r_{MM_0}}
+	\end{cases}
+	$$
+	从而$g$在$\Omega$内调和，且
+	$$
+	g\mid_{\partial\Omega}=\frac{1}{4\pi r_{MM_0}}>0
+	$$
+	由调和函数极值原理，在$\Omega$内成立$g>0$​，因此
+	$$
+	G(M,M_0)=\frac{1}{4\pi r_{MM_0}}-g(M,M_0)<\frac{1}{4\pi r_{MM_0}}
+	$$
+	
+	另一方面，由于$\displaystyle \lim_{M\to M_0}G(M,M_0)=+\infty$，从而存在充分小的$\varepsilon>0$，使得成立$B_\varepsilon(M_0)\sub\Omega$，且在$\overline{B}_\varepsilon(M_0)$上成立$G>0$。在$\Omega\setminus B_\varepsilon(M_0)$上，$\Delta G=0$，且$G\mid_{\partial \Omega}=0$，同时$G\mid_{\partial B_\varepsilon(M_0)}>0$。由调和函数极值原理，在$\Omega\setminus B_\varepsilon(M_0)$上成立$G>0$，进而在$\Omega$内成立$G>0$。
+	
+	综上所述
+	$$
+	0<G(M,M_0)<\frac{1}{4\pi r_{MM_0}}
+	$$
+\end{proof}
+
+\section{经典方程}
+
+\begin{theorem}{弦振动方程}
+	对于弦振动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l\\
+		u_t(x,0)=\psi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		{\scriptsize{
+				$$
+				u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\cos\frac{an\pi}{l}t+\left(\frac{2}{an\pi}\int_0^l\psi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\sin \frac{an\pi}{l}t\right)\cos\frac{n\pi}{l}x
+				$$
+		}}
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{热传导方程}
+	对于热传导方程
+	$$
+	\begin{cases}
+		u_{t}=a^2u_{xx},\qquad & 0<x<l,t>0\\
+		u(x,0)=\varphi(x),\qquad & 0\le x\le l
+	\end{cases}
+	$$
+	求解加之如下边界条件的形式解。
+	\begin{enumerate}
+		\item $u(0,t)=u(l,t)=0$：
+		$$
+		u(x,t)=\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\sin\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\sin\frac{n\pi}{l}x
+		$$
+		\item $u_x(0,t)=u_x(l,t)=0$：
+		$$
+		u(x,t)=\frac{1}{l}\int_0^l\varphi(\xi)\dd \xi+\sum_{n=1}^{\infty}\left(\frac{2}{l}\int_0^l\varphi(\xi)\cos\frac{n\pi }{l}\xi\dd \xi\right)\ee{-\left(\frac{an\pi}{l}\right)^2t}\cos\frac{n\pi}{l}x
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	Laplace方程%
+	$$
+	\begin{cases}
+		u_{xx}+u_{yy}=0,\qquad x^2+y^2<a^2\\
+		u|_{x^2+y^2=a^2}=\varphi(x,y)
+	\end{cases}
+	$$
+	的形式解为%
+	$$
+	u(\rho,\theta)=\frac{A_0}{2}+\sum_{n=1}^{\infty}\left(\frac{\rho}{a}\right)^n\left(A_n\cos n\theta+B_n\sin n\theta\right)
+	$$
+	其中
+	$$
+	f(\theta)=\varphi(a\cos\theta,a\sin\theta),\qquad 
+	A_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\cos n \tau\dd \tau,\qquad 
+	B_n=\frac{1}{\pi}\int_{0}^{2\pi}f(\tau)\sin n \tau\dd \tau
+	$$
+\end{theorem}
+
+\begin{theorem}{齐次热传导方程}
+	齐次热传导方程
+	$$
+	\begin{cases}
+		u_t=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	=\frac{1}{2a\sqrt{\pi t}}\int_{-\infty}^{+\infty}\varphi(\xi)\ee{-\frac{(x-\xi)^2}{4a^2t}}\dd\xi
+	$$
+\end{theorem}
+
+\begin{theorem}{齐次波动方程}
+	齐次波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2u_{xx},\qquad & x\in\R,t>0\\
+		u(x,0)=\varphi(x),\qquad & x\in\R\\
+		u_t(x,0)=\psi(x),\qquad & x\in\R
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(x,t)
+	= \frac{1}{2}(\varphi(x+at)+\varphi(x-at))+\frac{1}{2a}\int_{x-at}^{x+at}\psi(\xi)\dd\xi
+	$$
+\end{theorem}
+
+\begin{theorem}{三维波动方程}
+	三维波动方程
+	$$
+	\begin{cases}
+		u_{tt}=a^2(u_{xx}+u_{yy}+u_{zz}),\qquad & (x,y,z)\in \R^3,t>0\\
+		u(x,y,z,0)=\varphi(x,y,z),\qquad & (x,y,z)\in \R^3\\
+		u_t(x,y,z,0)=\psi(x,y,z),\qquad & (x,y,z)\in \R^3
+	\end{cases}
+	$$
+	的形式解为
+	$$
+	u(P,t)
+	=\frac{\partial}{\partial t}(t\overline{\varphi}(P,at))
+	+t\overline{\psi}(P,at)
+	$$
+	换言之
+	\begin{align*}
+		u(x,y,z,t)
+		= & \frac{\partial}{\partial t}\left(\frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\varphi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta\right)\\
+		& + \frac{t}{4\pi}\int_{0}^{2\pi}\dd\varphi\int_{0}^{\pi}\psi(x+at\sin\theta\cos\varphi,y+at\sin\theta\sin\varphi,z+at\cos\theta)\sin\theta\dd\theta
+	\end{align*}
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
