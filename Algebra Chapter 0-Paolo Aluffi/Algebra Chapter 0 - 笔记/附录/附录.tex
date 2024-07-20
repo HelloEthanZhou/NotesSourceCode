@@ -1,0 +1,1056 @@
+% 导入配置
+% \input{../config}
+
+% \begin{document}
+
+\chapter{群论的MATLAB函数}
+
+定义名为 \lstinline{Group} 的数据结构，包含 \lstinline{element}、\lstinline{group} 、\lstinline{order} 三个属性。
+
+\begin{enumerate}
+	\item \lstinline{element}：群元素。每一行代表一个元素，第$k$行元素的指标定义为$k$。
+	\item \lstinline{group}：群运算表。$(i,j)$处的数字表示$i$指标对应元素与$j$指标对应元素作运算后的元素对应的指标。
+	\item \lstinline{order}：群的阶。
+\end{enumerate}
+
+\begin{table}[htbp]
+	\centering
+	\caption{群论的MATLAB函数}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{|>{\centering\arraybackslash}m{1.5cm}|>{\centering\arraybackslash}m{5cm}|>{\centering\arraybackslash}m{4cm}|}
+		\hline
+		类别 & 函数 & 名称 \\
+		\hline
+		\multirow{6}{*}{特殊群} 
+		& \hyperref[cyclicGroup]{cyclicGroup} & 循环群 \\
+		& \hyperref[moduloNGroup]{moduloNGroup} & 循环群的单位群 \\
+		& \hyperref[dihedralGroup]{dihedralGroup} & 二面体群 \\
+		& \hyperref[symmetricGroup]{symmetricGroup} & 对称群 \\
+		& \hyperref[alternatingGroup]{alternatingGroup} & 交错群 \\
+		& \hyperref[quaternionGroup]{quaternionGroup} & 四元数群 \\
+		\hline
+		\multirow{10}{*}{群结构} 
+		& \hyperref[subgroup]{subgroup} & 子群 \\
+		& \hyperref[normalSubgroup]{normalSubgroup} & 正规子群 \\
+		& \hyperref[generatedSubgroup]{generatedSubgroup} & 生成子群 \\
+		& \hyperref[generatedNormalSubgroup]{generatedNormalSubgroup} & 生成正规子群 \\
+		& \hyperref[centerGroup]{centerGroup} & 中心子群 \\
+		& \hyperref[characteristicSubgroup]{characteristicSubgroup} & 特征子群 \\
+		& \hyperref[commutatorGroup]{commutatorGroup} & 换位子群 \\
+		& \hyperref[centralizer]{centralizer} & 中心化子 \\
+		& \hyperref[conjugacyClass]{conjugacyClass} & 共轭类 \\
+		& \hyperref[derivedGroup]{derivedGroup} & 导群 \\
+		\hline
+		\multirow{10}{*}{群运算} 
+		& \hyperref[groupOperate]{groupOperate} & 群运算 \\
+		& \hyperref[inverseMatrix]{inverseMatrix} & 逆元素矩阵 \\
+		& \hyperref[orderMatrix]{orderMatrix} & 元素阶矩阵 \\
+		& \hyperref[groupHomomorphism]{groupHomomorphism} & 群同态态射 \\
+		& \hyperref[groupIsomorphism]{groupIsomorphism} & 群同构态射 \\
+		& \hyperref[isCommutativeGroup]{isCommutativeGroup} & 是否为交换群 \\
+		& \hyperref[isSimpleGroup]{isSimpleGroup} & 是否为单群 \\
+		& \hyperref[isSolvableGroup]{isSolvableGroup} & 是否为可解群 \\
+		& \hyperref[directProductOfGroups]{directProductOfGroups} & 直积 \\
+		\hline
+		\multirow{3}{*}{辅助函数} 
+		& \hyperref[EulerFunction]{EulerFunction} & Euler函数 \\
+		& \hyperref[fullPermutation]{fullPermutation} & 全排列 \\
+		& \hyperref[generateCombinations]{generateCombinations} & 组合矩阵 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\section{特殊群}
+
+\begin{lstlisting}[language=Matlab, caption={循环群}, label={cyclicGroup}]
+	function [element, group, realGroup, order] = cyclicGroup(n)
+	
+	    % 名称：模n循环群Z/nZ
+	    % 输入：循环群阶数n
+	    % 输出: 1.群元素element；2.群运算表group和realGroup；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       realGroup为真实元素
+	    %       group(i,j)=element(i)+element(j)
+	
+	    %% 1.群元素
+	    element = 0: n-1;
+	
+	    %% 2.群阶
+	    order = n;
+	
+	    %% 3.群运算表
+	    [i, j] = meshgrid(1: n, 1: n);
+	    realGroup = mod(i + j - 2, n);
+	    group = realGroup + 1;
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={循环群的单位群}, label={moduloNGroup}]
+	function [element, group, realGroup, order] = moduloNGroup(n)
+	
+	    % 名称：模n单位群(Z/nZ)*
+	    % 输入：模n单位群阶数n
+	    % 输出: 1.群元素element；2.群运算表group和realGroup；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       realGroup为真实元素
+	    %       group(i,j)=element(i)*element(j)
+	
+	    %% 1.群元素和群阶
+	    [order, element] = EulerFunction(n);
+	
+	    %% 3.群运算表
+	    realGroup = mod(element' * element, n);
+	    group = zeros(order, order);
+	    for i = 1: order
+	        for j = 1: order
+	            for k = 1: order
+	                if element(k) == realGroup(i, j)
+	                    indice = k;
+	                    break
+	                end
+	            end
+	            % 赋值
+	            group(i, j) = indice;
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={二面体群}, label={dihedralGroup}]
+	function [element, group, order] = dihedralGroup(n)
+	
+	    % 名称：n阶二面体群D_2n
+	    % 输入：二面体群阶数n
+	    % 输出: 1.群元素element；2.群运算表group；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       element为2n行2列矩阵
+	    %       其中element(k)代表第k个元素
+	    %       element的行向量(i,j)代表映射sigma^i tau^j
+	    %       sigma^n = tau^2 = sigma tau sigma tau = 1
+	    %       group(i,j)=element(i) \circ element(j)
+	
+	    %% 1.群元素
+	    element = [(0: n-1)', zeros(n, 1); (0: n-1)', ones(n, 1)];
+	
+	    %% 2.群阶
+	    order = 2 * n;
+	    %% 3.群运算表
+	
+	    % 初始化
+	    group = zeros(order, order);
+	    for i = 1: order
+	        for j = 1: order
+	            
+	            % 利用sigma^n = tau^2 = sigma tau sigma tau = 1降次
+	            temp = [element(i, :), element(j, :)];
+	
+	            % tau^2 = sigma^n = 1降次
+	            if temp(2) == 0
+	                map = [mod(temp(1)+temp(3), n), temp(4)];
+	            elseif temp(3) == 0
+	                map = [temp(1), mod(temp(2)+temp(4), 2)];
+	            else
+	                map = [mod(n+temp(1)-temp(3), n), mod(1+temp(4), 2)];
+	            end
+	
+	            % 找到复合映射的编号
+	            for k = 1: order
+	                if element(k, :) == map
+	                    indice = k;
+	                    break
+	                end
+	            end
+	            % 赋值
+	            group(i, j) = indice;
+	
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={对称群}, label={symmetricGroup}]
+	function [element, group, order] = symmetricGroup(n)
+	
+	    % 名称：n阶对称群S_n
+	    % 输入：对称群阶数n
+	    % 输出: 1.群元素element；2.群运算表group；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       element为n!行n列矩阵
+	    %       其中element(k)代表第k个元素，即第k个双射
+	    %       第j列代表j在该行代表映射下的像
+	    %       group(i,j)=element(j) \circ element(i)
+	
+	    %% 1.群元素
+	    element = fullPermutation(n);
+	    element = element(end: -1: 1, :);
+	
+	    %% 2.群阶
+	    order = factorial(n);
+	
+	    %% 3.群运算表
+	    
+	    % 初始化
+	    group = zeros(order, order);
+	    for i = 1: order
+	        for j = 1: order
+	            % 初始化
+	            permutation = zeros(1, n);
+	            permutation_i = element(i, :);
+	            permutation_j = element(j, :);
+	            % 计算复合映射
+	            for k = 1: n
+	                 permutation(k) = permutation_j(permutation_i(k));
+	            end
+	            % 找到复合映射的编号
+	            for k = 1: order
+	                if element(k, :) == permutation
+	                    indice = k;
+	                    break
+	                end
+	            end
+	            % 赋值
+	            group(i, j) = indice;
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={交错群}, label={alternatingGroup}]
+	function [element, group, order] = alternatingGroup(n)
+	
+	    % 名称：n阶交错群A_n
+	    % 输入：交错群阶数n
+	    % 输出: 1.群元素element；2.群运算表group；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       element为n!行n列矩阵
+	    %       其中element(k)代表第k个元素，即第k个双射
+	    %       第j列代表j在该行代表映射下的像
+	    %       group(i,j)=element(j) \circ element(i)
+	
+	    %% 1.群元素
+	    permutations = perms(1: n); % 生成所有n元置换的排列
+	
+	    element = [];
+	    for i = 1:size(permutations, 1)
+	        perm = permutations(i, :);
+	        sign = 1; % 初始化符号为正号
+	        
+	        for j = 1:n
+	            for k = (j+1):n
+	                if perm(j) > perm(k)
+	                    sign = -sign; % 交换时改变符号
+	                end
+	            end
+	        end
+	        
+	        if sign == 1 % 符号为正号表示是偶置换
+	            element = [element; perm];
+	        end
+	    end
+	    element = element(end: -1: 1, :);
+	
+	    %% 2.群阶
+	    order = factorial(n) / 2;
+	
+	    %% 3.群运算表
+	    
+	    % 初始化
+	    group = zeros(order, order);
+	    for i = 1: order
+	        for j = 1: order
+	            % 初始化
+	            permutation = zeros(1, n);
+	            permutation_i = element(i, :);
+	            permutation_j = element(j, :);
+	            % 计算复合映射
+	            for k = 1: n
+	                 permutation(k) = permutation_j(permutation_i(k));
+	            end
+	            % 找到复合映射的编号
+	            for k = 1: order
+	                if element(k, :) == permutation
+	                    indice = k;
+	                    break
+	                end
+	            end
+	            % 赋值
+	            group(i, j) = indice;
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={四元数群}, label={quaternionGroup}]
+	function [element, group, realGroup, order] = quaternionGroup
+	
+	    % 名称：四元数群
+	    % 输出: 1.群元素element；2.群运算表group和realGroup；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       realGroup为真实元素
+	    %       group(i,j)=element(i)*element(j)
+	
+	    %% 函数
+	
+	    order = 8;
+	
+	    element = {
+	        '1', '-1', ...
+	        'i', '-i', ...
+	        'j', '-j', ...
+	        'k', '-k'};
+	
+	    realGroup = {
+	        '1', '-1', 'i', '-i', 'j', '-j', 'k', '-k'; ...
+	        '-1', '1', '-i', 'i', '-j', 'j', '-k', 'k'; ...
+	        'i', '-i', '-1', '1', 'k', '-k', '-j', 'j'; ...
+	        '-i', 'i', '1', '-1', '-k', 'k', 'j', '-j'; ...
+	        'j', '-j', '-k', 'k', '-1', '1', 'i', '-i'; ...
+	        '-j', 'j', 'k', '-k', '1', '-1', '-i', 'i'; ...
+	        'k', '-k', 'j', '-j', '-i', 'i', '-1', '1'; ...
+	        '-k', 'k', '-j', 'j', 'i', '-i', '1', '-1'};
+	
+	    group = zeros(order, order);
+	    for i = 1: order
+	        for j = 1: order
+	            for n = 1: order
+	                if isequal(realGroup(i, j), element(n))
+	                    group(i, j) = n;
+	                end
+	            end
+	        end
+	    end
+	
+	end
+\end{lstlisting}
+
+\section{群结构}
+
+\begin{lstlisting}[language=Matlab, caption={子群}, label={subgroup}]
+	function subgroupMatrix = subgroup(group)
+	
+	    % 名称：子群
+	    % 输入：群运算表group
+	    % 输出：所有子群
+	    % 说明：subgroupMatrix每一行代表一个子群的元素的编号
+	
+	    %% 求解子群的阶
+	    order = size(group, 1);
+	    factors = [];
+	    loc = 1;
+	    for fac = 1: order
+		    if mod(order, fac) == 0
+	            factors(loc) = fac;
+			    loc = loc + 1;
+		    end
+	    end
+	
+	    %% 求解子群
+	    invMatrix = inverseMatrix(group);
+	    subgroupMatrix = [];
+	    for n = factors
+	        combinations = generateCombinations(n, order);
+	        for com = combinations'
+	            judge = 1;
+	            for i = com'
+	                for j = com'
+	                    invj = invMatrix(j);
+	                    if ~ismember(group(i, invj), com)
+	                        judge = 0;
+	                        break
+	                    end
+	                end
+	                if judge == 0
+	                    break
+	                end
+	            end
+	            if judge == 1 && i == com(end) && j == com(end)
+	                subgroupMatrix = [subgroupMatrix; com', zeros(1, order - size(com', 2))];
+	            end
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={正规子群}, label={normalSubgroup}]
+	function normalSubgroupMatrix = normalSubgroup(group)
+	
+	    % 名称：正规子群
+	    % 输入：群运算表group
+	    % 输出：所有正规子群
+	    % 说明：normalSubgroupMatrix每一行代表一个正规子群的元素的编号
+	
+	    %% 函数1
+	    order = size(group, 1);
+	    subgroupMatrix = subgroup(group);
+	    subgroupNumber = size(subgroupMatrix, 1);
+	    invmatrix = inverseMatrix(group);
+	    
+	    normalSubgroupMatrix = [];
+	    for N = 1: subgroupNumber
+	
+	        judge = 1;
+	        normalSubgroup = subgroupMatrix(N, :);
+	
+	        for n = 1: order
+	
+	            if normalSubgroup(n) == 0
+	                break
+	            end
+	
+	            for g = 1: order
+	                temp = group(group(g, normalSubgroup(n)), invmatrix(g));
+	                if ~ismember(temp, normalSubgroup)
+	                    judge = 0;
+	                    break
+	                end
+	            end
+	
+	            if judge == 0
+	                break
+	            end
+	        end
+	        
+	        if judge == 1
+	            normalSubgroupMatrix = [normalSubgroupMatrix; normalSubgroup];
+	        end
+	    end
+	
+	    %% 函数2
+	    % order = size(group, 1);
+	    % subgroupMatrix = subgroup(group);
+	    % subgroupNumber = size(subgroupMatrix, 1);
+	    % 
+	    % normalSubgroupMatrix = [];
+	    % for N = 1: subgroupNumber
+	    % 
+	    %     judge = 1;
+	    %     normalSubgroup = subgroupMatrix(N, :);
+	    %     normalSubgroup(normalSubgroup == 0) = [];
+	    %     normalSubgroupNumber = size(normalSubgroup, 2);
+	    % 
+	    %     for g = 1: order
+	    %         gN = zeros(normalSubgroupNumber, 1);
+	    %         Ng = zeros(normalSubgroupNumber, 1);
+	    %         for n = 1: normalSubgroupNumber
+	    %             gN(n) = group(g, normalSubgroup(n));
+	    %             Ng(n) = group(normalSubgroup(n), g);
+	    %         end
+	    %         gN = unique(sort(gN));
+	    %         Ng = unique(sort(Ng));
+	    %         if ~isequal(gN, Ng)
+	    %             judge = 0;
+	    %             break
+	    %         end
+	    %     end
+	    %     if judge == 1
+	    %         normalSubgroupMatrix = [normalSubgroupMatrix; normalSubgroup, zeros(1, order-size(normalSubgroup, 2))];
+	    %     end
+	    % 
+	    % end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={生成子群}, label={generatedSubgroup}]
+	function generatedSubgroupMatrix = generatedSubgroup(group, subset)
+	
+	    % 名称：生成子群
+	    % 输入：群运算表group，子集subset
+	    % 输出：生成子群元素的编号
+	
+	    %% 函数
+	    subgroupMatrix = subgroup(group);
+	    % 初始化一个空矩阵来存储符合条件的子集
+	    supsetgroupMatrix = [];
+	    % 逐行比较subset和subgroupMatrix的每一行
+	    for n = 1: size(subgroupMatrix, 1)
+	        % 如果subset的所有元素都在subgroupMatrix的这一行中
+	        if all(ismember(subset, subgroupMatrix(n, :)))
+	            % 将这一行添加到supsetgroupMatrix中
+	            supsetgroupMatrix = [supsetgroupMatrix; subgroupMatrix(n, :)];
+	        end
+	    end
+	    
+	    % 找出supsetgroupMatrix每一行的公共元素
+	    generatedSubgroupMatrix = supsetgroupMatrix(1, :);
+	    for n = 1: size(supsetgroupMatrix, 1)
+	        generatedSubgroupMatrix = intersect(generatedSubgroupMatrix, supsetgroupMatrix(n, :));
+	    end
+	    generatedSubgroupMatrix = transpose(nonzeros(generatedSubgroupMatrix));
+	
+	end
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={生成正规子群}, label={generatedNormalSubgroup}]
+	function generatedNormalSubgroupMatrix = generatedNormalSubgroup(group, subset)
+	
+	    % 名称：生成正规子群
+	    % 输入：群运算表group，子集subset
+	    % 输出：生成子群元素的编号
+	
+	    %% 函数
+	    normalSubgroupMatrix = normalSubgroup(group);
+	    % 初始化一个空矩阵来存储符合条件的子集
+	    supsetnormalGroupMatrix = [];
+	    % 逐行比较subset和subgroupMatrix的每一行
+	    for n = 1: size(normalSubgroupMatrix, 1)
+	        % 如果subset的所有元素都在subgroupMatrix的这一行中
+	        if all(ismember(subset, normalSubgroupMatrix(n, :)))
+	            % 将这一行添加到supsetgroupMatrix中
+	            supsetnormalGroupMatrix = [supsetnormalGroupMatrix; normalSubgroupMatrix(n, :)];
+	        end
+	    end
+	    
+	    % 找出supsetgroupMatrix每一行的公共元素
+	    generatedNormalSubgroupMatrix = supsetnormalGroupMatrix(1, :);
+	    for n = 1: size(supsetnormalGroupMatrix, 1)
+	        generatedNormalSubgroupMatrix = intersect(generatedNormalSubgroupMatrix, supsetnormalGroupMatrix(n, :));
+	    end
+	    generatedNormalSubgroupMatrix = transpose(nonzeros(generatedNormalSubgroupMatrix));
+	
+	end
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={中心子群}, label={centerGroup}]
+	function centreGroupMatrix = centerGroup(group)
+	
+	    % 名称：中心子群
+	    % 输入：群运算表group
+	    % 输出：中心子群元素的编号
+	
+	    %% 函数
+	    centreGroupMatrix = [];
+	    order = size(group, 1);
+	    for n = 1: order
+	        judge = 1;
+	        for k = 1: order
+	            if group(n, k) ~= group(k, n)
+	                judge = 0;
+	            end
+	        end
+	        if judge == 1
+	            centreGroupMatrix = [centreGroupMatrix, n];
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={特征子群}, label={characteristicSubgroup}]
+	function characteristicSubgroupMatrix = characteristicSubgroup(group)
+	
+	    % 名称：特征子群
+	    % 输入：群运算表group
+	    % 输出：所有特征子群
+	    % 说明：characteristicSubgroupMatrix每一行代表特征正规子群的元素的编号
+	
+	    %% 函数
+	    subgroupMatrix = normalSubgroup(group);
+	    mapMatrix = groupIsomorphism(group, group);
+	    order = size(group, 1);
+	    subgroupNumber = size(subgroupMatrix, 1);
+	    mapNumber = size(mapMatrix, 1);
+	    characteristicSubgroupMatrix = [];
+	    for i = 1: subgroupNumber
+	        judge = 1;
+	        subgroups = subgroupMatrix(i, :);
+	        for j = 1: mapNumber
+	            im = [];
+	            map = mapMatrix(j, :);
+	            for n = 1: order
+	                if subgroups(n) ~= 0
+	                    im = [im map(subgroups(n))];
+	                end
+	            end
+	            if ~all(ismember(im, subgroups))
+	                judge = 0;
+	                break
+	            end
+	        end
+	        if judge == 1
+	            characteristicSubgroupMatrix = [characteristicSubgroupMatrix; subgroups];
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={换位子群}, label={commutatorGroup}]
+	function commutatorGroupMatrix = commutatorGroup(group, elementMatrix)
+	
+	    % 名称：换位子群
+	    % 输入：群运算表group，群元素编号(可选)
+	    % 输出：换位子群元素的编号
+	
+	    %% 函数
+	    matrix = inverseMatrix(group);
+	    narginchk(1, 2); % 检查输入参数数量，允许1到2个参数
+	    if nargin == 1
+	        order = size(group, 1);
+	        commutatorGroupMatrix = zeros(1, order^2);
+	        for i = 1: order
+	            for j = 1: order
+	                commutatorGroupMatrix((i-1) * order + j) = group(group(group(i, j), matrix(i)), matrix(j));
+	            end
+	        end
+	    else
+	        commutatorGroupMatrix = [];
+	        for i = elementMatrix
+	            for j = elementMatrix
+	                commutatorGroupMatrix = [commutatorGroupMatrix, group(group(group(i, j), matrix(i)), matrix(j))];
+	            end
+	        end
+	    end
+	    commutatorGroupMatrix = sort(unique(commutatorGroupMatrix));
+	    % commutatorGroupMatrix = generatedNormalSubgroup(group, commutatorGroupMatrix);
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={中心化子}, label={centralizer}]
+	function matrix = centralizer(g, group)
+	
+	    % 名称：中心化子
+	    % 输入：元素编号g，群运算表group
+	    % 输出：编号为g的元素的共轭类的编号
+	
+	    %% 函数
+	    order = size(group, 1);
+	    matrix = [];
+	    for n = 1: order
+	        if group(g, n) == group(n, g)
+	            matrix = [matrix, n];
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={共轭类}, label={conjugacyClass}]
+	function class = conjugacyClass(g, group)
+	
+	    % 名称：共轭类
+	    % 输入：元素编号g，群运算表group
+	    % 输出：编号为g的元素的共轭类的编号
+	
+	    %% 函数
+	    order = size(group, 1);
+	    matrix = inverseMatrix(group);
+	    class = [];
+	    for n = 1: order
+	        element = group(group(n, g), matrix(n));
+	        class = [class, element];
+	    end
+	    class = sort(unique(class));
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={导群}, label={derivedGroup}]
+	function derivedGroupMatrix = derivedGroup(group, degree)
+	
+	    % 名称：导群
+	    % 输入：群运算表group和导群阶
+	    % 输出：导群元素的编号
+	
+	    %% 函数
+	    order = size(group, 1);
+	    derivedGroupMatrix = 1: order; % 初始化
+	    for n = 1: degree % 迭代次数
+	        derivedGroupMatrix = commutatorGroup(group, derivedGroupMatrix);
+	    end
+	    
+	end
+	
+\end{lstlisting}
+
+\section{群运算}
+
+\begin{lstlisting}[language=Matlab, caption={群运算}, label={groupOperate}]
+	function result = groupOperate(Group, g, h)
+	    
+	    % 名称：群运算
+	    % 输入：群Group，以及群元素编号g和h
+	    % 输出：群元素Group(g)*Group(h)的编号
+	    % 关于群Group：
+	    % 给定群Group中元素的编号：1, ..., |Group|
+	    % Group(n)表示群G中编号为n的元素
+	    % Group为|G|行|G|列矩阵，其中Group(i,j)=Group(i)*Group(j)
+	
+	    %% 计算群运算
+	    result = Group(g, h);
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={逆元素矩阵}, label={inverseMatrix}]
+	function matrix = inverseMatrix(group)
+	
+	    % 名称：逆元素矩阵
+	    % 输入：群运算表group
+	    % 输出：逆元素编号矩阵matrix
+	    % 说明：matrix(k)表示编号为k的元素的逆元素的编号
+	
+	    %% 函数
+	    order = size(group, 1);
+	    matrix = zeros(1, order);
+	    for i = 1: order
+	        for j = 1: order
+	            if group(i, j) == 1
+	                matrix(i) = j;
+	                break
+	            end
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={元素阶矩阵}, label={orderMatrix}]
+	function matrix = orderMatrix(group)
+	
+	    % 名称：元素阶矩阵
+	    % 输入：群运算表group
+	    % 输出：元素阶矩阵matrix
+	    % 说明：matrix(k)表示编号为k的元素的阶
+	
+	    %% 函数
+	    order = size(group, 1);
+	    matrix = zeros(1, order);
+	    for loc = 1: order
+	        if loc == 1
+	            matrix(loc) = 1;
+	        else
+	            element = loc;
+	            for n = 2: order
+	                element = group(element, loc);
+	                if element == 1
+	                    matrix(loc) = n;
+	                    break
+	                end
+	            end
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={群同态态射}, label={groupHomomorphism}]
+	function mapMatrix = groupHomomorphism(G, H)
+	
+	    % 名称：群同态态射
+	    % 输入：群G和H
+	    % 输出：G-->H的同态态射
+	    % 其中每一行代表一个态射，第j列代表j在该态射下的像
+	
+	    %% 函数
+	    
+	    % 定义群的阶
+	    m = size(G, 1);
+	    n = size(H, 1);
+	
+	    % 初始化映射矩阵
+	    mapMatrix = zeros(n^m, m);
+	    
+	    % 生成所有可能的映射
+	    for i = 1: n^m
+	        temp = i - 1;
+	        for j = m:-1:1
+	            quotient = floor(temp / n);
+	            remainder = mod(temp, n);
+	            mapMatrix(i, j) = remainder + 1;
+	            temp = quotient;
+	        end
+	    end
+	
+	    % 初始化元素矩阵
+	    elementMatrix = [];
+	
+	    % 生成元素矩阵
+	    for k = 1: m
+	        elementMatrix = [elementMatrix, [k*ones(1, m); 1: m]];
+	    end
+	
+	    % 筛选同态态射
+	    for k = 1: n^m
+	        for element = elementMatrix
+	            if mapMatrix(k, groupOperate(G, element(1), element(2))) ~= groupOperate(H, mapMatrix(k, element(1)), mapMatrix(k, element(2)))
+	                mapMatrix(k, :) = zeros(1, m);
+	                break
+	            end
+	        end
+	    end
+	
+	    % 删除非同态态射
+	    mapMatrix = mapMatrix(any(mapMatrix, 2), :);
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={群同构态射}, label={groupIsomorphism}]
+	function mapMatrix = groupIsomorphism(G, H)
+	
+	    % 名称：群同构态射
+	    % 输入：群G和H
+	    % 输出：G-->H的同构态射
+	    % 其中每一行代表一个态射，第j列代表j在该态射下的像
+	
+	    %% 函数
+	
+	    % 定义群的阶
+	    m = size(G, 1);
+	    n = size(H, 1);
+	
+	    if m == n
+	
+	        % 计算G-->H的同态态射
+	        mapMatrix = groupHomomorphism(G, H);
+	        
+	        % 定义目标排列
+	        permutation = 1: m;
+	        
+	        % 初始化一个逻辑向量，用于标记符合条件的行
+	        is_permutation = false(size(mapMatrix, 1), 1);
+	        
+	        % 遍历每一行
+	        for k = 1: size(mapMatrix, 1)
+	            % 判断是否是目标排列
+	            if isequal(sort(mapMatrix(k, :)), permutation)
+	                is_permutation(k) = true;
+	            end
+	        end
+	        
+	        % 从矩阵中选择符合条件的行
+	        mapMatrix = mapMatrix(is_permutation, :);
+	
+	    else
+	        mapMatrix = [];
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={是否为交换群}, label={isCommutativeGroup}]
+	function judge = isCommutativeGroup(group)
+	
+	    % 名称：判断是否为交换群
+	    % 输入：群运算表
+	    % 输出：若可交换，则输出1；否则，输出0
+	
+	    judge = all(all(group == group'));
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={是否为单群}, label={isSimpleGroup}]
+	function judge = isSimpleGroup(group)
+	
+	    % 名称：判断是否为单群
+	    % 输入：群运算表
+	    % 输出：若为单群，则输出1；否则，输出0
+	    
+	    %% 函数
+	    if size(group, 1) == 1
+	        judge = 1;
+	    else
+	        normalSubgroupMatrix = normalSubgroup(group);
+	        judge = size(normalSubgroupMatrix, 1) == 2;
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={是否为可解群}, label={isSolvableGroup}]
+	function judge = isSolvableGroup(group)
+	
+	    % 名称：判断是否为可解群
+	    % 输入：群运算表
+	    % 输出：若为可解群，则输出1；否则，输出0
+	    
+	    %% 函数
+	    order = size(group, 1);
+	    elementMatrix = 1: order;
+	    m = 1;
+	    n = 0;
+	    while m ~= n
+	        m = size(elementMatrix, 2);
+	        elementMatrix = commutatorGroup(group, elementMatrix);
+	        n = size(elementMatrix, 2);
+	    end
+	    if m == 1
+	        judge = 1;
+	    else
+	        judge = 0;
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={群的直积}, label={directProductOfGroups}]
+	function [element, group, order] = directProductOfGroups(G, H)
+	
+	    % 名称：群的直积
+	    % 输入：群G和H
+	    % 输出：1.群元素element；2.群运算表group；3.群阶order
+	    % 说明：以element表中元素的位置建立与元素间的双射
+	    %       如下出现的数字均代表元素的位置，不代表真实元素
+	    %       element为order行2列矩阵
+	    %       其中element(k)代表第k个元素
+	    %       element的行向量(i,j)代表G的第i个元素与H的第j个元素
+	    %       group(i,j)=element(i) * element(j)
+	
+	
+	    %% 1.群阶
+	    m = size(G, 1);
+	    n = size(H, 1);
+	    order = m * n;
+	
+	    %% 2.群元素
+	    element = zeros(order, 2);
+	    for k = 1: order
+	        element(k, 1) = ceil(k / n);
+	        element(k, 2) = k - n * (ceil(k / n)-1);
+	    end
+	
+	    %% 3.群运算表
+	    group = zeros(order, order);
+	
+	    for i = 1: order
+	        for j = 1: order
+	            group(i, j) = ...
+	                n * (G(element(i, 1), element(j, 1)) - 1) ...
+	                + H(element(i, 2), element(j, 2));
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\section{辅助函数}
+
+\begin{lstlisting}[language=Matlab, caption={Euler函数}, label={EulerFunction}]
+	function [N, Matrix] = EulerFunction(n)
+	
+	    % 生成 1 到 n-1 的矩阵
+	    numbers = 1: n-1;
+	    
+	    % 计算每个数与 n 的最大公约数
+	    gcdMatrix = gcd(numbers, n);
+	    
+	    % 使用逻辑索引找到与 n 互素的数
+	    coprime = numbers(gcdMatrix == 1);
+	    
+	    % 将结果转换为矩阵
+	    Matrix = reshape(coprime, 1, []);
+	
+	    % 计算元素个数
+	    N = size(Matrix, 2);
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={全排列}, label={fullPermutation}]
+	function permutation = fullPermutation(n)
+	
+	    % 名称：全排列
+	    % 输入：n
+	    % 输出：n!行n列矩阵，每一行为一个全排列
+	
+	    %%
+	
+	    if n == 1
+	        permutation = 1;
+	    else
+	        sub_permutations = fullPermutation(n - 1);
+	        m = size(sub_permutations, 1);
+	        permutation = zeros(m * n, n);
+	        for i = 1: m
+	            for j = 1: n
+	                permutation((i - 1) * n + j, :) = [sub_permutations(i, 1:j-1), n, sub_permutations(i, j:end)];
+	            end
+	        end
+	    end
+	
+	end
+	
+\end{lstlisting}
+
+\begin{lstlisting}[language=Matlab, caption={组合矩阵}, label={generateCombinations}]
+	function combinations = generateCombinations(k, n)
+	    % 生成组合矩阵的函数
+	    % 输入：组合大小k，元素总数n
+	    % 输出:一个C_n^k行，k列矩阵，包含所有可能的组合
+	    
+	    %% 函数1
+	    % 生成所有可能的组合
+	    combinations = cell2mat(arrayfun(@(x) nchoosek(1:n, x), k, 'UniformOutput', false)');
+	
+	    %% 函数2
+	
+	    % 初始化组合矩阵为空
+	    combinations = [];
+	    % 初始化当前组合为空
+	    currentCombination = [];
+	    % 调用递归函数来生成组合
+	    generate(1, k, n, currentCombination);
+	    
+	    % 递归函数，生成所有可能的组合
+	    % 输入参数:
+	    %   - start: 当前迭代的起始元素
+	    %   - k: 剩余要选择的元素数量
+	    %   - n: 候选元素的总数
+	    %   - currentCombination: 当前的组合
+	    function generate(start, k, n, currentCombination)
+	        % 当剩余要选择的元素数量为0时，表示已经生成一个组合
+	        if k == 0
+	            % 将当前组合添加到组合矩阵中
+	            combinations = [combinations; currentCombination];
+	            return;
+	        end
+	        
+	        % 遍历候选元素，生成组合
+	        for i = start:n
+	            % 递归调用generate函数，继续生成组合
+	            generate(i+1, k-1, n, [currentCombination, i]);
+	        end
+	    end
+	    
+	end
+	
+\end{lstlisting}
+
+% \end{document}

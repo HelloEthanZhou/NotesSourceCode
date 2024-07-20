@@ -1,0 +1,2832 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{Complex Analysis - Stein - Notebook}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\ee}{\mathrm{e}^}           % 微分d
+\newcommand{\rank}{\text{rank}}        % 秩
+\newcommand{\tr}{\text{tr}}            % 迹
+\newcommand{\dis}{\displaystyle}           
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+\begin{center}
+	
+	\large{感谢 \textbf{ 勇敢的 } 自己}
+	
+\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{全纯函数}
+
+\section{全纯函数}
+
+\begin{definition}{全纯函数}{全纯函数}
+	称函数$f=u+iv$在开集$\Omega\sub\C$上为全纯函数，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意$z\in\Omega$，存在极限%
+		$$
+		\lim_{h\to 0}\frac{f(z+h)-f(z)}{h}
+		$$
+		\item 函数$u$和$v$在$\Omega$​上连续可微，且成立Cauchy-Riemann方程
+		$$
+		\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+		\qquad
+		\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+		$$
+		\item 函数$f$在$\Omega$上连续，且对于任意分段光滑闭曲线$\gamma$，成立%
+		$$
+		\int_\gamma{f(z)\mathrm{d}z}=0
+		$$
+		\item 对于任意$z_0\in \Omega$，存在$r>0$，使得对于任意$z\in D_r(z_0)$，成立幂级数展开
+		$$
+		f(z)=\sum_{n=0}^{\infty}{a_n(z-z_0)^n}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：由Cauchy-Riemann方程\ref{thm:Cauchy-Riemann方程}，命题得证！
+	
+	$2\implies 1$：由Cauchy-Riemann方程逆定理\ref{thm:Cauchy-Riemann方程逆定理}，命题得证！
+	
+	$1\implies 3$：由Cauchy积分定理\ref{thm:Cauchy积分定理}，命题得证！
+	
+	$3\implies 1$：由Morera定理\ref{thm:Morera定理}，命题得证！
+	
+	$1\implies 4$：由Taylor展开\ref{thm:Taylor展开}，命题得证！
+	
+	$4\implies 1$：由定理\ref{thm:幂级数可逐项求导}，命题得证！
+\end{proof}
+
+\begin{definition}{整函数}
+	称在$\C$上全纯的函数为整函数。
+\end{definition}
+
+\section{Cauchy-Riemann方程}
+
+\begin{theorem}{Cauchy-Riemann方程}{Cauchy-Riemann方程}
+	如果函数$f=u+iv$在开集$\Omega\sub\C$上全纯，那么
+	$$
+	\frac{\partial f}{\partial x}=\frac{1}{i}\frac{\partial f}{\partial y}
+	$$
+	即
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于存在极限%
+	$$
+	f'(z)=\lim_{h\to 0}\frac{f(z+h)-f(z)}{h}
+	=\lim_{(h_1,h_2)\to (0,0)}=\frac{f(x+h_1,y+h_2)-f(x,y)}{h_1+ih_2}
+	$$
+	那么当$h$沿实轴时%
+	$$
+	f'(z)=\lim_{h_1\to 0}=\frac{f(x+h_1,y)-f(x,y)}{h_1}=\frac{\partial f}{\partial x}(z)
+	$$
+	当$h$沿虚轴时%
+	$$
+	f'(z)=\lim_{h_2\to 0}=\frac{f(x,y+h_2)-f(x,y)}{ih_2}=\frac{1}{i}\frac{\partial f}{\partial y}(z)
+	$$
+	从而
+	$$
+	\frac{\partial f}{\partial x}=\frac{1}{i}\frac{\partial f}{\partial y}
+	$$
+	即
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+\end{proof}
+
+\begin{theorem}{Cauchy-Riemann方程逆定理}{Cauchy-Riemann方程逆定理}
+	如果函数$f=u+iv$在开集$\Omega\sub\C$上成立Cauchy-Riemann方程
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+	那么$f$在$\Omega$上全纯。
+\end{theorem}
+
+\begin{proof}
+	由于函数$u$和$v$在$\Omega$​上连续可微，那么
+	\begin{align*}
+		& u(x+h_1,y+h_2)-u(x,y)=\frac{\partial u}{\partial x}h_1+\frac{\partial u}{\partial y}h_2+h\psi_1(h)\\
+		& v(x+h_1,y+h_2)-v(x,y)=\frac{\partial v}{\partial x}h_1+\frac{\partial v}{\partial y}h_2+h\psi_2(h)
+	\end{align*}
+	其中%
+	$$
+	\lim_{h\to 0}\psi_1(h)=\lim_{h\to 0}\psi_2(h)=0
+	$$
+	令%
+	$$
+	h=h_1+ih_2,\qquad 
+	\psi=\psi_1+i\psi_2
+	$$
+	从而由Cauchy-Riemann方程%
+	$$
+	f(z+h)-f(z)
+	=\left(\frac{\partial u}{\partial x}-i\frac{\partial u}{\partial y}\right)h+h\psi(h)
+	$$
+	从而$f$为全纯函数，且%
+	$$
+	f'=\frac{\partial u}{\partial x}-i\frac{\partial u}{\partial y}=2\frac{\partial u}{\partial z}=\frac{\partial f}{\partial z}
+	$$
+\end{proof}
+
+\begin{definition}{微分算子}
+	$$
+	\frac{\partial }{\partial z}=\frac{1}{2}\left(\frac{\partial }{\partial x}+\frac{1}{i}\frac{\partial }{\partial y}\right),
+	\qquad
+	\frac{\partial }{\partial \bar{z}}=\frac{1}{2}\left(\frac{\partial }{\partial x}-\frac{1}{i}\frac{\partial }{\partial y}\right)
+	$$
+\end{definition}
+
+\begin{proposition}{}{Cauchy-Rimann方程的性质}
+	如果$f=u+iv$在开集$\Omega\sub\C$上全纯，那么%
+	$$
+	\frac{\partial f}{\partial \bar{z}}=0,\qquad 
+	f'=\frac{\partial f}{\partial z}=2\frac{\partial u}{\partial z}
+	$$
+	且其Jacobian矩阵成立%
+	$$
+	\begin{vmatrix}
+		\frac{\partial u}{\partial x}&\frac{\partial u}{\partial y}\\
+		\frac{\partial v}{\partial x}&\frac{\partial v}{\partial y}
+	\end{vmatrix}=|f'|^2
+	$$
+\end{proposition}
+
+\begin{proposition}
+	对于开集$\Omega$上的全纯函数$f=u+iv$，如果$f$成立如下条件之一，那么$f$为常数。
+	\begin{enumerate}
+		\item $\mathrm{Re}(f)$为常数。
+		\item $\mathrm{Im}(f)$为常数。
+		\item $|f|$为常数。
+		\item $f'=0$
+		\item $\overline{f}$全纯。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	对于1，由于$u$为常数，那么由Cauchy-Riemann方程\ref{thm:Cauchy-Riemann方程}
+	\begin{align*}
+		& \frac{\partial v}{\partial x}=-\frac{\partial u}{\partial y}=0\\
+		& \frac{\partial v}{\partial y}=\frac{\partial u}{\partial x}=0
+	\end{align*}
+	因此$v$为常数，进而$f$为常数。
+	
+	对于2，由于$v$为常数，那么由Cauchy-Riemann方程\ref{thm:Cauchy-Riemann方程}
+	\begin{align*}
+		& \frac{\partial u}{\partial x}=\frac{\partial v}{\partial y}=0\\
+		& \frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}=0
+	\end{align*}
+	因此$u$为常数，进而$f$为常数。
+	
+	对于3，由于$u^2+v^2$为常数，那么分别对$x$和$y$求偏导，并由Cauchy-Riemann方程\ref{thm:Cauchy-Riemann方程}得到
+	$$
+	\begin{pmatrix}
+		\frac{\partial u}{\partial x}&-\frac{\partial u}{\partial y}\\
+		\frac{\partial u}{\partial y}&\frac{\partial u}{\partial x}
+	\end{pmatrix}
+	\begin{pmatrix}
+		u\\v
+	\end{pmatrix}=0
+	$$
+	注意到%
+	$$
+	\begin{vmatrix}\frac{\partial u}{\partial x}&-\frac{\partial u}{\partial y}\\\frac{\partial u}{\partial y}&\frac{\partial u}{\partial x}\end{vmatrix}=\left(\frac{\partial u}{\partial x}\right)^2+\left(\frac{\partial u}{\partial y}\right)^2
+	$$
+	
+	如果%
+	$$
+	\left(\frac{\partial u}{\partial x}\right)^2+\left(\frac{\partial u}{\partial y}\right)^2=0
+	$$
+	那么$\frac{\partial u}{\partial x}=\frac{\partial u}{\partial y}=0$，因此$u$为常数，由1，$f$为常数。
+	
+	如果
+	$$
+	\left(\frac{\partial u}{\partial x}\right)^2+\left(\frac{\partial u}{\partial y}\right)^2\ne0
+	$$
+	那么上式存在唯一解$u=v=0$，因此$f$为常数。
+	
+	因此，$f$为常数。
+	
+	对于4，由于
+	$$
+	\frac{\partial f}{\partial z}=\frac{1}{2}\left(\frac{\partial f}{\partial x}+\frac{1}{i}\frac{\partial f}{\partial y}\right)=0
+	$$
+	同时由于$f$​全纯，那么
+	$$
+	\frac{\partial f}{\partial \overline{z}}=\frac{1}{2}\left(\frac{\partial f}{\partial x}-\frac{1}{i}\frac{\partial f}{\partial y}\right)=0
+	$$
+	联立两式可得
+	$$
+	\frac{\partial f}{\partial x}=\frac{\partial f}{\partial y}=0
+	$$
+	因此$f$为常数。
+	
+	对于5，由于$f$和$\overline{f}$均是全纯的，那么$u=\frac{1}{2}(f+\overline{f})$和$v=\frac{1}{2i}(f+\overline{f})$​是全纯的。由Cauchy-Riemann方程\ref{thm:Cauchy-Riemann方程}
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial u}{\partial y}=\frac{\partial v}{\partial x}=\frac{\partial v}{\partial y}=0
+	$$
+	因此$u,v$均为常数，进而$f$为常数。
+\end{proof}
+
+\section{幂级数}
+
+\begin{definition}{解析函数}
+	称定义在开集$\Omega$上的函数$f$在点$z_0\in\Omega$处是解析的，如果在$z_0$的邻域内存在幂级数展开
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_n(z-z_0)^n}
+	$$
+\end{definition}
+
+\begin{theorem}{Hadamard公式}
+	幂级数
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_nz^n}
+	$$
+	的收敛半径$R$成立%
+	$$
+	\frac{1}{R}=\varlimsup_{n\to\infty}\sqrt[n]{|a_n|}
+	$$
+	且
+	\begin{enumerate}
+		\item 如果$|z|<R$，那么级数绝对收敛。
+		\item 如果$|z|>R$，那么级数发散。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{幂级数可逐项求导}{幂级数可逐项求导}
+	幂级数
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_nz^n}
+	$$
+	在收敛域内定义了一个全纯函数，其导函数为
+	$$
+	f'(z)=\sum_{n=0}^{\infty}{n a_n z^{n-1}}
+	$$
+	且收敛半径不变。
+\end{theorem}
+
+\begin{proposition}
+	\begin{enumerate}
+		\item 幂级数$\dis\sum_{n=1}^{\infty}{nz^n}$在单位圆上任意一点均不收敛。
+		\item 幂级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n^2}}$在单位圆上任意一点均收敛。
+		\item 幂级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n}}$在单位圆上除$z=1$外任意一点均收敛。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	对于1，注意到
+	$$
+	\lim_{n\to\infty}{|nz^n|}=\lim_{n\to\infty}{n}=\infty
+	$$
+	因此幂级数$\dis\sum_{n=1}^{\infty}{nz^n}$在单位圆上任意一点均不收敛。事实上%
+	$$
+	\sum_{n=1}^{\infty}{nz^n}=\frac{z}{(z-1)^2}
+	$$
+	
+	对于2，注意到当$|z|=1$时，成立
+	$$
+	\left|\frac{z^n}{n^2}\right|=\frac{1}{n^2}
+	$$
+	而级数$\dis\sum_{n=1}^{\infty}{\frac{1}{n^2}}$收敛，于是幂级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n^2}}$在单位圆上任意一点均收敛。
+	
+	对于3，当$z=1$时，幂级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n}}=\dis\sum_{n=1}^{\infty}{\frac{1}{n}}$显然不收敛。
+	
+	当$|z|=1$且$z\ne 1$时，令$z=\cos\theta+i\sin\theta$，其中$\theta\in(0,2\pi)$，那么
+	$$
+	\sum_{n=1}^{\infty}{\frac{z^n}{n}}=
+	\sum_{n=1}^{\infty}{\frac{\cos{(n\theta)}}{n}}+
+	i\sum_{n=1}^{\infty}{\frac{\sin{(n\theta)}}{n}}
+	$$
+	注意到
+	\begin{align*}
+		& \sum_{k=1}^{n}{\cos{(k\theta)}}=\frac{\sin{\frac{2n+1}{2}\theta}-\sin{\frac{\theta}{2}}}{2\sin{\frac{\theta}{2}}}\\
+		& \sum_{k=1}^{n}{\sin{(k\theta)}}=\frac{\cos{\frac{\theta}{2}}-\cos{\frac{2n+1}{2}\theta}}{2\sin{\frac{\theta}{2}}}
+	\end{align*}
+	因此
+	$$
+	\left|\sum_{k=1}^{n}{\cos{(k\theta)}}\right|\le \frac{1}{\left|\sin{\frac{\theta}{2}}\right|},
+	\qquad
+	\left|\sum_{k=1}^{n}{\sin{(k\theta)}}\right|\le \frac{1}{\left|\sin{\frac{\theta}{2}}\right|}
+	$$
+	又$1/n$单调趋于$0$，那么由Dirichlet判别法，级数$\dis\sum_{n=1}^{\infty}{\frac{\cos{(n\theta)}}{n}}$和$\dis\sum_{n=1}^{\infty}{\frac{\sin{(n\theta)}}{n}}$均收敛，进而级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n}}$收敛。
+	
+	综上所述，幂级数$\dis\sum_{n=1}^{\infty}{\frac{z^n}{n}}$在单位圆上除$z=1$外任意一点均收敛。事实上%
+	$$
+	\sum_{n=1}^{\infty}{\frac{z^n}{n}}=-\ln(1-z)
+	$$
+\end{proof}
+
+\section{曲线积分}
+
+\begin{definition}{光滑曲线}
+	称曲线$z:[a,b]\to \C$为光滑曲线，如果$z$在$[a,b]$上连续可微，且$z'(t)\ne 0$。
+\end{definition}
+
+\begin{definition}{封闭曲线}
+	称曲线$z:[a,b]\to \C$为封闭曲线，如果$z(a)=z(b)$。
+\end{definition}
+
+\begin{definition}{简单曲线}
+	称曲线$z:[a,b]\to \C$为简单曲线，如果成立%
+	$$
+	z(t)=z(s)\implies
+	t=s
+	$$
+\end{definition}
+
+\begin{definition}{曲线积分}
+	定义连续函数$f$在可参数化为$z(t):[a,b]\to\C$的光滑曲线$\gamma$上的曲线积分为
+	$$
+	\int_{\gamma}{f(z)\mathrm{d}z}=\int_a^b{f(z(t))z'(t)\mathrm{d}t}
+	$$
+\end{definition}
+
+\begin{theorem}
+	如果连续函数$f$在开集$\Omega$上存在原函数$F$，且分段光滑曲线$\gamma$起于$w_1$终于$w_2$，那么
+	$$
+	\int_{\gamma}{f(z)\mathrm{d}z}=F(w_2)-F(w_1)
+	$$
+\end{theorem}
+
+\begin{proof}
+	不妨假设$\gamma$为光滑曲线，参数化曲线$\gamma$为$z(t):[a,b]\to\C$，其中$z(a)=w_1$且$z(b)=w_2$，那么
+	\begin{align*}
+		\int_{\gamma}{f(z)\mathrm{d}z}
+		& = \int_a^b{f(z(t))z'(t)}\mathrm{d}t\\
+		& = \int_a^b{F'(z(t))z'(t)}\mathrm{d}t\\
+		& = \int_a^b \frac{\dd}{\dd t}F(z(t))\dd t\\
+		& = F(z(b))-F(z(b))\\
+		& = F(w_2)-F(w_1)
+	\end{align*}
+\end{proof}
+
+\begin{corollary}
+	如果连续函数$f$在开集$\Omega$上存在原函数，那么对于分段光滑封闭曲线$\gamma$，成立
+	$$
+	\int_{\gamma}{f(z)\mathrm{d}z}=0
+	$$
+\end{corollary}
+
+\begin{corollary}{}{常函数的导数为0}
+	对于区域$\Omega\sub\C$上的全纯函数$f$，如果$f'=0$，那么$f$为常函数。
+\end{corollary}
+
+\begin{proposition}
+	$$
+	\int_{\gamma}{z^n\mathrm{d}z}=\begin{cases}
+		2\pi i,\quad & n=-1\\
+		0,\quad & n\ne-1
+	\end{cases}
+	$$
+	其中$\gamma$为以原点为中心且方向为正的任何圆。
+\end{proposition}
+
+\begin{proof}
+	令$\gamma$的参数方程为$z(\theta)=\rho\mathrm{e}^{i\theta}$，其中$\rho>0$且$\theta\in[0,2\pi]$，那么
+	$$
+	\int_{\gamma}{z^n\mathrm{d}z}=i\rho^{n+1}\int_{0}^{2\pi}{\mathrm{e}^{i(n+1)\theta}\mathrm{d}\theta}
+	$$
+	
+	当$n=-1$时
+	$$
+	\int_{\gamma}{\frac{1}{z}\mathrm{d}z}=i\int_{0}^{2\pi}{\mathrm{d}\theta}=2\pi i
+	$$
+	
+	当$n\ne-1$时
+	$$
+	\int_{\gamma}{z^n\mathrm{d}z}=i\rho^{n+1}\int_{0}^{2\pi}{\mathrm{e}^{i(n+1)\theta}\mathrm{d}\theta}=0
+	$$
+	
+	因此
+	$$
+	\int_{\gamma}{z^n\mathrm{d}z}=\begin{cases}
+		2\pi i,\quad & n=-1\\
+		0,\quad & n\ne-1
+	\end{cases}
+	$$
+\end{proof}
+
+\chapter{Cauchy积分定理与应用}
+
+\section{Goursat定理}
+
+\begin{theorem}{Goursat定理}{Goursat定理}
+	如果函数$f$在开集$\Omega\sub\C$上全纯，那么对于任意三角形$T\sub\Omega$，成立%
+	$$
+	\int_{T}f(z)\dd z=0
+	$$
+\end{theorem}
+
+\section{Cauchy积分定理}
+
+\begin{theorem}
+	开圆上的全纯函数$f$存在原函数。
+\end{theorem}
+
+\begin{theorem}{开圆上的Cauchy积分定理}
+	如果函数$f$在开圆$D$上全纯，那么对于封闭曲线$\gamma\sub D$，成立
+	$$
+	\int_{\gamma}{f(z)\mathrm{d}z}=0
+	$$
+\end{theorem}
+
+\begin{theorem}{Cauchy积分定理}{Cauchy积分定理}
+	对于边界分段光滑的区域$\Omega\sub\C$，如果函数$f$在$\Omega$上全纯且在$\overline{\Omega}$上连续，那么%
+	$$
+	\int_{\partial\Omega}f(z)\dd z=0
+	$$
+\end{theorem}
+
+\begin{example}
+	$$
+	\int_0^{\infty}{\sin x^2\mathrm{d}x}=\int_0^{\infty}{\cos x^2\mathrm{d}x}=\frac{\sqrt{2\pi}}{4}
+	$$
+\end{example}
+
+\begin{proof}
+	记曲线为
+	\begin{align*}
+		&\gamma_1:z=t,&& t:0\to R\\
+		&\gamma_2:z=R\mathrm{e}^{it},&& t:0\to\frac{\pi}{4}\\
+		&\gamma_3:z=\frac{1+i}{\sqrt{2}}t,&& t:R\to0
+	\end{align*}
+	考虑函数$\mathrm{e}^{-z^2}$在$\gamma_1+\gamma_2+\gamma_3$上的积分，由Cauchy积分定理\ref{thm:Cauchy积分定理}
+	$$
+	\int_{\gamma_1}{\mathrm{e}^{-z^2}\mathrm{d}z}+\int_{\gamma_2}{\mathrm{e}^{-z^2}\mathrm{d}z}+\int_{\gamma_3}{\mathrm{e}^{-z^2}\mathrm{d}z}=0
+	$$
+	
+	考察各项积分，对于第一项
+	$$
+	\int_{\gamma_1}{\mathrm{e}^{-z^2}\mathrm{d}z}=\int_0^R{\mathrm{e}^{-t^2}\mathrm{d}t}
+	$$
+	因此
+	$$
+	\lim_{R\to\infty}\int_{\gamma_1}{\mathrm{e}^{-z^2}\mathrm{d}z}=\int_0^{\infty}{\mathrm{e}^{-t^2}\mathrm{d}t}=\frac{\sqrt{\pi}}{2}
+	$$
+	
+	对于第二项，注意到当$t\in[0,\pi]$时，成立$\cos{2t}\ge1-\frac{4}{\pi}t$，于是
+	\begin{align*}
+		\left|\int_{\gamma_2}{\mathrm{e}^{-z^2}\mathrm{d}z}\right|
+		\le&\int_{\gamma_2}{\left|\mathrm{e}^{-z^2}\right||\mathrm{d}z|}\\
+		=&R\int_0^{\frac{\pi}{4}}{\mathrm{e}^{-R^2\cos{2t}}\mathrm{d}t}\\
+		\le&R\int_0^{\frac{\pi}{4}}{\mathrm{e}^{-R^2(1-\frac{4}{\pi}t)}\mathrm{d}t}\\
+		=&\frac{\pi}{4R}(1-\mathrm{e}^{-R^2})
+	\end{align*}
+	进而
+	$$
+	\lim_{R\to\infty}\int_{\gamma_2}{\mathrm{e}^{-z^2}\mathrm{d}z}=0
+	$$
+	
+	对于第三项
+	$$
+	\int_{\gamma_3}{\mathrm{e}^{-z^2}\mathrm{d}z}=-\frac{1+i}{\sqrt{2}}\int_0^R{\mathrm{e}^{-it^2}}=-\frac{1}{\sqrt{2}}\left( \int_0^R{(\cos{t^2}+\sin{t^2})\mathrm{d}t}+i\int_0^R{(\cos{t^2}-\sin{t^2})\mathrm{d}t} \right)
+	$$
+	
+	于是当$R\to\infty$时，成立
+	$$
+	\int_0^{\infty}{(\cos{t^2}+\sin{t^2})\mathrm{d}t}+i\int_0^{\infty}{(\cos{t^2}-\sin{t^2})\mathrm{d}t}=\frac{\sqrt{2\pi}}{2}
+	$$
+	因此
+	$$
+	\int_0^{\infty}{(\cos{t^2}+\sin{t^2})\mathrm{d}t}=\frac{\sqrt{2\pi}}{2},\qquad
+	\int_0^{\infty}{(\cos{t^2}-\sin{t^2})\mathrm{d}t}=0
+	$$
+	所以
+	$$
+	\int_0^{\infty}{\sin x^2\mathrm{d}x}=\int_0^{\infty}{\cos x^2\mathrm{d}x}=\frac{\sqrt{2\pi}}{4}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_{0}^{\infty}{\frac{\sin{x}}{x}}\mathrm{d}x=\frac{\pi}{2}
+	$$
+\end{example}
+
+\begin{proof}
+	记曲线
+	\begin{align*}
+		&\gamma_1:z=t,&& t:\varepsilon\to R\\
+		&\gamma_2:z=t,&& t:-R\to-\varepsilon\\
+		&C_r:z=R\mathrm{e}^{it},&& t:0\to\pi\\
+		&C_\varepsilon:z=\varepsilon\mathrm{e}^{it},&& t:\pi\to0
+	\end{align*}
+	考虑函数$\mathrm{e}^{iz}/z$在$\gamma_1+\gamma_2+C_R+C_\varepsilon$​上的积分，由Cauchy积分定理\ref{thm:Cauchy积分定理}
+	$$
+	\int_{\gamma_1+\gamma_2}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}+\int_{C_R}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}+\int_{C_\varepsilon}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}=0
+	$$
+	
+	考察各项积分，对于第一项
+	$$
+	\lim_{\substack{R\to\infty\\\varepsilon\to0}}{\int_{\gamma_1+\gamma_2}{\frac{\mathrm{e}^{iz}}{z}}\mathrm{d}z}=\int_{-\infty}^{\infty}{\frac{\mathrm{e}^{iz}}{z}}\mathrm{d}z=2i\int_{0}^{\infty}{\frac{\sin{x}}{x}\mathrm{d}x}
+	$$
+	
+	对于第二项，注意到当$t\in[0,\frac{\pi}{2}]$时，成立$\sin{t}\ge\frac{2}{\pi}t$，因此
+	\begin{align*}
+		\left|\int_{C_R}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}\right|
+		\le&\int_{C_R}{\left|\frac{\mathrm{e}^{iz}}{z}\right||\mathrm{d}z|}\\
+		=&2\int_0^{\frac{\pi}{2}}{\mathrm{e}^{-R\sin{t}}\mathrm{d}t}\\
+		\le&2\int_0^{\frac{\pi}{2}}{\mathrm{e}^{-\frac{2R}{\pi}t}\mathrm{d}t}\\
+		=&\frac{\pi}{R}(1-\mathrm{e}^{-R})
+	\end{align*}
+	于是
+	$$
+	\lim_{R\to\infty}\int_{C_R}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}=0
+	$$
+	
+	对于第三项，注意到
+	$$
+	\int_{C_\varepsilon}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}=-i\int_0^\pi\mathrm{e}^{i\varepsilon\mathrm{e}^{it}}\mathrm{d}t
+	$$
+	于是
+	$$
+	\lim_{\varepsilon\to0}\int_{C_\varepsilon}{\frac{\mathrm{e}^{iz}}{z}\mathrm{d}z}=-i\int_0^\pi\mathrm{d}t=-i\pi
+	$$
+	
+	因此当$R\to\infty$且$\varepsilon\to0$​时，成立
+	$$
+	2i\int_{0}^{\infty}{\frac{\sin{x}}{x}\mathrm{d}x}=i\pi
+	$$
+	进而
+	$$
+	\int_{0}^{\infty}{\frac{\sin{x}}{x}\mathrm{d}x}=\frac{\pi}{2}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}=\frac{a}{a^2+b^2},\qquad 
+	\int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=\frac{b}{a^2+b^2},\qquad a>0
+	$$
+\end{example}
+
+\begin{proof}
+	法一：当$b\ne0$时，记曲线
+	\begin{align*}
+		&\gamma_1:z=t,&& t:0\to R\\
+		&\gamma_2:z=R\mathrm{e}^{it},&& t:0\to\theta\\
+		&\gamma_3:z=t\mathrm{e}^{i\theta},&& t:R\to0
+	\end{align*}
+	其中%
+	$$
+	\cos\theta=\frac{a}{\sqrt{a^2+b^2}},\qquad 
+	\sin{\theta}=\frac{-b}{\sqrt{a^2+b^2}},\qquad 
+	\theta\in(-\pi/2,\pi/2)
+	$$
+	
+	考虑函数$\mathrm{e}^{-rz}$在曲线$\gamma_1+\gamma_2+\gamma_3$上的积分，其中$r=\sqrt{a^2+b^2}$，由Cauchy积分定理\ref{thm:Cauchy积分定理}
+	$$
+	\int_{\gamma_1}{\mathrm{e}^{-rz}\mathrm{d}z}+\int_{\gamma_2}{\mathrm{e}^{-rz}\mathrm{d}z}+\int_{\gamma_3}{\mathrm{e}^{-rz}\mathrm{d}z}=0
+	$$
+	
+	考察各项积分，对于第一项
+	$$
+	\lim_{R\to\infty}\int_{\gamma_1}{\mathrm{e}^{-rz}\mathrm{d}z}
+	=\int_0^\infty{\mathrm{e}^{-rt}\mathrm{d}t}
+	=\frac{1}{r}
+	$$
+	
+	对于第二项
+	\begin{align*}
+		\left|\int_{\gamma_2}{\mathrm{e}^{-rz}\mathrm{d}z}\right|
+		\le&\int_{\gamma_2}{\left|\mathrm{e}^{-rz}\right||\mathrm{d}z|}\\
+		=&R\int_0^\theta{\mathrm{e}^{-rR\cos{t}}\mathrm{d}t}\\
+		\le&\frac{R}{\mathrm{e}^{rR\cos{\theta}}}\int_0^\theta{\mathrm{d}t}\\
+		=&\frac{\theta R}{\mathrm{e}^{rR\cos{\theta}}}
+	\end{align*}
+	于是
+	$$
+	\lim_{R\to\infty}{\int_{\gamma_2}{\mathrm{e}^{-rz}\mathrm{d}z}}=0
+	$$
+	
+	对于第三项
+	$$
+	\int_{\gamma_3}{\mathrm{e}^{-rz}\mathrm{d}z}=-\mathrm{e}^{i\theta}\int_0^R{\mathrm{e}^{-r\mathrm{e}^{i\theta}t}\mathrm{d}t}=
+	-\mathrm{e}^{i\theta}\left(\int_0^{R}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}+i\int_0^{R}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}\right)
+	$$
+	于是当$R\to\infty$时，成立
+	$$
+	\int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}+i\int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=\frac{1}{r\mathrm{e}^{i\theta}}=\frac{a+ib}{a^2+b^2}
+	$$
+	
+	因此
+	$$
+	\int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}=\frac{a}{a^2+b^2},\qquad 
+	\int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=\frac{b}{a^2+b^2}
+	$$
+	
+	当$b=0$时，显然有
+	\begin{align*}
+		& \int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}=
+		\int_0^{\infty}{\mathrm{e}^{-ax}\mathrm{d}x}=\frac{1}{a}\\
+		& \int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=0
+	\end{align*}
+	
+	综上所述
+	$$
+	\int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}=\frac{a}{a^2+b^2},\qquad 
+	\int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=\frac{b}{a^2+b^2}
+	$$
+	
+	法二：注意到
+	$$
+	\int_0^\infty\mathrm{e}^{(-a+ib)x}\mathrm{d}x=\frac{\mathrm{e}^{(-a+ib)x}}{-a+ib}\Big|_{0}^\infty=\frac{1}{a-ib}=\frac{a+ib}{a^2+b^2}
+	$$
+	因此
+	$$
+	\int_0^{\infty}{\mathrm{e}^{-ax}\cos{bx}\mathrm{d}x}=\frac{a}{a^2+b^2},\qquad 
+	\int_0^{\infty}{\mathrm{e}^{-ax}\sin{bx}\mathrm{d}x}=\frac{b}{a^2+b^2}
+	$$
+\end{proof}
+
+\section{Cauchy积分公式}
+
+\subsection{Cauchy积分公式}
+
+\begin{theorem}{开圆上的Cauchy积分公式}
+	对于开集$\Omega\sub\C$，闭圆$\overline{D}\sub\Omega$，如果$f$在$\Omega$上全纯，那么对于任意$z\in D$，成立%
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial D}{\frac{f(\zeta)}{\zeta-z}\mathrm{d}\zeta}
+	$$
+\end{theorem}
+
+\begin{theorem}{Cauchy积分公式}{Cauchy积分公式}
+	对于边界分段光滑的区域$\Omega\sub\C$，如果函数$f$在$\Omega$上全纯且在$\overline{\Omega}$上连续，那么对于任意$z\in\Omega$，成立
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial \Omega}{\frac{f(\zeta)}{\zeta-z}\mathrm{d}\zeta}
+	$$
+	同时$f$在$\Omega$上无穷阶可导，且对于任意$z\in\Omega$，成立
+	$$
+	f^{(n)}(z)=\frac{n!}{2\pi i}\int_{\partial\Omega}{\frac{f(\zeta)}{(\zeta-z)^{n+1}}\mathrm{d}\zeta}
+	$$
+\end{theorem}
+
+\begin{corollary}{平均值性质}{平均值性质}
+	对于在开集$\Omega\sub\C$上全纯的函数$f$，如果$z_0\in\Omega$且$D_r(z_0)\sub\Omega$，那么
+	$$
+	f(z_0)=\frac{1}{2\pi}\int_0^{2\pi}{f(z_0+r\mathrm{e}^{i\theta})\mathrm{d}\theta}
+	$$
+\end{corollary}
+
+\begin{proof}
+	由Cauchy积分公式\ref{thm:Cauchy积分公式}，这几乎是显然的！
+\end{proof}
+
+\begin{corollary}{Cauchy不等式}{Cauchy不等式}
+	对于开集$\Omega\sub\C$上的全函数$f$，如果$\overline{D}_r(z_0)\sub\Omega$，那么
+	$$
+	|f^{(n)}(z_0)| \le \frac{n!}{r^n}\sup_{|z-z_0|=r}|f(z)|
+	$$
+\end{corollary}
+
+\begin{proof}
+	由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	\begin{align*}
+		|f^{(n)}(z_0)|
+		& = \left| \frac{n!}{2\pi i}\int_{\partial D}{\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\mathrm{d}\zeta} \right|\\
+		& = \left| \frac{n!}{2\pi i}\int_{0}^{2\pi}\frac{f(z_0+r\ee{i\theta})}{(r\ee{i\theta})^{n+1}}ri\ee{i\theta}\dd\theta \right|\\
+		& \le \frac{n!}{r^n}\sup_{|z-z_0|=r}|f(z)|
+	\end{align*}
+\end{proof}
+
+\begin{proposition}
+	对于整函数$f$，如果对于任意$R>0$，存在$k\in\N$，和$A,B>0$​，成立
+	$$
+	\sup_{|z|=R}|f(z)|\le AR^k+B
+	$$
+	那么$f$是次数不多于$k$的多项式。
+\end{proposition}
+
+\begin{proof}
+	由Cauchy不等式\ref{cor:Cauchy不等式}
+	$$
+	|f^{(n)}(0)| \le \frac{n!}{R^n}\sup_{|z|=R}|f(z)|\le \frac{n!}{R^n}(AR^k+B)
+	$$
+	当$n>k$时，令$R\to\infty$，可知$f^{(n)}(0)=0$，那么由$f$在$z=0$处的Taylor展开式，$f$在$z=0$的邻域内为次数不多于$k$的多项式，由唯一性定理\ref{thm:唯一性定理}，$f$在$\C$上为次数不多于$k$的多项式。
+\end{proof}
+
+\begin{proposition}
+	如果$f$是在区域$z\in\R\times(-1,1)$上全纯函数，且存在$A>0$与$\eta>0$，使得对于任意$z\in\R\times(-1,1)$，成立
+	$$
+	|f(z)|\le A(1+|z|)^\eta
+	$$
+	那么对于任意$n\in\N$，存在$A_n\ge 0$，使得对于任意$x\in\R$，成立
+	$$
+	|f^{(n)}(x)|\le A_n(1+|x|)^\eta
+	$$
+\end{proposition}
+
+\begin{proof}
+	任取$x\in\R$，作边界方向为正的圆$D=D_{\frac{1}{2}}(x)$，注意到当$z\in\partial D$​时，成立
+	$$
+	1+|z|\le\frac{3}{2}+|x|\le2(1+|x|)
+	$$
+	从而由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	\begin{align*}
+		|f^{(n)}(x)|&=\left| \frac{n!}{2\pi i}\int_{\partial D}{\frac{f(\zeta)}{(\zeta-x)^{n+1}}\mathrm{d}\zeta} \right|\\
+		&\le\frac{n!}{2\pi}\int_{\partial D}{\frac{|f(\zeta)|}{|\zeta-x|^{n+1}}|\mathrm{d}\zeta}|\\
+		&\le\frac{n!}{2\pi}\int_{\partial D}{\frac{A(1+|\xi|)^\eta}{|\zeta-x|^{n+1}}|\mathrm{d}\zeta}|\\
+		&\le\frac{n!}{2\pi}\int_{\partial D}{\frac{A2^\eta(1+|x|)^\eta}{|\zeta-x|^{n+1}}|\mathrm{d}\zeta}|\\
+		&=2^{\eta+n}n!A(1+|x|)^{\eta}
+	\end{align*}
+	取$A_n=2^{\eta+n}n!A$即可。
+\end{proof}
+
+\begin{proposition}
+	对于$\C$上的整函数$f$，如果
+	$$
+	\lim_{|z|\to\infty}\left| \frac{f(z)}{z^m} \right|=0
+	$$
+	那么$f$至多为$m-1$次多项式。
+\end{proposition}
+
+\begin{proof}
+	法一：由于
+	$$
+	\lim_{|z|\to\infty}\left| \frac{f(z)}{z^m} \right|=0
+	$$
+	所以存在$R>0$，使得当$|z|\ge R$时，成立
+	$$
+	|f(z)|<|z|^m
+	$$
+	将$f$展开为多项式级数
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_nz^n}
+	$$
+	取$z=R\mathrm{e}^{i\theta}$，那么
+	$$
+	f(R\mathrm{e}^{i\theta})=\sum_{n=0}^{\infty}{a_nR^n\mathrm{e}^{in\theta}}
+	$$
+	注意到
+	\begin{align*}
+		\frac{1}{2\pi}\int_0^{2\pi}{|f(R\mathrm{e}^{i\theta})|^2\mathrm{d}\theta}
+		=&\frac{1}{2\pi}\int_0^{2\pi}{\left|\sum_{n=0}^{\infty}{a_nR^n\mathrm{e}^{in\theta}}\right|^2\mathrm{d}\theta}\\
+		=&\frac{1}{2\pi}\int_0^{2\pi}{\left(\sum_{n=0}^{\infty}{a_nR^n\mathrm{e}^{in\theta}}\right)\left(\sum_{n=0}^{\infty}{\overline{a_n}R^n\mathrm{e}^{-in\theta}}\right)\mathrm{d}\theta}\\
+		=&\frac{1}{2\pi}\int_0^{2\pi}{\left(\sum_{m,n=0}^{\infty}{a_m\overline{a_n}R^{m+n}\mathrm{e}^{i(m-n)\theta}}\right)\mathrm{d}\theta}\\
+		=&\frac{1}{2\pi}\int_0^{2\pi}{\left(\sum_{n=0}^{\infty}{|a_nR^n|^2}\right)\mathrm{d}\theta}\\
+		=&\sum_{n=0}^{\infty}{|a_n|^2R^{2n}}
+	\end{align*}
+	
+	因此
+	$$
+	\sum_{n=0}^{\infty}{|a_n|^2R^{2n}}<R^{2m}
+	$$
+	进而对于任意$n>m$，$a_n=0$，因此$f$至多为$m$次多项式，而显然$f$不为$m$次多项式，于是$f$至多为$m-1$次多项式。
+	
+	法二：任取$z\in\C$，由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	$$
+	f^{(n)}(z)
+	=\frac{n!}{2\pi i}\int_{|\zeta-z|=R}\frac{f(\zeta)}{(\zeta-z)^{n+1}}\mathrm{d}\zeta
+	=\frac{n!}{2\pi R^n}\int_0^{2\pi }\frac{f(z+R\mathrm{e}^{i\theta})}{\mathrm{e}^{in\theta}}\mathrm{d}\theta
+	$$
+	而由于
+	$$
+	\lim_{|z|\to\infty}\left| \frac{f(z)}{z^m} \right|=0
+	$$
+	所以存在$A>0$，使得当$|z|> A$时，成立
+	$$
+	|f(z)|<|z|^m
+	$$
+	因此当$R>A-|z|$时，成立
+	$$
+	\left|f^{(n)}(z)\right|
+	\le\frac{n!}{2\pi R^n}\int_0^{2\pi}|f(z+R\mathrm{e}^{i\theta})|\mathrm{d}\theta
+	\le \frac{n!}{R^n}|z+R\mathrm{e}^{i\theta}|^m
+	\le \frac{n!}{R^n}(|z|^m+R^m)
+	$$
+	于是当$n>m$且$R\to\infty$时，成立
+	$$
+	f^{(n)}(z)=0
+	$$
+	这说明$f$在$\C$上的任意一点的Taylor展式均不超过$m$次，因此$f$至多为$m$次多项式，而显然$f$不为$m$次多项式，于是$f$至多为$m-1$次多项式。
+\end{proof}
+
+\subsection{Taylor展开}
+
+\begin{theorem}{Taylor展开}{Taylor展开}
+	对于开集$\Omega$上的全纯函数$f$，如果$D_r(z_0)\sub\Omega$，那么$f$存在幂级数展开
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_n(z-z_0)^n},\quad z\in D_r(z_0)
+	$$
+	其中
+	$$
+	a_n=\frac{f^{(n)}(z_0)}{n!},\quad n\in\N
+	$$
+\end{theorem}
+
+\begin{proof}
+	任取$z\in D_r(z_0)$，由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial  D}{\frac{f(\zeta)}{\zeta-z}\mathrm{d}\zeta}
+	$$
+	对于$\zeta\in \partial D$，考虑几何级数%
+	$$
+	\frac{1}{\zeta-z}
+	=\frac{1}{\zeta-z_0}\frac{1}{1-\frac{z-z_0}{\zeta-z_0}}
+	=\frac{1}{\zeta-z_0}\sum_{n=0}^{\infty}\left(\frac{z-z_0}{\zeta-z_0}\right)^n
+	$$
+	从而由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	$$
+	f(z)
+	=\sum_{n=0}^{\infty}{\left(\frac{1}{2\pi i}\int_{\partial\Omega}{\frac{f(\zeta)}{(\zeta-z)^{n+1}}\mathrm{d}\zeta}\right)(z-z_0)^n}
+	=\sum_{n=0}^{\infty}{\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n}
+	=\sum_{n=0}^{\infty}{a_n(z-z_0)^n}
+	$$
+\end{proof}
+
+\begin{corollary}{Liouville定理}{Liouville定理}
+	\begin{enumerate}
+		\item 如果$f$是$\C$上的有界整函数，那么$f$是常函数。
+		\item 如果$f$是$\C$上的下有界整函数，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$u$存在上界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$u$存在下界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$v$存在上界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$v$存在下界，那么$f$是常函数。
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	对于1，由于$f$在$\C$上有界，那么存在$M\in\R$，使得对于任意$z\in\C$，成立$|f(z)| \le M$。由Cauchy不等式\ref{cor:Cauchy不等式}，对于任意$z_0\in\C$与$r>0$，成立
+	$$
+	|f'(z_0)| \le \frac{1}{r}\sup_{|z-z_0|=r}|f(z)|
+	\le\frac{M}{r}\to 0\qquad (r\to \infty)
+	$$
+	从而$f'=0$。由推论\ref{cor:常函数的导数为0}，$f$为常函数。
+	
+	对于2，如果$f$下有界，那么$1/f$为有界整函数，因此由1，$1/f$为常函数，进而$f$为常函数。
+	
+	对于3，如果$u$上有界，那么考虑$\ee{f}$。由于
+	$$
+	|\ee{f}|=|\ee{u+iv}|=\ee{u}
+	$$
+	因此$\ee{f}$有界。由1，$\ee{f}$为常函数，进而$f$为常函数。
+	
+	对于4，如果$u$下有界，那么由$|f|\ge |u|$，可知$f$下有界。由2，$f$为常函数。
+	
+	对于5，如果$u$上有界，那么考虑$\ee{v+iu}$。由于
+	$$
+	|\ee{v+iu}|=\ee{v}
+	$$
+	因此$\ee{v+iu}$有界。由1，$\ee{v+iu}$为常函数，进而$u$与$v$为常函数，即$f$为常函数。
+	
+	对于6，如果$v$下有界，那么由$|f|\ge |v|$，可知$f$下有界。由2，$f$为常函数。
+\end{proof}
+
+\begin{corollary}{代数基本定理}{代数基本定理}
+	$\C$上的非常数多项式在$\C$中存在根。
+\end{corollary}
+
+\begin{proof}
+	考虑$n$次多项式%
+	$$
+	P(z)=a_nz^n+\cdots +a_1x+a_0
+	$$
+	假设$P(z)$无根。由于%
+	$$
+	\frac{P(z)}{z^n}=a_n+\left(\frac{a_{n-1}}{z}+\cdots+\frac{a_0}{z^n}\right)\to a_n
+	\qquad (|z|\to\infty)
+	$$
+	那么存在$r>0$，使得成立
+	$$
+	|P(z)|\ge\frac{|a_n|}{2}|z|^n,\qquad |z|>r
+	$$
+	从而$P(z)$在$|z|>r$时存在下界。由于$P(z)$为连续函数且无零点，那么$P(z)$在紧集$|z|\le r$上有界，因此$P(z)$在$\C$上存在下界，进而$1/P(z)$为有界整函数。由Liouville定理\ref{cor:Liouville定理}，$1/P(z)$为常函数，即$P(z)$为常函数，矛盾！进而$P(z)$存在根。
+\end{proof}
+
+\begin{corollary}{代数基本定理}{代数基本定理2}
+	$\C$上的$n$次多项式
+	$$
+	P(z)=a_nz^n+\cdots +a_1x+a_0
+	$$
+	在$\C$上存在$n$个根，并可作因式分解%
+	$$
+	P(z)=a_n(z-w_1)\cdots(z-w_n)
+	$$
+\end{corollary}
+
+\begin{proof}
+	由代数基本定理\ref{cor:代数基本定理}，$P(z)$在$\C$中存在根$w_1$，于是%
+	$$
+	P(z)=b_n(z-w_1)^n+\cdots+b_1(z-w_1)+b_0
+	$$
+	其中$b_n=a_n$。由于$P(w_1)=0$，因此$b_0=0$，从而%
+	$$
+	P(z)=(z-w_1)(b_n(z-w_1)^{n-1}+\cdots+b_1)=(z-w_1)Q(z)
+	$$
+	其中$Q(z)$为$n-1$次多项式。由归纳法，原命题得证！
+\end{proof}
+
+\begin{proposition}
+	令$\mathbb{D}=\{z:|z|<1\}$，对于在$\overline{\mathbb{D}}$上连续无零点且在$\mathbb{D}$上全纯的函数$f$，如果对于任意$z\in\partial \mathbb{D}$，成立$|f(z)|=1$，那么$f$为常函数。
+\end{proposition}
+
+\begin{proof}
+	法一：延拓$f$为
+	$$
+	F(z)=\begin{cases}
+		f(z),\quad & |z|\le 1\\
+		\frac{1}{\overline{f(\frac{1}{\overline{z}})}},\quad & |z|>1
+	\end{cases}
+	$$
+	
+	考察$F$的连续性。显然$F$在$|z|\ne 1$上是连续的，且$F$在$|z|=1$上是内连续的。对于$F$在$|z|=1$上的外连续性，任取$|z|=1$，对于$\{z_n\}_{n=1}^{\infty}$满足$|z_n|>1$且$z_n\to z$，注意到
+	$$
+	\frac{1}{\overline{z_n}}\to\frac{1}{\overline{z}}=z
+	$$
+	于是
+	$$
+	F(z_n)=\frac{1}{\overline{f(\frac{1}{\overline{z_n}})}}\to\frac{1}{\overline{f(z)}}=f(z)=F(z)
+	$$
+	因此$F$在$\C$上是连续的。
+	
+	考察$F$的全纯性。显然$F$在$|z|<1$是全纯的。对于$|z|>1$，任取闭曲线$\gamma\sub\{z:|z|>1\}$，令$\gamma'$为$\gamma$在映射$z\mapsto\frac{1}{z}$下的像，那么$\gamma'\sub\{z:|z|<1\}$，于是
+	$$
+	\int_\gamma{F(z)\mathrm{d}z}
+	=\int_\gamma{\frac{1}{\overline{f(\frac{1}{\overline{z}})}}\mathrm{d}z}
+	=-\int_{\gamma'}{\frac{1}{\overline{f(\overline{z})}}\frac{\mathrm{d}z}{z^2}}
+	=0
+	$$
+	因此$F$在$|z|>1$上是全纯的。对于$|z|=1$，任取三角形$T\sub\C$。如果$T\cap \partial \mathbb{D}$为空，那么
+	$$
+	\int_{T}{F(z)\mathrm{d}z}=0
+	$$
+	如果$T\cap \partial \mathbb{D}$为一个点，那么可在$T$内沿内边界作非常接近$T$的三角形$T_\varepsilon$，于是
+	$$
+	\int_{T}{F(z)\mathrm{d}z}=\lim_{\varepsilon\to0}\int_{T_\varepsilon}{F(z)\mathrm{d}z}=0
+	$$
+	如果$T\cap \partial \mathbb{D}$至少为两个点，说明$T$被$\partial \mathbb{D}$分为若干部分$T_1,\cdots,T_n$，在每一个$T_k$内沿内边界作非常接近$T_k$的三角形$T^{(k)}_\varepsilon$​，于是
+	$$
+	\int_{T}{F(z)\mathrm{d}z}=\lim_{\varepsilon\to0}\sum_{k=1}^{n}\int_{T^{(k)}_\varepsilon}{F(z)\mathrm{d}z}=0
+	$$
+	于是，对于任意三角形$T\sub \C$​，成立
+	$$
+	\int_{T}{F(z)\mathrm{d}z}=0
+	$$
+	由Morera定理\ref{thm:Morera定理}，$F$在$\C$上全纯。又$F$在$\overline{\mathbb{D}}$上有界，且连续无零点，那么存在$\delta>0$，使得对于任意$|z|\le 1$，成立$|f(z)|>\delta$，进而$\left|\frac{1}{\overline{f(\frac{1}{\overline{z}})}}\right|<\frac{1}{\delta}$，所以$F$在$\C$上有界。由Liouville定理\ref{cor:Liouville定理}，$F$为常函数，进而$f$为常函数。原命题得证！
+	
+	法二：令$\pi^+=\{z\in\C:\text{Im} z>0 \}$,定义映射
+	\function{\varphi}{\mathbb{D}}{\pi^+}{arg4}{z}
+	其逆映射为$\varphi^{-1}(w)=\frac{w-i}{w+i}$，定义
+	$$
+	F(z)=\begin{cases}
+		f(\varphi^{-1}(z)),\quad & z\in\pi^+\cup\R\\
+		f(\varphi^{-1}(\overline{z})),\quad & z\in\pi^-
+	\end{cases}
+	$$
+	由反射定理\ref{thm:反射定理}，$F$在$\C$上全纯。又$F$在$\pi^+\cup\R$上有界，所以$F$在$\C$上有界。由Liouville定理\ref{cor:Liouville定理}，$F$为常函数，进而$f$为常函数。原命题得证！
+\end{proof}
+
+\subsection{零点定理}
+
+\begin{theorem}{唯一性定理}{唯一性定理}
+	对于在区域$\Omega\sub\C$上的全纯函数$f$，如果存在$\{z_n\}_{n=1}^{\infty}\sub\Omega$，使得对于任意$n\in\N^*$，成立$f(z_n)=0$，且$\displaystyle\lim_{n\to\infty}{z_n}\in\Omega$，那么在$\Omega$上成立$f=0$。
+\end{theorem}
+
+\begin{proof}
+	记$\displaystyle z_0=\lim_{n\to\infty}{z_n}$，由于$\Omega$为开集，因此存在$r>0$，使得$D_r(z_0)\sub\Omega$。考虑幂级数展开\ref{thm:Taylor展开}%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_n(z-z_0)^n,\qquad 
+	z\in D_r(z_0)
+	$$
+	如果$f$在$D_r(z_0)$上不为$0$，那么存在最小的$m\in\N$，使得成立$a_m\ne 0$，此时存在多项式$g(z)$，使得成立
+	$$
+	f(z)=a_m(z-z_0)^m(1+g(z-z_0))
+	$$
+	其中当$z\to z_0$时$g(z-z_0)\to 0$。由于$z_n\to z_0$，那么存在$z_{n_0}\ne z_0$，使得成立$|g(z_{n_0}-z_0)|<1/2$，从而%
+	$$
+	a_m(z_{n_0}-z_0)^m\ne 0,\qquad
+	1+g(z_{n_0}-z_0)\ne 0
+	$$
+	但是$f(z_{n_0})=0$，因此产生矛盾！进而$f$在$D_r(z_0)$恒为$0$。
+	
+	记%
+	$$
+	U=\{ z\in\Omega:f(z)=0 \},\qquad V=U^\circ
+	$$
+	那么$V$为非空开集。断言$V$为闭集，事实上，对于任意$w\in \overline{V}$，存在$\{ w_n \}_{n=1}^{\infty}\sub V$，使得成立$w_n\to w$。由上述论证，$w\in V$，进而$V$为闭集。令$W=\Omega\setminus V$为开集，那么$\Omega$表示可为开集的不交并%
+	$$
+	\Omega=V\sqcup W
+	$$
+	由于$\Omega$为连通集，从而$W=\varnothing$，进而$\Omega=V$，因此在$\Omega$上成立$f=0$。
+\end{proof}
+
+\begin{corollary}{零点孤立性定理}{零点孤立性定理}
+	对于区域$\Omega\sub\C$上的非零全纯函数$f$，如果$z_0\in\Omega$为$f$的零点，那么存在$r>0$，使得$f$在$\overset{\circ}{D}_r(z_0)$内无零点。
+\end{corollary}
+
+\begin{proof}
+	由唯一性定理\ref{thm:唯一性定理}，命题得证！
+\end{proof}
+
+\begin{corollary}{}{零点孤立性定理的推论}
+	对于区域$\Omega\sub\C$上的全纯函数$f$，如果存在$z_0\in \Omega$，使得对于任意$n\in\N^*$，成立$f^{(n)}(z_0)=0$，那么在$\Omega$上成立$f=0$。
+\end{corollary}
+
+\begin{proof}
+	由于$\Omega$为开集，因此存在$r>0$，使得$D_r(z_0)\sub\Omega$。考虑幂级数展开\ref{thm:Taylor展开}%
+	$$
+	f(z)=\sum_{n=0}^{\infty}\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n=0,\qquad 
+	z\in D_r(z_0)
+	$$
+	由零点孤立性定理\ref{cor:零点孤立性定理}，在$\Omega$上成立$f=0$。
+\end{proof}
+
+\begin{corollary}{}{唯一性定理的推论1}
+	对于在区域$\Omega\sub\C$上的全纯函数$f$与$g$，如果存在$\{z_n\}_{n=1}^{\infty}\sub\Omega$，使得对于任意$n\in\N^*$，成立$f(z_n)=g(z_n)$，且$\displaystyle\lim_{n\to\infty}{z_n}\in\Omega$，那么在$\Omega$上成立$f=g$。
+\end{corollary}
+
+\begin{proof}
+	由唯一性定理\ref{thm:唯一性定理}，命题得证！
+\end{proof}
+
+\begin{corollary}{}{唯一性定理的推论2}
+	对于在区域$\Omega\sub\C$上的全纯函数$f$，如果存在$\{z_n\}_{n=1}^{\infty}\sub\Omega$，使得对于任意$n\in\N^*$，成立$f(z_n)=0$，且$\displaystyle z_0=\lim_{n\to\infty}{z_n}$，那么或$\Omega$上成立$f=0$，或$z_0\in\partial\Omega$。
+\end{corollary}
+
+\begin{proof}
+	由唯一性定理\ref{thm:唯一性定理}，命题得证！
+\end{proof}
+
+\begin{corollary}{}{唯一性定理的推论3}
+	对于$\C$上的整函数$f$，如果存在$\{z_n\}_{n=1}^{\infty}\sub\C$，使得对于任意$n\in\N^*$，成立$f(z_n)=0$，且$\displaystyle z_0=\lim_{n\to\infty}{z_n}$，那么或$\Omega$上成立$f=0$，或$|z|\to\infty$。
+\end{corollary}
+
+\begin{proof}
+	由唯一性定理的推论\ref{cor:唯一性定理的推论2}，命题得证！
+\end{proof}
+
+\begin{proposition}
+	对于在$\C$上的整函数$f$，如果对于任意$z\in\C$，存在$n_z\in\N$，使得成立$f^{(n_z)}(z)=0$，那么$f$为多项式。
+\end{proposition}
+
+\begin{proof}
+	对于单位开圆盘$\mathbb{D}=\{ z\in\C:|z|<1 \}$，定义
+	$$
+	A_n=\{ z\in\overline{\mathbb{D}}:f^{(n)}(z)=0 \}
+	$$
+	于是
+	$$
+	\overline{\mathbb{D}}=\bigcup_{n=0}^{\infty}{A_n}
+	$$
+	由于$\overline{\mathbb{D}}$为不可数集，那么存在$k\in\N$，使得$A_k$为不可数集，因此$A_k$中存在收敛的点列$\{z_n\}_{n=1}^{\infty}$且$z_n\to z_0\in\overline{\mathbb{D}}$，进而
+	$$
+	f^{(k)}(z_n)=0,\quad n\in\N
+	$$
+	由唯一性定理\ref{thm:唯一性定理}，在$\C$上成立$f^{(k)}=0$，因此$f$为次数不大于$k$的多项式函数。
+\end{proof}
+
+\section{应用}
+
+\subsection{Morera定理}
+
+\begin{theorem}{开圆上的Morera定理}{开圆上的Morera定理}
+	对于在开圆$D\sub\C$上的连续函数$f$，如果对于任意三角形$T\sub D$，成立
+	$$
+	\int_T{f(z)\mathrm{d}z}=0
+	$$
+	那么$f$在$D$上全纯。
+\end{theorem}
+
+\begin{theorem}{Morera定理}{Morera定理}
+	对于在开集$\Omega\sub\C$上的连续函数$f$，如果对于任意分段光滑封闭曲线$\gamma\sub\Omega$，成立
+	$$
+	\int_\gamma{f(z)\mathrm{d}z}=0
+	$$
+	那么$f$在$\Omega$上全纯。
+\end{theorem}
+
+\subsection{全纯函数序列}
+
+\begin{theorem}
+	对于开集$\Omega\sub\C$，如果$\Omega$上的全纯函数序列$\{ f_n \}_{n=1}^{\infty}$在$\Omega$的任意紧致子集均一致收敛于函数$f$，那么$f$在$\Omega$中是全纯的。
+\end{theorem}
+
+\begin{proof}
+	任取分段光滑封闭曲线$\gamma\sub\Omega$，由Cauchy积分定理\ref{thm:Cauchy积分定理}%
+	$$
+	\int_\gamma f_n(z)\dd z=0
+	$$
+	由于$f_n$在$\Omega$的任意紧致子集均一致收敛于函数$f$，那么
+	$$
+	\int_\gamma f_n(z)\dd z\to \int_\gamma f(z)\dd z
+	$$
+	因此%
+	$$
+	\int_\gamma f(z)\dd z=0
+	$$
+	从而由Morera定理\ref{thm:Morera定理}，$f$在$\Omega$中是全纯的。
+\end{proof}
+
+\begin{theorem}
+	对于开集$\Omega\sub\C$，如果$\Omega$上的全纯函数序列$\{ f_n \}_{n=1}^{\infty}$在$\Omega$的任意紧致子集均一致收敛于函数$f$，那么其导函数序列$\{ f_n' \}_{n=1}^{\infty}$在$\Omega$的任意紧致子集都一致收敛于函数$f'$。
+\end{theorem}
+
+\subsection{由积分定义的全纯函数}
+
+\begin{theorem}
+	对于定义在$(z,s)\in\Omega\times[0,1]$上的连续函数$F(z,s)$，其中$\Omega\sub\C$为开集，如果$F(z,s)$对于$z$为全纯的，那么函数
+	$$
+	f(z)=\int_0^1{F(z,s)\mathrm{d}s}
+	$$
+	在$\Omega$上全纯。
+\end{theorem}
+
+\subsection{Schwarz反射定理}
+
+对于对称的开集$\Omega\sub\C$，即
+$$
+z\in\Omega\iff\overline{z}\in\Omega
+$$
+令
+\begin{align*}
+	&\Omega^+=\{ z:z\in\Omega,\text{Im}(z)>0 \}\\
+	&\Omega^-=\{ z:z\in\Omega,\text{Im}(z)<0 \}
+\end{align*}
+同时令
+$$
+I=\Omega\cap\R
+$$
+
+\begin{theorem}{对称原理}{对称原理}
+	对于全纯函数$f^+$和$f^-$，如果满足
+	$$
+	f^+(x)=f^-(x),\quad x\in I
+	$$
+	那么函数
+	$$
+	f(z)=\begin{cases}
+		f^+(z)\quad & z\in\Omega^+\\
+		f^+(z)\quad & z\in I\\
+		f^-(z)\quad & z\in\Omega^-
+	\end{cases}
+	$$
+	在$\Omega$上全纯。
+\end{theorem}
+
+\begin{theorem}{反射定理}{反射定理}
+	如果函数$f$在$\Omega^+\cup I$上为全纯的，且
+	$$
+	f(x)\in\R,\quad x\in I
+	$$
+	那么存在在$\Omega$上全纯的函数$F$，使得成立
+	$$
+	F(z)=f(z),\quad z\in\Omega^+
+	$$
+	事实上
+	$$
+	F(z)=\begin{cases}
+		f(z)\quad & z\in\Omega^+\cup I\\
+		\overline{f(\overline{z})}\quad & z\in\Omega^-
+	\end{cases}
+	$$
+\end{theorem}
+
+\subsection{Runge近似定理}
+
+\begin{theorem}{Runge近似定理}{Runge近似定理}
+	如果函数$f$在开集$\Omega\sub\C$上是全纯的，且$K\sub\Omega$为紧集，那么$f$可由奇点在$\Omega-K$上的有理函数在$K$上一致近似。而且如果$\Omega\setminus K$是连通的，那么$f$可由多项式函数在$K$上一致近似。
+\end{theorem}
+
+\chapter{Laurent展式}
+
+\section{Laurent展式}
+
+\begin{definition}{双边幂级数}
+	$$
+	f(z)=\sum_{n=-\infty}^{+\infty}{c_n(z-z_0)^n}
+	$$
+\end{definition}
+
+\begin{definition}
+	收敛圆环为
+	$$
+	H:\qquad 0\le r<|z-z_0|<R\le\infty
+	$$
+	的双边幂级数
+	$$
+	f(z)=\sum_{n=-\infty}^{+\infty}{c_n(z-z_0)^n}
+	$$
+	成立如下命题。
+	\begin{enumerate}
+		\item $f(z)$内闭一致收敛于$H$。
+		\item $f(z)$在$H$内解析。
+		\item $f(z)$在$H$内可逐项求导。
+		\item $f(z)$可沿曲线$\gamma\sub H$逐项积分。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Laurent定理}
+	在圆环
+	$$
+	H:\qquad 0\le r<|z-z_0|<R\le\infty
+	$$
+	内的全纯函数$f(z)$存在且存在唯一Laurent展式
+	$$
+	f(z)=\sum_{n=-\infty}^{\infty}{c_n(z-z_0)^n}
+	$$
+	其中
+	$$
+	c_n=\frac{1}{2\pi i}\int_{\gamma}{\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\mathrm{d}\zeta},\quad \gamma:|\zeta-z_0|=\rho\in(r,R)
+	$$
+\end{theorem}
+
+\begin{definition}{正则部分与主要部分}
+	定义函数$f$在$z_0$处的Laurent级数%
+	$$
+	\sum_{n=-\infty}^{\infty}{c_n(z-z_0)^n}
+	$$
+	的正则部分为%
+	$$
+	\sum_{n=0}^{\infty}{c_n(z-z_0)^n}
+	$$
+	主要部分为%
+	$$
+	\sum_{n=1}^{\infty}{\frac{c_{-n}}{(z-z_0)^n}}
+	$$
+\end{definition}
+
+\section{孤立奇点}
+
+\begin{definition}{零点}
+	称$z_0\in\C$为函数$f$的$n$阶零点，如果存在函数$g$，使得成立%
+	$$
+	f(z)=(z-z_0)^ng(z),\qquad 
+	g(z_0)\ne 0
+	$$
+\end{definition}
+
+\begin{definition}{奇点}
+	称$z_0\in\C$为函数$f$的奇点，如果$f$在$z_0$处不全纯，且对于任意$r>0$，存在$z_r\in D_r(z_0)$，使得$f$在$z_r$处全纯。
+\end{definition}
+
+\begin{definition}{孤立奇点}
+	称$z_0\in\C$为函数$f$的孤立奇点，如果$f$在$z_0$处不全纯，且存在$r>0$，使得$f$在$D^\circ_r(z_0)$内全纯。
+\end{definition}
+
+\begin{definition}{可去奇点}
+	称函数$f$的孤立奇点$z_0\in\C$为可去奇点，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 存在极限$\dis\lim_{z\to z_0}{f(z)}$。
+		\item $f$在$z_0$处的主要部分为$0$。
+		\item $f$在$z_0$的某去心邻域内有界。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{极点}
+	称函数$f$的孤立奇点$z_0\in\C$为极点，如果$\dis\lim_{z\to z_0}|f(z)|=\infty$。称函数$f$的孤立奇点$z_0\in\C$为$n$阶极点，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $z_0$为$1/f$的$n$阶零点。
+		\item $\dis 0<\lim_{z\to z_0}(z-z_0)^nf(z)<\infty$
+		\item $f$在$z_0$处的主要部分为%
+		$$
+		\sum_{k=1}^{n}{\frac{c_{-k}}{(z-z_0)^k}}
+		$$
+		\item $f$在$z_0$的某去心邻域内可表示为
+		$$
+		f(z)=\frac{\lambda(z)}{(z-z_0)^n}
+		$$
+		其中$\lambda(z)$在$z_0$点的邻域内全纯，且$\lambda(z_0)\ne0$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{本质奇点}
+	称函数$f$的孤立奇点$z_0\in\C$为本质奇点，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 不存在极限$\dis\lim_{z\to z_0}f(z)$。
+		\item $f$在$z_0$处的主要部分为
+		$$
+		\sum_{n=1}^{\infty}{\frac{c_{-n}}{(z-z_0)^n}}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{无穷远处的孤立奇点}
+	\begin{enumerate}
+		\item 称$\infty$为$f$的孤立奇点，如果存在$r\ge 0$，使得$f$在$|z|>r$内全纯。
+		\item 称$\infty$为$f(z)$的可去奇点，如果$0$为$f(1/z)$的可去奇点。
+		\item 称$\infty$为$f(z)$的$n$阶极点，如果$0$为$f(1/z)$的$n$阶极点。
+		\item 称$\infty$为$f(z)$的本质奇点，如果$0$为$f(1/z)$的本质奇点。
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	判断如下函数的奇点及类型。
+	$$
+	\frac{\tan z}{z}
+	$$
+\end{example}
+
+\begin{solution}
+	由于
+	$$
+	\frac{\tan z}{z}=\frac{\mathrm{e}^{iz}-\mathrm{e}^{-iz}}{iz}\frac{1}{\mathrm{e}^{iz}+\mathrm{e}^{-iz}}
+	$$
+	那么奇点有$z=0$和$z_n=(n-\frac{1}{2})\pi$以及$z=\infty$，其中$n\in\Z$。
+	
+	对于$z=0$，由于
+	$$
+	\lim_{z\to0}\frac{\tan z}{z}=1
+	$$
+	那么$z=0$为可去奇点。
+	
+	对于$z=z_n$，由于
+	$$
+	\lim_{z\to z_n}\left|\frac{\tan z}{z}\right|=\infty,\qquad
+	\lim_{z\to z_n}(z-z_n)\frac{\tan z}{z}=-\frac{1}{z_n}
+	$$
+	那么$z=z_n$为一阶极点。
+	
+	对于$z=\infty$，由于$|z_n|\to\infty$，那么$\infty$为非孤立奇点。
+\end{solution}
+
+\begin{example}
+	判断如下函数的奇点及类型。
+	$$
+	\frac{z}{\mathrm{e}^z-1}
+	$$
+\end{example}
+
+\begin{solution}
+	容易知道$z_n=2n\pi i$和$z=\infty$为奇点，其中$n\in\Z$。
+	
+	对于$z=z_0=0$​，由于
+	$$
+	\lim_{z\to 0}\frac{z}{\mathrm{e}^z-1}=1
+	$$
+	那么$z=0$为可去奇点。
+	
+	对于$z_n=2n\pi i$，其中$n\ne 0$，由于
+	$$
+	\lim_{z\to z_n}\left|\frac{z}{\mathrm{e}^z-1}\right|=\infty,\qquad
+	\lim_{z\to z_n}(z-z_n)\frac{z}{\mathrm{e}^z-1}=2n\pi i
+	$$
+	那么$z_n=2n\pi i$为一阶极点，其中$n\ne 0$。
+	
+	对于$z=\infty$，由于$|z_n|\to\infty$，那么$\infty$为非孤立奇点。
+\end{solution}
+
+\begin{proposition}
+	对于在去心开圆$D_r^\circ(z_0)$内全纯的函数$f$，证明：如果存在$A>0$和$\varepsilon>0$，使得在$z_0$附近，成立$|f(z)|\le A|z-z_0|^{\varepsilon-1}$，那么$z_0$是$f$的可去奇点。
+\end{proposition}
+
+\begin{proof}
+	注意到
+	$$
+	\lim_{z\to z_0}|(z-z_0)f(z)|\le\lim_{z\to z_0} A|z-z_0|^\varepsilon=0
+	$$
+	于是
+	$$
+	\lim_{z\to z_0}(z-z_0)f(z)=0
+	$$
+	于是$z_0$为$g(z)=(z-z_0)f(z)$在$D_r(z_0)$内的可去奇点，从而$g$在$D_r(z_0)$内全纯，将$g$在$z_0$处展开
+	$$
+	g(z)=g(z_0)+\sum_{n=1}^{\infty}\frac{g^{(n)}(z_0)}{n!}(z-z_0)^n
+	$$
+	注意到
+	$$
+	g(z_0)=\lim_{z\to z_0}g(z)=0
+	$$
+	于是
+	$$
+	g(z)=\sum_{n=1}^{\infty}\frac{g^{(n)}(z_0)}{n!}(z-z_0)^n
+	$$
+	进而
+	$$
+	f(z)=\sum_{n=1}^{\infty}\frac{g^{(n)}(z_0)}{n!}(z-z_0)^{n-1}
+	$$
+	那么
+	$$
+	\lim_{z\to z_0}f(z)=g'(z_0)
+	$$
+	从而$z_0$为$f$的可去奇点。
+\end{proof}
+
+\begin{proposition}
+	单调整函数为一次多项式。
+\end{proposition}
+
+\begin{proof}
+	记单调整函数为$f(z)$，定义$g(z)=f(1/z)$，那么$g$在$\C\setminus\{0\}$上全纯。下面考察$z=0$的奇点类型。
+	
+	如果$z=0$为$g$的可去奇点，那么$g$在$z=0$的邻域$\{ |z|<r \}$内有界，从而$f$在$\{ |z|>1/r \}$内有界。而$f$连续，则$f$在紧集$\{ |z|\le 1/r \}$内有界，从而$f$在$\C$上有界，由Liouville定理\ref{cor:Liouville定理}，$f$为常函数，这与单调性矛盾！
+	
+	如果$z=0$为$g$的本质奇点，由Casorati-Weierstrass定理\ref{thm:Casorati-Weierstrass定理}，$g(\{ 0<|z|<r \})$为稠密的，从而$f(\{ |z|>1/r \})$是稠密的。而由$f$为整函数，那么$f(\{ |z|<1/r \})$为开集，从而$f(\{ |z|<1/r \})\cap f(\{ |z|>1/r \})\ne\varnothing$，这与单调性矛盾！
+	
+	那么$z=0$为$g$的极点，由Laurent展式的唯一性，$g$的主要部分为有限项，于是$f$的正则项为有限项。又由$f$的单调性，$f$至多存在一个零点，于是$f$的次数不多于$1$，而常函数并不单调，于是$f$为一次多项式。
+	
+	综上所述，原命题得证！
+\end{proof}
+
+\begin{theorem}{Casorati-Weierstrass定理}{Casorati-Weierstrass定理}
+	如果$z_0$为函数$f$的本质奇点，那么对于任意$z\in\overline{\C}$，存在$\{z_n\}_{n=1}^{\infty}\sub\C$，使得成立
+	$$
+	\lim_{n\to\infty}z_n=z_0,\qquad 
+	\lim_{n\to\infty}{f(z_n)}=z
+	$$
+\end{theorem}
+
+\begin{theorem}{Picard定理}
+	如果$z_0$为函数$f$的本质奇点，那么对于除可能的一个值$z'$外任意$z\in\C$，存在$\{z_n\}_{n=1}^{\infty}\sub\C$，使得成立
+	$$
+	\lim_{n\to\infty}z_n=z_0,\qquad 
+	f(z_n)=z,\quad n\in\N^*
+	$$
+\end{theorem}
+
+\section{留数公式}
+
+\begin{definition}{留数}
+	如果$z_0\in\C$为函数$f$的孤立奇点，那么作Laurent展式
+	$$
+	f(z)=\sum_{n=-\infty}^{\infty}{c_n(z-z_0)^n}
+	$$
+	称$f$在$z_0$处的留数为$c_{-1}$。
+\end{definition}
+
+\begin{theorem}{留数计算公式}
+	如果$z_0\in\Omega$为函数$f$的$n$阶极点，那么
+	$$
+	\mathrm{res}_{z_0}f=
+	\lim_{z\to z_0}{\frac{1}{(n-1)!}\frac{\mathrm{d}^{n-1}}{\mathrm{d}z^{n-1}} (z-z_0)^n f(z)}
+	$$
+\end{theorem}
+
+\begin{theorem}{留数公式}
+	对于边界分段光滑的区域$\Omega$上的函数$f$，如果$z_1,\cdots,z_n\in\Omega_\gamma$为$f$的极点，同时$f$在$\Omega\setminus\{z_1,\cdots,z_n\}$上全纯，在$\overline{\Omega}\setminus\{z_1,\cdots,z_n\}$上连续，那么
+	$$
+	\int_{\partial\Omega}{f(z)\mathrm{d}z}=2\pi i \sum_{k=1}^{n}{\mathrm{res}_{z_k}f}
+	$$
+\end{theorem}
+
+\begin{example}
+	求如下函数的留数。
+	$$
+	f(z)=\frac{1}{(z+1)(z-1)^2}
+	$$
+\end{example}
+
+\begin{solution}
+	容易知道$z=-1$为一阶极点，$z=1$为二阶极点。由留数计算公式
+	\begin{align*}
+		& \mathrm{res}_{-1}f=\lim_{z\to -1}(z+1)f(z)=\lim_{z\to -1}\frac{1}{(z-1)^2}=\frac{1}{4}\\
+		& \mathrm{res}_{1}f=\lim_{z\to 1}\frac{\mathrm{d}}{\mathrm{d}z}(z-1)^2f(z)=\lim_{z\to 1}\frac{\mathrm{d}}{\mathrm{d}z}\frac{1}{z+1}=-\frac{1}{4}
+	\end{align*}
+\end{solution}
+
+\begin{example}
+	求如下函数的留数。
+	$$
+	f(z)=\frac{1-\mathrm{e}^{2z}}{z^4}
+	$$
+\end{example}
+
+\begin{solution}
+	容易知道$z=0$​为三阶极点。由留数计算公式
+	$$
+	\mathrm{res}_{0}f=\lim_{z\to 0}\frac{1}{2}\frac{\mathrm{d}^{2}}{\mathrm{d}z^{2}}z^3f(z)=\lim_{z\to 0}\frac{\mathrm{d}^{2}}{\mathrm{d}z^{2}}\frac{1-\mathrm{e}^{2z}}{2z}=-\frac{4}{3}
+	$$
+\end{solution}
+
+\begin{example}
+	计算积分
+	$$
+	\int_{|z|=1}\frac{\mathrm{d}z}{z\sin{z}}
+	$$
+\end{example}
+
+\begin{solution}
+	令$f(z)=\frac{1}{z\sin z}$，那么$f$在$|z|<1$内存在二阶极点$z=0$​，其留数为
+	$$
+	\mathrm{res}_{0}f=\lim_{z\to 0}\frac{\mathrm{d}}{\mathrm{d}z}z^2f(z)=\lim_{z\to 0}\frac{\mathrm{d}}{\mathrm{d}z}\frac{z}{\sin z}=0
+	$$
+	那么
+	$$
+	\int_{|z|=1}\frac{\mathrm{d}z}{z\sin{z}}=2\pi i\cdot\mathrm{res}_{0}f=0
+	$$
+\end{solution}
+
+\begin{example}
+	计算积分%
+	$$
+	\int_{C}\frac{\mathrm{d}z}{(z-1)^2(z^2+1)}
+	$$
+	其中$C:x^2+y^2=2(x+y)$。
+\end{example}
+
+\begin{solution}
+	记$f(z)=\frac{1}{(z-1)^2(z^2+1)}$，那么$f$在$x^2+y^2<2(x+y)$内存在二阶极点$z=1$和一阶极点$z=i$，其留数分别为
+	$$
+	\mathrm{res}_{1}f=\lim_{z\to 1}\frac{\mathrm{d}}{\mathrm{d}z}(z-1)^2f(z)=\lim_{z\to 1}\frac{\mathrm{d}}{\mathrm{d}z}\frac{1}{z^2+1}=-\frac{1}{2}
+	$$
+	
+	$$
+	\mathrm{res}_{i}f=\lim_{z\to i}(z-i)f(z)=\lim_{z\to i}\frac{1}{(z-1)^2(z+i)}=\frac{1}{4}
+	$$
+	
+	那么
+	$$
+	\int_{C}\frac{\mathrm{d}z}{(z-1)^2(z^2+1)}=2\pi i(\mathrm{res}_{1}f+\mathrm{res}_{i}f)=-\frac{\pi}{2}i
+	$$
+\end{solution}
+
+\begin{example}
+	计算积分%
+	$$
+	\int_{|z|=1}\frac{z\sin{z}}{(1-\mathrm{e}^{z})^3}\mathrm{d}z
+	$$
+\end{example}
+
+\begin{solution}
+	记$f(z)=\frac{z\sin{z}}{(1-\mathrm{e}^{z})^3}$，容易知道$z=0$为一阶极点，其留数为
+	$$
+	\mathrm{res}_{0}f=\lim_{z\to 0}zf(z)=\lim_{z\to 0}\frac{z^2\sin{z}}{(1-\mathrm{e}^{z})^3}=-1
+	$$
+	那么
+	$$
+	\int_{|z|=1}\frac{z\sin{z}}{(1-\mathrm{e}^{z})^3}\mathrm{d}z=-2\pi i
+	$$
+\end{solution}
+
+\begin{example}
+	$$
+	\int_{-\infty}^{\infty}{\frac{\mathrm{d}x}{1+x^4}}=\frac{\pi}{\sqrt{2}}
+	$$
+\end{example}
+
+\begin{proof}
+	容易知道$z_n=\mathrm{e}^{i\frac{2n-1}{4}\pi}$为$f(z)=\frac{1}{1+z^4}$的一阶极点，其留数为
+	$$
+	\mathrm{res}_{z_n}f=\lim_{z\to z_n}(z-z_n)f(z)=\frac{1}{4z_n^3}=\frac{1}{4}\mathrm{e}^{i\frac{3(1-2n)}{4}\pi}
+	$$
+	而$z_n$为以$4$为周期，且$z_0=\frac{1-i}{\sqrt{2}},z_1=\frac{1+i}{\sqrt{2}},z_2=\frac{-1+i}{\sqrt{2}},z_3=\frac{-1-i}{\sqrt{2}}$​，因此其留数分别为
+	$$
+	\mathrm{res}_{z_0}f=\frac{-1+i}{4\sqrt{2}},\quad 
+	\mathrm{res}_{z_1}f=\frac{-1-i}{4\sqrt{2}},\quad 
+	\mathrm{res}_{z_2}f=\frac{1-i}{4\sqrt{2}},\quad 
+	\mathrm{res}_{z_3}f=\frac{1+i}{4\sqrt{2}}
+	$$
+	
+	选取积分路径
+	\begin{align*}
+		& \gamma_0:z=t,&& t:-R\to R\\
+		& \gamma:z=R\mathrm{e}^{it},&& t:0\to\pi
+	\end{align*}
+	当$R>1$时，$\gamma_0$和$\gamma$围成的区域内含有$z_1$和$z_2$，且由留数公式
+	$$
+	\int_{\gamma_0}{f(z)\mathrm{d}z}+\int_{\gamma}{f(z)\mathrm{d}z}=2\pi i (\mathrm{res}_{z_1}f+\mathrm{res}_{z_2}f)=\frac{\pi}{\sqrt{2}}
+	$$
+	注意到
+	$$
+	\left| \int_{\gamma}{f(z)\mathrm{d}z} \right|\le\int_\gamma{|f(z)||\mathrm{d}z|}
+	=\int_\gamma\frac{|\mathrm{d}z|}{|1+z^4|}
+	\le\int_\gamma\frac{|\mathrm{d}z|}{|z^4|-1}
+	=\frac{\pi R}{R^4-1}\to0
+	$$
+	因此
+	$$
+	\int_{-\infty}^{\infty}{\frac{\mathrm{d}x}{1+x^4}}=\lim_{R\to\infty}\int_{\gamma_0}{f(z)\mathrm{d}z}=\frac{\pi}{\sqrt{2}}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_{-\infty}^{\infty}\frac{\cos x}{x^2+a^2}\mathrm{d}x=\frac{\pi}{a\mathrm{e}^a},\qquad a>0
+	$$
+\end{example}
+
+\begin{proof}
+	记$f(z)=\frac{\mathrm{e}^{iz}}{z^2+a^2}$，积分路径为
+	\begin{align*}
+		& \gamma_0:z=t,&& t:-R\to R\\
+		& \gamma:z=R\mathrm{e}^{it},&& t:0\to\pi
+	\end{align*}
+	当$R>a$时，由$\gamma_0$和$\gamma$围成的区域内含有$f$的一阶极点$z=ai$，其留数为
+	$$
+	\mathrm{res}_{ai}f=\lim_{z\to ai}(z-ai)f(z)=\lim_{z\to ai}\frac{\mathrm{e}^{iz}}{z+ai}=\frac{1}{2ai\mathrm{e}^{a}}
+	$$
+	从而
+	$$
+	\int_{\gamma_0}f(z)\mathrm{d}z+\int_{\gamma}f(z)\mathrm{d}z=2\pi i \mathrm{res}_{ai}f=\frac{\pi}{a\mathrm{e}^a}
+	$$
+	注意到，当$0\le x\le \frac{\pi }{2}$时，成立$\sin x\ge \frac{2}{\pi }x$，那么
+	\begin{align*}
+		\left| \int_{\gamma}{f(z)\mathrm{d}z} \right|
+		& \le\int_\gamma{|f(z)||\mathrm{d}z|}\\
+		& \le\int_0^\pi \frac{R\mathrm{e}^{-R\sin t}}{R^2-a^2}\mathrm{d}t\\
+		& =2\int_0^\frac{\pi}{2} \frac{R\mathrm{e}^{-R\sin t}}{R^2-a^2}\mathrm{d}t\\
+		& \le2\int_0^\frac{\pi}{2} \frac{R\mathrm{e}^{-R\frac{2}{\pi}t}}{R^2-a^2}\mathrm{d}t\\
+		& =\frac{\pi}{R^2-a^2}(1-\mathrm{e}^{-R})
+	\end{align*}
+	因此
+	$$
+	\lim_{R\to\infty}\int_{\gamma}f(z)\mathrm{d}z=0
+	$$
+	进而
+	$$
+	\int_{-\infty}^{\infty}\frac{\cos x}{x^2+a^2}\mathrm{d}x=\text{Re}\lim_{R\to\infty}\int_{\gamma_0}f(z)\mathrm{d}z=\frac{\pi}{a\mathrm{e}^a}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_{-\infty}^{\infty}\frac{x\sin x}{x^2+a^2}\mathrm{d}x=\frac{\pi}{\mathrm{e}^a},\qquad a>0
+	$$
+\end{example}
+
+\begin{proof}
+	记$f(z)=\frac{z\mathrm{e}^{iz}}{z^2+a^2}$，积分路径为
+	\begin{align*}
+		& \gamma_0:z=t,&& t:-R\to R\\
+		& \gamma:z=R\mathrm{e}^{it},&& t:0\to\pi
+	\end{align*}
+	当$R>a$时，由$\gamma_0$和$\gamma$围成的区域内含有$f$的一阶极点$z=ai$​，其留数为
+	$$
+	\mathrm{res}_{ai}f=\lim_{z\to ai}(z-ai)f(z)=\lim_{z\to ai}\frac{z\mathrm{e}^{iz}}{z+ai}=\frac{1}{2\mathrm{e}^{a}}
+	$$
+	从而
+	$$
+	\int_{\gamma_0}f(z)\mathrm{d}z+\int_{\gamma}f(z)\mathrm{d}z=2\pi i \mathrm{res}_{ai}f=\frac{\pi }{\mathrm{e}^a}i
+	$$
+	注意到，当$0\le x\le \frac{\pi }{2}$时，成立$\sin x\ge \frac{2}{\pi }x$​，那么
+	\begin{align*}
+		\left| \int_{\gamma}{f(z)\mathrm{d}z} \right|
+		& \le\int_\gamma{|f(z)||\mathrm{d}z|}
+		\le\int_0^\pi \frac{R^2\mathrm{e}^{-R\sin t}}{R^2-a^2}\mathrm{d}t\\
+		& =2\int_0^\frac{\pi}{2} \frac{R^2\mathrm{e}^{-R\sin t}}{R^2-a^2}\mathrm{d}t\\
+		& \le
+		2\int_0^\frac{\pi}{2} \frac{R^2\mathrm{e}^{-R\frac{2}{\pi}t}}{R^2-a^2}\mathrm{d}t\\
+		& =\frac{\pi R}{R^2-a^2}(1-\mathrm{e}^{-R})
+	\end{align*}
+	因此
+	$$
+	\lim_{R\to\infty}\int_{\gamma}f(z)\mathrm{d}z=0
+	$$
+	进而
+	$$
+	\int_{-\infty}^{\infty}\frac{x\sin x}{x^2+a^2}\mathrm{d}x=\text{Im}\lim_{R\to\infty}\int_{\gamma_0}f(z)\mathrm{d}z=\frac{\pi}{\mathrm{e}^a}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_0^{2\pi}\frac{\mathrm{d}\theta}{(a+\cos\theta)^2}=\frac{2\pi a}{(a^2-1)^{\frac{3}{2}}},\qquad a>1
+	$$
+\end{example}
+
+\begin{proof}
+	记$f(z)=\frac{4z}{(z^2+2az+1)^2}$，积分路径为$\gamma:z=\mathrm{e}^{i\theta},\theta\in[0,2\pi]$，在此积分路径内$f$含有二阶极点$z=\sqrt{a^2-1}-a$​，其留数为
+	$$
+	\mathrm{res}_{\sqrt{a^2-1}-a}f=\lim_{z\to \sqrt{a^2-1}-a}\frac{\mathrm{d}}{\mathrm{d}z}(z-(\sqrt{a^2-1}-a))^2f(z)=\frac{a}{(a^2-1)^{\frac{3}{2}}}
+	$$
+	因此
+	$$
+	\int_{\gamma}f(z)\mathrm{d}z=2\pi i\mathrm{res}_{\sqrt{a^2-1}-a}f=\frac{2\pi ai}{(a^2-1)^{\frac{3}{2}}}
+	$$
+	而
+	$$
+	\int_{\gamma}f(z)\mathrm{d}z=\int_0^{2\pi}\frac{i\mathrm{d}\theta}{(a+\cos\theta)^2}
+	$$
+	从而
+	$$
+	\int_0^{2\pi}\frac{\mathrm{d}\theta}{(a+\cos\theta)^2}=\frac{2\pi a}{(a^2-1)^{\frac{3}{2}}}
+	$$
+\end{proof}
+
+\begin{example}
+	$$
+	\int_0^{2\pi}\frac{\mathrm{d}\theta}{a+b\cos\theta}=\frac{2\pi}{\sqrt{a^2-b^2}},\qquad a>|b|,a,b\in\R
+	$$
+\end{example}
+
+\begin{proof}
+	记$f(z)=\frac{2}{bz^2+2az+b}$，积分路径为$\gamma:z=\mathrm{e}^{i\theta},\theta\in[0,2\pi]$。
+	
+	若$b=0$，显然成立
+	$$
+	\int_0^{2\pi}\frac{\mathrm{d}\theta}{a}=\frac{2\pi}{a}
+	$$
+	若$b\ne 0$，在此积分路径内$f$含有一阶极点$z_0=\frac{-a+\sqrt{a^2-b^2}}{b}$​，其留数为
+	$$
+	\mathrm{res}_{z_0}f=\lim_{z\to z_0}(z-z_0)f(z)=\frac{1}{\sqrt{a^2-b^2}}
+	$$
+	因此
+	$$
+	\int_{\gamma}f(z)\mathrm{d}z=2\pi i\mathrm{res}_{z_0}f=\frac{2\pi i}{\sqrt{a^2-b^2}}
+	$$
+	而
+	$$
+	\int_{\gamma}f(z)\mathrm{d}z=\int_0^{2\pi}\frac{i\mathrm{d}\theta}{a+b\cos\theta}
+	$$
+	从而
+	$$
+	\int_0^{2\pi}\frac{\mathrm{d}\theta}{a+b\cos\theta}=\frac{2\pi}{\sqrt{a^2-b^2}}
+	$$
+\end{proof}
+
+\section{亚纯函数}
+
+\begin{definition}{扩充复平面}
+	$\overline{\C}$为$\C$的一点紧致化。
+	$$
+	\overline{\C}=\C\cup\{ \infty \}
+	$$
+\end{definition}
+
+\begin{definition}{Riemann球}
+	定义Riemann球
+	$$
+	\mathbb{S}=\left\{ (X,Y,Z):X^2+Y^2+\left(Z-\frac{1}{2}\right)^2=\frac{1}{4} \right\}
+	$$
+	与复平面
+	$$
+	\C=\{ (x,y):(x,y)\in\R^2 \}
+	$$
+	
+	Riemann球的北极记作$\mathcal{N}=(0,0,1)$，那么存在双射
+	\begin{align*}
+		\mathcal{R}:\begin{aligned}[t]
+			\mathbb{S}\setminus \{ \mathcal{N} \} &\longrightarrow \C\\
+			(x,y,z) &\longmapsto \left(\frac{x}{1-z},\frac{y}{1-z}\right)
+		\end{aligned}
+	\end{align*}
+	与
+	\begin{align*}
+		\mathcal{R}^{-1}:\begin{aligned}[t]
+			\C &\longrightarrow \mathbb{S}\setminus \{ \mathcal{N} \}\\
+			(x,y) &\longmapsto \left( \frac{2x}{1+x^2+y^2},\frac{2y}{1+x^2+y^2},1-\frac{2}{1+x^2+y^2} \right)
+		\end{aligned}
+	\end{align*}
+	于是定义$\infty=\mathcal{R}(\mathcal{N})$，此时
+	$$
+	\mathbb{S}\simeq \overline{\C}
+	$$
+\end{definition}
+
+\begin{definition}{亚纯函数}
+	\begin{enumerate}
+		\item 称$f$在开集$\Omega$上是亚纯的，如果对于至多可数序列$\{z_n\}$，$f$在$\Omega-\{z_n\}$全纯，每一个$z_n$为$f$的极点，且若序列$\{z_n\}$收敛，则收敛于$\partial \Omega$。
+		\item 称$\C$上的亚纯函数$f$是在$\overline{\C}$上的亚纯函数，如果$f$在$\infty$处全纯，或者$\infty$为$f$的极点。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	$\overline{\C}$上的亚纯函数为有理函数。
+\end{theorem}
+
+\section{辐角原理}
+
+\begin{theorem}{辐角原理}{辐角原理}
+	对于开集$\Omega\sub\C$上的亚纯函数$f$，如果开圆$D\sub\Omega$，且$f$在$\partial D$上无极点和零点，那么
+	$$
+	\frac{1}{2\pi i}\int_{\partial D}{\frac{f'(z)}{f(z)}\mathrm{d}z}=n_{z}-n_{p}
+	$$
+	其中$n_z$和$n_p$分别为$f$在$C$的零点数和极点数。
+\end{theorem}
+
+\begin{theorem}{Rouché定理}{Rouché定理}
+	对于开集$\Omega\sub\C$上的全纯函数$f$和$g$，如果开圆$D\sub\Omega$，且对于任意$z\in\partial D$，成立
+	$$
+	|f(z)|>|g(z)|
+	$$
+	那么$f$和$f+g$在$D$上存在相同数目的零点。
+\end{theorem}
+
+\begin{example}
+	方程$z^6+6z+10=0$在$|z|<1$内有几个根？
+\end{example}
+
+\begin{solution}
+	注意到，当$|z|<1$时，成立
+	$$
+	|z^6+6z+10|\ge10-|z|^6-6|z|>10-1-6=3>0
+	$$
+	因此方程$z^6+6z+10=0$在$|z|<1$内无根。
+\end{solution}
+
+\begin{example}
+	方程$z^6+60z+10=0$在$|z|<1$内有几个根？
+\end{example}
+
+\begin{solution}
+	注意到，当$|z|=1$时，成立
+	$$
+	|z^6+60z|\ge60|z|-|z|^6=59>10
+	$$
+	因此由Rouché定理\ref{thm:Rouché定理}，方程$z^6+60z+10=0$和$z^6+60z=0$在$|z|<1$内存在相同数目的根。而$z^6+60z=0$的根为$z=0$和$z=\sqrt[5]{60}\mathrm{e}^{i\frac{2n-1}{5}\pi}$，那么方程$z^6+60z+10=0$在$|z|<1$内有且仅有一个根。
+\end{solution}
+
+\begin{example}
+	方程$z^4-8z+10=0$在$|z|<1$和$1<|z|<3$内有几个根？
+\end{example}
+
+\begin{solution}
+	注意到，当$|z|\le 1$​时，成立
+	$$
+	|z^4-8z+10|\ge10-|z|^4-8|z|\ge10-1-8>0
+	$$
+	因此方程$z^4-8z+10=0$在$|z|\le 1$内无根。
+	
+	注意到，当$|z|=3$时，成立
+	$$
+	|z^4-8z|\ge|z|^4-8|z|=57>10
+	$$
+	因此由Rouché定理\ref{thm:Rouché定理}，方程$z^4-8z+10=0$和$z^4-8z=0$在$|z|<3$内存在相同数目的根。而$z^4-8z=0$的根为$z_1=0$，$z_2=2$，$z_3=2\omega$，$z_4=2\omega^2$，其中$\omega$为三次单位根，因此$z^4-8z=0$在$|z|<3$内存在$4$个根，于是方程$z^4-8z+10=0$在$|z|<3$内存在$4$个根，进而方程$z^4-8z+10=0$在$1<|z|<3$内存在$4$个根。
+\end{solution}
+
+\begin{lemma}{}{非常数多项式的零点集有界}
+	对于$\C$上的多项式%
+	$$
+	P(z)=a_nz^n+\cdots+a_1z+a_0
+	$$
+	令%
+	$$
+	M=\max\{ |a_{n-1}|,\cdots,|a_0| \}
+	$$
+	那么当$|z|\ge  1+M/|a_n|$时，成立$|P(z)|>0$。
+\end{lemma}
+
+\begin{proof}
+	如果$M=0$，那么$P(z)=a_nz^n$，因此显然当$|z|\ge 1$时，$|P(z)|>0$。
+	
+	如果$M>0$，由于当$|z|\ge  1+M/|a_n|$时，成立%
+	$$
+	\frac{M|z|^n}{|z|-1}\le|a_n||z|^n
+	$$
+	那么
+	\begin{align*}
+		|P(z)|
+		& = |a_nz^n+\cdots+a_1x+a_0|\\
+		& \ge |a_nz^n|-|a_{n-1}z^{n-1}+\cdots+a_1z+a_0|\\
+		& \ge |a_nz^n|-(|a_{n-1}z^{n-1}|+\cdots+|a_1z|+|a_0|)\\
+		& \ge |a_nz^n|-M(|z|^{n-1}+\cdots+|z|+1)\\
+		& = |a_nz^n|-M\frac{1-|z|^n}{1-|z|}\\
+		& >|a_nz^n|- \frac{M|z|^n}{|z|-1}\\
+		& \ge 0
+	\end{align*}
+\end{proof}
+
+\begin{corollary}{代数基本定理}{代数基本定理3}
+	$\C$上的$n$次多项式在$\C$上存在$n$个根。
+\end{corollary}
+
+\begin{proof}
+	不妨记$\C$上的$n$次多项式为%
+	$$
+	P(z)=z^n+a_1z^{n-1}+\cdots+a_n
+	$$
+	由引理\ref{lem:非常数多项式的零点集有界}，多项式$a_1z^{n-1}+\cdots+a_n$的根在某个圆$D$内。由于$z^n$存在且存在$n$个零根，那么当$D$的半径充分大时，对于任意$z\in\partial D$，成立
+	$$
+	\frac{|a_1z^{n-1}+\cdots+a_n|}{|z^n|}<\frac{1}{2}
+	$$
+	那么由Rouché定理\ref{thm:Rouché定理}，$P(z)$存在$n$个根。
+\end{proof}
+
+\begin{theorem}{开映射定理}{开映射定理}
+	如果$f$为开集$\Omega\sub\C$上的全纯函数，那么或$f$为开映射，或$f$为常函数。
+\end{theorem}
+
+\begin{proof}
+	假设$f$不为常函数，取开集$G\sub \Omega$，任取$w_0\in f(G)$，那么存在$z_0\in G$，使得成立$w_0=f(z_0)$。由唯一性定理\ref{thm:唯一性定理}，结合$f$不为常函数，那么存在$r>0$，使得对于任意$z\in D_r(z_0)\sub G$，成立若$f(z)= f(z_0)$，则$z=z_0$。取$\dis\delta=\min_{z\in\partial D_r(z_0)}|f(z)-w_0|$，对于任意$w\in D_\delta(w_0)$，考虑%
+	$$
+	f(z)-w=(f(z)-w_0)+(w_0-w)
+	$$
+	由于在$\partial D_r(z_0)$上成立%
+	$$
+	|f(z)-w_0|\ge\delta,\qquad 
+	|w_0-w|<\delta
+	$$
+	那么由Rouché定理\ref{thm:Rouché定理}，$f(z)-w$与$f(z)-w_0$在$D_r(z_0)$中的零点个数相同。由于$f(z)-w_0$在$D_r(z_0)$中存在零点$z_0$，那么$f(z)-w$在在$D_r(z_0)$中存在零点$z_w$，因此%
+	$$
+	w=f(z_w)\in f(D_r(z_0))
+	$$
+	由$w$的任意性，$D_\delta(w_0)\sub f(D_r(z_0))\sub f(G)$，从而$f(G)$为开集，进而$f$为开映射。
+\end{proof}
+
+\begin{theorem}{最大模原理}{最大模原理}
+	如果$f$为区域$\Omega\sub\C$上的全纯函数，那么或$|f|$不在$\Omega$内取到最大值，或$f$为常函数。
+\end{theorem}
+
+\begin{proof}
+	如果$f$不为常函数，且在$z_0\in\Omega$处$|f|$取最大值，那么存在$r>0$，使得成立$D_r(z_0)\sub\Omega$。由开映射定理\ref{thm:开映射定理}，$f(D_r(z_0))$为开集，因此存在$w\in D_r(z_0)$，使得$|f(w)|=|f(z_0)|+r/2>|f(z_0)|$，矛盾！
+\end{proof}
+
+\begin{proposition}
+	对于开圆盘$D_r=\{ z\in\C:|z|< r \}$，如果$f$在$\overline{D}_r$上全纯，且存在$A>0$，使得当$|z|=r$时，$|f(z)|>A$，同时$|f(0)|<A$，证明：$f$在$D_r$内存在零点。
+\end{proposition}
+
+\begin{proof}
+	假设$f$在$D_r$内无零点，那么定义$g=1/f$，于是当$|z|=r$时，$|g(z)|=\frac{1}{|f(z)|}<\frac{1}{A}$，而$|g(0)|=\frac{1}{|f(0)|}>\frac{1}{A}$，这与最大模原理\ref{thm:最大模原理}矛盾！因此$f$在$D_r$内无零点。
+\end{proof}
+
+\begin{proposition}
+	对于单位开圆盘$\mathbb{D}=\{ z\in\C:|z|<1 \}$，如果$\{ w_k \}_{k=1}^{n}\sub\partial\mathbb{D}$，那么存在$z\in\partial\mathbb{D}$，使得成立
+	$$
+	\prod_{k=1}^{n}|z-w_k|\ge 1
+	$$
+	进而存在$w\in\partial\mathbb{D}$，使得成立
+	$$
+	\prod_{k=1}^{n}|w-w_k|=1
+	$$
+\end{proposition}
+
+\begin{proof}
+	定义函数
+	$$
+	f(z)=\prod_{k=1}^{n}(z-w_k),\quad z\in\C
+	$$
+	注意到
+	$$
+	|f(0)|=\prod_{k=1}^{n}|w_k|=1
+	$$
+	那么由最大模原理\ref{thm:最大模原理}
+	$$
+	\sup_{z\in\partial\mathbb{D}}|f(z)|\ge |f(0)|=1
+	$$
+	又$\partial\mathbb{D}$为紧集，所以存在$z\in\partial\mathbb{D}$，使得$|f(z)|\ge 1$。
+	
+	又由于$f$的连续性，且$f(w_1)=0$，那么存在$w$使得成立$|f(w)|=1$。
+\end{proof}
+
+\begin{theorem}{Schwartz引理}{Schwartz引理}
+	对于单位开圆盘$\mathbb{D}$，如果$f:\mathbb{D}\to\mathbb{D}$为全纯函数，且$f(0)=0$，那么
+	$$
+	|f'(0)|\le 1,\qquad 
+	|f(z)|\le|z|,\qquad
+	z\in\mathbb{D}
+	$$
+	当且仅当存在$\theta\in\R$，使得$f(z)=\mathrm{e}^{i\theta}z$时等号成立。
+\end{theorem}
+
+\begin{proof}
+	构造%
+	$$
+	g(z)=\begin{cases}
+		f(z)/z,\qquad & z\in\mathbb{D}\setminus\{0\}\\
+		f'(0),\qquad & z=0
+	\end{cases}
+	$$
+	那么$g(z)$在$\mathbb{D}$内全纯。由最大模原理\ref{thm:最大模原理}，对于任意$0<r<1$，成立
+	$$
+	\max_{|z|<r}|g(z)|\le \max_{\theta\in\R}|g(r\mathrm{e}^{i\theta})|
+	=\max_{\theta\in\R}\frac{|f(r\mathrm{e}^{i\theta})|}{r}\le\frac{1}{r}
+	$$
+	令$r\to 1$，那么$|g(z)|\le 1$，于是
+	$$
+	|f'(0)|\le 1,\qquad 
+	|f(z)|\le|z|,\qquad
+	z\in\mathbb{D}
+	$$
+	若存在$z\ne 0$，使得成立$|f(z)|=|z|$或$|f'(0)|=1$，则由最大模原理\ref{thm:最大模原理}，$g$为常函数，因此存在$\theta\in\R$，使得$f(z)=\mathrm{e}^{i\theta}z$。
+\end{proof}
+
+\begin{theorem}{Schwartz-Pick引理}{Schwartz-Pick引理}
+	对于单位开圆盘$\mathbb{D}$，如果$f:\mathbb{D}\to\mathbb{D}$为全纯函数，那么
+	$$
+	\left| \frac{f(z)-f(w)}{1-\overline{f(z)}f(w)} \right|
+	\le
+	\left| \frac{z-w}{1-\overline{z}w} \right|,\qquad
+	z,w\in\mathbb{D}
+	$$
+\end{theorem}
+
+\begin{proof}
+	首先容易证明对于$z,w\in\overline{\mathbb{D}}$，当$\overline{w}z\ne1$时，成立
+	$$
+	\left|\frac{w-z}{1-\overline{w}z}\right|\le1
+	$$
+	当且仅当$|z|=1$或$|w|=1$时等号成立。
+	
+	对于$w\in\mathbb{D}$，定义映射
+	\function{\varphi_w}{\mathbb{D}}{\mathbb{D}}{z}{\frac{w-z}{1-\overline{w}z}}
+	我们来证明$\varphi_w$为全纯双射。注意到
+	$$
+	\lim_{h\to0}\frac{\varphi_w(z+h)-\varphi_w(z)}{h}=\lim_{h\to0}\frac{|w|^2-1}{(1-\overline{w}(z+h))(1-\overline{w}z)}=\frac{|w|^2-1}{(1-\overline{w}z)^2}
+	$$
+	因此$\varphi_w$为全纯映射。同时注意到
+	$$
+	(\varphi_w\circ\varphi_w)(z)=z
+	$$
+	因此$\varphi_w$为双射。
+	
+	由于$\varphi_w(w)=0$，那么$\varphi^{-1}_w(0)=w$。考察映射
+	$$
+	\psi_w=\varphi_{f(w)}\circ f \circ \varphi_w^{-1}
+	$$
+	由于$\varphi_w$和$f$均为$\mathbb{D}\to\mathbb{D}$上的全纯函数，那么$\psi_w$为为$\mathbb{D}\to\mathbb{D}$上的全纯函数，且
+	$$
+	\psi_w(0)=(\varphi_{f(w)}\circ f \circ \varphi_w^{-1})(0)=0
+	$$
+	于是由Schwartz引理\ref{thm:Schwartz引理}，对于任意$z\in\mathbb{D}$，成立
+	$$
+	|\psi_w(z)|\le|z|
+	$$
+	即
+	$$
+	|(\varphi_{f(w)}\circ f \circ \varphi_w^{-1})(z)|\le|z|
+	$$
+	而$\varphi_w$为双射，因此存在$z'\in\mathbb{D}$，使得成立$z=\varphi_w(z')$，因此
+	$$
+	|(\varphi_{f(w)}\circ f )(z')|\le|\varphi_w(z')|
+	$$
+	进而
+	$$
+	\left| \frac{f(w)-f(z')}{1-\overline{f(w)}f(z')} \right|
+	\le
+	\left| \frac{w-z'}{1-\overline{w}z'} \right|
+	$$
+	由$z'$与$w$的任意性，原命题得证！
+\end{proof}
+
+\section{同伦与单连通区域}
+
+\begin{definition}{同伦}
+	称曲线$\alpha,\beta:[a,b]\to \Omega$在开集$\Omega\sub\C$中同伦，如果存在连续函数$\gamma:[0,1]\times[a,b]\to \Omega$，使得成立
+	\begin{align*}
+		&\gamma(s,0)=\alpha(s),&&\gamma(s,1)=\beta(s),&&\forall s\in [0,1] \\
+		&\gamma(0,t)=\alpha(0)=\beta(0),&&\gamma(1,t)=\alpha(1)=\beta(1),&& \forall t\in [a,b] 
+	\end{align*}
+\end{definition}
+
+\begin{definition}{单连通区域}
+	称区域$\Omega\sub\C$是单连通的，如果对于$\Omega$中任意两条具有相同的始点和终点的曲线都是同伦的。
+\end{definition}
+
+\begin{theorem}
+	如果$f$在开集$\Omega$上是全纯的，那么对于任意$\Omega$中的同伦曲线$\gamma_0$和$\gamma_1$，成立
+	$$
+	\int_{\gamma_0}{f(z)\mathrm{d}z}=\int_{\gamma_1}{f(z)\mathrm{d}z}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	单连通区域中任何全纯函数都存在原函数。
+\end{theorem}
+
+\section{复对数}
+
+\begin{theorem}
+	如果$\Omega$为单连通区域，且$1\in\Omega,0\notin\Omega$，那么在$\Omega$中存在对数的分支$F(z)=\log_{\Omega}(z)$，使得成立
+	\begin{enumerate}
+		\item $F$在$\Omega$中是全纯的。
+		\item 对于任意$z\in\Omega$，成立$\mathrm{e}^{F(z)}=z$。
+		\item 对于任意$r\in\R^+\cap\Omega$，成立$F(r)=\ln{r}$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	对于裂隙平面$\Omega=\C\setminus(-\infty,0] $，存在对数的主分支
+	$$
+	\log{z}=\ln{r}+i\theta
+	$$
+	其中$z=r\mathrm{e}^{i\theta}$且$r\in\R^+,\theta\in(-\pi,\pi)$。
+\end{theorem}
+
+\begin{remark}
+	$$
+	\log(z_1z_2)\ne\log{z_1}+\log{z_2}
+	$$
+\end{remark}
+
+\begin{theorem}
+	对于$|z|<1$，成立
+	$$
+	\log{(1+z)}=\sum_{n=1}^{\infty}{(-1)^{n+1}\frac{z^n}{n}}
+	$$
+\end{theorem}
+
+\begin{definition}{幂}
+	如果$\Omega$为单连通区域，且$1\in\Omega,0\notin\Omega$，选择对数的分支，对于任意$\alpha\in\C$，定义幂
+	$$
+	z^\alpha=\mathrm{e}^{\alpha\log{z}}
+	$$
+\end{definition}
+
+\begin{theorem}
+	如果函数$f$在单连通区域$\Omega$上是全纯非零函数，那么在$\Omega$上存在全纯函数$g$，使得成立
+	$$
+	f(z)=\mathrm{e}^{g(z)}
+	$$
+	其中$g(z)$可以表示为$\log{f(z)}$，并确定了该对数的一个分支。
+\end{theorem}
+
+\begin{proposition}
+	如果$a>0$，那么
+	$$
+	\int_0^\infty \frac{\log x}{x^2+a^2}\mathrm{d}x=\frac{\pi}{2a}\log a
+	$$
+\end{proposition}
+
+\begin{proof}
+	记$f(z)=\frac{\log z}{z^2+a^2}$​，积分路径为
+	\begin{align*}
+		&\gamma_1:z=t,\quad &&t:\varepsilon\to R\\
+		&\gamma_2:z=-t,\quad &&t:R\to \varepsilon\\
+		&C_\varepsilon:z=\varepsilon\mathrm{e}^{it},\quad &&t:\pi\to 0\\
+		&C_R:z=R\mathrm{e}^{it},\quad &&t:0\to \pi\\
+	\end{align*}
+	注意到当$\varepsilon< a <R$时，$f$在积分路径围成的区域内存在一阶极点$z=ai$，其留数为
+	$$
+	\mathrm{res}_{ai}f=\lim_{z\to ai}(z-ai)f(z)=\frac{\log a+i\frac{\pi}{2}}{2ai}
+	$$
+	因此由留数公式
+	$$
+	\int_{\gamma_1}f(z)\mathrm{d}z+\int_{\gamma_2}f(z)\mathrm{d}z+\int_{C_\varepsilon}f(z)\mathrm{d}z+\int_{C_R}f(z)\mathrm{d}z=2\pi i\mathrm{res}_{ai}f=\frac{\pi\log a}{a}+i\frac{\pi^2}{2a}
+	$$
+	
+	考察各项积分。对于$C_\varepsilon$项
+	$$
+	\int_{C_\varepsilon}f(z)\mathrm{d}z
+	=\varepsilon\int_0^\pi\frac{t\mathrm{e}^{it}}{\varepsilon^2\mathrm{e}^{i2t}+a^2}\mathrm{d}t
+	-i\varepsilon\ln\varepsilon\int_0^\pi \frac{\mathrm{e}^{it}}{\varepsilon^2\mathrm{e}^{i2t}+a^2}\mathrm{d}t\to0\qquad (\varepsilon\to 0^+)
+	$$
+	
+	对于$C_R$​项
+	\begin{align*}
+		\left| \int_{C_R}f(z)\mathrm{d}z \right|
+		& =R\left| \int_0^\pi \frac{(i\ln R-t)\mathrm{e}^{it}}{R^2\mathrm{e}^{i2t}+a^2}\mathrm{d}t \right|\\
+		& \le R\int_0^\pi \frac{|i\ln R-t|}{|R^2\mathrm{e}^{i2t}+a^2|}\mathrm{d}t\\
+		& \le R\int_0^\pi\frac{\pi+\ln R}{R^2-a^2}\mathrm{d}t\\
+		& =\pi R\frac{\pi+\ln R}{R^2-a^2}
+	\end{align*}
+	因此%
+	$$
+	\lim_{R\to\infty}\int_{C_R}f(z)\mathrm{d}z=0
+	$$
+	
+	对于$\gamma_2$项
+	$$
+	\int_{\gamma_2}f(z)\mathrm{d}z
+	=\int_\varepsilon^R\frac{\log t+i\pi}{t^2+a^2}\mathrm{d}t
+	=\int_\varepsilon^R\frac{\log t}{t^2+a^2}\mathrm{d}t
+	+i\pi\int_\varepsilon^R\frac{\mathrm{d}t}{t^2+a^2}
+	$$
+	而
+	$$
+	\int_0^\infty\frac{\mathrm{d}t}{t^2+a^2}=\frac{\pi}{2a}
+	$$
+	
+	因此当$\varepsilon\to0$且$R\to\infty$​时，成立
+	$$
+	2\int_0^\infty \frac{\log x}{x^2+a^2}\mathrm{d}x+i\frac{\pi^2}{2a}=\frac{\pi\log a}{a}+i\frac{\pi^2}{2a}
+	$$
+	因此
+	$$
+	\int_0^\infty \frac{\log x}{x^2+a^2}\mathrm{d}x=\frac{\pi}{2a}\log a
+	$$
+\end{proof}
+
+\begin{proposition}
+	如果$|a|<1$，那么
+	$$
+	\int_0^{2\pi} \log |1-a\mathrm{e}^{i\theta}|\mathrm{d}\theta=0
+	$$
+	事实上，$|a|\le 1$时，上式仍然成立。
+\end{proposition}
+
+\begin{proof}
+	记$f(z)=\frac{\log(1-az)}{iz},|z|\le1$，由于$1-az\in\{ x+iy:x>0,y\in\R \}$，因此$\log(1-az)$在$|z|\le 1$时全纯。注意到$z=0$为$f(z)$的可去奇点，因此$f(z)$在$|z|\le 1$全纯，那么
+	$$
+	\int_{|z|=1}f(z)\mathrm{d}z=0
+	$$
+	进而
+	$$
+	\int_0^{2\pi} \log |1-a\mathrm{e}^{i\theta}|\mathrm{d}\theta=\text{Re}\int_{|z|=1}f(z)\mathrm{d}z=0
+	$$
+	而当$|a|=1$时，记$a=\mathrm{e}^{i\alpha}$​，注意到
+	$$
+	\int_0^{2\pi} \log |1-a\mathrm{e}^{i\theta}|\mathrm{d}\theta=
+	\int_0^{2\pi} \log |1-\mathrm{e}^{i(\theta+\alpha)}|\mathrm{d}\theta=
+	\int_0^{2\pi} \log |1-\mathrm{e}^{i\theta}|\mathrm{d}\theta=
+	4\int_0^{\frac{\pi}{2}}\ln(2\sin\theta)\mathrm{d}\theta=0
+	$$
+	最后的积分是因为
+	\begin{align*}
+		I&=\int_0^{\frac{\pi}{2}}\ln(\sin x)\mathrm{d}x\\
+		&=2\int_0^{\frac{\pi}{4}}\ln(\sin 2x)\mathrm{d}x\\
+		&=2\int_0^{\frac{\pi}{4}}(\ln2+\ln(\sin x)+\ln(\cos x))\mathrm{d}x\\
+		&=\frac{\pi}{2}\ln 2+2I
+	\end{align*}
+	因此
+	$$
+	I=\int_0^{\frac{\pi}{2}}\ln(\sin x)\mathrm{d}x=-\frac{\pi}{2}\ln 2
+	$$
+\end{proof}
+
+\appendix
+
+\chapter{单复变函数定理扩展}
+
+\begin{theorem}{Bieberbach定理}{Bieberbach定理}
+	对于单位圆盘$\mathbb{D}$上的单的全纯函数$f$，如果$f(0)=0$，且$f'(0)=1$，那么作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	成立%
+	$$
+	|a_n|\le n,\qquad n\in\N
+	$$
+\end{theorem}
+
+\begin{theorem}{Koebe定理 $1/4$掩盖定理}{Koebe定理}
+	对于单位圆盘$\mathbb{D}$上的单的全纯函数$f$，如果$f(0)=0$，且$f'(0)=1$，那么$f(\mathbb{D})\supset\mathbb{D}/4$。
+\end{theorem}
+
+\begin{proof}
+	作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	任取$w\notin f(\mathbb{D})$，令%
+	$$
+	g(z)
+	=\frac{wf(z)}{w-f(z)}
+	=\sum_{n=0}^{\infty}\frac{g^{(n)}(0)}{n!}z^n
+	=z+\left(a_2+\frac{1}{w}\right)z^2+\sum_{n=3}^{\infty}\frac{g^{(n)}(0)}{n!}z^n
+	$$
+	由Bieberbach定理\ref{thm:Bieberbach定理}，$|a_2|$且$|a_2+1/w|\le 2$，因此%
+	$$
+	\frac{1}{|w|}
+	\le\left|a_2+\frac{1}{w}\right|+|a_2|
+	\le 4
+	$$
+	从而$|w|\ge 1/4$，进而$f(\mathbb{D})\supset\mathbb{D}/4$。
+\end{proof}
+
+\begin{lemma}{}{Landou引理的引理1}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(\mathbb{D})\sub M\mathbb{D}$，$|f(0)|\ne 0$，那么当$|z|=r<|f(0)|<M$时，成立%
+	$$
+	|f(z)|\ge\frac{M(|f(0)|-Mr)}{M-r|f(0)|}
+	$$
+\end{lemma}
+
+\begin{proof}
+	当$M=1$时，由Schwartz-Pick引理\ref{thm:Schwartz-Pick引理}%
+	$$
+	|z|\ge \left| \frac{f(z)-f(0)}{1-\overline{f(z)}f(0)} \right|
+	,\qquad
+	z\in\mathbb{D}
+	$$
+	从而%
+	$$
+	1-|z|^2\le
+	1-\left| \frac{f(z)-f(0)}{1-\overline{f(z)}f(0)} \right|^2
+	=\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{|1-\overline{f(z)}f(0)|^2}
+	\le\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{(1-|f(z)||f(0)|)^2}
+	$$
+	因此%
+	$$
+	|z|^2\ge 
+	1-\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{(1-|f(z)||f(0)|)^2}
+	=\frac{(|f(z)|-|f(0)|)^2}{(1-|f(z)||f(0)|)^2}
+	$$
+	进而%
+	$$
+	|z|\ge \frac{||f(z)|-|f(0)||}{1-|f(z)||f(0)|}
+	$$
+	解之%
+	$$
+	|f(z)|\ge\frac{|f(0)|-|z|}{1-|z||f(0)|}
+	=\frac{|f(0)|-r}{1-r|f(0)|}
+	$$
+	
+	当$M\ne 1$时，令$g=f/M$，从而由
+	$$
+	|g(z)|\ge\frac{|g(0)|-|z|}{1-|z||g(0)|}
+	=\frac{|g(0)|-r}{1-r|g(0)|}
+	$$
+	可得%
+	$$
+	\frac{|f(z)|}{M}\ge\frac{\frac{|f(0)|}{M}-|z|}{1-|z|\frac{|f(0)|}{M}}
+	=\frac{\frac{|f(0)|}{M}-r}{1-r\frac{|f(0)|}{M}}
+	\iff
+	|f(z)|\ge\frac{M(|f(0)|-Mr)}{M-r|f(0)|}
+	$$
+\end{proof}
+
+\begin{lemma}{}{Landou引理的引理2}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(\mathbb{D})\sub M\mathbb{D}$，且$f(0)=0$，$f'(0)=1$，那么$M\ge 1$，且$f$在$\eta\mathbb{D}$中为单射，其中$\eta=1/(M+\sqrt{M^2-1})$。
+\end{lemma}
+
+\begin{proof}
+	作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}\frac{g^{(n)}(0)}{n!}z^n=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	由Cauchy不等式%
+	$$
+	|f^{(n)}(0)| \le \frac{n!}{r^n}\sup_{|z|=r}|f(z)|
+	< \frac{n!}{r^n}M,\qquad r<1
+	$$
+	从而%
+	$$
+	|a_n|=\frac{|f^{(n)}(0)|}{n!}\le\frac{M}{r^n},\qquad n\in\N,r<1
+	$$
+	令$r\to 1^-$，从而%
+	$$
+	|a_n|\le M,\qquad n\in\N
+	$$
+	而$|a_1|=|f'(0)|=1$，从而$M\ge 1$。
+	
+	若$f$在$\eta\mathbb{D}$中不为单射，则存在$z_1\ne z_2\in\mathbb{D}$，使得成立$f(z_1)=f(z_2)=\beta$。不妨$|z_1|\le |z_2|=\rho<1/M$。令%
+	$$
+	g(z)=\frac{\frac{\beta}{M}-\frac{f(z)}{M}}{1-\frac{\rho}{M}\frac{f(z)}{M}}
+	=\frac{M(\beta-f(z))}{M^2-\beta f(z)}
+	$$
+	则$|g|<M$，且$g(z_1)=g(z_2)=0$。再令%
+	$$
+	h(z)=\frac{g(z)(1-\overline{z}_1z)(1-\overline{z}_2z)}{(z-z_1)(z-z_2)}
+	$$
+	则$h$在$\mathbb{D}$内全纯。断言：$|h|<M$。事实上，由最大模原理\ref{thm:最大模原理}，$|h|$在$\partial\mathbb{D}$上取到；而$z\to\partial\mathbb{D}$，$|g(z)|<M$，从而$|h|<M$。因此
+	$$
+	|h(0)|=\frac{|g(0)|}{|z_1z_2|}<M
+	$$
+	而$|g(0)|\le \beta$，则$\beta<M|z_1z_2|<M\rho^2$。令%
+	$$
+	\varphi(z)=\begin{cases}
+		f(z)/z,\qquad & z\ne 0\\
+		f'(0)=1,\qquad & z=0
+	\end{cases}
+	$$
+	则$\varphi$在$\mathbb{D}$内全纯，且$|\varphi|<M$。由引理\ref{lem:Landou引理的引理1}，当$|z|=\rho<1/M$时%
+	$$
+	|\varphi(z)|\ge\frac{M(\varphi(0)-M\rho)}{M-\varphi(0)\rho}
+	=\frac{M(1-M\rho)}{M-\rho}\implies
+	|f(z)|\ge\frac{M(1-M\rho)}{M-\rho}|z|
+	$$
+	结合%
+	$$
+	\beta=|f(z_2)|\ge\frac{M(1-M\rho)}{M-\rho}|z_2|
+	=\frac{M(1-M\rho)}{M-\rho}\rho\implies
+	M\rho^2\ge \frac{M(1-M\rho)}{M-\rho}\rho
+	\implies
+	\rho\ge\frac{1}{M+\sqrt{M^2-1}}
+	$$
+	可得要使得$f$在$\rho\mathbb{D}$中不为单射，从而当$\rho<1/(M+\sqrt{M^2-1})$时，$f$在$\rho\mathbb{D}$中为单射。
+\end{proof}
+
+\begin{theorem}{Landou引理}{Landou引理}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(0)=0$，$f(\mathbb{D})\sub\mathbb{D}$，$0<f'(0)=\alpha\le 1$，那么$f$在$\eta\mathbb{D}$上为单射，且$\eta^2\mathbb{D}\sub f\left(\eta\mathbb{D}\right)$，其中$\eta=\alpha/(1+\sqrt{1-\alpha^2})$。
+\end{theorem}
+
+\begin{proof}
+	令$F(z)=f(z)/\alpha$，则$F(0)=0$，$F'(0)=1$，且$F(\mathbb{D})\sub\mathbb{D}/\alpha$。由引理\ref{lem:Landou引理的引理2}，则$F$在$\eta\mathbb{D}$中为单射，其中%
+	$$
+	\eta=\frac{1}{M+\sqrt{M^2-1}}
+	=\frac{1}{\frac{1}{\alpha}+\sqrt{\frac{1}{\alpha^2}-1}}
+	=\frac{\alpha}{1+\sqrt{1-\alpha^2}}
+	$$
+	当$|z|=\eta$时，由引理\ref{lem:Landou引理的引理2}%
+	$$
+	|F(z)|\ge\frac{M(1-M\eta)}{M-\eta}|z|
+	$$
+	从而%
+	$$
+	|f(z)|\ge\frac{1-\frac{1}{\alpha}\eta}{\frac{1}{\alpha}-\eta}\eta=\frac{\alpha-\eta}{1-\alpha\eta}\eta\ge\eta^2
+	$$
+	由Rouché定理\ref{thm:Rouché定理}，$\eta^2\mathbb{D}\sub f\left(\eta\mathbb{D}\right)$。
+\end{proof}
+
+\chapter{单复变经典定理}
+
+\begin{definition}{全纯函数}
+	称函数$f=u+iv$在开集$\Omega\sub\C$上为全纯函数，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意$z\in\Omega$，存在极限%
+		$$
+		\lim_{h\to 0}\frac{f(z+h)-f(z)}{h}
+		$$
+		\item 函数$u$和$v$在$\Omega$​上连续可微，且成立Cauchy-Riemann方程
+		$$
+		\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+		\qquad
+		\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+		$$
+		\item 函数$f$在$\Omega$上连续，且对于任意分段光滑闭曲线$\gamma$，成立%
+		$$
+		\int_\gamma{f(z)\mathrm{d}z}=0
+		$$
+		\item 对于任意$z_0\in \Omega$，存在$r>0$，使得对于任意$z\in D_r(z_0)$，成立幂级数展开
+		$$
+		f(z)=\sum_{n=0}^{\infty}{a_n(z-z_0)^n}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Cauchy-Riemann方程}
+	如果函数$f=u+iv$在开集$\Omega\sub\C$上全纯，那么
+	$$
+	\frac{\partial f}{\partial x}=\frac{1}{i}\frac{\partial f}{\partial y}
+	$$
+	即
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+\end{theorem}
+
+\begin{proof}
+	由于存在极限%
+	$$
+	f'(z)=\lim_{h\to 0}\frac{f(z+h)-f(z)}{h}
+	=\lim_{(h_1,h_2)\to (0,0)}=\frac{f(x+h_1,y+h_2)-f(x,y)}{h_1+ih_2}
+	$$
+	那么当$h$沿实轴时%
+	$$
+	f'(z)=\lim_{h_1\to 0}=\frac{f(x+h_1,y)-f(x,y)}{h_1}=\frac{\partial f}{\partial x}(z)
+	$$
+	当$h$沿虚轴时%
+	$$
+	f'(z)=\lim_{h_2\to 0}=\frac{f(x,y+h_2)-f(x,y)}{ih_2}=\frac{1}{i}\frac{\partial f}{\partial y}(z)
+	$$
+	从而
+	$$
+	\frac{\partial f}{\partial x}=\frac{1}{i}\frac{\partial f}{\partial y}
+	$$
+	即
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+\end{proof}
+
+\begin{theorem}{Cauchy-Riemann方程逆定理}
+	如果函数$f=u+iv$在开集$\Omega\sub\C$上成立Cauchy-Riemann方程
+	$$
+	\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y},
+	\qquad
+	\frac{\partial u}{\partial y}=-\frac{\partial v}{\partial x}
+	$$
+	那么$f$在$\Omega$上全纯。
+\end{theorem}
+
+\begin{proof}
+	由于函数$u$和$v$在$\Omega$​上连续可微，那么
+	\begin{align*}
+		& u(x+h_1,y+h_2)-u(x,y)=\frac{\partial u}{\partial x}h_1+\frac{\partial u}{\partial y}h_2+h\psi_1(h)\\
+		& v(x+h_1,y+h_2)-v(x,y)=\frac{\partial v}{\partial x}h_1+\frac{\partial v}{\partial y}h_2+h\psi_2(h)
+	\end{align*}
+	其中%
+	$$
+	\lim_{h\to 0}\psi_1(h)=\lim_{h\to 0}\psi_2(h)=0
+	$$
+	令%
+	$$
+	h=h_1+ih_2,\qquad 
+	\psi=\psi_1+i\psi_2
+	$$
+	从而由Cauchy-Riemann方程%
+	$$
+	f(z+h)-f(z)
+	=\left(\frac{\partial u}{\partial x}-i\frac{\partial u}{\partial y}\right)h+h\psi(h)
+	$$
+	从而$f$为全纯函数，且%
+	$$
+	f'=\frac{\partial u}{\partial x}-i\frac{\partial u}{\partial y}=2\frac{\partial u}{\partial z}=\frac{\partial f}{\partial z}
+	$$
+\end{proof}
+
+\begin{theorem}{Goursat定理}
+	如果函数$f$在开集$\Omega\sub\C$上全纯，那么对于任意三角形$T\sub\Omega$，成立%
+	$$
+	\int_{T}f(z)\dd z=0
+	$$
+\end{theorem}
+
+\begin{theorem}{Cauchy积分定理}
+	对于边界分段光滑的区域$\Omega\sub\C$，如果函数$f$在$\Omega$上全纯且在$\overline{\Omega}$上连续，那么%
+	$$
+	\int_{\partial\Omega}f(z)\dd z=0
+	$$
+\end{theorem}
+
+\begin{theorem}{Cauchy积分公式}
+	对于边界分段光滑的区域$\Omega\sub\C$，如果函数$f$在$\Omega$上全纯且在$\overline{\Omega}$上连续，那么对于任意$z\in\Omega$，成立
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial \Omega}{\frac{f(\zeta)}{\zeta-z}\mathrm{d}\zeta}
+	$$
+	同时$f$在$\Omega$上无穷阶可导，且对于任意$z\in\Omega$，成立
+	$$
+	f^{(n)}(z)=\frac{n!}{2\pi i}\int_{\partial\Omega}{\frac{f(\zeta)}{(\zeta-z)^{n+1}}\mathrm{d}\zeta}
+	$$
+\end{theorem}
+
+\begin{corollary}{平均值性质}
+	对于在开集$\Omega\sub\C$上全纯的函数$f$，如果$z_0\in\Omega$且$D_r(z_0)\sub\Omega$，那么
+	$$
+	f(z_0)=\frac{1}{2\pi}\int_0^{2\pi}{f(z_0+r\mathrm{e}^{i\theta})\mathrm{d}\theta}
+	$$
+\end{corollary}
+
+\begin{proof}
+	由Cauchy积分公式\ref{thm:Cauchy积分公式}，这几乎是显然的！
+\end{proof}
+
+\begin{corollary}{Cauchy不等式}
+	对于开集$\Omega\sub\C$上的全函数$f$，如果$\overline{D}_r(z_0)\sub\Omega$，那么
+	$$
+	|f^{(n)}(z_0)| \le \frac{n!}{r^n}\sup_{|z-z_0|=r}|f(z)|
+	$$
+\end{corollary}
+
+\begin{proof}
+	由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	\begin{align*}
+		|f^{(n)}(z_0)|
+		& = \left| \frac{n!}{2\pi i}\int_{\partial D}{\frac{f(\zeta)}{(\zeta-z_0)^{n+1}}\mathrm{d}\zeta} \right|\\
+		& = \left| \frac{n!}{2\pi i}\int_{0}^{2\pi}\frac{f(z_0+r\ee{i\theta})}{(r\ee{i\theta})^{n+1}}ri\ee{i\theta}\dd\theta \right|\\
+		& \le \frac{n!}{r^n}\sup_{|z-z_0|=r}|f(z)|
+	\end{align*}
+\end{proof}
+
+\begin{theorem}{Taylor展开}
+	对于开集$\Omega$上的全纯函数$f$，如果$D_r(z_0)\sub\Omega$，那么$f$存在幂级数展开
+	$$
+	f(z)=\sum_{n=0}^{\infty}{a_n(z-z_0)^n},\quad z\in D_r(z_0)
+	$$
+	其中
+	$$
+	a_n=\frac{f^{(n)}(z_0)}{n!},\quad n\in\N
+	$$
+\end{theorem}
+
+\begin{proof}
+	任取$z\in D_r(z_0)$，由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial  D}{\frac{f(\zeta)}{\zeta-z}\mathrm{d}\zeta}
+	$$
+	对于$\zeta\in \partial D$，考虑几何级数%
+	$$
+	\frac{1}{\zeta-z}
+	=\frac{1}{\zeta-z_0}\frac{1}{1-\frac{z-z_0}{\zeta-z_0}}
+	=\frac{1}{\zeta-z_0}\sum_{n=0}^{\infty}\left(\frac{z-z_0}{\zeta-z_0}\right)^n
+	$$
+	从而由Cauchy积分公式\ref{thm:Cauchy积分公式}
+	$$
+	f(z)
+	=\sum_{n=0}^{\infty}{\left(\frac{1}{2\pi i}\int_{\partial\Omega}{\frac{f(\zeta)}{(\zeta-z)^{n+1}}\mathrm{d}\zeta}\right)(z-z_0)^n}
+	=\sum_{n=0}^{\infty}{\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n}
+	=\sum_{n=0}^{\infty}{a_n(z-z_0)^n}
+	$$
+\end{proof}
+
+\begin{corollary}{Liouville定理}
+	\begin{enumerate}
+		\item 如果$f$是$\C$上的有界整函数，那么$f$是常函数。
+		\item 如果$f$是$\C$上的下有界整函数，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$u$存在上界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$u$存在下界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$v$存在上界，那么$f$是常函数。
+		\item 对于$\C$上的整函数$f=u+iv$，如果$v$存在下界，那么$f$是常函数。
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	对于1，由于$f$在$\C$上有界，那么存在$M\in\R$，使得对于任意$z\in\C$，成立$|f(z)| \le M$。由Cauchy不等式\ref{cor:Cauchy不等式}，对于任意$z_0\in\C$与$r>0$，成立
+	$$
+	|f'(z_0)| \le \frac{1}{r}\sup_{|z-z_0|=r}|f(z)|
+	\le\frac{M}{r}\to 0\qquad (r\to \infty)
+	$$
+	从而$f'=0$。由推论\ref{cor:常函数的导数为0}，$f$为常函数。
+	
+	对于2，如果$f$下有界，那么$1/f$为有界整函数，因此由1，$1/f$为常函数，进而$f$为常函数。
+	
+	对于3，如果$u$上有界，那么考虑$\ee{f}$。由于
+	$$
+	|\ee{f}|=|\ee{u+iv}|=\ee{u}
+	$$
+	因此$\ee{f}$有界。由1，$\ee{f}$为常函数，进而$f$为常函数。
+	
+	对于4，如果$u$下有界，那么由$|f|\ge |u|$，可知$f$下有界。由2，$f$为常函数。
+	
+	对于5，如果$u$上有界，那么考虑$\ee{v+iu}$。由于
+	$$
+	|\ee{v+iu}|=\ee{v}
+	$$
+	因此$\ee{v+iu}$有界。由1，$\ee{v+iu}$为常函数，进而$u$与$v$为常函数，即$f$为常函数。
+	
+	对于6，如果$v$下有界，那么由$|f|\ge |v|$，可知$f$下有界。由2，$f$为常函数。
+\end{proof}
+
+\begin{corollary}{代数基本定理}
+	$\C$上的非常数多项式在$\C$中存在根。
+\end{corollary}
+
+\begin{proof}
+	考虑$n$次多项式%
+	$$
+	P(z)=a_nz^n+\cdots +a_1x+a_0
+	$$
+	假设$P(z)$无根。由于%
+	$$
+	\frac{P(z)}{z^n}=a_n+\left(\frac{a_{n-1}}{z}+\cdots+\frac{a_0}{z^n}\right)\to a_n
+	\qquad (|z|\to\infty)
+	$$
+	那么存在$r>0$，使得成立
+	$$
+	|P(z)|\ge\frac{|a_n|}{2}|z|^n,\qquad |z|>r
+	$$
+	从而$P(z)$在$|z|>r$时存在下界。由于$P(z)$为连续函数且无零点，那么$P(z)$在紧集$|z|\le r$上有界，因此$P(z)$在$\C$上存在下界，进而$1/P(z)$为有界整函数。由Liouville定理\ref{cor:Liouville定理}，$1/P(z)$为常函数，即$P(z)$为常函数，矛盾！进而$P(z)$存在根。
+\end{proof}
+
+\begin{theorem}{唯一性定理}
+	对于在区域$\Omega\sub\C$上的全纯函数$f$，如果存在$\{z_n\}_{n=1}^{\infty}\sub\Omega$，使得对于任意$n\in\N^*$，成立$f(z_n)=0$，且$\displaystyle\lim_{n\to\infty}{z_n}\in\Omega$，那么在$\Omega$上成立$f=0$。
+\end{theorem}
+
+\begin{proof}
+	记$\displaystyle z_0=\lim_{n\to\infty}{z_n}$，由于$\Omega$为开集，因此存在$r>0$，使得$D_r(z_0)\sub\Omega$。考虑幂级数展开\ref{thm:Taylor展开}%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_n(z-z_0)^n,\qquad 
+	z\in D_r(z_0)
+	$$
+	如果$f$在$D_r(z_0)$上不为$0$，那么存在最小的$m\in\N$，使得成立$a_m\ne 0$，此时存在多项式$g(z)$，使得成立
+	$$
+	f(z)=a_m(z-z_0)^m(1+g(z-z_0))
+	$$
+	其中当$z\to z_0$时$g(z-z_0)\to 0$。由于$z_n\to z_0$，那么存在$z_{n_0}\ne z_0$，使得成立$|g(z_{n_0}-z_0)|<1/2$，从而%
+	$$
+	a_m(z_{n_0}-z_0)^m\ne 0,\qquad
+	1+g(z_{n_0}-z_0)\ne 0
+	$$
+	但是$f(z_{n_0})=0$，因此产生矛盾！进而$f$在$D_r(z_0)$恒为$0$。
+	
+	记%
+	$$
+	U=\{ z\in\Omega:f(z)=0 \},\qquad V=U^\circ
+	$$
+	那么$V$为非空开集。断言$V$为闭集，事实上，对于任意$w\in \overline{V}$，存在$\{ w_n \}_{n=1}^{\infty}\sub V$，使得成立$w_n\to w$。由上述论证，$w\in V$，进而$V$为闭集。令$W=\Omega\setminus V$为开集，那么$\Omega$表示可为开集的不交并%
+	$$
+	\Omega=V\sqcup W
+	$$
+	由于$\Omega$为连通集，从而$W=\varnothing$，进而$\Omega=V$，因此在$\Omega$上成立$f=0$。
+\end{proof}
+
+\begin{corollary}{零点孤立性定理}
+	对于区域$\Omega\sub\C$上的非零全纯函数$f$，如果$z_0\in\Omega$为$f$的零点，那么存在$r>0$，使得$f$在$\overset{\circ}{D}_r(z_0)$内无零点。
+\end{corollary}
+
+\begin{proof}
+	由唯一性定理\ref{thm:唯一性定理}，命题得证！
+\end{proof}
+
+\begin{theorem}{Morera定理}
+	对于在开集$\Omega\sub\C$上的连续函数$f$，如果对于任意分段光滑封闭曲线$\gamma\sub\Omega$，成立
+	$$
+	\int_\gamma{f(z)\mathrm{d}z}=0
+	$$
+	那么$f$在$\Omega$上全纯。
+\end{theorem}
+
+\begin{theorem}{留数计算公式}
+	如果$z_0\in\Omega$为函数$f$的$n$阶极点，那么
+	$$
+	\mathrm{res}_{z_0}f=
+	\lim_{z\to z_0}{\frac{1}{(n-1)!}\frac{\mathrm{d}^{n-1}}{\mathrm{d}z^{n-1}} (z-z_0)^n f(z)}
+	$$
+\end{theorem}
+
+\begin{theorem}{留数公式}
+	对于边界分段光滑的区域$\Omega$上的函数$f$，如果$z_1,\cdots,z_n\in\Omega_\gamma$为$f$的极点，同时$f$在$\Omega\setminus\{z_1,\cdots,z_n\}$上全纯，在$\overline{\Omega}\setminus\{z_1,\cdots,z_n\}$上连续，那么
+	$$
+	\int_{\partial\Omega}{f(z)\mathrm{d}z}=2\pi i \sum_{k=1}^{n}{\mathrm{res}_{z_k}f}
+	$$
+\end{theorem}
+
+\begin{theorem}{Rouché定理}
+	对于开集$\Omega\sub\C$上的全纯函数$f$和$g$，如果开圆$D\sub\Omega$，且对于任意$z\in\partial D$，成立
+	$$
+	|f(z)|>|g(z)|
+	$$
+	那么$f$和$f+g$在$D$上存在相同数目的零点。
+\end{theorem}
+
+\begin{corollary}{代数基本定理}
+	$\C$上的$n$次多项式在$\C$上存在$n$个根。
+\end{corollary}
+
+\begin{proof}
+	不妨记$\C$上的$n$次多项式为%
+	$$
+	P(z)=z^n+a_1z^{n-1}+\cdots+a_n
+	$$
+	由引理\ref{lem:非常数多项式的零点集有界}，多项式$a_1z^{n-1}+\cdots+a_n$的根在某个圆$D$内。由于$z^n$存在且存在$n$个零根，那么当$D$的半径充分大时，对于任意$z\in\partial D$，成立
+	$$
+	\frac{|a_1z^{n-1}+\cdots+a_n|}{|z^n|}<\frac{1}{2}
+	$$
+	那么由Rouché定理\ref{thm:Rouché定理}，$P(z)$存在$n$个根。
+\end{proof}
+
+\begin{theorem}{开映射定理}
+	如果$f$为开集$\Omega\sub\C$上的全纯函数，那么或$f$为开映射，或$f$为常函数。
+\end{theorem}
+
+\begin{proof}
+	假设$f$不为常函数，取开集$G\sub \Omega$，任取$w_0\in f(G)$，那么存在$z_0\in G$，使得成立$w_0=f(z_0)$。由唯一性定理\ref{thm:唯一性定理}，结合$f$不为常函数，那么存在$r>0$，使得对于任意$z\in D_r(z_0)\sub G$，成立若$f(z)= f(z_0)$，则$z=z_0$。取$\dis\delta=\min_{z\in\partial D_r(z_0)}|f(z)-w_0|$，对于任意$w\in D_\delta(w_0)$，考虑%
+	$$
+	f(z)-w=(f(z)-w_0)+(w_0-w)
+	$$
+	由于在$\partial D_r(z_0)$上成立%
+	$$
+	|f(z)-w_0|\ge\delta,\qquad 
+	|w_0-w|<\delta
+	$$
+	那么由Rouché定理\ref{thm:Rouché定理}，$f(z)-w$与$f(z)-w_0$在$D_r(z_0)$中的零点个数相同。由于$f(z)-w_0$在$D_r(z_0)$中存在零点$z_0$，那么$f(z)-w$在在$D_r(z_0)$中存在零点$z_w$，因此%
+	$$
+	w=f(z_w)\in f(D_r(z_0))
+	$$
+	由$w$的任意性，$D_\delta(w_0)\sub f(D_r(z_0))\sub f(G)$，从而$f(G)$为开集，进而$f$为开映射。
+\end{proof}
+
+\begin{theorem}{最大模原理}
+	如果$f$为区域$\Omega\sub\C$上的全纯函数，那么或$|f|$不在$\Omega$内取到最大值，或$f$为常函数。
+\end{theorem}
+
+\begin{proof}
+	如果$f$不为常函数，且在$z_0\in\Omega$处$|f|$取最大值，那么存在$r>0$，使得成立$D_r(z_0)\sub\Omega$。由开映射定理\ref{thm:开映射定理}，$f(D_r(z_0))$为开集，因此存在$w\in D_r(z_0)$，使得$|f(w)|=|f(z_0)|+r/2>|f(z_0)|$，矛盾！
+\end{proof}
+
+
+\end{document}

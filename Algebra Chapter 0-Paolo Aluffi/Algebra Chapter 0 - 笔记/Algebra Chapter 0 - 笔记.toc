@@ -1,0 +1,215 @@
+\contentsline {chapter}{\numberline {第一章}集合论与范畴论}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}朴素集合论}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}集合}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}集合的关系}{1}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}集合的运算}{1}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}不交并与积}{1}{subsection.1.1.4}%
+\contentsline {subsection}{\numberline {1.1.5}等价关系，划分与商}{1}{subsection.1.1.5}%
+\contentsline {section}{\numberline {1.2}集合间的函数}{4}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}定义}{4}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}多重集合与指标集}{6}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}复合函数}{6}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}单射，满射与双射}{7}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}单态射与满态射}{8}{subsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.2.6}自然投影}{10}{subsection.1.2.6}%
+\contentsline {subsection}{\numberline {1.2.7}正则分解}{11}{subsection.1.2.7}%
+\contentsline {section}{\numberline {1.3}范畴论}{11}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}定义}{11}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}范畴示例}{12}{subsection.1.3.2}%
+\contentsline {section}{\numberline {1.4}态射}{14}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}同构}{14}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}单态射与满态射}{15}{subsection.1.4.2}%
+\contentsline {section}{\numberline {1.5}万有性质}{15}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}初始对象与终止对象}{15}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}万有性质}{16}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}商}{16}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}积}{17}{subsection.1.5.4}%
+\contentsline {subsection}{\numberline {1.5.5}余积}{17}{subsection.1.5.5}%
+\contentsline {chapter}{\numberline {第二章}群论$\rm \uppercase {i}$}{19}{chapter.2}%
+\contentsline {section}{\numberline {2.1}群的定义}{19}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}群和群胚}{19}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}定义}{20}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}基本性质}{21}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}消去律}{21}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}交换群}{21}{subsection.2.1.5}%
+\contentsline {subsection}{\numberline {2.1.6}阶}{21}{subsection.2.1.6}%
+\contentsline {subsection}{\numberline {2.1.7}有限群的结构}{24}{subsection.2.1.7}%
+\contentsline {section}{\numberline {2.2}群的示例}{24}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}对称群}{24}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}二面体群}{25}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}循环群}{26}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}矩阵群}{28}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}初等数论}{28}{subsection.2.2.5}%
+\contentsline {section}{\numberline {2.3}$\mathsf {Grp}$范畴}{30}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}群同态映射}{30}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}$\mathsf {Grp}$的定义}{31}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}小小反思}{31}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}积}{31}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Abel群}{31}{subsection.2.3.5}%
+\contentsline {section}{\numberline {2.4}群同态映射}{32}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}示例}{32}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}同态映射与阶}{32}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}群同构映射}{32}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Abel群的同态映射}{38}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}自由群}{39}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}生成元集}{39}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}万有性质}{39}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}具体结构}{41}{subsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.5.4}自由Abel群}{41}{subsection.2.5.4}%
+\contentsline {section}{\numberline {2.6}子群}{43}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}定义}{43}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}核与像}{45}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}由子集生成的子群}{45}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}循环群的子群}{47}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}单态射与满态射}{47}{subsection.2.6.5}%
+\contentsline {section}{\numberline {2.7}商群}{48}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}正规子群}{48}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}商群}{50}{subsection.2.7.2}%
+\contentsline {subsection}{\numberline {2.7.3}陪集}{51}{subsection.2.7.3}%
+\contentsline {subsection}{\numberline {2.7.4}正规子群的商}{51}{subsection.2.7.4}%
+\contentsline {subsection}{\numberline {2.7.5}核$\DOTSB \tmspace +\thickmuskip {.2777em}\DOTSB \Leftarrow \joinrel \Rightarrow \tmspace +\thickmuskip {.2777em}$正规子群}{54}{subsection.2.7.5}%
+\contentsline {section}{\numberline {2.8}同构定理与Lagrange定理}{55}{section.2.8}%
+\contentsline {subsection}{\numberline {2.8.1}同构定理}{55}{subsection.2.8.1}%
+\contentsline {subsection}{\numberline {2.8.2}正则分解}{55}{subsection.2.8.2}%
+\contentsline {subsection}{\numberline {2.8.3}表示}{57}{subsection.2.8.3}%
+\contentsline {subsection}{\numberline {2.8.4}第三同构定理}{57}{subsection.2.8.4}%
+\contentsline {subsection}{\numberline {2.8.5}第二同构定理}{57}{subsection.2.8.5}%
+\contentsline {subsection}{\numberline {2.8.6}Lagrange定理}{57}{subsection.2.8.6}%
+\contentsline {subsection}{\numberline {2.8.7}余核与余像}{59}{subsection.2.8.7}%
+\contentsline {section}{\numberline {2.9}群作用}{59}{section.2.9}%
+\contentsline {subsection}{\numberline {2.9.1}作用}{59}{subsection.2.9.1}%
+\contentsline {subsection}{\numberline {2.9.2}集合作用}{59}{subsection.2.9.2}%
+\contentsline {subsection}{\numberline {2.9.3}轨道-稳定化子定理与范畴$G$-$\mathsf {Set}$}{61}{subsection.2.9.3}%
+\contentsline {section}{\numberline {2.10}范畴中的群对象}{62}{section.2.10}%
+\contentsline {subsection}{\numberline {2.10.1}范畴论的观点}{62}{subsection.2.10.1}%
+\contentsline {chapter}{\numberline {第三章}群论$\rm \uppercase {ii}$}{63}{chapter.3}%
+\contentsline {section}{\numberline {3.1}共轭作用}{63}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}集合上的群作用}{63}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}关于群的共轭作用}{64}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}关于幂集的共轭作用}{66}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Sylow定理}{67}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Sylow $p$-子群}{67}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}特征子群}{69}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Cauchy定理}{69}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Sylow第一定理}{70}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Sylow第二定理}{70}{subsection.3.2.5}%
+\contentsline {subsection}{\numberline {3.2.6}Sylow第三定理}{71}{subsection.3.2.6}%
+\contentsline {subsection}{\numberline {3.2.7}应用}{71}{subsection.3.2.7}%
+\contentsline {section}{\numberline {3.3}合成列与可解性}{74}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Jordan-Hölder定理}{74}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Schreier定理}{76}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}换位子群与可解性}{77}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}对称群}{82}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}轮换}{82}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}$S_n$中的型与共轭类}{83}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}交错群}{83}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}$A_n$的结构}{86}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}$S_n$的结构}{89}{subsection.3.4.5}%
+\contentsline {section}{\numberline {3.5}群的积}{90}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}直积}{90}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}半直积}{91}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}群的正合序列}{92}{subsection.3.5.3}%
+\contentsline {section}{\numberline {3.6}有限Abel群}{93}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}有限abel群的分类}{93}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}有限Abel群的结构定理}{94}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}域的乘法群的有限子群}{94}{subsection.3.6.3}%
+\contentsline {chapter}{\numberline {第四章}环论$\rm \uppercase {i}$}{96}{chapter.4}%
+\contentsline {section}{\numberline {4.1}环的定义}{97}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}定义}{97}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}零因子与单位}{102}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}幂零与Bool环}{106}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}多项式环}{108}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}单环与群环}{111}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}$\mathsf {Ring}$范畴}{111}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}环同态映射}{111}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}子环与中心}{112}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}特征}{114}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}多项式环的万有性质}{115}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}单态射与满态射}{116}{subsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.2.6}积}{116}{subsection.4.2.6}%
+\contentsline {subsection}{\numberline {4.2.7}$\mathrm {End}_{\mathsf {Ab}}(G)$}{116}{subsection.4.2.7}%
+\contentsline {section}{\numberline {4.3}理想与商环}{117}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}理想}{117}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}基本运算}{119}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}商环}{121}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}核$\DOTSB \tmspace +\thickmuskip {.2777em}\DOTSB \Leftarrow \joinrel \Rightarrow \tmspace +\thickmuskip {.2777em}$理想}{121}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}正则分解}{122}{subsection.4.3.5}%
+\contentsline {section}{\numberline {4.4}素理想与极大理想}{123}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}生成理想}{123}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}多项式环的商}{124}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}素理想与极大理想}{125}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}环上的模}{128}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}$R$-模的定义}{128}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}$R$-$\mathsf {Mod}$范畴}{128}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}子模与商}{129}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}正则分解与同构定理}{129}{subsection.4.5.4}%
+\contentsline {chapter}{\numberline {第五章}环论$\rm \uppercase {ii}$}{131}{chapter.5}%
+\contentsline {section}{\numberline {5.1}分解整环与Noether环}{131}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}素元与不可约元}{131}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}分解整环}{133}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Noether环}{134}{subsection.5.1.3}%
+\contentsline {section}{\numberline {5.2}UFD，PID，ED}{137}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}最大公因子}{137}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}UFD}{137}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}PID$\DOTSB \tmspace +\thickmuskip {.2777em}\DOTSB \Relbar \joinrel \Rightarrow \tmspace +\thickmuskip {.2777em}$UFD}{139}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Euclid整环}{139}{subsection.5.2.4}%
+\contentsline {section}{\numberline {5.3}间奏曲：Zorn引理}{140}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}集合论：再一次邂逅}{140}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}应用：极大理想的存在性}{142}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}多项式环的唯一完全因子分解}{142}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Gauss引理}{142}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}整环的分式域}{145}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}$R$为UFD$\DOTSB \tmspace +\thickmuskip {.2777em}\DOTSB \Relbar \joinrel \Rightarrow \tmspace +\thickmuskip {.2777em}R[x]$为UFD}{146}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}多项式的不可约性}{146}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}根与可约性}{146}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}代数闭域}{148}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}$\mathbb {C}[x],\mathbb {R}[x],\mathbb {Q}[x]$的可约性}{148}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Eisenstein判别法}{149}{subsection.5.5.4}%
+\contentsline {section}{\numberline {5.6}Gauss整数与Fermat平方和定理}{150}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Gauss整数}{150}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Fermat平方和定理}{151}{subsection.5.6.2}%
+\contentsline {chapter}{\numberline {第六章}域论}{153}{chapter.6}%
+\contentsline {section}{\numberline {6.1}域扩张$\rm \uppercase {i}$}{153}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}基本定义}{153}{subsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.1.1}域扩张}{153}{subsubsection.6.1.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.1.2}域的特征}{153}{subsubsection.6.1.1.2}%
+\contentsline {subsection}{\numberline {6.1.2}单扩张}{155}{subsection.6.1.2}%
+\contentsline {subsubsection}{\numberline {6.1.2.1}单扩张结构}{155}{subsubsection.6.1.2.1}%
+\contentsline {subsubsection}{\numberline {6.1.2.2}$k$-自同构映射群}{157}{subsubsection.6.1.2.2}%
+\contentsline {subsection}{\numberline {6.1.3}有限扩张与代数扩张}{158}{subsection.6.1.3}%
+\contentsline {subsubsection}{\numberline {6.1.3.1}有限扩张}{158}{subsubsection.6.1.3.1}%
+\contentsline {subsubsection}{\numberline {6.1.3.2}代数扩张}{159}{subsubsection.6.1.3.2}%
+\contentsline {subsubsection}{\numberline {6.1.3.3}有限生成域}{160}{subsubsection.6.1.3.3}%
+\contentsline {section}{\numberline {6.2}代数闭包与Nullstellensatz}{162}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}代数闭包}{162}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Hilbert's Nullstellensatz}{163}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}一点点代数几何}{163}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}尺规作图}{165}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}尺规作图}{165}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}可构造数与二次扩张}{165}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}域扩张$\rm \uppercase {ii}$}{166}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}分裂域与正规扩张}{166}{subsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.1.1}分裂域}{166}{subsubsection.6.4.1.1}%
+\contentsline {subsubsection}{\numberline {6.4.1.2}正规扩张}{167}{subsubsection.6.4.1.2}%
+\contentsline {subsection}{\numberline {6.4.2}可分多项式}{167}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}代数闭包中的可分扩张与嵌入}{169}{subsection.6.4.3}%
+\contentsline {section}{\numberline {6.5}域扩张$\rm \uppercase {iii}$}{169}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}有限域}{169}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}分圆多项式与分圆域}{170}{subsection.6.5.2}%
+\contentsline {section}{\numberline {6.6}可分性与单扩张}{171}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Galois理论}{172}{section.6.7}%
+\contentsline {subsection}{\numberline {6.7.1}Galois对应与Galois扩张}{172}{subsection.6.7.1}%
+\contentsline {subsection}{\numberline {6.7.2}Galois基本定理}{173}{subsection.6.7.2}%
+\contentsline {section}{\numberline {6.8}Galois理论的应用}{174}{section.6.8}%
+\contentsline {subsection}{\numberline {6.8.1}代数基本定理}{174}{subsection.6.8.1}%
+\contentsline {subsection}{\numberline {6.8.2}正$n$边形的尺规作图}{174}{subsection.6.8.2}%
+\contentsline {subsection}{\numberline {6.8.3}对称函数基本定理}{176}{subsection.6.8.3}%
+\contentsline {subsection}{\numberline {6.8.4}多项式方程的根式可解性}{176}{subsection.6.8.4}%
+\contentsline {subsubsection}{\numberline {6.8.4.1}根式扩张}{176}{subsubsection.6.8.4.1}%
+\contentsline {subsubsection}{\numberline {6.8.4.2}多项式的根式可解性}{177}{subsubsection.6.8.4.2}%
+\renewcommand {\cftchappresnum }{附录 }\renewcommand {\cftchapaftersnum }{}
+\contentsline {chapter}{\numberline {A}群论的MATLAB函数}{179}{appendix.A}%
+\contentsline {section}{\numberline {A.1}特殊群}{180}{section.A.1}%
+\contentsline {section}{\numberline {A.2}群结构}{185}{section.A.2}%
+\contentsline {section}{\numberline {A.3}群运算}{192}{section.A.3}%
+\contentsline {section}{\numberline {A.4}辅助函数}{197}{section.A.4}%
