@@ -1,0 +1,3555 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{实变函数 - 江泽坚 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref, centernot}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\ee}[1]{\mathrm{e}^{#1}}           % 微分d
+\newcommand{\rank}{\text{rank}}        % 秩
+\newcommand{\tr}{\text{tr}}            % 迹
+\newcommand{\dis}{\displaystyle}
+\newcommand{\toae}{\xlongrightarrow{\mathrm{a.e.}}}
+\newcommand{\toaun}{\xlongrightarrow{\mathrm{a.un.}}}
+\newcommand{\tod}{\xlongrightarrow{\mathrm{d}}}
+\newcommand{\tov}{\xlongrightarrow{\mathrm{v}}}
+\newcommand{\tom}{\xlongrightarrow{m}}
+\newcommand{\card}{\mathrm{card}}           
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+\begin{center}
+	
+	\large{感谢 \textbf{ 勇敢的 } 自己}
+	
+\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{集合论基础}
+
+\section{集合的极限}
+
+\subsection{代数}
+
+\begin{definition}{代数}
+	对于集合$S$，称$\mathscr{F}\sub\mathscr{P}(S)$为$S$上的代数，如果成立
+	\begin{enumerate}
+		\item $\varnothing\in\mathscr{F}$
+		\item 如果$A\in\mathscr{F}$，那么$S\setminus A\in\mathscr{F}$；
+		\item 如果$A,B\in\mathscr{F}$，那么$A\cup B\in\mathscr{F}$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{$\sigma$-代数}
+	对于集合$S$，称$\mathscr{F}\sub\mathscr{P}(S)$为$S$上的$\sigma$-代数，如果成立
+	\begin{enumerate}
+		\item $\varnothing\in\mathscr{F}$
+		\item 如果$A\in\mathscr{F}$，那么$S\setminus A\in\mathscr{F}$；
+		\item 如果$\{ A_n \}_{n=1}^{\infty}\sub \mathscr{F}$，那么
+		$$
+		\bigcup_{n=1}^{\infty}{A_n}\in\mathscr{F}
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{最小生成$\sigma$-代数}
+	定义$\mathscr{A}\sub\mathscr{P}(S)$的最小生成$\sigma$-代数为%
+	$$
+	\mathscr{F}(\mathscr{A})=\bigcap_{\mathscr{F}\supset\mathscr{A}\text{为}S\text{上的}\sigma\text{-代数}}{\mathscr{F}}
+	$$
+\end{definition}
+
+\begin{example}
+	对于全集$S=\{ 1,2,3,4 \}$，如果$\mathscr{A}=\{ \{ 1,2 \},\{ 3,4 \} \}$，那么
+	$$
+	\mathscr{F}(\mathscr{A})=\{ \varnothing,\{ 1,2 \},\{ 3,4 \},\{ 1,2,3,4 \} \}
+	$$
+\end{example}
+
+\begin{example}
+	对于全集
+	$$
+	S=\left\{ \frac{1}{n}:n\in\N^* \right\}
+	$$
+	令
+	\begin{align*}
+		& \mathscr{A}=\left\{ \left\{ \frac{1}{2n-1} \right\}:n\in\N^* \right\}\\
+		& A=\left\{ \frac{1}{2n-1}:n\in\N^* \right\},\qquad B=\left\{ \frac{1}{2n}:n\in\N^* \right\}\\
+		& \mathscr{P}=\left\{ T:T\sub A \right\},\qquad \mathscr{Q}=\left\{ T:T^c\sub A \right\}
+	\end{align*}
+	那么
+	$$
+	\mathscr{F}(\mathscr{A})=\mathscr{P}\cup\mathscr{Q}
+	$$
+\end{example}
+
+\subsection{极限}
+
+\begin{definition}{上极限}
+	对于集合列$A_1,A_2,\cdots$，定义其上极限为
+	\begin{align*}
+		\limsup_{n\to\infty}{A_n}
+		&=\bigcap_{n=1}^{\infty}{\bigcup_{m=n}^{\infty}{A_m}}\\
+		&=\left\{x\in X:\forall n\in\N,x\in\bigcup_{m=n}^{\infty}{A_m}\right\}\\
+		&=\left\{x\in X:\forall n\in\N,\exists m\ge n,x\in A_m\right\}\\
+		&=\left\{x\in X:x\text{在无穷多个}A_n\text{中}\right\}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{下极限}
+	对于集合列$A_1,A_2,\cdots$，定义其下极限为
+	\begin{align*}
+		\liminf_{n\to\infty}{A_n}
+		&=\bigcup_{n=1}^{\infty}{\bigcap_{m=n}^{\infty}{A_m}}\\
+		&=\left\{x\in X:\exists n\in\N,x\in\bigcap_{m=n}^{\infty}{A_m}\right\}\\
+		&=\left\{x\in X:\exists n\in\N,\forall m\ge n,x\in A_m\right\}\\
+		&=\left\{x\in X:x\text{在除有限个外的所有}A_n\text{中}\right\}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{极限}
+	称集合序列$\{ A_n \}_{n=1}^{\infty}$收敛，如果
+	$$
+	\limsup_{n\to\infty}{A_n}=\liminf_{n\to\infty}{A_n}
+	$$
+	记其极限为
+	$$
+	\lim_{n\to\infty}{A_n}=\limsup_{n\to\infty}{A_n}=\liminf_{n\to\infty}{A_n}
+	$$
+\end{definition}
+
+\begin{theorem}{单调收敛定理}
+	对于集合序列$\{ A_n \}_{n=1}^{\infty}$，如果其单调，那么其收敛。
+	\begin{enumerate}
+		\item 如果集合序列$\{ A_n \}_{n=1}^{\infty}$单调递增，那么
+		$$
+		\lim_{n\to\infty}{A_n}=\bigcup_{n=1}^{\infty}{A_n}
+		$$
+		\item 如果集合序列$\{ A_n \}_{n=1}^{\infty}$单调递减，那么
+		$$
+		\lim_{n\to\infty}{A_n}=\bigcap_{n=1}^{\infty}{A_n}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}
+	对于$\sigma$-代数$\mathscr{F}$，如果对于任意$n\in\N^*$，成立$A_n\in\mathscr{F}$，那么
+	$$
+	\limsup_{n\to\infty}{A_n}\in\mathscr{F},\qquad \liminf_{n\to\infty}{A_n}\in\mathscr{F}
+	$$
+\end{theorem}
+
+\begin{exercise}
+	对于集合序列$\{A_n\}_{n=1}^{\infty}$，成立
+	\begin{align*}
+		& \mathbbm{1}_{\limsup\limits_{n\to\infty}{A_n}}
+		=\limsup_{n\to\infty}\mathbbm{1}_{A_n}\\
+		& \mathbbm{1}_{\liminf\limits_{n\to\infty}{A_n}}
+		=\liminf_{n\to\infty}\mathbbm{1}_{A_n}
+	\end{align*}
+\end{exercise}
+
+\begin{exercise}
+	对于函数$f:E\to\R$，成立
+	\begin{align*}
+		& E[f>a]=\bigcup_{n=1}^{\infty}E\left[ f\ge a+\frac{1}{n} \right]\\
+		& E[f\ge a]=\bigcap_{n=1}^{\infty}E\left[ f> a-\frac{1}{n} \right]
+	\end{align*}
+\end{exercise}
+
+\begin{exercise}
+	如果函数序列$\{f_n\}_{n=1}^{\infty}$在$E$上收敛于$f$，那么对于任意$a\in\R$，成立%
+	$$
+	E[f\le a]
+	=\bigcup_{k=1}^{\infty}\liminf_{n\to\infty}E\left[ f_n\le a+\frac{1}{k} \right]
+	=\bigcup_{k=1}^{\infty}\liminf_{n\to\infty}E\left[ f_n < a+\frac{1}{k} \right]
+	$$
+\end{exercise}
+
+\section{集合的基数}
+
+\begin{definition}{基数}
+	\begin{enumerate}
+		\item 称集合$A$与$B$对等或具有相同的基数，并记作$A\sim B$或$\card(A)=\card(B)$，如果存在双射$\varphi:A\to B$。
+		\item 称集合$A$的基数小于等于集合$B$的基数，并记作$\card(A)\le \card(B)$，如果存在单射$\varphi:A\to B$。
+		\item 称集合$A$的基数严格小于集合$B$的基数，并记作$\card(A)<\card(B)$，如果存在单射$\varphi:A\to B$，且不存在双射$\psi:A\to B$。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{无穷集合}
+	称集合$A$为无穷集合，如果存在真子集$B\subsetneq A$，使得成立$\card(A)=\card(B)$。
+\end{definition}
+
+\begin{theorem}{Cantor定理}
+	对于集合$S$，成立%
+	$$
+	\card(\mathscr{P}(S))>\card(S)
+	$$
+\end{theorem}
+
+\begin{theorem}{Bernstein定理}{Bernstein定理}
+	对于集合$A$与$B$，如果存在单射$\varphi:A\to B$与$\psi:B\to A$，那么$\card(A)=\card(B)$。
+\end{theorem}
+
+\begin{theorem}{基数的三歧性}
+	对于集合$A$与$B$，以下三者成立且仅成立其一。
+	\begin{enumerate}
+		\item $\card(A)=\card(B)$
+		\item $\card(A)>\card(B)$
+		\item $\card(A)<\card(B)$
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	$(-1,1)\sim\R$
+\end{exercise}
+
+\begin{exercise}
+	$(a,b)\sim(0,1)$
+\end{exercise}
+
+\begin{exercise}
+	对于非空开集$G\sub\R^n$，成立$G\sim \R^n$。
+\end{exercise}
+
+\section{可数集合}
+
+\begin{definition}{可数集合}
+	称集合$A$为可数集合，如果$A\sim \N^*$。
+\end{definition}
+
+\begin{definition}{可数基数}
+	记可数集合的基数为可数基数，记作$\aleph_0$。
+\end{definition}
+
+\begin{theorem}{可数集合的性质}
+	\begin{enumerate}
+		\item 有理数集为可数集合。
+		\item 无穷集合存在可数子集。
+		\item 可数集合的子集或为有限集合，或为可数集合。
+		\item 可数集合与有限集合的并为可数集合。
+		\item 可数集合的可数并为可数集合。
+		\item 如果集合$A$为无穷集合，集合$B$为可数集合，那么$A\cup B\sim A$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	以$\R$上互不相交的开区间为元素的任意集合为至多可数集。
+\end{exercise}
+
+\begin{exercise}
+	系数为有理数的多项式构成可数集合。
+\end{exercise}
+
+\begin{exercise}
+	代数数构成可数集合。
+\end{exercise}
+
+\begin{exercise}
+	$\R$上的单调函数的不连续点至多可数。
+\end{exercise}
+
+\begin{exercise}
+	对于无穷集合$E$，存在$F\sub E$，使得$E\sim F$且$E\setminus F$可数。
+\end{exercise}
+
+\begin{exercise}
+	可数集合的有限子集构成的集族为可数集合。
+\end{exercise}
+
+\begin{exercise}
+	如果$\mathscr{A}$是由非蜕化开区间构成的不可数集合，那么存在$\delta>0$，使得$\mathscr{A}$中存在无穷多个区间的长度大于$\delta$。
+\end{exercise}
+
+\section{不可数集合}
+
+\begin{definition}{连续基数}
+	记$(0,1)$的基数为连续基数，记作$\aleph$。
+\end{definition}
+
+\begin{theorem}{不可数集合的性质}
+	\begin{enumerate}
+		\item $\card(\R)=\aleph$
+		\item $\card(a,b)=\aleph$
+		\item $\card(\R^n)=\aleph$
+		\item 可数集合的集族的基数为连续基数，即
+		$$
+		2^{\aleph_0}=\aleph
+		$$
+		\item 如果对于任意$n\in\N^*$，$\card(A_n)\le\aleph$，且存在$n_0\in\N^*$，使得成立$\card(A_{n_0})=\aleph$，那么成立
+		$$
+		\card\left(\bigcup_{k=1}^{\infty}{A_k}\right)=\aleph
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	$\R\setminus\Q$不可数。
+\end{exercise}
+
+\begin{exercise}
+	如果$\mathrm{card}(A\cup B)=\aleph$，那么$A,B$之一的基数为$\aleph$。
+\end{exercise}
+
+\begin{exercise}
+	如果$\mathscr{F}=\{ f:[0,1]\to\R \}$，那么$\mathrm{card}(\mathscr{F})=2^\aleph$。
+\end{exercise}
+
+\begin{exercise}
+	$\R$上的连续函数构成基数为$\aleph$的集合。
+\end{exercise}
+
+\chapter{欧式拓扑基础}
+
+\section{欧式拓扑中点的结构}
+
+\begin{definition}{邻域}
+	定义$x_0\in\R^n$的半径为$\delta>0$的邻域为%
+	$$
+	N_\delta(x_0)=\{ x\in\R^n:\|x-x_0\|<\delta \}
+	$$
+\end{definition}
+
+\begin{definition}{内点}
+	称$x\in\R^n$为$E\sub\R^n$的内点，如果存在$\delta>0$，使得成立$N_\delta(x)\sub E$。
+\end{definition}
+
+\begin{definition}{接触点}
+	称$x\in\R^n$为$E\sub\R^n$的聚点，如果对于任意$\delta>0$，成立$N_\delta(x)\cap E \ne\varnothing$。
+\end{definition}
+
+\begin{definition}{边界点}
+	称$x\in\R^n$为$E\sub\R^n$的边界点，如果对于任意$\delta>0$，成立
+	$$
+	E\cap N_\delta(x)\ne\varnothing,\qquad 
+	N_\delta(x)\setminus E\ne\varnothing
+	$$
+\end{definition}
+
+\begin{definition}{聚点/极限点}
+	\begin{enumerate}
+		\item 称$x\in\R^n$为$E\sub\R^n$的聚点，如果对于任意$\delta>0$，成立$N_\delta(x)\cap E\setminus\{x\}\ne\varnothing$。
+		\item 称$x\in\R^n$为$E\sub\R^n$的极限点，如果存在点列$\{ x_n \}_{n=1}^{\infty}\sub E\setminus\{x\}$，使得成立
+		$$
+		\lim_{n\to\infty}{x_n}=x
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{孤立点}
+	称$x\in\R^n$为$E\sub\R^n$的孤立点，如果存在$\delta>0$，使得成立$E\cap N_\delta(x)=\{x\}$。
+\end{definition}
+
+\section{欧式拓扑中集合的结构}
+
+\begin{definition}{内部}
+	\begin{enumerate}
+		\item 定义$E\sub\R^n$的所有内点构成的集合为$E$的内部，记作$E^{\circ}$。
+		\item $E\sub\R^n$内部为包含于$E$的最大开集，即%
+		$$
+		E^\circ=\bigcup_{G\sub E\text{ 为开集}}G
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{闭包}
+	\begin{enumerate}
+		\item 定义$E\sub\R^n$的所有接触点构成的集合为$E$的闭包，记作$\overline{E}$。
+		\item $E\sub\R^n$闭包为包含$E$的最小闭集，即%
+		$$
+		\overline{E}=\bigcap_{F\supset E\text{ 为闭集}}G
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{边界}
+	定义$E\sub\R^n$的所有边界点构成的集合为$E$的边界，记作$\partial E$。
+\end{definition}
+
+\begin{definition}{导集}
+	定义$E\sub\R^n$的所有聚点构成的集合为$E$的导集，记作$E'$。
+\end{definition}
+
+\begin{definition}{孤立点集}
+	定义$E\sub\R^n$的所有孤立点构成的集合为$E$的孤立点集，记作$E^i$。
+\end{definition}
+
+\begin{theorem}{闭包的分割}
+	$$
+	(E^c)^\circ=(\overline{E})^c,\qquad 
+	\overline{E}=E^\circ\sqcup \partial E=E^i\sqcup E'
+	$$
+\end{theorem}
+
+\begin{theorem}{全集的分割}
+	$$
+	\R^n=E^\circ\sqcup \partial E\sqcup (E^c)^\circ=E^\circ\sqcup \partial E\sqcup (\overline{E})^c
+	$$
+\end{theorem}
+
+\begin{proposition}{集合结构间的关系}
+	$$
+	E^i=\partial E\setminus E'\sub E,\qquad 
+	E^\circ\sub E,E'\sub \overline{E}
+	$$
+\end{proposition}
+
+\begin{proposition}{内部的性质}
+	\begin{enumerate}
+		\item 如果$A\sub B$，那么$A^\circ\sub B^\circ$。
+		\item $(A\cap B)^\circ=A^\circ\cap B^\circ$
+		\item $(A\cup B)^\circ \supset A^\circ\cup B^\circ$
+	\end{enumerate}
+\end{proposition}
+
+\begin{note}
+	反例：$((-1,0]\cup[0,1))^\circ\supsetneq (-1,0]^\circ\cup[0,1)^\circ$
+\end{note}
+
+\begin{proposition}{闭包的性质}
+	\begin{enumerate}
+		\item 如果$A\sub B$，那么$\overline{A}\sub \overline{B}$。
+		\item $\overline{A\cup B}=\overline{A}\cup \overline{B}$
+		\item $\overline{A\cap B}\sub\overline{A}\cap \overline{B}$
+	\end{enumerate}
+\end{proposition}
+
+\begin{note}
+	反例：$\overline{(-1,0)\cap (0,1)}\subsetneq\overline{(-1,0)}\cap \overline{(0,1)}$
+\end{note}
+
+\begin{proposition}{导集的性质}
+	\begin{enumerate}
+		\item 如果$A\sub B$，那么$A'\sub B'$。
+		\item $(A\cup B)'=A'\cup B'$
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{Bolzano-Weierstrass定理}
+	有界无穷点集存在聚点。
+\end{theorem}
+
+\begin{definition}{孤立集合}
+	称$E\sub\R^n$为孤立集合，如果$E=E^i$。
+\end{definition}
+
+\begin{theorem}
+	孤立集合至多为可数集合。
+\end{theorem}
+
+\begin{exercise}
+	$\Q'=\overline{\Q}=\R$
+\end{exercise}
+
+\begin{exercise}
+	如果$E=\{ (x,y):x^2+y^2<1 \}$，那么$E'=\overline{E}=\{ (x,y):x^2+y^2\le1 \}$。
+\end{exercise}
+
+\begin{exercise}
+	如果$E=\{ (x,f(x)):x\in\R \}$，其中%
+	$$
+	f(x)=\begin{cases}
+		\sin\frac{1}{x},\quad & x\ne0\\
+		0,\quad & x=0
+	\end{cases}
+	$$
+	那么%
+	$$
+	E'=\{ (x,f(x)):x\in\R \}\cup\{ (0,y):y\in[0,1] \}
+	$$
+\end{exercise}
+
+\begin{exercise}
+	如果$E\sub\R^n$为不可数无穷点集，那么$E'$不为有限集。
+\end{exercise}
+
+\section{欧式拓扑}
+
+\begin{definition}{开集}
+	称集合$E\sub\R^n$为开集，如果$E=E^{\circ}$。
+\end{definition}
+
+\begin{definition}{闭集}
+	称集合$E\sub\R^n$为闭集，如果$E=\overline{E}$。
+\end{definition}
+
+\begin{definition}{紧集}
+	称集合$E\sub\R^n$为紧集，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $E$为有界闭集。
+		\item $E$的开覆盖存在有限子覆盖。
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{自密集}
+	称集合$E\sub\R^n$为自密集，如果$E\sub E'$。
+\end{definition}
+
+\begin{definition}{完备集}
+	称集合$E\sub\R^n$为完备集，如果$E=E'$。
+\end{definition}
+
+\begin{definition}{无处稠密集}
+	称集合$E\sub\R^n$为无处稠密集，如果$(\overline{E})^\circ=\varnothing$。
+\end{definition}
+
+\begin{theorem}
+	对于集合$E\sub\R^n$，$E'$和$\overline{E}$均为闭集。
+\end{theorem}
+
+\begin{proposition}
+	\begin{enumerate}
+		\item 任意一族闭集的交为闭集。
+		\item 任意一族开集的并为开集。
+		\item 有限多个闭集的并为闭集。
+		\item 有限多个开集的并为开集。
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{Borel有限覆盖定理}
+	紧集的开覆盖存在有限子覆盖。
+\end{theorem}
+
+\begin{theorem}{Lindelof定理}
+	集合的开覆盖存在可数子覆盖。
+\end{theorem}
+
+\begin{definition}{$G_\delta$型集}
+	称可数多个开集的交为$G_\delta$型集。
+\end{definition}
+
+\begin{definition}{$F_\sigma$型集}
+	称可数多个闭集的并为$F_\sigma$型集。
+\end{definition}
+
+\begin{note}
+	$G_\delta$型集可能为闭集，例如：%
+	$$
+	\bigcap_{n=1}^{\infty}\left(-1-\frac{1}{n},1+\frac{1}{n}\right)=[-1,1]
+	$$
+\end{note}
+
+\begin{note}
+	$F_\sigma$型集可能为开集，例如：%
+	$$
+	\bigcup_{n=1}^{\infty}\left(-1+\frac{1}{n},1-\frac{1}{n}\right)=(-1,1)
+	$$
+\end{note}
+
+\begin{exercise}
+	$\Q$不为$G_\delta$型集。
+\end{exercise}
+
+\begin{exercise}
+	不存在在$\Q$上连续，在$\Q^c$上不连续的函数。
+\end{exercise}
+
+\begin{theorem}{函数的不连续点集结构}
+	对于函数$f:\R\to\R$，定义
+	$$
+	w_f(x)=\limsup_{y\to x}f(y)-\liminf_{y\to x}f(y),\quad x\in\R
+	$$
+	那么
+	\begin{enumerate}
+		\item 对于任意$\varepsilon>0$，$\{ x\in\R:w_f(x)\ge \varepsilon \}$为闭集；
+		\item $f$的不连续点集为%
+		$$
+		\left\{ x\in\R:\lim_{y\to x}f(y)\ne f(x) \right\}=\bigcup_{n=1}^{\infty}\left\{ x\in\R:w_f(x)\ge\frac{1}{n} \right\}
+		$$
+		\item $f$的不连续点集构成$F_\sigma$集。
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	对于紧集$K$，与闭子集序列$\{F_n\}_{n=1}^{\infty}\sub\mathscr{P}(K)$，如果$\bigcap\limits_{n=1}^{\infty}F_n=\varnothing$，那么存在$N\in\N^*$，使得成立$\bigcap\limits_{n=1}^{N}F_n=\varnothing$。
+\end{exercise}
+
+\begin{exercise}
+	对于$\alpha\ne0$，以及$G\sub\R^n$，成立%
+	$$
+	G\text{ 为开集}\iff 
+	\alpha G\text{ 为开集}
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于函数$f:\R^n\to \R$，称$f$是\textbf{下半连续}的，如果
+	$$
+	f(x)=\liminf_{y\to x}f(y),\quad x\in\R^n
+	$$
+	那么$f$是下半连续的，当且仅当对于任意$a\in\R$，$[f>a]$为开集。
+\end{exercise}
+
+\begin{exercise}
+	如果$A,B\sub\R^n$为紧集，那么对于$0<\lambda<1$，$\lambda A+(1-\lambda)B$为紧集。
+\end{exercise}
+
+\section{欧式拓扑的构造}
+
+\begin{theorem}{开集的结构}
+	$\R^n$上的开集可表示为可数个不交开方体的并。
+\end{theorem}
+
+\begin{theorem}
+	$\R$上的紧集存在最值且可取到最值。
+\end{theorem}
+
+\begin{theorem}
+	$\R$上的紧集可表示为一闭区间和可数个不交开区间的差。
+\end{theorem}
+
+\begin{theorem}
+	$\R$上的非空紧集$K$为完备的，当且仅当其是从一闭区间去掉至多可数个彼此没有公共端点且与原来的闭区间也没有公共端点的开区间而成，即
+	$$
+	K=[a,b]-\bigcup_{n=1}^{\infty}{(a_n,b_n)}
+	$$
+	其中$a<a_1<b_1<a_2<b_2<\cdots<b$。
+\end{theorem}
+
+\section{欧式距离}
+
+\begin{definition}{集合间的距离}
+	定义集合$A,B\sub\R^n$间的距离为
+	$$
+	d(A,B)=\inf\{ \|x-y\|:x\in A,y\in B \}
+	$$
+\end{definition}
+
+\begin{definition}{集合的邻域}
+	定义$E\sub\R^n$的邻域为%
+	$$
+	N_\delta(E)=\{ x\in\R^n:d(x,E)<r \}
+	$$
+\end{definition}
+
+\begin{theorem}
+	对于闭集$A,B$，如果其中之一有界，那么存在$x_0\in A,y_0\in B$，使得成立
+	$$
+	d(A,B)=\|x_0-y_0\|
+	$$
+\end{theorem}
+
+\begin{theorem}
+	集合的邻域为开集。
+\end{theorem}
+
+\begin{theorem}{隔离性定理}
+	对于不交闭集$F_1,F_2$，存在不交开集$G_1,G_2$，使得成立
+	$$
+	F_1\sub G_1,\qquad
+	F_2\sub G_2
+	$$
+\end{theorem}
+
+\begin{exercise}
+	对于集合$E\sub\R^n$，函数$f(x)=d(x,E)$在$\R^n$上一致连续。
+\end{exercise}
+
+\begin{exercise}
+	对于$\R^n$上的不交闭集$F_0$和$F_1$，构造$\R^n$上连续函数%
+	$$
+	f(x)=\frac{d(x,F_0)}{d(x,F_0)+d(x,F)},\quad x\in\R^n
+	$$
+	那么%
+	$$
+	f(\R^n)\sub[0,1],\qquad 
+	f(F_0)=\{0\},\qquad 
+	F(F_1)=\{1\}
+	$$
+\end{exercise}
+
+\section{Cantor集}
+
+\subsection{Cantor集}
+
+\begin{definition}{Cantor集}
+	\begin{enumerate}
+		\item 代数定义：
+		$$
+		\mathcal{C}=\left\{ \sum_{n=1}^{\infty}\frac{c_n}{3^n}
+		: c_n\in\{0,2\}\right\}
+		$$
+		\item 几何定义：
+		\begin{align*}
+			&C_0=[0,1],\qquad C_{n+1}=\frac{C_n}{3}\bigsqcup\frac{2+C_n}{3}\\
+			&\mathcal{C}=\lim_{n\to\infty}C_n=\bigcap_{n=0}^{\infty}C_n
+		\end{align*}
+		\item 集合定义：%
+		$$
+		\mathcal{C}=[0,1]-\bigsqcup_{n=1}^{\infty}\bigsqcup_{k=1}^{2^{n-1}}\left(\frac{3k-2}{3^n},\frac{3k-1}{3^n}\right)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Cantor集的性质}
+	\begin{enumerate}
+		\item 连续基数：$\card(\mathcal{C})=\aleph$
+		\item 零测性：$m(\mathcal{C})=0$
+		\item 紧性：Cantor集为有界闭集。
+		\item 完备性：Cantor集为完备集。
+		\item 无处稠密性：Cantor集为无处稠密集。
+		\item 连通性：Cantor集为完全不连通集。
+	\end{enumerate}
+\end{theorem}
+
+\subsection{第一类广义Cantor集}
+
+\begin{definition}{第一类广义Cantor集}
+	取数列$\{a_n\}_{n=0}^{\infty}\sub (0,1)$，使得成立$\dis\sum_{n=0}^{\infty}a_n<\infty$。递归定义集合序列$\{ C_n \}_{n=1}^{\infty}$。
+	\begin{enumerate}
+		\item 定义$C_0=[0,1]$。
+		\item 如果%
+		$$
+		C_{n}=\bigsqcup_{k=1}^{2^{n}}[x_k,y_k]
+		$$
+		那么定义%
+		$$
+		C_{n+1}=\bigsqcup_{k=1}^{2^{n}}
+		\left(
+		\left[x_k,\frac{x_k+y_k}{2}-\frac{a_n(y_k-x_k)}{2}\right]
+		\bigsqcup
+		\left[\frac{x_k+y_k}{2}+\frac{a_n(y_k-x_k)}{2},y_k\right]
+		\right)
+		$$
+	\end{enumerate}
+	定义第一类广义Cantor集为%
+	$$
+	\mathcal{C}(\{a_n\}_{n=0}^{\infty})
+	=\lim_{n\to\infty}C_n=\bigcap_{n=0}^{\infty}C_n
+	$$
+\end{definition}
+
+\begin{note}
+	Cantor集与第一类广义Cantor集的联系：%
+	$$
+	\mathcal{C}
+	=\mathcal{C}(\{1/3\}_{n=0}^{\infty})
+	$$
+\end{note}
+
+\begin{theorem}{第一类广义Cantor集的Lebesgue测度}
+	$$
+	m(\mathcal{C}(\{a_n\}_{n=0}^{\infty}))=\prod_{n=0}^{\infty}(1-a_n)
+	$$
+\end{theorem}
+
+\subsection{第二类广义Cantor集}
+
+\begin{definition}{第二类广义Cantor集}
+	取数列$\{a_n\}_{n=0}^{\infty}\sub (0,1)$，使得成立$\dis\sum_{n=0}^{\infty}a_n<1$。递归定义集合序列$\{ C_n \}_{n=1}^{\infty}$。
+	\begin{enumerate}
+		\item 定义$C_0=[0,1]$。
+		\item 如果%
+		$$
+		C_{n}=\bigsqcup_{k=1}^{2^{n}}[x_k,y_k]
+		$$
+		那么定义%
+		$$
+		C_{n+1}=\bigsqcup_{k=1}^{2^{n}}
+		\left(
+		\left[x_k,\frac{x_k+y_k}{2}-\frac{a_n}{2^{n+1}}\right]
+		\bigsqcup
+		\left[\frac{x_k+y_k}{2}+\frac{a_n}{2^{n+1}},y_k\right]
+		\right)
+		$$
+	\end{enumerate}
+	定义第二类广义Cantor集为%
+	$$
+	\mathcal{C}(\{a_n\}_{n=0}^{\infty})
+	=\lim_{n\to\infty}C_n=\bigcap_{n=0}^{\infty}C_n
+	$$
+\end{definition}
+
+\begin{note}
+	Cantor集与第二类广义Cantor集的联系：%
+	$$
+	\mathcal{C}
+	=\mathcal{C}\left(\left\{\frac{1}{3}\left(\frac{2}{3}\right)^n\right\}_{n=0}^{\infty}\right)
+	$$
+\end{note}
+
+\begin{theorem}{第二类广义Cantor集的Lebesgue测度}
+	$$
+	m(\mathcal{C}(\{a_n\}_{n=0}^{\infty}))=1-\sum_{n=0}^{\infty}a_n
+	$$
+\end{theorem}
+
+\begin{theorem}{Cantor集的性质}
+	\begin{enumerate}
+		\item 紧性：Cantor集为有界闭集。
+		\item 完备性：Cantor集为完备集。
+		\item 无处稠密性：Cantor集为无处稠密集。
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	对于第二类广义Cantor集$\mathcal{C}=\mathcal{C}(\{a_n\}_{n=0}^{\infty})$，如果$G=[0,1]\setminus\mathcal{C}$，那么$m(\partial G)>0$。这是因为$\overline{G}=[0,1]$。
+\end{exercise}
+
+\subsection{Cantor函数}
+
+\begin{definition}{Cantor函数}
+	对于Cantor集$\mathcal{C}$，定义Cantor函数
+	\begin{align*}
+		C:\begin{aligned}[t]
+			[0,1] &\longrightarrow [0,1]\\
+			x &\longmapsto \begin{cases}
+				\dis\sum_{n=1}^{\infty}\frac{c_n}{2^n},\qquad &\dis x=\sum_{n=1}^{\infty}\frac{2c_n}{3^n},\text{ 其中 }c_n\in\{0,1\}\\
+				\dis\sup_{y\in \mathcal{C}\cap[0,x]}C(y),\qquad &  x\in [0,1]\setminus\mathcal{C}
+			\end{cases}
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{Cantor函数的性质}
+	\begin{enumerate}
+		\item 单调性：Cantor函数在$[0,1]$上单调递增。
+		\item 满性：Cantor函数为满射，且$C(0)=0,C(1)=1$。
+		\item 连续性：Cantor函数在$[0,1]$上一致连续，但非绝对连续。
+		\item 可微性：Cantor函数在$[0,1]$上几乎处处可微，且导函数在$[0,1]$上几乎处处为$0$。
+	\end{enumerate}
+\end{theorem}
+
+\chapter{测度理论}
+
+\section{测度空间}
+
+\begin{definition}{$\sigma$-代数}
+	称集族$\Sigma\sub\mathscr{P}(X)$为集合$X$上的$\sigma$-代数，如果成立
+	\begin{enumerate}
+		\item $\varnothing\in\Sigma$
+		\item 如果$E\in\Sigma$，那么$X\setminus E\in\Sigma$；
+		\item 如果$\{ E_n \}_{n=1}^{\infty}\sub \Sigma$，那么
+		$$
+		\bigcup_{n=1}^{\infty}{E_n}\in\Sigma
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{外测度}
+	称映射$\mu^*:\mathscr{P}(X)\to \overline{\R}$为内测度，如果成立如下命题。
+	\begin{enumerate}
+		\item $\mu^*(\varnothing)=0$
+		\item 对于任意$E\in \mathscr{P}(X)$，成立$\mu^*(E)\ge 0$。
+		\item 如果$E\sub F\sub X$，那么
+		$$
+		\mu^*(E)\le \mu^*(F)
+		$$
+		\item 对于集合序列$\{E_n\}_{n=1}^{\infty}\sub \mathscr{P}(X)$，成立%
+		$$
+		\mu^*\left(\bigcup_{n=1}^{\infty}E_n\right)\le\sum_{n=1}^{\infty}\mu^*(E_n)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{内测度}
+	称映射$\mu_*:\mathscr{P}(X)\to \overline{\R}$为内测度，如果成立如下命题。
+	\begin{enumerate}
+		\item $\mu_*(\varnothing)=0$
+		\item 对于任意$E\in \mathscr{P}(X)$，成立$\mu_*(E)\ge 0$。
+		\item 对于不交集合$E,F\in \mathscr{P}(X)$，成立%
+		$$
+		\mu_*(E\sqcup F)\ge \mu_*(E)+\mu_*(F)
+		$$
+		\item 对于单调递减集合序列$\{E_n\}_{n=1}^{\infty}\sub \mathscr{P}(X)$，如果$\mu_*(E_1)<\infty$，那么%
+		$$
+		\mu_*\left(\lim_{n\to\infty}E_n\right)=\lim_{n\to\infty}\mu_*(E_n)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{测度}
+	对于集合$X$上的$\sigma$-代数$\Sigma\sub\mathscr{P}(X)$，称映射$\mu:\Sigma\to \overline{\R}$为测度，如果成立如下命题。
+	\begin{enumerate}
+		\item $\mu(\varnothing)=0$
+		\item 对于任意$E\in \Sigma$，成立$\mu(E)\ge 0$；
+		\item 对于不交集合序列$\{E_n\}_{n=1}^{\infty}\sub \Sigma$，成立%
+		$$
+		\mu\left(\bigsqcup_{n=1}^{\infty}E_n\right)=\sum_{n=1}^{\infty}\mu(E_n)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{可测空间}
+	称$(X,\Sigma)$为可测空间，如果$\Sigma\sub\mathscr{P}(X)$为集合$X$上的$\sigma$-代数。
+\end{definition}
+
+\begin{definition}{测度空间}
+	称$(X,\Sigma,\mu)$为测度空间，如果$\Sigma\sub\mathscr{P}(X)$为集合$X$上的$\sigma$-代数，映射$\mu:\Sigma\to \overline{\R}$为测度。
+\end{definition}
+
+\begin{definition}{可测集}
+	称集合$E$为测度空间$(X,\Sigma,\mu)$的可测集，如果$E\in \Sigma$。
+\end{definition}
+
+\begin{definition}{可测映射}
+	对于可测空间$(X,\Sigma)$与$(Y,\mathrm{T})$，称映射$f:X\to Y$为可测映射，如果$f^{-1}(\mathrm{T})\sub \Sigma$。
+\end{definition}
+
+\begin{definition}{正则测度}
+	对于测度空间$(X,\Sigma,\mu)$，其中$X$为拓扑空间，定义测度的正则性。
+	\begin{enumerate}
+		\item 称$\mu$为外正则测度，如果对于任意$E\in \Sigma$，成立%
+		$$
+		\mu(E)=\inf\{ \mu(G):G\in\Sigma\text{为开集且}G\supset E \}
+		$$
+		\item 称$\mu$为内正则测度，如果对于任意$E\in \Sigma$，成立%
+		$$
+		\mu(E)=\sup\{ \mu(K):K\in\Sigma\text{为紧集且}K\sub E \}
+		$$
+		\item 称$\mu$为正则测度，如果其既为外正则测度，又为内正则测度。
+	\end{enumerate}
+\end{definition}
+
+\section{Lebesgue代数与Lebesgue测度}
+
+\subsection{方体的体积}
+
+\begin{definition}{方体的体积}
+	对于开方体
+	$$
+	I=(a_1,b_1)\times\cdots\times(a_n,b_n)
+	$$
+	闭方体
+	$$
+	I=[a_1,b_1]\times\cdots\times[a_n,b_n]
+	$$
+	左开右闭方体
+	$$
+	I=(a_1,b_1]\times\cdots\times(a_n,b_n]
+	$$
+	左闭右开方体
+	$$
+	I=[a_1,b_1)\times\cdots\times[a_n,b_n)
+	$$
+	定义其体积为
+	$$
+	|I|=\prod_{k=1}^{n}{(b_k-a_k)}
+	$$
+\end{definition}
+
+\begin{theorem}
+	对于方体序列$\{ I_k \}_{k=1}^{n}$和$\{ J_k \}_{k=1}^{m}$，如果$\{ I_k \}_{k=1}^{n}$不交，且
+	$$
+	\bigsqcup_{k=1}^{n}{I_k}\sub\bigcup_{k=1}^{m}{J_k}
+	$$
+	那么
+	$$
+	\sum_{k=1}^{n}{|I_k|}\le\sum_{k=1}^{m}{|J_k|}
+	$$
+\end{theorem}
+
+\subsection{开集的体积}
+
+\begin{lemma}{开集的结构}
+	$\R^n$上的开集可表示为可数个的方体的不交并。
+\end{lemma}
+
+\begin{lemma}
+	对于开集$G$，如果不交方体序列$\{ I_n \}_{n=1}^{\infty}$和$\{ J_n \}_{n=1}^{\infty}$成立
+	$$
+	G=\bigsqcup_{n=1}^{\infty}{I_n}=\bigsqcup_{n=1}^{\infty}{J_n}
+	$$
+	那么
+	$$
+	\sum_{n=1}^{\infty}{|I_n|}=\sum_{n=1}^{\infty}{|J_n|}
+	$$
+\end{lemma}
+
+\begin{definition}{开集的体积}
+	对于开集$G$，定义其体积为
+	$$
+	|G|=\sum_{n=1}^{\infty}{|I_n|}
+	$$
+	其中$\{ I_n \}_{n=1}^{\infty}$为不交方体序列，且
+	$$
+	G=\bigsqcup_{n=1}^{\infty}{I_n}
+	$$
+	特别的，如果$G=\varnothing$，那么定义$|G|=0$。
+\end{definition}
+
+\begin{theorem}{开集的性质}
+	\begin{enumerate}
+		\item 空集的零测性：对于开集$G$，成立$|G|\ge 0$，当且仅当$G=\varnothing$时等号成立。
+		\item 单调性：对于开集$G_1,G_2=$，如果$G_1\sub G_2$，那么$|G_1|\le |G_2|$，当且仅当$G_1=G_2$时等号成立。
+		\item 次可数可加性：对于开集序列$\{ G_n \}_{n=1}^{\infty}$，成立
+		$$
+		\left| \bigcup_{n=1}^{\infty}{G_n} \right|\le\sum_{n=1}^{\infty}{|G_n|}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	平移不变性：如果$G$为开集，那么$x+G$为开集，且$|x+G|=|G|$。
+\end{exercise}
+
+\begin{exercise}
+	旋转不变性：如果$G$为开集，那么对于正交变换$\mathscr{A}$，$\mathscr{A}(G)$为开集，且$|\mathscr{A}(G)|=|G|$。
+\end{exercise}
+
+\subsection{Lebesgue外测度}
+
+\begin{definition}{Lebesgue外测度}
+	\begin{align*}
+		m^*:\begin{aligned}[t]
+			\mathscr{P}(\R^n) \longrightarrow&[0,\infty]\\
+			E \longmapsto&\quad \,\inf\left\{ \sum_{n=1}^{\infty}|I_n|:\{I_n\}_{n=1}^{\infty}\text{ 为(开)方体序列且 } \bigcup_{n=1}^{\infty}I_n\supset E \right\}\\
+			&=\inf\{ m(G):G\supset E\text{ 为开集} \}
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{Lebesgue外测度的性质}
+	\begin{enumerate}
+		\item 非负性：$m^*(E)\ge 0$；特别的，$m^*(\varnothing)=0$。
+		\item 单调性：如果$E\sub F$，那么$m^*(E)\le m^*(F)$。
+		\item 次可数可加性：对于集合序列$\{ E_n \}_{n=1}^{\infty}$，成立
+		$$
+		m^*\left(\bigcup_{n=1}^{\infty}{E_n}\right)\le\sum_{n=1}^{\infty}{m^*(E_n)}
+		$$
+		\item 分离条件下的可数可加性：对于集合序列$\{ E_n \}_{n=1}^{\infty}$，如果存在不交的开集序列$\{ G_n \}_{n=1}^{\infty}$，使得对于任意$n\in\N^*$，成立$E_n\sub G_n$，那么
+		$$
+		m^*\left(\bigcup_{n=1}^{\infty}{E_n}\right)=\sum_{n=1}^{\infty}{m^*(E_n)}
+		$$
+		\item 上连续性：对于单调递增的集合序列$\{ E_n \}_{n=1}^{\infty}\sub\R^n$，成立
+		$$
+		m^*\left(\lim_{n\to\infty}{E_n}\right)=\lim_{n\to\infty}{m^*(E_n)}
+		$$
+		\item 正则性：
+		\begin{enumerate}
+			\item 对于集合$E$，存在$G_\delta$型集$G\supset E$，使得成立$m(G)=m^*(E)$。
+			\item 对于集合$E$，成立
+			$$
+			m^*(E)=\inf\{ m(G):G\supset E\text{ 为开集} \}
+			$$
+		\end{enumerate}
+	\end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+	如果$E$有界，那么$m^*(E)<\infty$。
+\end{exercise}
+
+\begin{exercise}
+	可数点集的外测度为零。
+\end{exercise}
+
+\begin{exercise}
+	对于集合$E\sub\R$，如果$0\le\mu\le m^*(E)$的$\mu$，那么存在$F\sub E$，使得成立$m^*(F)=\mu$。
+\end{exercise}
+
+\begin{exercise}
+	对于$\R$上的连续函数$f$，令$E=\{(x,f(x)):x\in\R\}$，那么$m^*(E)=0$。
+\end{exercise}
+
+\begin{exercise}
+	对于$E\sub\R^n$，$\alpha>0$，成立%
+	$$
+	m^*(\alpha E)=\alpha^n m^*(E)
+	$$
+\end{exercise}
+
+\begin{exercise}
+	如果$m^*(E)>0$，那么存在$x\in E$，使得对于任意$\delta>0$，成立
+	$$
+	m^*(E\cap N(x,\delta))>0
+	$$
+\end{exercise}
+
+\subsection{Lebesgue内测度}
+
+\begin{definition}{Lebesgue内测度}
+	\begin{enumerate}
+		\item 对于有界集$E$，定义其Lebesgue内测度为%
+		\begin{align*}
+			m_*(E)&=m(I)-m^*(I\setminus E)\\
+			&=m_*(E)=\inf\{ m(F):F\sub E\text{ 为紧集} \}
+		\end{align*}
+		其中$I\supset E$为有界方体。
+		\item 对于无界集$E$，令$E_n=E\cap B_n$，定义其Lebesgue内测度为%
+		$$
+		m_*(E)=\lim_{n\to\infty}m_*(E_n)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Lebesgue内测度的性质}
+	\begin{enumerate}
+		\item 非负性：$m_*(E)\ge 0$；特别的，$m_*(\varnothing)=0$。
+		\item 单调性：如果$E\sub F$有界，那么$m_*(E)\le m_*(F)$。
+		\item 超可数可加性：对于一致有界不交集合序列$\{ E_n \}_{n=1}^{\infty}$，成立
+		$$
+		m_*\left(\bigsqcup_{n=1}^{\infty}{E_n}\right)\ge\sum_{n=1}^{\infty}{m_*(E_n)}
+		$$
+		\item 正则性：
+		\begin{enumerate}
+			\item 对于有界集合$E$，存在$F_\sigma$型集$F\sub E$，使得成立$m(F)=m_*(E)$。
+			\item 对于有界集合$E$，成立
+			$$
+			m_*(E)=\inf\{ m(F):F\sub E\text{ 为紧集} \}
+			$$
+		\end{enumerate}
+	\end{enumerate}
+\end{theorem}
+
+\subsection{Lebesgue可测集}
+
+\begin{definition}{Lebesgue可测集}
+	称集合$E$为Lebesgue可测集，如果成立如下命题之一。
+	\begin{enumerate}
+		\item Carathéodory条件：对于任意集合$T\sub\R^n$，成立
+		$$
+		m^*(T)=m^*(T\cap E)+m^*(T\cap E^c)
+		$$
+		\item 存在$G_\delta$型集$G$，使得成立$G\supset E$，且$m(G\setminus E)=0$。
+		\item 存在$F_\sigma$型集$F$，使得成立$F\sub E$，且$m(E\setminus F)=0$。
+		\item 存在$G_\delta$型集$G$和$F_\sigma$型集$F$，使得成立$F\sub E\sub G$，且$m(G\setminus F)=0$。
+		\item 对于任意$\varepsilon>0$，存在开集$G$与闭集$F$，使得成立$F\sub E\sub G$，且$m(G\setminus F)<\varepsilon$。
+		\item 对于任意$\varepsilon>0$，存在Lebesgue可测集合$E_1,E_2$，使得成立$E_1\sub E\sub E_2$，且$m(E_2\setminus E_1)<\varepsilon$。
+		\item[*.] 若$E$为有界集，则%
+		$$
+		m_*(E)=m^*(E)
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}{Lebesgue可测集族}
+	定义Lebesgue可测集族为
+	$$
+	\mathscr{L}=\{ E\sub\R^n:E\text{ 为Lebesgue可测集} \}
+	$$
+\end{definition}
+
+\begin{theorem}{Lebesgue零测集为Lebesgue可测集}{Lebesgue零测集为Lebesgue可测集}
+	如果$m^*(N)=0$，那么$N$为Lebesgue可测集。
+\end{theorem}
+
+\begin{proof}
+	结论蕴含在如下不等式
+	\begin{align*}
+		& m^*(T)=m^*(N)+m^*(T)\ge m^*(T\cap N)+m^*(T\cap N^c)\\
+		& m^*(T)=m^*((T\cap N)\cup(T\cap N^c))\le m^*(T\cap N)+m^*(T\cap N^c)
+	\end{align*}
+\end{proof}
+
+\begin{theorem}{运算封闭性}
+	\begin{enumerate}
+		\item Lebesgue可测集对于可数交、可数并、差、补运算封闭。
+		\item Lebesgue可测集的内部、导集、闭包、边界和孤立点集均为Lebesgue可测集。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Lebesgue可测集的结构}
+	Lebesgue可测集$\mathscr{L}$为$\sigma$-代数。
+\end{theorem}
+
+\begin{theorem}{Lebesgue可测集的基数}
+	$$\text{card}(\mathscr{L})=2^{\aleph}$$
+\end{theorem}
+
+\begin{proof}
+	由定理\ref{thm:Lebesgue零测集的基数}，构造单射
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			\mathscr{N} &\longrightarrow \mathscr{L}\\
+			E&\longmapsto E
+		\end{aligned}
+		\qquad\qquad
+		\psi:\begin{aligned}[t]
+			\mathscr{L} &\longrightarrow \mathscr{P}(\R^n)\\
+			E &\longmapsto E
+		\end{aligned}
+	\end{align*}
+	由Bernstein定理\ref{thm:Bernstein定理}，$\text{card}(\mathscr{L})=2^{\aleph}$。
+\end{proof}
+
+\begin{theorem}{Lebesgue零测集的基数}{Lebesgue零测集的基数}
+	$$\text{card}(\mathscr{N})=2^{\aleph}$$
+\end{theorem}
+
+\begin{proof}
+	由于Cantor集$\mathcal{C}\sub\R$为基数为$\aleph$的零测集，那么$\card(\mathscr{P}(\mathcal{C}))=2^{\aleph}$。构造单射
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			 \{ C\times\{0\}\times\cdots\times\{0\}:C\in \mathscr{P}(\mathcal{C}) \}&\longrightarrow \mathscr{N}\\
+			 E&\longmapsto E
+		\end{aligned}
+		\qquad\qquad
+		\psi:\begin{aligned}[t]
+			\mathscr{N} &\longrightarrow \mathscr{P}(\R^n)\\
+			E &\longmapsto E
+		\end{aligned}
+	\end{align*}
+	由Bernstein定理\ref{thm:Bernstein定理}，$\text{card}(\mathscr{N})=2^{\aleph}$。
+\end{proof}
+
+\begin{theorem}{Lebesgue不测集的基数}
+	$$\text{card}(\mathscr{P}(\R^n)\setminus\mathscr{L})=2^{\aleph}$$
+\end{theorem}
+
+\begin{proof}
+	记$V$为不可测集，构造单射
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			\{ C\cup V:C\in \mathscr{P}(\mathcal{C}) \}&\longrightarrow \mathscr{P}(\R^n)\setminus\mathscr{L}\\
+			E &\longmapsto E
+		\end{aligned}
+		\qquad\qquad
+		\psi:\begin{aligned}[t]
+			\mathscr{P}(\R^n)\setminus\mathscr{L} &\longrightarrow \mathscr{P}(\R^n)\\
+			E &\longmapsto E
+		\end{aligned}
+	\end{align*}
+	由Bernstein定理\ref{thm:Bernstein定理}，$\text{card}(\mathscr{P}(\R^n)\setminus\mathscr{L})=2^{\aleph}$。
+\end{proof}
+
+\subsection{Lebesgue测度}
+
+\begin{definition}{Lebesgue测度}
+	\function{m}{\mathscr{L}}{[0,\infty]}{E}{m^*(E)}
+\end{definition}
+
+\begin{definition}{几乎处处}
+	称命题$P(x)$关于$x\in I$几乎处处成立，如果
+	$$
+	m(\{ x\in I:\neg P(x) \})=0
+	$$
+	记作
+	$$
+	P(x),\quad \text{a.e. } x\in I
+	$$
+\end{definition}
+
+\begin{theorem}{可数可加性}
+	如果Lebesgue可测集序列$\{E_n\}_{n=1}^{\infty}\sub\mathscr{L}$两两不交，那么对于任意集合$T$，成立%
+	$$
+	m^*\left(T\cap\left(\bigsqcup_{n=1}^{\infty}{E_n}\right)\right)=\sum_{n=1}^{\infty}{m^*(T\cap E_n)}
+	$$
+	
+	特别的
+	$$
+	m\left(\bigsqcup_{n=1}^{\infty}{E_n}\right)=\sum_{n=1}^{\infty}{m(E_n)}
+	$$
+\end{theorem}
+
+\begin{theorem}{连续性}{Lebesgue测度的连续性}
+	\begin{enumerate}
+		\item 下连续性：如果$\{ E_n \}_{n=1}^{\infty}\sub\mathscr{L}$为单调递增的Lebesgue可测集合序列，那么对于任意集合$T$，成立
+		$$
+		m^*\left(T\cap\lim_{n\to\infty}{E_n}\right)=\lim_{n\to\infty}{m^*(T\cap E_n)}
+		$$
+		特别的
+		$$
+		m\left(\lim_{n\to\infty}{E_n}\right)=\lim_{n\to\infty}{m(E_n)}
+		$$
+		\item 上连续性：如果$\{ E_n \}_{n=1}^{\infty}\sub\mathscr{L}$为单调递减的Lebesgue可测集合序列，那么对于任意集合$T$，若$m^*(T)<\infty$，则成立
+		$$
+		m^*\left(T\cap\lim_{n\to\infty}{E_n}\right)=\lim_{n\to\infty}{m^*(T\cap E_n)}
+		$$
+		特别的，若存在$k\in\N^*$，使得成立$m(E_k)<\infty$，则
+		$$
+		m\left(\lim_{n\to\infty}{E_n}\right)=\lim_{n\to\infty}{m(E_n)}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+	\begin{enumerate}
+		\item 下极限：对于Lebesgue可测集序列$\{ E_n \}_{n=1}^{\infty}$，成立%
+		$$
+		m\left(\liminf_{n\to\infty}{E_n}\right)\le\liminf_{n\to\infty}{m(E_n)}
+		$$
+		\item 上极限：对于Lebesgue可测集序列$\{ E_n \}_{n=1}^{\infty}$，如果存在$k\in\N^*$，使得成立%
+		$$
+		m\left( \bigcup_{n=k}^{\infty}{E_k} \right)<\infty
+		$$
+		那么成立%
+		$$
+		m\left(\limsup_{n\to\infty}{E_n}\right)\ge\limsup_{n\to\infty}{m(E_n)}
+		$$
+	\end{enumerate}
+\end{corollary}
+
+\begin{note}
+	上半连续性的反例：构造单调递减集合序列$\{ E_n \}_{n=1}^{\infty}$
+	$$
+	E_n=\bigcup_{m\in\Z}{I_m^{(n)}},\qquad 
+	I_m^{(n)}=\left(m-\frac{1}{2^{n+1}},m+\frac{1}{2^{n+1}}\right)
+	$$
+	那么
+	$$
+	\lim_{n\to\infty}E_n=\Z,\qquad
+	m(E_n)=\infty
+	$$
+\end{note}
+
+\begin{theorem}{正则性}{Lebesgue测度的正则性}
+	\begin{enumerate}
+		\item 外正则性：对于Lebesgue可测集$E\in \mathscr{L}$，成立
+		$$
+		m(E)=\inf\{ m(G):G\supset E\text{ 为开集} \}
+		$$
+		\item 内正则性：对于Lebesgue可测集$E\in \mathscr{L}$，成立
+		$$
+		m(E)=\inf\{ m(K):K\sub E\text{ 为紧集} \}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{Lebesgue密度定理}{Lebesgue密度定理}
+	对于Lebesgue可测集$E\sub\R$，如果$m(E)>0$，那么对于任意$\varepsilon>0$，存在区间$I=(a,b)$，使得成立%
+	$$
+	m(E\cap I)>(1-\varepsilon)m(I)
+	$$
+\end{theorem}
+
+\begin{proof}
+	反证，如果存在$\varepsilon>0$，使得对于任意区间$I=(a,b)$，成立
+	$$
+	m(E\cap I)\le(1-\varepsilon)m(I)
+	$$
+	由Lebesgue测度的正则性\ref{thm:Lebesgue测度的正则性}
+	$$
+	m(E)=\inf\{ m(G):G\supset E\text{ 为开集} \}
+	$$
+	于是存在开集$G\supset E$，使得成立%
+	$$
+	m(G)<\frac{1}{1-\varepsilon}m(E)
+	$$
+	由于$G$可以表示为可数个不交开区间的并%
+	$$
+	G=\bigsqcup_{n=1}^{\infty}I_n
+	$$
+	那么%
+	$$
+	m(G)
+	<\frac{1}{1-\varepsilon}\sum_{n=1}^{\infty}m(E\cap I_n)
+	\le\frac{1}{1-\varepsilon}\sum_{n=1}^{\infty}(1-\varepsilon)m(I_n)
+	=\sum_{n=1}^{\infty}m(I_n)
+	=m(G)
+	$$
+	矛盾！
+\end{proof}
+
+\begin{theorem}{Steinhaus定理}{Steinhaus定理}
+	对于Lebesgue可测集$E\sub\R$，如果$m(E)>0$，那么$0$为$E-E$的内点。
+\end{theorem}
+
+\begin{proof}
+	反证，如果$0$不为$E-E$的内点，那么存在数列$\{ x_n \}_{n=1}^{\infty}$，使得$x_n\to 0$，但是$x_n\notin E-E$，从而$x_n+E\sub E^c$。由Lebesgue密度定理\ref{thm:Lebesgue密度定理}，对于任意$0<\varepsilon<1/3$，存在区间$I=(a,b)$，使得成立%
+	$$
+	m(E\cap I)>(1-\varepsilon)m(I)
+	$$
+	取充分大的$n\in\N^*$，使得$|x_n|<\varepsilon m(I)$，且$m(I\setminus (I-x_n))=|x_n|$。由Lebesgue测度的平移不变性与单调性
+	\begin{align*}
+		m(I\cap (x_n+E))
+		& = m((I-x_n)\cap E)\\
+		& \ge m(I\cap E)-m((I\setminus (I-x_n))\cap E)\\
+		& \ge m(I\cap E)-m(I\setminus (I-x_n))\\
+		& = m(I\cap E)-|x_n|
+	\end{align*}
+	再注意到
+	\begin{align*}
+		m(I)
+		& = m(I\cap E)+m(I\cap E^c)\\
+		& \ge m(I\cap E)+m(I\cap (x_n+E))\\
+		& = 2m(I\cap E)-|x_n|\\
+		& >2(1-\varepsilon)m(I)-\varepsilon m(I)\\
+		& = (2-3\varepsilon)m(I)\\
+		& > m(I)
+	\end{align*}
+	矛盾！
+\end{proof}
+
+\begin{exercise}
+	对于可测集$A$与$B$，成立%
+	$$
+	m(A\cup B)+m(A\cap B)=m(A)+m(B)
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于可测集序列$\{ E_n \}_{n=1}^{\infty}$，如果
+	$$
+	\sum_{n=1}^{\infty}{m(E_n)}<\infty
+	$$
+	那么
+	$$
+	m\left(\limsup_{n\to\infty}{E_n}\right)=0
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于矩阵$\bs{A}$，如果$E$为Lebesgue可测集，那么$\bs{A}E$为Lebesgue可测集，且%
+	$$
+	m(\bs{A}E)=|\det(\bs{A})|m(E)
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于闭集$F$，存在完备集$P\sub F$，使得成立$m(P)=m(F)$。
+\end{exercise}
+
+\begin{exercise}
+	对于紧集$A,B\sub\R$，$x,y\in\R$，记
+	\begin{align*}
+		& A_1=A\cap(-\infty,x],\qquad A_2=A\cap[x,+\infty)\\
+		& B_1=B\cap(-\infty,y],\qquad B_2=B\cap[y,+\infty)
+	\end{align*}
+	那么
+	$$
+	m(A+B)\ge m(A_1+B_1)+m(A_2+B_2)
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于紧集$A,B\sub\R$，成立
+	$$
+	m(A+B)\ge m(A)+m(B)
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于紧集$A,B\sub\R$，以及$\lambda\in(0,1)$，成立
+	$$
+	m(\lambda A+(1-\lambda)B)\ge m(A)+(1-\lambda)m(B)
+	$$
+\end{exercise}
+
+\subsection{Vitali集}
+
+\begin{definition}{Vitali集}
+	在$I=(0,1)$上定义等价关系%
+	$$
+	x\sim y\iff x-y\in\Q
+	$$
+	定义Vitali集为$V=I/\sim$。
+\end{definition}
+
+\begin{theorem}{Vitali集不可测}
+	Vitali集$V=I/\sim$不可测。
+\end{theorem}
+
+\begin{proof}
+	如果Vitali集$V$可测，那么对于$r\in \Q\cap[0,1]$，定义%
+	$$
+	V_r=r+V\mod 1
+	$$
+	断言
+	$$
+	(0,1)=\bigsqcup_{r\in \Q\cap[0,1]}V_r
+	$$
+	因此%
+	$$
+	1=m((0,1))=\sum_{r\in \Q\cap[0,1]}m(V_r)
+	=\sum_{r\in \Q\cap[0,1]}m(r+V)
+	=\sum_{r\in \Q\cap[0,1]}m(V)
+	$$
+	矛盾！
+\end{proof}
+
+\begin{theorem}{外测度不成立可加性}
+	构造不交集合$E$与$F$，使得成立
+	$$
+	m^*(E\cup F)\ne m^*(E)+m^*(F)
+	$$
+\end{theorem}
+
+\begin{proof}
+	在$(0,1)$上定义等价关系%
+	$$
+	x\sim y\iff x-y\in\Q
+	$$
+	记
+	$$
+	V=(0,1)/\sim,\qquad 
+	\Q\cap(-1,1)=\{ r_n \}_{n=1}^{\infty},\qquad 
+	V_n=r_n+V\sub(-1,2)
+	$$
+	
+	断言：对于$m\ne n$，成立$V_m\cap V_n=\varnothing$。事实上，若存在$v\in V_m\cap V_n$，那么存在$v_m,v_n\in V$，使得成立$v=r_m+v_m=r_n+v_n$，因此%
+	$$
+	v_m-v_n=r_n-r_m\in\Q\implies v_m=v_n\implies V_m=V_n
+	$$
+	导出矛盾！进而对于$m\ne n$，成立$V_m\cap V_n=\varnothing$。
+	
+	断言：$\dis (0,1)\sub\bigcup_{n=1}^{\infty}V_n$。任取$x\in (0,1)$，那么存在$\tau\in V$，使得$x-\tau\in\Q\cap(-1,1)$，因此存在$n_0\in\N^*$，使得成立$x-\tau=r_{n_0}$，进而$x=r_{n_0}+\tau\in r_{n_0}+V=V_{n_0}\sub \bigcup_{n=1}^{\infty}V_n$。由$x$的任意性，$\dis (0,1)\sub\bigcup_{n=1}^{\infty}V_n$。
+	
+	由于$\dis (0,1)\sub\bigcup_{n=1}^{\infty}V_n$，那么
+	$$
+	1=m^*(0,1)\le 
+	m^*\left(\bigcup_{n=1}^{\infty}V_n\right)
+	\le\sum_{n=1}^{\infty}m^*(V_n)
+	=\sum_{n=1}^{\infty}m^*(r_n+V)
+	=\sum_{n=1}^{\infty}m^*(V)
+	$$
+	因此$m^*(V)\ne 0$。
+	
+	如果对于任意$n\in\N^*$，成立%
+	$$
+	m^*\left(\bigcup_{k=1}^{n+1}V_k\right)
+	=m^*(V_{n+1})+m^*\left(\bigcup_{k=1}^{n}V_k\right)
+	$$
+	那么对于任意$n\in\N^*$，成立%
+	$$
+	m^*\left(\bigcup_{k=1}^{n}V_k\right)=nm^*(V_k)=nm^*(r_k+V)=nm^*(V)
+	$$
+	取$N=\left[\frac{3}{m^*(V)}\right]+1$，那么%
+	$$
+	3
+	<Nm^*(V)
+	=m^*\left(\bigcup_{k=1}^{N}V_k\right)
+	=m^*(-1,2)
+	=3
+	$$
+	导出矛盾！进而存在$n_0\in\N^*$，使得成立
+	$$
+	m^*\left(\bigcup_{k=1}^{n_0+1}V_k\right)
+	\ne m^*(V_{n_0+1})+m^*\left(\bigcup_{k=1}^{n_0}V_k\right)
+	$$
+	
+	取$\dis E=\bigcup_{k=1}^{n_0+1}V_k$与$F=V_{n_0+1}$，那么$E\cap F=\varnothing$，且
+	$$
+	m^*(E\cup F)\ne m^*(E)+m^*(F)
+	$$
+\end{proof}
+
+\begin{theorem}{正测度集存在不可测子集}{非零可测集存在不可测子集}
+	对于集合$E\sub\R$，如果$m^*(E)>0$，那么$E$存在不可测子集。
+\end{theorem}
+
+\begin{proof}
+	对于Vitali集$V$，令$V_r=r+V$，其中$r\in \Q$，那么
+	$$
+	\R=\bigsqcup_{r\in\Q}V_r
+	$$
+	因此%
+	$$
+	m^*(E)\le\sum_{r\in\Q}m^*(E\cap V_r)
+	$$
+	由于$m^*(E)>0$，那么存在$r\in\Q$，使得$m^*(E\cap V_r)>0$。若$E\cap V_r$可测，则$m(E\cap V_r)>0$。由Steinhaus定理\ref{thm:Steinhaus定理}，$0$为$(E\cap V_r)-(E\cap V_r)$的内点。由于
+	$$
+	(E\cap V_r)-(E\cap V_r)\sub V_r-V_r\sub\Q^c
+	$$
+	而$0$不为$\Q^c$的内点，因此矛盾！进而$E\cap V_r$为$E$的不可测子集。
+\end{proof}
+
+\section{Borel代数}
+
+\begin{definition}{Borel代数}
+	令$\mathscr{G}=\{ G\sub\R^n\text{ 为开集} \}$，定义Borel代数为由$\mathscr{G}$生成的最小$\sigma$-代数
+	$$
+	\mathscr{B}=\mathscr{F}(\mathscr{G})
+	$$
+\end{definition}
+
+\begin{proposition}{Borel代数的性质}
+	\begin{enumerate}
+		\item 方体$\sub\mathscr{B}$
+		\item $G_\delta$型集$\sub\mathscr{B}$
+		\item $F_\sigma$型集$\sub\mathscr{B}$
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{Borel代数与Lebesgue代数的关系}{Borel代数与Lebesgue代数的关系}
+	开集族为
+	$$
+	\mathscr{G}=\{ G\sub\R^n\text{ 为开集} \}
+	$$
+	Lebesgue零测集族为
+	$$
+	\mathscr{N}=\{ N\sub\R^n:m(N)=0 \}
+	$$
+	那么
+	$$
+	\mathscr{F}(\mathscr{G})
+	=\mathscr{B}
+	\subsetneq\mathscr{L}
+	=\mathscr{F}(\mathscr{G}\cup\mathscr{N})
+	$$
+	\begin{enumerate}
+		\item 如果$E$为Lebesgue可测集，那么对于任意$\varepsilon>0$，存在开集$G\supset E$，使得成立$m(G\setminus E)<\varepsilon$。
+		\item 如果$E$为Lebesgue可测集，那么对于任意$\varepsilon>0$，存在闭集$F\sub E$，使得成立$m(E\setminus F)<\varepsilon$。
+		\item 对于Lebesgue可测集$E$，存在$G_\delta$型集$G$与Lebesgue零测集$N$，使得成立$G=E\cup N$。
+		\item 对于Lebesgue可测集$E$，存在$F_\sigma$型集$F$与Lebesgue零测集$N$，使得成立$E=F\cup N$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{$\sigma$-代数的原像为$\sigma$-代数}{sigma代数的原像为sigma代数}
+	对于映射$f:A\to B$，如果$\mathscr{B}$为集合$B$上的$\sigma$-代数，那么%
+	$$
+	f^{-1}(\mathscr{B})=\{ f^{-1}(B):B\in \mathscr{B} \}
+	$$
+	为集合$A$上的$\sigma$-代数。
+\end{theorem}
+
+\begin{proof}
+	首先对于空集，成立$\varnothing=f^{-1}(\varnothing)\in f^{-1}(\mathscr{B})$。
+	
+	其次对于补运算，任取$E\in \mathscr{B}$，令$F=B\setminus E\in \mathscr{B}$，那么%
+	$$
+	A\setminus f^{-1}(E)
+	=f^{-1}(B)\setminus f^{-1}(E)
+	=f^{-1}(B\setminus E)
+	=f^{-1}(F)\in \mathscr{B}
+	$$
+	因此$f^{-1}(\mathscr{B})$对于补运算封闭。
+	
+	最后对于可数并运算，任取$\{E_n\}_{n=1}^{\infty}\sub\mathscr{B}$，令$\dis E=\bigcup_{n=1}^{\infty}E_n\in \mathscr{B}$，那么%
+	$$
+	\bigcup_{n=1}^{\infty}f^{-1}(E_n)
+	=f^{-1}\left(\bigcup_{n=1}^{\infty}E_n\right)
+	\in f^{-1}(\mathscr{B})
+	$$
+	因此$f^{-1}(\mathscr{B})$对于可数并运算封闭。
+	
+	综上所述，$f^{-1}(\mathscr{B})$为集合$A$上的$\sigma$-代数。
+\end{proof}
+
+\begin{lemma}{}{Borel集在连续函数下的原像为Borel集的引理}
+	对于映射$f:A\to B$，如果$\mathscr{A}$为集合$A$上的$\sigma$-代数，$\mathscr{B}$为集合$B$上的$\sigma$-代数，那么%
+	$$
+	\mathscr{B}_0=\{ E\in \mathscr{B}:f^{-1}(E)\in \mathscr{A} \}
+	$$
+	为为集合$B$上的$\sigma$-代数。
+\end{lemma}
+
+\begin{proof}
+	首先对于空集，成立$\varnothing\in\mathscr{B}$，且$f^{-1}(\varnothing)=\varnothing\in\mathscr{A}$，因此$\varnothing\in \mathscr{B}_0$。
+	
+	其次对于补运算，任取$E\in \mathscr{B}_0$，那么$E\in \mathscr{B}$且$f^{-1}(E)\in\mathscr{A}$，因此$B\setminus E\in \mathscr{B}$，且%
+	$$
+	f^{-1}(B\setminus E)=f^{-1}(B)\setminus f^{-1}(E)
+	=A\setminus f^{-1}(E)\in \mathscr{A}
+	$$
+	因此$B\setminus E\in \mathscr{B}_0$，进而$\mathscr{B}_0$对于补运算封闭。
+	
+	最后对于可数并运算，任取$\{E_n\}_{n=1}^{\infty}\sub \mathscr{B}_0$，那么对于任意$n\in\N^*$，$E_n\in \mathscr{B}$且$f^{-1}(E_n)\in \mathscr{A}$。令$\dis E=\bigcup_{n=1}^{\infty}E_n\in \mathscr{B}$，那么$E\in \mathscr{B}$，且%
+	$$
+	f^{-1}(E)
+	=f^{-1}\left(\bigcup_{n=1}^{\infty}E_n\right)
+	=\bigcup_{n=1}^{\infty}f^{-1}(E_n)
+	\in \mathscr{A}
+	$$
+	因此$E\in \mathscr{B}_0$，进而$\mathscr{B}_0$对于可数并运算封闭。
+	
+	综上所述，$\mathscr{B}_0$为集合$B$上的$\sigma$-代数。
+\end{proof}
+
+\begin{theorem}{Borel集在连续函数下的原像为Borel集}{Borel集在连续函数下的原像为Borel集}
+	对于连续函数$f:\R^n\to \R^m$，成立$f^{-1}(\mathscr{B}(\R^m))\sub \mathscr{B}(\R^n)$。
+\end{theorem}
+
+\begin{proof}
+	构造
+	$$
+	\mathscr{B}_0=\{ B\in \mathscr{B}(\R^m):f^{-1}(B)\in \mathscr{B}(\R^n) \}
+	$$
+	由引理\ref{lem:Borel集在连续函数下的原像为Borel集的引理}，$\mathscr{B}_0$为$\sigma$-代数。令$\mathscr{G}=\{ G\sub\R^m\text{ 为开集} \}$，由于开集在连续函数下的原像为开集，那么$\mathscr{G}\sub \mathscr{B}_0$，进而$\mathscr{B}(\R^m)\sub \mathscr{B}_0$。而$\mathscr{B}_0\sub \mathscr{B}(\R^m)$，因此$\mathscr{B}_0=\mathscr{B}(\R^m)$，进而$f^{-1}(\mathscr{B}(\R^m))\sub \mathscr{B}(\R^n)$。
+\end{proof}
+
+\begin{theorem}{$\mathscr{B}\subsetneq\mathscr{L}$}
+	构造Lebesgue可测的非Borel集。
+\end{theorem}
+
+\begin{proof}
+	考虑Cantor函数
+	\begin{align*}
+		C:\begin{aligned}[t]
+			[0,1] &\longrightarrow [0,1]\\
+			x &\longmapsto \begin{cases}
+				\dis\sum_{n=1}^{\infty}\frac{c_n}{2^n},\qquad &\dis x=\sum_{n=1}^{\infty}\frac{2c_n}{3^n},\text{ 其中 }c_n\in\{0,1\}\\
+				\dis\sup_{y\in \mathcal{C}\cap[0,x]}C(y),\qquad &  x\in [0,1]\setminus\mathcal{C}
+			\end{cases}
+		\end{aligned}
+	\end{align*}
+	构造函数%
+	\function{f}{[0,1]}{[0,1]}{x}{\frac{x+C(x)}{2}}
+	那么$f$为严格单调递增的连续双射。
+	
+	令
+	$$
+	[0,1]\setminus\mathcal{C}=\bigsqcup_{n=1}^{\infty}\bigsqcup_{k=1}^{2^{n-1}}\left(\frac{3k-2}{3^n},\frac{3k-1}{3^n}\right)=\bigsqcup_{n=1}^{\infty}(a_n,b_n)
+	$$
+	对于任意$n\in\N^*$与$x\in (a_n,b_n)$，由于%
+	$$
+	f(x)=\frac{x+C(x)}{2}=\frac{x+C(a_n)}{2}
+	$$
+	那么%
+	$$
+	f((a_n,b_n))=\frac{(a_n,b_n)+C(a_n)}{2}=\left(\frac{a_n+C(a_n)}{2},\frac{b_n+C(a_n)}{2}\right)
+	$$
+	因此$m(f((a_n,b_n)))=(b_n-a_n)/2$。由于
+	\begin{align*}
+		m(f([0,1]\setminus\mathcal{C}))
+		=& m\left(f\left(\bigsqcup_{n=1}^{\infty}\bigsqcup_{k=1}^{2^{n-1}}\left(\frac{3k-2}{3^n},\frac{3k-1}{3^n}\right)\right)\right)\\
+		=&m\left(\bigsqcup_{n=1}^{\infty}\bigsqcup_{k=1}^{2^{n-1}}f\left(\left(\frac{3k-2}{3^n},\frac{3k-1}{3^n}\right)\right)\right)\\
+		=& \sum_{n=1}^{\infty}\sum_{k=1}^{2^{n-1}}m\left(f\left(\left(\frac{3k-2}{3^n},\frac{3k-1}{3^n}\right)\right)\right)\\
+		=& \sum_{n=1}^{\infty}\sum_{k=1}^{2^{n-1}}\frac{1}{2\cdot 3^n}\\
+		=&\frac{1}{2}
+	\end{align*}
+	那么%
+	$$
+	m(f(\mathcal{C}))
+	=1-(m([0,1])-m(f(\mathcal{C})))
+	=1-m([0,1]\setminus f(\mathcal{C}))
+	=1-m(f([0,1]\setminus\mathcal{C}))
+	=1-\frac{1}{2}
+	=\frac{1}{2}
+	$$
+	由于非零可测集存在不可测子集\ref{thm:非零可测集存在不可测子集}，因此存在不可测子集$V\sub f(\mathcal{C})$。
+	
+	记$g=f^{-1}$，$W=f^{-1}(V)=g(V)$，则$g$为严格单调递增的连续双射。由于$W\sub \mathcal{C}$，那么$m^*(W)=0$，因此由定理\ref{thm:Lebesgue零测集为Lebesgue可测集}，$W$为可测集。若$W$为Borel集，则由Borel集在连续函数下的原像为Borel集\ref{thm:Borel集在连续函数下的原像为Borel集}，$V=g^{-1}(W)$为Borel集，进而由定理\ref{thm:Borel代数与Lebesgue代数的关系}，$V$为可测集，产生矛盾！因此$W$为Lebesgue可测的非Borel集。
+\end{proof}
+
+\section{Jordan测度}
+
+\subsection{Jordan外测度}
+
+\begin{definition}{Jordan外测度}
+	\begin{align*}
+		J^*:\begin{aligned}[t]
+			\mathscr{P}(\R^n) & \longrightarrow [0,\infty]\\
+			E &\longmapsto\inf\left\{ \sum_{k=1}^{n}|I_k|:\{I_k\}_{k=1}^{n}\text{ 为方体序列且 } \bigcup_{k=1}^{n}I_k\supset E \right\}
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{Jordan外测度的性质}
+	\begin{enumerate}
+		\item 非负性：$J^*(E)\ge 0$；特别的，$J^*(\varnothing)=0$。
+		\item 单调性：如果$E\sub F$，那么$J^*(E)\le J^*(F)$。
+		\item 次有限可加性：对于集合序列$\{ E_k \}_{k=1}^{n}$，成立
+		$$
+		J^*\left(\bigcup_{k=1}^{n}{E_k}\right)\le\sum_{k=1}^{n}{J^*(E_k)}
+		$$
+		\item 无界集的Jordan外测度：如果$E$为无界集，那么$J^*(E)=\infty$。
+	\end{enumerate}
+\end{theorem}
+
+\subsection{Jordan内测度}
+
+\begin{definition}{Jordan内测度}
+	\begin{align*}
+		J_*:\begin{aligned}[t]
+			\mathscr{P}(\R^n)  \longrightarrow& [0,\infty]\\
+			E \longmapsto&\quad \,\sup\left\{ \sum_{k=1}^{n}|I_k|:\{I_k\}_{k=1}^{n}\text{ 为不交方体序列且 } \bigsqcup_{k=1}^{n}I_k\sub E \right\}\\
+			&=\sup\left\{ \sum_{n=1}^{\infty}|I_n|:\{I_n\}_{n=1}^{\infty}\text{ 为不交方体序列且 } \bigsqcup_{n=1}^{\infty}I_n\sub E \right\}
+		\end{aligned}
+	\end{align*}
+\end{definition}
+
+\begin{theorem}{Jordan内测度的性质}
+	\begin{enumerate}
+		\item 非负性：$J_*(E)\ge 0$；特别的，$J_*(\varnothing)=0$。
+		\item 单调性：如果$E\sub F$，那么$J_*(E)\le J_*(F)$。
+		\item 超可数可加性：对于不交集合序列$\{ E_n \}_{n=1}^{\infty}$，成立
+		$$
+		J_*\left(\bigsqcup_{n=1}^{\infty}{E_n}\right)\ge\sum_{n=1}^{\infty}{J_*(E_n)}
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{Jordan可测集}
+
+\begin{definition}{Jordan可测集}
+	称集合$E$为Jordan可测集，如果
+	$$
+	J_*(E)=J^*(E)
+	$$
+\end{definition}
+
+\begin{definition}{Jordan可测集族}
+	定义Jordan可测集族为
+	$$
+	\mathscr{J}=\{ E\sub\R^n:E\text{ 为Jordan可测集} \}
+	$$
+\end{definition}
+
+\begin{theorem}{Jordan零测集为Jordan可测集}
+	如果$J^*(N)=0$，那么$N$为Jordan可测集。
+\end{theorem}
+
+\begin{theorem}{Jordan可测集的性质}
+	\begin{enumerate}
+		\item $\varnothing\in\mathscr{J}$
+		\item $\R^n\in\mathscr{J}$
+		\item 方体为Jordan可测集。
+		\item 如果$E,F\in \mathscr{J}$不交，那么$E\sqcup F\in \mathscr{J}$。
+		\item $\mathscr{J}$对于有界Jordan可测集的有限交、有限并、差、补运算封闭。
+		\item 如果$E,F\in \mathscr{J}$之一有界，那么$E\cup F\in \mathscr{J}$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{note}
+	存在非Jordan可测的有界开集：令$\{ r_n \}_{n=1}^{\infty}=\Q\cap(0,1)$，构造
+	$$
+	G=\bigcup_{n=1}^{\infty}\left(r_n-\frac{1}{2\cdot 4^n},r_n+\frac{1}{2\cdot 4^n}\right)
+	$$
+	从而%
+	$$
+	J_*(G)=m(G^\circ)=m(G)\le\sum_{n=1}^{\infty}\frac{1}{4^n}=\frac{1}{3}
+	<1=m([0,1])=m(\overline{G})=J^*(G)
+	$$
+\end{note}
+
+\begin{note}
+	存在非Jordan可测的紧集：取广义Cantor集$\mathcal{C}$，使得$m(\mathcal{C})>0$，从而%
+	$$
+	J_*(\mathcal{C})
+	=m(\mathcal{C}^\circ)
+	=m(\varnothing)
+	=0<m(\mathcal{C})
+	=m(\overline{\mathcal{C}})
+	=J^*(\mathcal{C})
+	$$
+\end{note}
+
+\subsection{Jordan测度}
+
+\begin{definition}{Jordan测度}
+	定义Jordan可测集$E\in \mathscr{J}$的Jordan测度为
+	$$
+	J(E)=J_*(E)=J^*(E)
+	$$
+\end{definition}
+
+\begin{theorem}{方体的Jordan测度}
+	对于方体$I$，成立
+	$$
+	J(I)=|I|
+	$$
+\end{theorem}
+
+\begin{theorem}
+	\begin{enumerate}
+		\item 如果$E,F\in\mathscr{J}$不交，那么
+		$$
+		J(E\sqcup F)=J(E)+J(F)
+		$$
+		\item 如果$F\sub E\in \mathscr{J}$有界，那么
+		$$
+		J(E\setminus F)=J(E)-J(F)
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\subsection{Lebesgue测度与Jordan测度的关系}
+
+\begin{theorem}{Lebesgue测度与Jordan测度的关系}
+	对于集合$E$，成立
+	$$
+	J_*(E)\le m^*(E)\le J^*(E)
+	$$
+	特别的，若$E$有界，则
+	$$
+	J_*(E)\le m_*(E)\le m^*(E)\le J^*(E)
+	$$
+\end{theorem}
+
+\begin{corollary}
+	对于有界集$E$，如果$E\in\mathscr{J}$，那么$E\in \mathscr{L}$，且$m(E)=J(E)$。
+\end{corollary}
+
+\begin{theorem}
+	对于紧集$K$，成立
+	$$
+	m(K)=0\iff J(K)=0
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于有界集$E$，成立%
+	$$
+	J_*(E)=m(E^\circ),\qquad 
+	J^*(E)=m(\overline{E})
+	$$
+	因此
+	$$
+	J^*(E)-J_*(E)=m(\partial E)
+	$$
+	进而
+	$$
+	E\in\mathscr{J}
+	\iff J_*(E)=J^*(E)
+	\iff m(\partial E)=0
+	\iff J(\partial E)=0
+	$$
+\end{theorem}
+
+\section{乘积空间}
+
+\begin{definition}{截面}
+	对于$E\sub\R^{p+q}$，$x\in\R^{p}$，定义$E$关于$x$的截面为
+	$$
+	E_x=\{ y\in\R^{q}:(x,y)\in E \}
+	$$
+	对于$E\sub\R^{p+q}$，$y\in\R^{q}$，定义$E$关于$y$的截面为
+	$$
+	E^y=\{ x\in\R^{p}:(x,y)\in E \}
+	$$
+\end{definition}
+
+\begin{theorem}
+	如果$A\in\mathscr{L}(\R^p)$且$B\in\mathscr{L}(\R^q)$，那么$A\times B\in\mathscr{L}(\R^{p+q})$，且$m(A\times B)=m(A)m(B)$；若$A$和$B$之一为零测集，则$m(A\times B)=0$。
+\end{theorem}
+
+\begin{theorem}
+	如果$E\sub\R^{p+q}$为零测集，那么对于几乎处处$x\in\R^p$，$E_x$为零测集。
+\end{theorem}
+
+\begin{theorem}
+	如果$E\in\mathscr{L}(R^{p+q})$，那么对于几乎处处$x\in\R^p$，$E_x\in\mathscr{L}(R^{q})$。
+\end{theorem}
+
+\section{保距映射}
+
+\begin{definition}{保距映射}
+	称映射$T:\R^n\to\R^n$为保距映射，如果对于任意$x,y\in\R^n$，成立$\|T(x)-T(y)\|=\|x-y\|$。
+\end{definition}
+
+\begin{proposition}{保距映射的性质}
+	\begin{enumerate}
+		\item 保距映射为一一映射。
+		\item 保距映射的逆映射为保距映射。
+		\item 定义$S(x)=T(x)-T(0)$，那么对于任意$\lambda\in\R$，成立$S(\lambda x)=\lambda S(x)$。
+		\item 若$x,y,z$共线，那么$T(x),T(y),T(z)$共线。
+		\item 如果$x\perp y$，那么$S(x+y)=S(x)+S(y)$。
+	\end{enumerate}
+\end{proposition}
+
+\begin{lemma}
+	对于有界开集$G\sub\R^n$，存在不交闭球列$\{B_n\}_{n=1}^{\infty}$，使得成立
+	$$
+	m(G)=\sum_{n=1}^{\infty}{m(B_n)}
+	$$
+\end{lemma}
+
+\begin{theorem}
+	如果映射$T:\R^n\to\R^n$为保距映射，那么对于任意$E\sub\R^n$，成立$m^*(T(E))=m^*(E)$。
+\end{theorem}
+
+\begin{theorem}
+	如果映射$T:\R^n\to\R^n$为保距映射，那么对于任意$E\in\mathscr{L}(R^n)$，成立$T(E)\in\mathscr{L}(R^n)$且$m(T(E))=m(E)$。
+\end{theorem}
+
+\chapter{可测函数}
+
+\section{可测函数}
+
+\subsection{可测函数}
+
+\begin{definition}{可测函数}
+	对于可测集$E\in\mathscr{L}$，称$f:E\to\overline{\R}$为可测函数，如果成立如下命题之一。
+	\begin{enumerate}
+		\item $f^{-1}(\mathscr{B})\sub \mathscr{L}$
+		\item 对于任意$c\in\overline{\R}$，成立$E[f\ge c]\in\mathscr{L}$。
+		\item 对于任意$c\in\overline{\R}$，成立$E[f\le c]\in\mathscr{L}$。
+		\item 对于任意$c\in\overline{\R}$，成立$E[f> c]\in\mathscr{L}$。
+		\item 对于任意$c\in\overline{\R}$，成立$E[f< c]\in\mathscr{L}$。
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+	对于$E\in\mathscr{L}$，如果在$E$上几乎处处成立$f=g$，那么%
+	$$
+	f\text{ 可测}
+	\iff
+	g\text{ 可测}
+	$$
+\end{theorem}
+
+\begin{theorem}{局部可测和整体可测}
+	\begin{enumerate}
+		\item 如果$f$是可测集$E$上的可测函数，且$E_0\sub E$为可测子集，那么$f$是$E_0$上的可测函数。
+		\item 如果对于任意$n\in\N^*$，$f$均为可测集$E_n$上的可测函数，那么$f$是$\dis\bigcup_{n=1}^{\infty}{E_n}$上的可测函数。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{线性、乘积和除法}
+	对于可测集$E$上的可测函数$f$和$g$，成立
+	\begin{enumerate}
+		\item 对于任意$c\in\R$，如果$cf$在$E$上几乎处处存在意义，那么$cf$也是$E$上的可测函数。
+		\item 如果$f+g$在$E$上几乎处处存在意义，那么$f+g$也是$E$上的可测函数。
+		\item 如果$fg$在$E$上几乎处处存在意义，那么$fg$也是$E$上的可测函数。
+		\item 定义
+		$$
+		\frac{1}{f(x)}=\begin{cases}
+			1/f(x),\quad & 0<|f(x)|<\infty\\
+			0,\quad & f(x)=\pm\infty\\
+			\infty,\quad & f(x)=0
+		\end{cases}
+		$$
+		那么$1/f$是$E$上的可测函数。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{确界和极限}
+	\begin{enumerate}
+		\item 对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$
+		$$
+		\sup_{n\in\N^*} f_n,\qquad \inf_{n\in\N^*} f_n,\qquad \limsup_{n\to\infty} f_n,\qquad \liminf_{n\to\infty} f_n
+		$$
+		均为$E$上的可测函数。
+		\item 对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$，如果$f_n\toae f$，那么$f$为$E$上的可测函数。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{正部与负部}
+	对于可测集$E$上的可测函数$f$，定义其正部和负部分别为
+	$$
+	f^+=\max\{f,0\}=\frac{|f|+f}{2},\qquad 
+	f^-=\max\{-f,0\}=\frac{|f|-f}{2}
+	$$
+	那么
+	$$
+	f\text{ 可测}
+	\iff
+	f^+\text{ 与 }f^-\text{ 均可测}
+	$$
+\end{theorem}
+
+\begin{theorem}{连续函数可测}
+	如果函数$f$在$\R^n$上连续，那么$f$在可测集上可测。
+\end{theorem}
+
+\begin{theorem}{单调函数可测}
+	如果函数$f$在$\R$上单调，那么$f$在可测集上可测。
+\end{theorem}
+
+\begin{theorem}{复合函数}
+	如果$f$是可测集$E\sub\R^n$上的可测函数，$g$是$\R$上的连续函数，那么$g\circ f$是$E$上的可测函数。
+\end{theorem}
+
+\begin{theorem}{乘积空间}
+	如果$f$是可测集$E\sub\R^p$上的可测函数，$g$是可测集$F\sub\R^q$上的可测函数，且$fg$在$E\times F$上几乎处处存在意义，那么$fg$在$E\times F$上可测。
+\end{theorem}
+
+\begin{exercise}
+	对于可测集$E$和$F$，如果$f$既为$E$上的非负可测函数，也为$F$上的非负可测函数时，那么$f$为$E\cup F$上的非负可测函数。
+\end{exercise}
+
+\begin{exercise}
+	对于有限测度的可测集$E$，如果$f$是$E$上的几乎处处有限的非负可测函数，那么对于任意$\varepsilon>0$，存在闭集$F\sub E$，使得成立$m(E-F)<\varepsilon$，且$f$在$F$上有界。
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E$上的非负可测函数序列$\{f_n\}_{n=1}^{\infty}$，如果对于任意$\varepsilon>0$，成立
+	$$
+	\sum_{n=1}^{\infty}{m(E[f_n>\varepsilon])}<\infty
+	$$
+	那么在$E$上成立$f_n\toae 0$。
+\end{exercise}
+
+\begin{exercise}
+	如果$f$是有限测度的可测集$E$上的非负可测函数，那么对于任意$y$，$E[f=y]$为可测集，且$\{ y\in\R:m(E[f=y])>0 \}$至多为可数集。
+\end{exercise}
+
+\subsection{简单函数}
+
+\begin{definition}{下方图形}
+	对于定义在$E$上的非负函数$f$，定义$f$在$E$上的下方图形为
+	$$
+	G(E;f)=\{ (x,t):x\in E,0\le t<f(x) \}
+	$$
+\end{definition}
+
+\begin{definition}{简单函数}
+	对于互不相交的有限可测集合序列$\{E_k\}_{k=1}^{n}$与有限实数序列$\{c_k\}_{k=1}^{n}$，定义$\dis E=\bigcup_{k=1}^{n}{E_k}$上的简单函数为
+	$$
+	\varphi=\sum_{k=1}^{n}{c_k\mathbbm{1}_{E_k}}
+	$$
+\end{definition}
+
+\begin{proposition}
+	可测集$E$上的简单函数的和与积仍为$E$上的简单函数。
+\end{proposition}
+
+\begin{proposition}
+	对于非负简单函数$\dis \varphi=\sum_{k=1}^{n}{c_k\mathbbm{1}_{E_k}}$，成立
+	$$
+	G(E;\varphi)=\bigcup_{k=1}^{n}{E_k\times[0,c_k)}
+	$$
+\end{proposition}
+
+\begin{theorem}{简单函数逼近定理}{简单函数逼近定理}
+	对于可测集$E$上的非负函数$f$，如下命题等价。
+	\begin{enumerate}
+		\item $f$是$E$上的可测函数。
+		\item $G(E;f)$是$\R^{n+1}$上的可测集。
+		\item 存在单调递增的非负简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}$，使得成立$\varphi_n\to f$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+	对于可测集$E$上的函数$f$，成立%
+	$$
+	f\text{ 在 }E\text{ 上可测}
+	\iff
+	\text{存在 }E\text{ 上的简单函数序列 }\{\varphi_n\}_{n=1}^{\infty},\text{ 使得成立 }\varphi_n\to f
+	$$
+\end{corollary}
+
+\section{Egorov定理}
+
+\begin{theorem}{Egorov定理——几乎处处收敛$\implies$近乎一致收敛}{Egorov定理}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，如果$m(E)<\infty$，那么
+	$$
+	f_n\toae f\implies
+	f_n\toaun f
+	$$
+\end{theorem}
+
+\begin{remark}
+	可测集$E$必须为有限测度，例如：
+	$$
+	E=[0,\infty),\qquad 
+	f_n=\mathbbm{1}_{[n,\infty)},\qquad 
+	f=0
+	$$
+\end{remark}
+
+\begin{exercise}
+	对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item $m(E)<\infty$
+		\item 在$E$上成立$f_n\toae f$，
+	\end{enumerate}
+	那么存在$E$的可测子集序列$\{E_n\}_{n=1}^{\infty}$，使得成立
+	\begin{enumerate}
+		\item $\{E_n\}_{n=1}^{\infty}$单调递增。
+		\item $m(E_n)\to m(E)$
+		\item 对于任意$n\in\N^*$，在$E_n$上成立$f_n\rightrightarrows f$。
+	\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item $m(E)<\infty$
+		\item 对于任意$n\in\N^*$，在$E$上几乎处处成立$|f_n|<\infty$；
+		\item 在$E$上成立$f_n\toae 0$，
+	\end{enumerate}
+	那么存在子序列$\{ f_{n_k} \}_{k=1}^{\infty}$与存在非负实数序列$\{ t_n \}_{n=1}^{\infty}$，使得成立
+	\begin{enumerate}
+		\item $\dis \sum_{n=1}^{\infty}t_n=\infty$
+		\item 在$E$上几乎处处成立$\dis\sum_{k=1}^{\infty}|f_{n_k}|<\infty$；
+		\item 在$E$上几乎处处成立$\dis \sum_{n=1}^{\infty}{|t_n f_n|}<\infty E$。
+	\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item 对于任意$n\in\N^*$，在$E$上几乎处处成立$|f_n|<\infty$；
+		\item 在$E$上成立$f_n\toae 0$，
+	\end{enumerate}
+	那么存在子序列$\{ f_{n_k} \}_{k=1}^{\infty}$与存在非负实数序列$\{ t_n \}_{n=1}^{\infty}$，使得成立
+	\begin{enumerate}
+		\item $\dis \sum_{n=1}^{\infty}t_n=\infty$
+		\item 在$E$上几乎处处成立$\dis\sum_{k=1}^{\infty}|f_{n_k}|<\infty$；
+		\item 在$E$上几乎处处成立$\dis \sum_{n=1}^{\infty}{|t_n f_n|}<\infty E$。
+	\end{enumerate}
+\end{exercise}
+
+\section{Luzin定理}
+
+\begin{theorem}{Luzin定理——可测$\implies$近乎连续}
+	如果$f$是可测集$E$上的几乎处处有限的可测函数，那么对于任意$\varepsilon>0$，存在闭集$F_\varepsilon\sub E$，使得成立$m(E\setminus F_\varepsilon)<\varepsilon$，且$f$在$F_\varepsilon$上连续。
+\end{theorem}
+
+\begin{theorem}{Tietze延拓定理}
+	对于闭集$E\sub\R^n$，连续函数$f:E\to\R$可延拓为连续函数$F:\R^n\to\R$。
+\end{theorem}
+
+\begin{exercise}
+	对于可测集$E\sub\R^m$上的几乎处处有限的函数$f$，证明：$f$在$E$上可测，当且仅当存在在$\R^n$上连续的函数序列$\{ \varphi_n \}_{n=1}^{\infty}$，使得在$E$上成立$\varphi_n\toae f$。
+\end{exercise}
+
+\section{Lebesgue定理与Riesz定理}
+
+\begin{theorem}{Lebesgue定理——几乎处处收敛$\implies$依测度收敛}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，如果$m(E)<\infty$，那么
+	$$
+	f_n\toae f\implies
+	f_n\tom f
+	$$
+\end{theorem}
+
+\begin{theorem}{F.Riesz定理——依测度收敛序列$\implies$存在几乎处处收敛子列}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，如果在$E$上成立$f_n\tom f$，那么存在$\{f_n\}_{n=1}^{\infty}$的子列$\{f_{n_k}\}_{k=1}^{\infty}$，使得在$E$上成立$f_{n_k}\toae f$。
+\end{theorem}
+
+\begin{corollary}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{\varphi_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f,g$，如果
+	\begin{enumerate}
+		\item 在$E$上成立$\varphi_n\tom f$；
+		\item 在$E$上成立$\varphi_n\tom g$，
+	\end{enumerate}
+	那么在$E$上几乎处处成立$f=g$。
+\end{corollary}
+
+\begin{note}
+	依测度收敛则$\centernot\implies$几乎处处收敛：以下函数的定义域为$E=[0,1)$，定义
+	$$
+	f_i^{(j)}=\mathbbm{1}_{[ \frac{i-1}{j},\frac{i}{j} )},\quad i,j\in\N^*,1\le i\le j
+	$$
+	定义$\varphi_n=f_i^{(j)}$，那么$\varphi_n\tom 0$，但对于任意$x\in[0,1)$，$\dis\lim_{n\to\infty} \varphi_n(x)$不存在。
+\end{note}
+
+\begin{exercise}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty},\{g_n\}_{n=1}^{\infty}$和可测函数$f,g$，如果$f_n\tom f,g_n\tom g$，那么$f_n+g_n\tom f+g$。
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E$上的可测函数序列$\{f_n\}_{n=1}^{\infty}$和几乎处处有限的可测函数$f$，如果存在$M>0$，使得在$E$上对于任意$n\in\N^*$几乎处处成立$|f_n|\le M$，且$f_n\tom f$，那么在$E$上几乎处处成立$|f|\le M$。
+\end{exercise}
+
+\chapter{积分理论}
+
+\section{非负函数的积分}
+
+\subsection{分划的和数}
+
+\begin{definition}{分划}
+	将有限测度的可测集$E$分为有限个不交可测子集$D=\{E_k\}_{k=1}^{n}$。
+\end{definition}
+
+\begin{definition}{分划的合并}
+	对于有限测度的可测集$E$的分划$D_1=\{ E_k^{(1)} \}_{k=1}^{m}$与$D_2=\{ E_k^{(2)} \}_{k=1}^{n}$，定义二者的合并为$D=\{ E_i^{(1)}\cap E_j^{(2)} \}_{i,j}$，称$D$比$D_1$和$D_2$细密。
+\end{definition}
+
+\begin{definition}{小和数与大和数}
+	对于有限测度的可测集$E$的分划$D=\{E_k\}_{k=1}^{n}$，以及在$E$上非负有界的函数$f$，记
+	$$
+	b_k=\inf_{x\in E_k}f(x),\qquad 
+	B_k=\sup_{x\in E_k}f(x)
+	$$
+	定义$f$在$E$上关于分划$D$的小和数与大和数分别为
+	$$
+	s_D^{(f)}=\sum_{k=1}^{n}b_k m(E_k),\qquad
+	S_D^{(f)}=\sum_{k=1}^{n}B_k m(E_k)
+	$$
+\end{definition}
+
+\begin{proposition}{小和数与大和数的性质}
+	\begin{enumerate}
+		\item $s_D\le S_D$
+		\item 如果分划$D^*$比$D$细密，那么
+		$$
+		s_D\le s_{D^*}\le S_{D^*}\le S_D
+		$$
+		\item 对于任意两个分划$D_1$和$D_2$，成立
+		$$
+		s_{D_1}\le S_{D_2},\qquad s_{D_2}\le S_{D_1}
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\subsection{分划的简单函数}
+
+\begin{definition}{分划的简单函数}
+	对于有限测度的可测集$E$的分划$D=\{E_k\}_{k=1}^{n}$，定义上简单函数与下简单函数分别为
+	$$
+	\underline{\varphi}_D^{(f)}=\sum_{k=1}^{n}b_k\mathbbm{1}_{E_k},\qquad 
+	\overline{\varphi}_D^{(f)}=\sum_{k=1}^{n}B_k\mathbbm{1}_{E_k}
+	$$
+\end{definition}
+
+\begin{proposition}{分划的简单函数的性质}
+	\begin{enumerate}
+		\item 
+		$$
+		\underline{\varphi}_D^{(f)}\le f\le\overline{\varphi}_D^{(f)}
+		$$
+		\item 
+		$$
+		G(E;\underline{\varphi}_D^{(f)})\sub
+		G(E;f)\sub
+		G(E;\overline{\varphi}_D^{(f)})
+		$$
+		\item 
+		$$
+		s_D^{(f)}=m(G(E;\underline{\varphi}_D^{(f)})),\qquad
+		S_D^{(f)}=m(G(E;\overline{\varphi}_D^{(f)}))
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\subsection{上积分与下积分}
+
+\begin{definition}{上积分与下积分}
+	定义有限测度的可测集$E$上的非负有界的函数$f$的上积分与下积分分别为
+	$$
+	\overline{\int}_{E}f=\inf_{D}S_D^{(f)},\qquad
+	\underline{\int}_{E}f=\sup_{D}s_D^{(f)}
+	$$
+\end{definition}
+
+\begin{proposition}{上积分与下积分的性质}
+	\begin{enumerate}
+		\item 
+		$$
+		\overline{\int}_{E}f\le\underline{\int}_{E}f
+		$$
+		\item 如果$f\le g$​，那么
+		$$
+		\overline{\int}_{E}f\le
+		\overline{\int}_{E}g,\qquad 
+		\underline{\int}_{E}f\le
+		\underline{\int}_{E}g
+		$$
+		\item 对于不交可测子集$E_1,E_2$，成立
+		$$
+		\overline{\int}_{E_1\sqcup E_2}f=\overline{\int}_{E_1}f+\overline{\int}_{E_2}f
+		,\qquad
+		\underline{\int}_{E_1\sqcup E_2}f=\underline{\int}_{E_1}f+\underline{\int}_{E_2}f
+		$$
+		\item 
+		$$
+		\overline{\int}_{E}f+g\le \overline{\int}_{E}f+\overline{\int}_{E}g
+		,\qquad
+		\underline{\int}_{E}f+g\ge\underline{\int}_{E}f+\underline{\int}_{E}g
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+	对于有限测度的可测集$E$上的非负有界可测函数$f$，成立%
+	$$
+	\overline{\int}_{E}f=\underline{\int}_{E}f
+	$$
+\end{theorem}
+
+\subsection{非负可测函数的积分}
+
+\begin{definition}{非负可测函数的积分}
+	定义可测集$E$上的非负可测函数$f$的积分如下。
+	\begin{enumerate}
+		\item $m(E)<\infty$且$f$有界：%
+		$$
+		\int_E f=\overline{\int}_{E}f=\underline{\int}_{E}f
+		$$
+		\item $m(E)<\infty$：令$f_n=\min\{ f,n \}$，定义%
+		$$
+		\int_Ef=\lim_{n\to\infty}\int_E f_n
+		$$
+		\item 令$E_n=E\cap B_n$，定义%
+		$$
+		\int_Ef=\lim_{n\to\infty}\int_{E_n} f
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}{非负可测函数积分的性质}
+	\begin{enumerate}
+		\item 如果$f\le g$，那么
+		$$
+		\int_Ef\le\int_Eg
+		$$
+		\item 如果$E\cap F=\varnothing$，那么
+		$$
+		\int_{E\sqcup F}f=\int_{E}f+\int_{F}f,\qquad 
+		\int_E f+g=\int_E f+\int_E g
+		$$
+		\item 如果在$E$上几乎处处成立$f=g$​，那么
+		$$
+		\int_E f=\int_E g
+		$$
+		\item 对于非负函数$f$，如果
+		$$
+		\int_Ef=0
+		$$
+		那么在$E$上几乎处处成立$f=0$。
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{存在积分与可测的关系}
+	对于可测集$E$上的非负函数$f$，如果$m(E)<\infty$，那么
+	$$
+	f\text{在}E\text{上可测}
+	\iff \overline{\int}_{E}f=\underline{\int}_{E}f
+	$$
+\end{theorem}
+
+\begin{exercise}
+	对于有限测度的可测集$E\sub\R^n$上的非负可测函数$f$，成立
+	$$
+	\int_Ef<\infty \iff \sum_{n=0}^{\infty}2^n m(E[f\ge 2^n])<\infty
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E$上的非负可测函数$f$和$g$，如果对于任意$a\in\R$，成立
+	$$
+	m(E[f\ge a])=m(E[g\ge a])
+	$$
+	那么
+	$$
+	\int_E f=\int_E g
+	$$
+\end{exercise}
+
+\begin{exercise}
+	对于有限测度的可测集$E$上的非负有界可测函数$f$，记$E_n=E[f\ge n]$，如果$\displaystyle\int_Ef<\infty$，那么$nm(E_n)\to0$。
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E\sub\R^n$上的非负可测函数$f$，证明：如果$\int_Ef<\infty$，定义
+	$$
+	F(x)=\int_{E\cap B_x}f,\quad x\in\R^+
+	$$
+	那么$F$是$\R^+$上的连续函数。
+\end{exercise}
+
+\begin{exercise}
+	对于可测集$E\sub\R^n$上的非负可测函数$f$，如果$\dis\int_Ef<\infty$，那么对于任意$\dis0\le c \le \int_Ef$，存在$F\sub E$，使得$\dis\int_F f=c$。
+\end{exercise}
+
+\begin{exercise}
+	对于有限测度的可测集$E$，$\{ E_i \}_{i=1}^{n}$为$E$的可测子集，如果对于任意$x\in E$，存在至少$k$个$E_i$，使得$x\in E_i$，其中$1\le k \le n$，那么存在$j$，使得$m(E_j)\ge \frac{k}{n}m(E)$。
+\end{exercise}
+
+\subsection{简单函数的积分}
+
+\begin{theorem}{简单函数的积分}
+	对于简单函数
+	$$
+	\varphi=\sum_{k=1}^{n}{c_k\mathbbm{1}_{E_k}}
+	$$
+	成立
+	$$
+	\int_{\bigsqcup\limits_{k=1}^{n} E_k} \varphi=\sum_{k=1}^{n}c_km(E_k)
+	$$
+\end{theorem}
+
+\begin{theorem}{积分与下方图形的关系}{积分与下方图形的关系}
+	对于可测集$E\sub\R^n$上的非负可测函数$f$，成立
+	$$
+	\int_E f=m(G(E;f))
+	$$
+\end{theorem}
+
+\subsection{Levi定理、Lebesgue基本定理与Fatou引理}
+
+\begin{theorem}{Levi定理}
+	对于可测集$E$上的单调递增的非负可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E\lim_{n\to\infty}f_n=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\begin{theorem}{Lebesgue基本定理}
+	对于可测集$E$上的非负可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E \sum_{n=1}^{\infty}f_n=\sum_{n=1}^{\infty}\int_E f_n
+	$$
+\end{theorem}
+
+\begin{theorem}{Fatou引理}
+	对于可测集$E$上的非负可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E\liminf_{n\to\infty}f_n\le\liminf_{n\to\infty}\int_E f_n
+	$$
+\end{theorem}
+
+\begin{example}
+	Fatou引理中成立严格不等号。
+\end{example}
+
+\begin{solution}
+	对于%
+	$$
+	E=[0,1],\qquad f_n=nx^{n-1}
+	$$
+	一方面，由于
+	$$
+	\liminf_{n\to\infty}f_n=0
+	$$
+	那么%
+	$$
+	\int_E\liminf_{n\to\infty}f_n=0
+	$$
+	另一方面，由于%
+	$$
+	\int_E f_n=\int_{0}^{1}nx^{n-1}=1
+	$$
+	那么%
+	$$
+	\liminf_{n\to\infty}\int_E f_n=1
+	$$
+	进而
+	$$
+	\int_E\liminf_{n\to\infty}f_n<\liminf_{n\to\infty}\int_E f_n
+	$$
+\end{solution}
+
+\section{可积函数}
+
+\subsection{可积函数}
+
+\begin{definition}{存在积分}
+	对于可测集$E$上的可测函数$f$，如果其正部和负部的积分之一有限，那么称$f$在$E$上存在积分，并且定义其积分为
+	$$
+	\int_Ef=\int_Ef^+-\int_Ef^-
+	$$
+\end{definition}
+
+\begin{definition}{可积函数}
+	对于可测集$E$上的可测函数$f$，如果其正部和负部的积分均有限，那么称$f$为$E$上可积函数，并且定义其积分为
+	$$
+	\int_Ef=\int_Ef^+-\int_Ef^-
+	$$
+\end{definition}
+
+\begin{proposition}{存在积分函数的性质}
+	\begin{enumerate}
+		\item 数乘：对于可测集$E$上的可测函数$f$，如果$f$在$E$上存在积分，那么对于任意$k\in\R$，$kf$在$E$上存在积分，且
+		$$
+		\int_E kf=k\int_E f
+		$$
+		\item 单调性：对于可测集$E$上的可测函数$f$和$g$，如果$f$和$g$在$E$上存在积分，且$f\le g$​，那么
+		$$
+		\int_Ef\le \int_Eg
+		$$
+		\item 积分路径的可加性：对于不交可测集$\{ E_n \}_{n=1}^{\infty}$，以及在$\bigsqcup\limits_{n=1}^{\infty}E_n$上的可测函数$f$，如果$f$在$\bigsqcup\limits_{n=1}^{\infty}E_n$上存在积分，那么对于任意$n\in\N^*$，$f$在$E_n$上均存在积分，且
+		$$
+		\int_{\bigsqcup\limits_{n=1}^{\infty}E_n}f=\sum_{n=1}^{\infty}\int_{E_n}f
+		$$
+		\item 对于可测集$E$上的可测函数$f$，如果$f$在$E$上存在积分，且在$E$上几乎处处成立$f=g$，那么$g$在$E$上可测且存在积分，同时
+		$$
+		\int_Ef=\int_Eg
+		$$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proposition}{可积函数的性质}
+	\begin{enumerate}
+		\item 加法：对于可测集$E$上的可测函数$f$和$g$，如果$f$和$g$在$E$上可积，那么$f+g$在$E$上可积，且
+		$$
+		\int_E f+g=\int_Ef+\int_Eg
+		$$
+		\item 对于可测集$E$上的可测函数$f$和$g$，如果$g$在$E$上可积，且在$E$上成立$|f|\le g$，那么$f$在$E$上可积。
+		\item 整体可积与局部可积：对于可测集$E$上的可测函数$f$，如果$f$在$E$上可积，那么$f$在$E$的可测子集上可积。
+		\item 可积和绝对可积：对于可测集$E$上的可测函数$f$，成立%
+		$$
+		f\text{ 在 }E\text{ 上可积}
+		\iff
+		|f|\text{ 在 }E\text{ 上可积}
+		$$
+		\item 有界则可积：如果$f$是有限测度的可测集$E$上的有界可测函数，那么$f$在$E$上可积。
+		\item 可积则几乎处处有限：对于可测集$E$上的可测函数$f$，如果$f$在$E$上可积，那么$f$几乎处处有限。
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}{Lebesgue可积和Riemann可积的关系}
+	如果有界函数$f$在$[a,b]$上Riemann可积，那么$f$在$[a,b]$上Lebesgue可积，且积分相等。
+\end{theorem}
+
+\begin{theorem}{Lebesgue可积准则}
+	如果$f$是$[a,b]$上的有界函数，那么%
+	$$
+	f\text{ 在 }[a,b]\text{ 上Riemann可积}
+	\iff
+	f\text{ 在 }[a,b]\text{ 上几乎处处连续}
+	$$
+\end{theorem}
+
+\begin{exercise}
+	对于有限测度的可测集$E$上的几乎处处有限的可测函数$f$，定义
+	$$
+	E_n=E[n-1\le f< n],\quad n\in\Z
+	$$
+	那么$f$在$E$上可积当且仅当
+	$$
+	\sum_{n=-\infty}^{\infty}|n|m(E_n)<\infty
+	$$
+\end{exercise}
+
+\subsection{积分绝对连续性}
+
+\begin{definition}{积分绝对连续性}
+	对于可测集$E$上的存在积分函数$f$，称$f$在$E$上积分绝对连续，如果对于任意$\varepsilon>0$，存在$\delta>0$，使得对于任意可测子集$E_\delta\sub E$，成立
+	$$
+	m(E_\delta)<\delta\implies
+	\left| \int_{E_\delta}f \right|<\varepsilon
+	$$
+\end{definition}
+
+\begin{definition}{积分等度绝对连续性}
+	对于可测集$E$上的可积函数族$\mathscr{F}$，称$\mathscr{F}$在$E$上积分等度绝对连续，如果对于任意$\varepsilon>0$，存在$\delta>0$，使得对于任意可测子集$E_\delta\sub E$，以及任意$f\in\mathscr{F}$，成立
+	$$
+	m(E_\delta)<\delta\implies\left| \int_{E_\delta}f \right|<\varepsilon
+	$$
+\end{definition}
+
+\begin{theorem}{可积则积分绝对连续}
+	对于可测集$E$上的可测函数$f$，如果$f$在$E$上可积，那么$f$在$E$上积分绝对连续。
+\end{theorem}
+
+\begin{theorem}{Vitali定理}
+	对于可测集$E$上的可积函数序列$\{ f_n \}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item $m(E)<\infty$
+		\item $\{ f_n \}_{n=1}^{\infty}$在$E$上积分等度绝对连续；
+		\item 在$E$上成立$f_n\tom f$，
+	\end{enumerate}
+	那么$f$在$E$​上可积，且
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\subsection{Lebesgue控制收敛定理与Lebesgue有界收敛定理}
+
+\begin{theorem}{Lebesgue控制收敛定理}
+	对于可测集$E$上的可测函数序列$\{ f_n \}_{n=1}^{\infty}$与可测函数$F$，如果
+	\begin{enumerate}
+		\item $F$在$E$上可积；
+		\item 对于任意$n\in\N^*$，在$E$上成立$|f_n|\le F$；
+		\item 在$E$上成立$f_n\tom f$，
+	\end{enumerate}
+	那么$f$在$E$上可积，且
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\begin{theorem}{Lebesgue有界收敛定理}
+	对于可测集$E$上的可测函数序列$\{ f_n \}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item $m(E)<\infty$
+		\item $\{ f_n \}_{n=1}^{\infty}$在$E$上一致有界；
+		\item 在$E$上成立$f_n\tom f$，
+	\end{enumerate}
+	那么$f$在$E$上可积，且
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\section{Fubini定理}
+
+\begin{lemma}
+	对于可测集$E\sub\R^{p+q}$，$m(E_x)$是$\R^p$上几乎处处存在定义的可测函数，并且
+	$$
+	m(E)=\int_{\R^p}m(E_x)
+	$$
+\end{lemma}
+
+\begin{theorem}{Fubini定理}
+	如果$f$是$\R^{p+q}$上的可积函数，那么
+	\begin{enumerate}
+		\item 对于几乎任意的$x\in\R^p$，函数$f(x,y)$关于$y\in\R^q$可积；
+		\item 函数$g(x)=\displaystyle\int_{\R^q}f(x,y)\dd y$几乎处处存在定义且在$\R^p$上可积；
+		\item 
+		$$
+		\int_{\R^{p+q}}f=\int_{\R^p}\int_{\R^q}f=\int_{\R^q}\int_{\R^p}f
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+	如果$f$是$\R^{p+q}$上的非负可测函数，那么对于几乎任意的$x\in\R^p$，函数$f(x,y)$关于$y\in\R^q$非负可测，且成立等式
+	$$
+	\int_{\R^{p+q}}f=\int_{\R^p}\int_{\R^q}f=\int_{\R^q}\int_{\R^p}f
+	$$
+\end{corollary}
+
+\begin{corollary}
+	如果$f$是$\R^{p+q}$上的可测函数，那么对于几乎任意的$x\in\R^p$，函数$|f(x,y)|$关于$y\in\R^q$可积，且
+	$$
+	\int_{\R^p}\int_{\R^q}|f|<\infty
+	$$
+\end{corollary}
+
+\section{微分与不定积分}
+
+\subsection{Vitali覆盖引理}
+
+\begin{definition}{Vitali覆盖}
+	称$\R^n$中的球族$\mathscr{B}$为集合$E$的Vitali覆盖，如果对于任意$x\in E$与$\varepsilon>0$，存在$B\in \mathscr{B}$，使得成立$x\in B$且$m(B)<\varepsilon$。
+\end{definition}
+
+\begin{theorem}{Vitali覆盖引理——差不多覆盖定理}
+	对于集合$E\sub \R^n$的Vitali覆盖$\mathscr{B}$，如果$m^*(E)<\infty$，那么对于任意$\varepsilon>0$，存在有限互不相交的球$\{ B_k \}_{k=1}^{n}\sub \mathscr{B}$，使得成立
+	$$
+	m^*\left(E- \bigsqcup_{k=1}^{n}B_k\right)<\varepsilon
+	$$
+\end{theorem}
+
+\subsection{混合极限}
+
+\begin{definition}{左右极限}
+	定义函数$f$在$x_0$处的左右极限为%
+	$$
+	f(x_0^-)=\lim_{x\to x_0^-}f(x),\qquad 
+	f(x_0^+)=\lim_{x\to x_0^+}f(x)
+	$$
+\end{definition}
+
+\begin{definition}{上下极限}
+	定义函数$f$在$x_0$处的上下极限为%
+	\begin{align*}
+		& f_+(x_0)=\limsup_{x\to x_0}f(x)=\lim_{\delta\to 0^+}\sup_{0<|x-x_0|<\delta}f(x)\\
+		& f_-(x_0)=\liminf_{x\to x_0}f(x)=\lim_{\delta\to 0^+}\inf_{0<|x-x_0|<\delta}f(x)
+	\end{align*}
+\end{definition}
+
+\begin{definition}{混合极限}
+	定义函数$f$在$x_0$处的左上、左下、右上、右下极限为
+	\begin{align*}
+		& f_+(x_0^-)
+		=\limsup_{x\to x_0^-}f(x)
+		=\lim_{\delta\to 0^+}\sup_{0<x_0-x<\delta}f(x)\\
+		& f_-(x_0^-)
+		=\liminf_{x\to x_0^-}f(x)
+		=\lim_{\delta\to 0^+}\inf_{0<x_0-x<\delta}f(x)\\
+		& f_+(x_0^+)
+		=\limsup_{x\to x_0^+}f(x)
+		=\lim_{\delta\to 0^+}\sup_{0<x-x_0<\delta}f(x)\\
+		& f_-(x_0^+)
+		=\liminf_{x\to x_0^+}f(x)
+		=\lim_{\delta\to 0^+}\inf_{0<x-x_0<\delta}f(x)
+	\end{align*}
+\end{definition}
+
+\subsection{Dini导数}
+
+\begin{definition}{左右导数}
+	定义函数$f$在$x_0$处的左右导数为%
+	$$
+	f'(x_0^-)=\lim_{x\to x_0^-}\frac{f(x)-f(x_0)}{x-x_0},\qquad 
+	f'(x_0^+)=\lim_{x\to x_0^+}\frac{f(x)-f(x_0)}{x-x_0}
+	$$
+\end{definition}
+
+\begin{definition}{上下导数}
+	定义函数$f$在$x_0$处的上下导数为%
+	\begin{align*}
+		& f_+'(x_0)=\limsup_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}=\lim_{\delta\to 0^+}\sup_{0<|x-x_0|<\delta}\frac{f(x)-f(x_0)}{x-x_0}\\
+		& f_-'(x_0)=\liminf_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}=\lim_{\delta\to 0^+}\inf_{0<|x-x_0|<\delta}\frac{f(x)-f(x_0)}{x-x_0}
+	\end{align*}
+\end{definition}
+
+\begin{definition}{Dini导数}
+	定义函数$f$在$x_0$处的左上、左下、右上、右下导数为
+	\begin{align*}
+		& f_+'(x_0^-)
+		=\limsup_{x\to x_0^-}\frac{f(x)-f(x_0)}{x-x_0}
+		=\lim_{\delta\to 0^+}\sup_{0<x_0-x<\delta}\frac{f(x)-f(x_0)}{x-x_0}\\
+		& f_-'(x_0^-)
+		=\liminf_{x\to x_0^-}\frac{f(x)-f(x_0)}{x-x_0}
+		=\lim_{\delta\to 0^+}\inf_{0<x_0-x<\delta}\frac{f(x)-f(x_0)}{x-x_0}\\
+		& f_+'(x_0^+)
+		=\limsup_{x\to x_0^+}\frac{f(x)-f(x_0)}{x-x_0}
+		=\lim_{\delta\to 0^+}\sup_{0<x-x_0<\delta}\frac{f(x)-f(x_0)}{x-x_0}\\
+		& f_-'(x_0^+)
+		=\liminf_{x\to x_0^+}\frac{f(x)-f(x_0)}{x-x_0}
+		=\lim_{\delta\to 0^+}\inf_{0<x-x_0<\delta}\frac{f(x)-f(x_0)}{x-x_0}
+	\end{align*}
+\end{definition}
+
+\subsection{Lebesgue单调可微定理}
+
+\begin{theorem}{Lebesgue单调可微定理}
+	如果函数$f$在$[a,b]$上单调，那么$f$在$[a,b]$上几乎处处可微，$f'$在$[a,b]$上可积，且
+	$$
+	\left| \int_{a}^{b}f' \right|\le|f(b)-f(a)|
+	$$
+\end{theorem}
+
+\subsection{有界变差函数}
+
+\begin{definition}{变差}
+	称$[a,b]$上的函数$f$关于$[a,b]$的分划%
+	$$
+	\Delta: a=x_0<x_1<\cdots<x_n=b
+	$$
+	的变差为%
+	$$
+	V(\Delta)=\sum_{k=1}^{n}|f(x_k)-f(x_{k-1})|
+	$$
+\end{definition}
+
+\begin{definition}{有界变差函数}
+	称$[a,b]$上的函数$f$为有界变差函数，如果存在$M>0$，使得对于任意$[a,b]$的分划$\Delta$，成立$V(\Delta)\le M$。
+\end{definition}
+
+\begin{definition}{总变差}
+	称$[a,b]$上的有界变差函数$f$的总变差为%
+	$$
+	V_a^b(f)=\sup_{\Delta}V(\Delta)
+	$$
+\end{definition}
+
+\begin{lemma}
+	$[a,b]$上的单调函数$f$为有界变差函数，且%
+	$$
+	V_a^b(f)=|f(b)-f(a)|
+	$$
+\end{lemma}
+
+\begin{lemma}
+	对于$[a,b]$上的有界变差函数$f$，如果$a<c<b$，那么$f$在$[a,c]$与$[c,b]$上有界变差，且%
+	$$
+	V_a^b(f)=V_a^c(f)+V_c^b(f)
+	$$
+\end{lemma}
+
+\begin{definition}{正负变差}
+	对于$[a,b]$上的有界变差函数$f$，令
+	\begin{align*}
+		& V^+(\Delta)=\sum_{f(x_k)\ge f(x_{k-1})}|f(x_k)-f(x_{k-1})|=\frac{V(\Delta)+(f(b)-f(a))}{2}\\
+		& V^-(\Delta)=\sum_{f(x_k)< f(x_{k-1})}|f(x_k)-f(x_{k-1})|=\frac{V(\Delta)-(f(b)-f(a))}{2}
+	\end{align*}
+	称其正负变差为
+	\begin{align*}
+		& \overset{+}{V_a^b}(f)=\sup_{\Delta}V^+(\Delta)=\frac{V_a^b(f)+(f(b)-f(a))}{2}\\
+		& \overset{-}{V_a^b}(f)=\sup_{\Delta}V^-(\Delta)=\frac{V_a^b(f)-(f(b)-f(a))}{2}
+	\end{align*}
+\end{definition}
+
+\begin{lemma}
+	对于$[a,b]$上的有界变差函数$f$，令%
+	$$
+	V(x)=V_a^x(f),\qquad 
+	V^+(x)=\overset{+}{V_a^x}(f),\qquad 
+	V^-(x)=\overset{-}{V_a^x}(f)
+	$$
+	那么$V(x),V^+(x),V^-(x)$均为单调递增函数，且%
+	$$
+	f(x)=V^+(x)-V^-(x)+f(a),\qquad a\le x \le b
+	$$
+\end{lemma}
+
+\begin{theorem}
+	对于$[a,b]$上的函数$f$，成立%
+	$$
+	f\text{ 在 }[a,b]\text{ 上有界变差}
+	\iff
+	f\text{ 可表示为 }[a,b]\text{ 上的单调递增函数之差}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	如果函数$f$在$[a,b]$上有界变差，那么$f$在$[a,b]$上几乎处处可微，$f'$在$[a,b]$上可积，且
+	$$
+	\int_{a}^{b}|f'|\le V_a^b(f)
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于$[a,b]$上的有界变差函数序列$\{ f_n \}_{n=1}^{\infty}$，如果$\dis\sum_{n=1}^{\infty}V_a^b(f_n)<\infty$，且$\dis\sum_{n=1}^{\infty}f_n$处处收敛于$f$，那么$f$在$[a,b]$上有界变差，且$\dis V_a^b(f)\le \sum_{n=1}^{\infty}V_a^b(f_n)$。
+\end{theorem}
+
+\begin{theorem}
+	对于$[a,b]$上的有界变差函数序列$\{ f_n \}_{n=1}^{\infty}$，如果$\dis\sum_{n=1}^{\infty}V_a^b(f_n)<\infty$，且$\dis\sum_{n=1}^{\infty}f_n$处处收敛于$f$，那么$\dis\sum_{n=1}^{\infty}f_n'$几乎处处收敛于$f'$。
+\end{theorem}
+
+\subsection{绝对连续函数}
+
+\begin{definition}{绝对连续函数}
+	称$[a,b]$上的函数$f$为绝对连续函数，如果对于任意$\varepsilon>0$，存在$\delta>0$，使得对于任意$[a,b]$上的分点%
+	$$
+	a\le a_1<b_1\le a_2<b_2\le \cdots \le a_n<b_n\le b
+	$$
+	成立%
+	$$
+	\sum_{k=1}^{n}|b_k-a_k|<\delta
+	\implies
+	\sum_{k=1}^{n}|f(b_k)-f(a_k)|<\varepsilon
+	$$
+\end{definition}
+
+\begin{theorem}
+	$$
+	\text{绝对连续性}
+	\implies
+	\text{有界变差性}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	如果函数$f$在$[a,b]$上绝对连续，那么$f$在$[a,b]$上几乎处处可微，$f'$在$[a,b]$上可积，且
+	$$
+	\int_{a}^{b}f'=f(b)-f(a)
+	$$
+\end{theorem}
+
+\begin{lemma}
+	对于$[a,b]$上的可积函数$f$，如果对于任意$a\le x \le b$，成立$\dis \int_{a}^{x}f=0$，那么在$[a,b]$上几乎处处成立$f=0$。
+\end{lemma}
+
+\begin{theorem}
+	对于$[a,b]$上的可积函数$f$，如果令%
+	$$
+	F(x)=\int_{a}^{x}f+C,\qquad a\le x \le b
+	$$
+	那么$F$在$[a,b]$上绝对连续，且在$[a,b]$上几乎处处成立$F'=f$。
+\end{theorem}
+
+\subsection{分部积分法与变量替换公式}
+
+\begin{theorem}{分部积分法}
+	如果$f$在$[a,b]$上绝对连续，$g$在$[a,b]$上可积，且%
+	$$
+	G(x)=\int_{a}^{x}g+C,\qquad a\le x \le b
+	$$
+	那么%
+	$$
+	\int_{a}^{b}fg=fG\Big|_a^b-\int_{a}^{b}f'G
+	$$
+\end{theorem}
+
+\begin{theorem}{变量替换公式}
+	如果$f,g$在$[a,b]$上可积，且%
+	$$
+	G(x)=\int_{a}^{x}g+C,\qquad a\le x \le b
+	$$
+	那么%
+	$$
+	\int_{a}^{b}f(x)\dd x
+	=\int_{G(a)}^{G(b)}f(G(x))g(x)\dd x
+	$$
+\end{theorem}
+
+\appendix
+
+\chapter{经典定理}
+
+\section{可测函数理论}
+
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{2}
+	\resizebox{\linewidth}{!}{\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			名称 & $f_n$与$f$的可测性 & $m(E)$ & $f_n$的收敛性 & 结论 \\
+			\hline
+			Luzin定理  & $f$几乎处处有限且可测 &  & & $\forall\varepsilon>0,\exists \text{闭集}F_\varepsilon,\text{s.t.}m(E\setminus F_\varepsilon)<\varepsilon\text{且}f\text{在}F_\varepsilon\text{上连续}$ \\
+			\hline
+			Eogrov定理 & $f_n$与$f$几乎处处有限且可测 & $m(E)<\infty$ & $f_n\toae f$  & $f_n\toaun f$ \\
+			\hline
+			Lebesgue定理 & $f_n$与$f$几乎处处有限且可测 & $m(E)<\infty$ & $f_n\toae f$ & $f_n\tom f$ \\
+			\hline
+			Riesz定理  & $f_n$与$f$几乎处处有限且可测 &  & $f_n\tom f$ & $\exists f_{n_k},\text{s.t.}f_{n_k}\toae f$ \\
+			\hline
+	\end{tabular}}
+\end{table}
+
+$$
+\xymatrix{
+	f_n\toae f  \ar@/^/[rrrr]^{(\text{Egorov})\quad m(E)<\infty} \ar[ddrr]_{m(E)<\infty}^{(\text{Lebesgue})} & & & & f_n\toaun f \ar@/^/[llll] \ar[ddll] \\
+	& & & & \\
+	& & f_n\tom f \ar@/^/[ddll]^{(\text{F.Riesz})} \ar@/^/[ddrr] & & \\
+	& & & & \\
+	\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toae f \ar@/^/[uurr]^{m(E)<\infty} & & & & \forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toaun f \ar@/^/[uull]
+}
+$$
+
+\begin{theorem}{收敛点集的结构}{收敛点集的结构}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，成立
+	\begin{align*}
+		E[f_n\to f]
+		& = \bigcap_{k=1}^{\infty}\bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& = \bigcap_{\varepsilon>0}\bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E[ |f_j-f|<\varepsilon ]
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	由于
+	\begin{align*}
+		x\in E[f_n\to f]
+		& \iff f_n(x)\to f(x) \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,\forall j\ge n_k,|f_n(x)-f(x)|<\frac{1}{k} \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,\forall j\ge n_k,x\in E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,x\in \bigcap_{j=n}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff \forall k\in\N^*,x\in \bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff x\in \bigcap_{k=1}^{\infty}\bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right] \\
+	\end{align*}
+	因此
+	$$
+	E[f_n\to f]
+	=\bigcap_{k=1}^{\infty}\bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right]
+	$$
+	同理可证
+	$$
+	E[f_n\to f]
+	=\bigcap_{\varepsilon>0}\bigcup_{n=1}^{\infty}\bigcap_{j=n}^{\infty}E[ |f_j-f|<\varepsilon ]
+	$$
+\end{proof}
+
+\begin{theorem}{一致收敛子集的结构}{一致收敛子集的结构}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，成立%
+	\begin{align*}
+		A\sub E[f_n\rightrightarrows f]
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,A\sub \bigcap_{j=n_k}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff \forall \varepsilon>0,\exists n_{\varepsilon}\in\N^*,A\sub\bigcap_{j=n_{\varepsilon}}^{\infty} E[|f_j-f|<\varepsilon]
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+	\begin{align*}
+		A\sub E[f_n\rightrightarrows f]
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,\forall j\ge n_k,\forall x\in A,|f_j(x)-f(x)|<\frac{1}{k} \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,\forall j\ge n_k,\forall x\in A,x\in E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,\forall j\ge n_k,A\sub E\left[ |f_j-f|<\frac{1}{k} \right] \\
+		& \iff \forall k\in\N^*,\exists n_k\in\N^*,A\sub \bigcap_{j=n_k}^{\infty}E\left[ |f_j-f|<\frac{1}{k} \right]
+	\end{align*}
+	同理
+	\begin{align*}
+		A\sub E[f_n\rightrightarrows f]
+		& \iff \forall \varepsilon>0,\exists n_{\varepsilon}\in\N^*,\forall j\ge n_{\varepsilon},\forall x\in A,|f_j(x)-f(x)|<\varepsilon \\
+		& \iff \forall \varepsilon>0,\exists n_{\varepsilon}\in\N^*,\forall j\ge n_{\varepsilon},\forall x\in A,x\in E[|f_j-f|<\varepsilon] \\
+		& \iff \forall \varepsilon>0,\exists n_{\varepsilon}\in\N^*,\forall j\ge n_{\varepsilon},A\sub E[|f_j-f|<\varepsilon] \\
+		& \iff \forall \varepsilon>0,\exists n_{\varepsilon}\in\N^*,A\sub\bigcap_{j=n_{\varepsilon}}^{\infty} E[|f_j-f|<\varepsilon]
+	\end{align*}
+\end{proof}
+
+\begin{definition}{几乎处处收敛}{几乎处处收敛}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，称$f_n$在$E$上几乎处处收敛于$f$，并记作$f_n\toae f$，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 存在零测集$N\sub E$，使得在$E\setminus N$上成立$f_n\to f$。
+		\item 成立等式%
+		$$
+		m\left(\bigcup_{\varepsilon>0}\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[ |f_j-f|\ge \varepsilon ]\right)=0
+		$$
+		\item 对于任意$\varepsilon> 0$，成立
+		$$
+		m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		\item 若$m(E)<\infty$，则对于任意$\varepsilon> 0$，成立%
+		$$
+		\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		\item 若$m(E)<\infty$，则对于任意$\varepsilon> 0$，成立%
+		$$
+		\lim_{n\to\infty}m\left(E\left[\sup_{j\ge n}|f_j-f|\ge \varepsilon\right]\right)=0
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\iff 2$：由定理\ref{thm:收敛点集的结构}，得证！
+	
+	$2\iff 3$：注意到单调性
+	$$
+	\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \frac{1}{k} \right]\sub
+	\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_{j}-f|\ge \frac{1}{k+1} \right]
+	$$
+	因此由Lebesgue测度的连续性\ref{thm:Lebesgue测度的连续性}可知
+	\begin{align*}
+		m\left(\bigcup_{\varepsilon>0}\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[ |f_j-f|\ge \varepsilon ]\right)=0
+		& \iff m\left(\bigcup_{k=1}^{\infty}\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \frac{1}{k} \right]\right)=0 \\
+		& \iff m\left(\lim_{k\to\infty}\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \frac{1}{k} \right]\right)=0 \\
+		& \iff \lim_{k\to\infty}m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \frac{1}{k} \right]\right)=0 \\
+		& \iff \forall k\in\N^*, m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \frac{1}{k} \right]\right)=0 \\
+		& \iff \forall \varepsilon>0, m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+	\end{align*}
+	
+	$3\iff 4$：注意到单调性
+	$$
+	\bigcup_{j=n}^{\infty}E\left[ |f_j-f|\ge \varepsilon \right]\supset
+	\bigcup_{j=n+1}^{\infty}E\left[ |f_{j}-f|\ge \varepsilon \right]
+	$$
+	因此结合$m(E)<\infty$，由Lebesgue测度的连续性\ref{thm:Lebesgue测度的连续性}%
+	$$
+	m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)
+	=m\left(\lim_{n\to\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)
+	=\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)
+	$$
+	
+	$4\iff 5$：
+	$$
+	\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]
+	=E\left[\sup_{j\ge n}|f_j-f|\ge \varepsilon\right]
+	$$
+\end{proof}
+
+\begin{definition}{近乎一致收敛}{近乎一致收敛}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，称$f_n$在$E$上近乎一致收敛于$f$，并记作$f_n\toaun f$，如果成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意$\delta>0$，存在可测子集$E_\delta\sub E$，使得成立$m(E\setminus E_\delta)<\delta$，且在$E_\delta$上成立$f_n\rightrightarrows f$。
+		\item 对于任意$\varepsilon> 0$，成立%
+		$$
+		\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：任取$\delta>0$，则存在可测子集$E_\delta\sub E$，使得成立$m(E\setminus E_\delta)<\delta$，且在$E_\delta$上成立$f_n\rightrightarrows f$，于是
+	\begin{align*}
+		E_\delta\sub E[f_n\rightrightarrows f]
+		& \iff \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,\forall j\ge n,\forall x\in E_\delta,|f_j(x)-f(x)|<\varepsilon \\
+		& \iff \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,\forall j\ge n,\forall x\in E_\delta,x\in E[|f_j-f|<\varepsilon] \\
+		& \iff \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,\forall j\ge n,E_\delta\sub E[|f_j-f|<\varepsilon] \\
+		& \iff \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,E_\delta\sub\bigcap_{j=N_{\varepsilon,\delta}}^{\infty} E[|f_j-f|<\varepsilon] \\
+		& \iff \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,\bigcup_{j=N_{\varepsilon,\delta}}^{\infty} E[|f_j-f|\ge \varepsilon]\sub E\setminus E_\delta \\
+		& \implies \forall \varepsilon>0,\exists N_{\varepsilon,\delta}\in\N^*,m\left(\bigcup_{j=N_{\varepsilon,\delta}}^{\infty} E[|f_j-f|\ge \varepsilon]\right)\le m(E\setminus E_\delta)<\delta \\
+		& \implies \forall \varepsilon>0,\forall n\ge N_{\varepsilon,\delta},\sup_{k\ge n}m\left(\bigcup_{j=k}^{\infty} E[|f_j-f|\ge \varepsilon]\right)\le m\left(\bigcup_{j=N_{\varepsilon,\delta}}^{\infty} E[|f_j-f|\ge \varepsilon]\right)<\delta \\
+		& \implies \forall \varepsilon>0,\lim_{n\to\infty}\sup_{k\ge n}m\left(\bigcup_{j=k}^{\infty} E[|f_j-f|\ge \varepsilon]\right)<\delta \\
+		& \iff \forall \varepsilon>0,\limsup_{n\to\infty}m\left(\bigcup_{j=k}^{\infty} E[|f_j-f|\ge \varepsilon]\right)<\delta
+	\end{align*}
+	由$\delta$的任意性，对于任意$\varepsilon>0$，成立%
+	$$
+	\limsup_{n\to\infty}m\left(\bigcup_{j=k}^{\infty} E[|f_j-f|\ge \varepsilon]\right)=0
+	$$
+	因此
+	$$
+	\lim_{n\to\infty}m\left(\bigcup_{j=k}^{\infty} E[|f_j-f|\ge \varepsilon]\right)=0
+	$$
+	
+	$2\implies 1$：任取$\delta>0$并固定，任取$n\in\N^*$，则存在$N_n\in\N^*$，使得对于任意$k\ge N_n$，成立%
+	$$
+	m\left(\bigcup_{j=k}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]\right)<\frac{\delta}{2^n}
+	$$
+	因此
+	$$
+	m\left(\bigcup_{j=N_n}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]\right)<\frac{\delta}{2^n}\le m\left(\bigcup_{j=k}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]\right)<\frac{\delta}{2^n}<\frac{\delta}{2^k}
+	$$
+	令%
+	$$
+	E_\delta
+	=\bigcap_{n=1}^{\infty}\bigcap_{j=N_n}^{\infty}E\left[|f_j-f|<\frac{1}{n}\right]
+	,\qquad
+	E\setminus E_\delta
+	=\bigcup_{n=1}^{\infty}\bigcup_{j=N_n}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]
+	$$
+	因此%
+	$$
+	m(E\setminus E_\delta)
+	=m\left(\bigcup_{n=1}^{\infty}\bigcup_{j=N_n}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]\right)
+	\le \sum_{n=1}^{\infty}m\left(\bigcup_{j=N_n}^{\infty}E\left[|f_j-f|\ge\frac{1}{n}\right]\right)
+	<\sum_{n=1}^{\infty}\frac{\delta}{2^n}
+	=\delta
+	$$
+	且由定理\ref{thm:一致收敛子集的结构}，$E_\delta\sub E[f\rightrightarrows f]$，因此在$E_\delta$上成立$f_n\rightrightarrows f$。
+\end{proof}
+
+\begin{definition}{依测度收敛}{依测度收敛}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，称$f_n$在$E$上依测度收敛于$f$，并记作$f_n\tom f$，如果对于任意$\varepsilon>0$，成立
+	$$
+	\lim_{n\to\infty}m(E[|f_n-f|\ge\varepsilon])=0
+	$$
+\end{definition}
+
+\begin{theorem}
+	对于可测集$E$上的几乎处处有限的可测函数序列$\{f_n\}_{n=1}^{\infty}$与几乎处处有限的可测函数$f$，成立如下命题。
+	\begin{enumerate}
+		\item 近乎一致收敛$\implies$几乎处处收敛：
+		$$
+		f_n\toaun f
+		\implies
+		f_n\toae f
+		$$
+		\item 近乎一致收敛$\implies$依测度收敛：
+		$$
+		f_n\toaun f
+		\implies
+		f_n\tom f
+		$$
+		\item (Egorov定理)几乎处处收敛且$m(E)<\infty\implies$近乎一致收敛：若$m(E)<\infty$，则
+		$$
+		f_n\toae f\implies
+		f_n\toaun f
+		$$
+		\item (Lebesgue定理)几乎处处收敛且$m(E)<\infty\implies$依测度收敛：若$m(E)<\infty$，则
+		$$
+		f_n\toae f\implies
+		f_n\tom f
+		$$
+		\item (F.Riesz定理)依测度收敛序列$\implies$存在几乎处处收敛子列：
+		$$
+		f_n\tom f\implies
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toae f
+		$$
+		\item 存在几乎处处收敛子列且$m(E)<\infty\implies$依测度收敛序列：若$m(E)<\infty$，则
+		$$
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toae f\implies f_n\tom f
+		$$
+		\item 依测度收敛序列$\iff$存在近乎一致收敛子列：
+		$$
+		f_n\tom f\iff
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toaun f
+		$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+	Egorov定理中，$m(E)<\infty$条件不可去，例如：
+	$$
+	E=[0,\infty),\qquad 
+	f_n=\mathbbm{1}_{[n,\infty)},\qquad 
+	f=0
+	$$
+\end{remark}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 近乎一致收敛$\implies$几乎处处收敛：如果$f_n\toaun f$，那么由定义\ref{def:近乎一致收敛}，对于任意$\varepsilon>0$，成立
+		$$
+		\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		而对于任意$n\in\N^*$，成立
+		$$
+		m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)\le m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)
+		$$
+		因此
+		$$
+		m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)\le \lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		于是
+		$$
+		m\left(\bigcap_{n=1}^{\infty}\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		进而由定义\ref{def:几乎处处收敛}，成立$f_n\toae f$。
+		\item 近乎一致收敛$\implies$依测度收敛：如果$f_n\toaun f$，那么由定义\ref{def:近乎一致收敛}，对于任意$\varepsilon>0$，成立
+		$$
+		\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		而%
+		$$
+		m\left(E[|f_n-f|\ge \varepsilon]\right)
+		\le m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)
+		$$
+		因此%
+		$$
+		\lim_{n\to\infty}m\left(E[|f_n-f|\ge \varepsilon]\right)\le
+		\lim_{n\to\infty}m\left(\bigcup_{j=n}^{\infty}E[|f_j-f|\ge \varepsilon]\right)=0
+		$$
+		于是%
+		$$
+		\lim_{n\to\infty}m\left(E[|f_n-f|\ge \varepsilon]\right)=0
+		$$
+		进而由定义\ref{def:依测度收敛}，成立$f_n\tom f$。
+		\item (Egorov定理)几乎处处收敛且$m(E)<\infty\implies$近乎一致收敛：由定义\ref{def:近乎一致收敛}与\ref{def:几乎处处收敛}，得证！
+		\item (Lebesgue定理)几乎处处收敛且$m(E)<\infty\implies$依测度收敛：若$m(E)<\infty$，则由Egorov定理\ref{thm:Egorov定理}
+		$$
+		f_n\toae f\implies f_n\toaun f \implies f_n\tom f
+		$$
+		\item (F.Riesz定理)依测度收敛序列$\implies$存在几乎处处收敛子列：
+		$$
+		f_n\tom f\implies
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toaun f \implies
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toae f
+		$$
+		\item 存在几乎处处收敛子列且$m(E)<\infty\implies$依测度收敛序列：若$m(E)<\infty$，则
+		$$
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toae f\implies 
+		\forall f_{n_k},\exists f_{n_{k_l}},\text{s.t.}f_{n_{k_l}}\toaun f
+		\implies f_n\tom f
+		$$
+		\item 依测度收敛序列$\implies$存在近乎一致收敛子列：若$f_n\tom f$，则任取$\{ f_n \}$的子序列$\{ f_{n_k} \}$，因此$f_{n_k}\tom f$，此时存在$\{ f_{n_k} \}$的子序列$\{ f_{n_{k_l}} \}$，使得对于任意$\varepsilon>0$与$l\in\N^*$，成立%
+		$$
+		m(E[|f_{n_{k_l}}-f|\ge\varepsilon])\le\frac{1}{2^l}
+		$$
+		因此%
+		$$
+		m\left(\bigcap_{l=n}^{\infty}E[|f_{n_{k_l}}-f|\ge\varepsilon]\right)
+		\le \sum_{l=n}^{\infty}m\left(E[|f_{n_{k_l}}-f|\ge\varepsilon]\right)
+		\le \sum_{l=n}^{\infty}\frac{1}{2^l}
+		= \frac{1}{2^{n-1}}
+		$$
+		从而%
+		$$
+		\lim_{n\to\infty}m\left(\bigcap_{l=n}^{\infty}E[|f_{n_{k_l}}-f|\ge\varepsilon]\right)=0
+		$$
+		由定义\ref{def:近乎一致收敛}，成立$f_{n_{k_l}}\toaun f$。
+		\item 不依测度收敛序列$\centernot\implies$不存在近乎一致收敛子列：若$f_n\not\xlongrightarrow{m} f$，则存在$\varepsilon_0>0$，使得成立
+		$$
+		m(E[|f_n-f|\ge\varepsilon_0])\nrightarrow 0
+		$$
+		因此存在$\delta>0$与子序列$\{ f_{n_k} \}$，使得对于任意$k\in\N^*$，成立%
+		$$
+		m(E[|f_{n_k}-f|\ge\varepsilon_0])>\delta
+		$$
+		由定义\ref{def:近乎一致收敛}，$\{ f_{n_k} \}$不存在近乎一致收敛的子序列。
+	\end{enumerate}
+\end{proof}
+
+\section{积分理论}
+
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{2}
+	\resizebox{\linewidth}{!}{\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			名称 & $m(E)$ & 非负性 & 收敛性 & 单调性/连续性/控制性/有界性 & 结论 \\ \hline
+			Levi定理 & & $f_n \ge 0$ & $f_n \toae f$ & $f_n$单调递增 & $\displaystyle \int_E f = \lim_{n \to \infty} \int_E f_n$ \\ \hline
+			Lebesgue基本定理 & & $f_n \ge 0$ & & & $\displaystyle \int_E \sum_{n=1}^{\infty} f_n = \sum_{n=1}^{\infty} \int_E f_n$ \\ \hline
+			Fatou引理 & & $f_n \ge 0$ & & & $\displaystyle \int_E \liminf_{n \to \infty} f_n \le \liminf_{n \to \infty} \int_E f_n$ \\ \hline
+			Vitali定理 & $m(E) < \infty$ & & $f_n \tom f$ & $\{ f_n \}$积分等度绝对连续 & $\displaystyle \int_E f = \lim_{n \to \infty} \int_E f_n$ \\ \hline
+			Lebesgue控制收敛定理 & & & $f_n \tom f$ & $\dis\sup_{n\in\N^*}|f_n| \le F\text{且} \int_EF<\infty$ & $\displaystyle \int_E f = \lim_{n \to \infty} \int_E f_n$ \\ \hline
+			Lebesgue有界收敛定理 & $m(E) < \infty$ & & $f_n \tom f$ & $\{ f_n \}$一致有界 & $\displaystyle \int_E f = \lim_{n \to \infty} \int_E f_n$ \\ \hline
+	\end{tabular}}
+\end{table}
+
+\begin{remark}
+	Lebesgue控制收敛定理中$\dis\int_E F<\infty$条件不可去，例如：%
+	$$
+	f_n(x)=\begin{cases}
+		n,\qquad & 0<x\le 1/n\\
+		0,\qquad & x>1/n
+	\end{cases}
+	$$
+	若对于任意$n\in\N^*$，成立$|f_n|\le F$，则$F$在$[1/(1+n),1/n]$上成立$F\ge n$，因此%
+	$$
+	\int_{[0,\infty)}F
+	\ge\sum_{n=1}^{\infty}\int_{\left[\frac{1}{1+n},\frac{1}{n}\right]}n
+	=\sum_{n=1}^{\infty}n\left(\frac{1}{n}-\frac{1}{1+n}\right)
+	=\sum_{n=1}^{\infty}\frac{1}{1+n}
+	=\infty
+	$$
+	但是%
+	$$
+	f_n\toae 0,\qquad
+	\int_{[0,\infty)}f_n=1,\qquad
+	\int_{[0,\infty)}0=0
+	$$
+\end{remark}
+
+\begin{definition}{Lebesgue积分}
+	对于可测集$E$上的可测函数$f$，定义Lebesgue积分$\int_E f$。
+	\begin{enumerate}
+		\item 定义简单函数$\dis \varphi=\sum_{k=1}^{n}{c_k\mathbbm{1}_{E_k}}$在可测集$\dis E=\bigsqcup\limits_{k=1}^{n} E_k$上的积分为%
+		$$
+		\int_E\varphi=\sum_{k=1}^{n}c_km(E_k)
+		$$
+		\item 若$f\ge 0$，则存在$E$上的单调递增的简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}$，使得成立$\varphi_n\to f$，定义$f$在$E$上的积分为
+		$$
+		\int_Ef=\lim_{n\to\infty}\int_E\varphi_n
+		$$
+		\item 对于一般的$f$，若$\dis \int_Ef^+<\infty$且$\dis \int_Ef^-<\infty$，则定义$f$在$E$上的积分为
+		$$
+		\int_Ef=\int_Ef^+-\int_Ef^-
+		$$
+	\end{enumerate}
+\end{definition}
+
+\begin{theorem}{Levi定理}{Levi定理}
+	对于可测集$E$上的可测函数序列$\{ f_n \}_{n=1}^{\infty}$，如果
+	\begin{enumerate}
+		\item 对于任意$n\in\N^*$，$f_n\ge 0$；
+		\item 对于任意$n\in\N^*$，$f_n\le f_{n+1}$；
+		\item 在$E$上成立$f_n\toae f$
+	\end{enumerate}
+	那么$f$在$E$上存在积分，且
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_Ef_n
+	$$
+\end{theorem}
+
+\begin{proof}
+	不妨$f_n\to f$。由于$f$可测，那么存在单调递增的简单函数序列$\{ \varphi_n \}_{n=1}^{\infty}$，使得成立$\varphi_n\to f$，因此
+	$$
+	\int_Ef=\lim_{n\to\infty}\int_E\varphi_n
+	$$
+	对于任意$m\in\N^*$，由于$f_m$可测，那么存在单调递增的简单函数序列$\{ \varphi_n^{(m)} \}_{n=1}^{\infty}$，使得成立$\varphi_n^{(m)}\to f_m$，因此
+	$$
+	\int_Ef_m=\lim_{n\to\infty}\int_E\varphi_n^{(m)}
+	$$
+	构造简单函数$\dis\Phi_n=\max_{1\le m \le n}\varphi_n^{(m)}$。由于%
+	\begin{gather*}
+		\varphi_n^{(m)}
+		\le \Phi_n
+		\le f_n
+		\label{Levi式1}\tag{1}
+	\end{gather*}
+	那么%
+	\begin{gather*}
+		\int_E \varphi_n^{(m)}
+		\le \int_E \Phi_n
+		\le \int_E f_n
+		\label{Levi式2}\tag{2}
+	\end{gather*}
+	在式(\ref{Levi式1})与(\ref{Levi式2})中，令$n\to\infty$，则
+	\begin{gather*}
+		f_m
+		\le \lim_{n\to\infty}\Phi_n
+		\le f \label{Levi式3}\tag{3}\\
+		\int_E f_m
+		\le \lim_{n\to\infty}\int_E \Phi_n
+		\le \lim_{n\to\infty}\int_E f_n
+		\label{Levi式4}\tag{4}
+	\end{gather*}
+	在式(\ref{Levi式3})中，令$m\to\infty$，则%
+	$$
+	f
+	\le \lim_{n\to\infty}\Phi_n
+	\le f
+	$$
+	因此$\Phi_n\to f$。在式(\ref{Levi式4})中，令$m\to\infty$，则%
+	$$
+	\lim_{m\to\infty}\int_E f_m
+	\le \lim_{n\to\infty}\int_E \Phi_n
+	= \int_E f
+	\le \lim_{n\to\infty}\int_E f_n
+	$$
+	进而%
+	$$
+	\int_E f=\lim_{n\to\infty}\int_E f_n
+	$$
+	命题得证！
+\end{proof}
+
+\begin{theorem}{Lebesgue基本定理}{Lebesgue基本定理}
+	对于可测集$E$上的非负可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E \sum_{n=1}^{\infty}f_n=\sum_{n=1}^{\infty}\int_E f_n
+	$$
+\end{theorem}
+
+\begin{proof}
+	由Levi定理\ref{thm:Levi定理}，命题得证！
+\end{proof}
+
+\begin{theorem}{Fatou引理}{Fatou引理}
+	对于可测集$E$上的非负可测函数序列$\{ f_n \}_{n=1}^{\infty}$，成立
+	$$
+	\int_E\liminf_{n\to\infty}f_n\le\liminf_{n\to\infty}\int_E f_n
+	$$
+\end{theorem}
+
+\begin{proof}
+	构造$\dis g_n=\inf_{m\ge n}f_m$，那么$g_n$为单调递增的非负可测函数序列，由Levi定理\ref{thm:Levi定理}
+	$$
+	\int_E\liminf_{n\to\infty}f_n
+	=\int_E\lim_{n\to\infty}\inf_{m\ge n}f_m
+	=\int_E\lim_{n\to\infty}g_n
+	=\lim_{n\to\infty}\int_Eg_n
+	=\lim_{n\to\infty}\int_E\inf_{m\ge n}f_m
+	\le \lim_{n\to\infty}\inf_{m\ge n}\int_Ef_m
+	=\liminf_{n\to\infty}\int_E f_n
+	$$
+\end{proof}
+
+\begin{example}
+	Fatou引理中成立严格不等号。
+\end{example}
+
+\begin{solution}
+	对于%
+	$$
+	E=[0,1],\qquad f_n=nx^{n-1}
+	$$
+	一方面，由于
+	$$
+	\liminf_{n\to\infty}f_n=0
+	$$
+	那么%
+	$$
+	\int_E\liminf_{n\to\infty}f_n=0
+	$$
+	另一方面，由于%
+	$$
+	\int_E f_n=\int_{0}^{1}nx^{n-1}=1
+	$$
+	那么%
+	$$
+	\liminf_{n\to\infty}\int_E f_n=1
+	$$
+	进而
+	$$
+	\int_E\liminf_{n\to\infty}f_n<\liminf_{n\to\infty}\int_E f_n
+	$$
+\end{solution}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
