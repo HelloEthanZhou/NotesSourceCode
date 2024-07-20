@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.29)  18 JUL 2024 20:08
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.29)  20 JUL 2024 11:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2199,10 +2199,10 @@ Package logreq Info: Writing requests to '"Galois理论 - 笔记".run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 51952 strings out of 476179
- 1077860 string characters out of 5803369
+ 51963 strings out of 476179
+ 1078529 string characters out of 5803369
  2005892 words of memory out of 5000000
- 71704 multiletter control sequences out of 15000+600000
+ 71715 multiletter control sequences out of 15000+600000
  481852 words of font info for 139 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  103i,11n,109p,748b,1312s stack positions out of 10000i,1000n,20000p,200000b,200000s
