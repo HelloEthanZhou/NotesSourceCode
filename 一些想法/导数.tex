@@ -1,0 +1,96 @@
+\documentclass[UTF8]{ctexart}
+
+%opening
+\title{2022年新高考一卷导数}
+\author{周同学}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{svg}
+
+\begin{document}
+	
+\maketitle
+
+\newpage
+
+
+对于函数$ f(x)=\mathrm{e}^{x}-x,x\in\mathbb{R} $和$ g(x)=x-\ln{x},x\in(0,+\infty) $，若$ a,b,c $满足
+\[ f(a)=g(b)=f(c)=g(c) \]
+且$ a<c<b $，证明：
+\[ a+b=2c \]
+
+{\bfseries 证明：}
+
+法一：注意到
+\[ f(x)=g(\mathrm{e}^{x}) \qquad f(\ln{x})=g(x) \]
+由于
+\[ f(a)=g(b)=f(c)=g(c) \]
+那么
+\[ f(a)=f(\ln{c}) \qquad g(b)=g(\mathrm{e}^{c}) \]
+注意到
+\[ a<0<c<1<b \]
+那么
+\[ a=\ln{c} \qquad b=\mathrm{e}^{c} \]
+进而
+\[ a+b=\ln{c}+\mathrm{e}^{c}=2c \]
+命题得证！
+
+\newpage
+
+法二：
+记
+\[ \alpha=\frac{\mathrm{e}^{c}}{\mathrm{e}^{a}}>1 \qquad \beta=\frac{b}{c}>1 \]
+由于$ f(a)=f(c),g(b)=g(c) $，容易得到
+\begin{equation*}
+	\begin{cases}
+		a=\ln{\frac{\ln{\alpha}}{\alpha-1}}\\
+		c=\ln{\frac{\alpha\ln{\alpha}}{\alpha-1}}
+	\end{cases}
+	\qquad
+	\begin{cases}
+		b=\frac{\beta\ln{\beta}}{\beta-1}\\
+		c=\frac{\ln{\beta}}{\beta-1}
+	\end{cases}
+\end{equation*}
+同时$ f(c)=g(c) $，代入可得
+\[ \frac{\alpha\ln{\alpha}}{\alpha-1}-\ln{\frac{\alpha\ln{\alpha}}{\alpha-1}}=\frac{\ln{\beta}}{\beta-1}-\ln{\frac{\ln{\beta}}{\beta-1}}\label{eq}\tag{*} \]
+而若要证明$ a+b=2c $，只需证明
+\[ \ln{\frac{\ln{\alpha}}{\alpha-1}}+\frac{\beta\ln{\beta}}{\beta-1}=\ln{\frac{\alpha\ln{\alpha}}{\alpha-1}}+\frac{\ln{\beta}}{\beta-1} \]
+显然，只需证明
+\[ \alpha=\beta \]
+
+记辅助函数
+\begin{align*}
+	&p(x)=\frac{x\ln{x}}{x-1},\quad x\in(1,+\infty)\\
+	&q(y)=\frac{\ln{y}}{y-1},\quad y\in(1,+\infty)
+\end{align*}
+容易证明，$ p(x) $关于$ x $严格单调递增，$ q(y) $关于$ y $严格单调递减，于是
+\[ 0<q(y)<1<p(x) \]代入(\ref{eq})中得到
+\[ p(\alpha)-\ln{p(\alpha)}=q(\beta)-\ln{q(\beta)} \]
+记$ t=\frac{p(\alpha)}{q(\beta)}>1 $，结合上式，容易得到
+\begin{equation*}
+	\begin{cases}
+		p(\alpha)=\frac{t\ln{t}}{t-1}\\
+		q(\beta)=\frac{\ln{t}}{t-1}
+	\end{cases}
+\end{equation*}
+因此
+\[ p(\alpha)=p(t) \qquad q(\beta)=q(t) \]
+由于$ p(x) $和$ q(y) $的严格单调性，得到
+\[ \alpha=\beta=t \]
+
+综上所述，原命题得证！
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
