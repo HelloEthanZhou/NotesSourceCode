@@ -1,0 +1,959 @@
+\documentclass[lang = cn, scheme = chinese, thmcnt = section]{elegantbook}
+% elegantbook      设置elegantbook文档类
+% lang = cn        设置中文环境
+% scheme = chinese 设置标题为中文
+% thmcnt = section 设置计数器
+
+
+%% 1.封面设置
+
+\title{多复变函数论基础 - 史济怀 - 笔记}                % 文档标题
+
+\author{若水}                        % 作者
+
+\myemail{ethanmxzhou@163.com}       % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}                       % 日期
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\pll}{\kern 0.56em/\kern -0.8em /\kern 0.56em} % 平行
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+	\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+	\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+	\begin{center}
+		
+		\large{感谢 \textbf{ 勇敢的 } 自己}
+		
+	\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{多复变全纯函数}
+
+\section{全纯函数}
+
+\subsection{全纯函数的定义}
+
+\begin{definition}{域}
+	称$\Omega\sub\C^n$为域，如果$\Omega$为连通开集。
+\end{definition}
+
+\begin{definition}{多圆柱}
+	对于$\bs{a}=(a_1,\cdots,a_n)\in\C^n$，与$\bs{r}=(r_1,\cdots,r_n)\in\R_{> 0}^n$，定义多圆柱为
+	$$
+	P_{\bs{r}}(\bs{a})=\{ (z_1,\cdots,z_n)\in\C^n:|z_k-a_k|<r_k,1\le k\le n \}
+	$$
+	特别的，定义单位多圆柱为
+	$$
+	U^n=P_{\bs{1}}(\bs{0})=\{ (z_1,\cdots,z_n)\in\C^n:|z_k|<1,1\le k\le n \}
+	$$
+\end{definition}
+
+\begin{definition}{球}
+	对于$\bs{z}_0\in\C^n$，与$r>0$，定义球为
+	$$
+	B_{r}(\bs{z}_0)=\{ \bs{z}\in\C^n:|\bs{z}-\bs{z}_0|<r \}
+	$$
+	特别的，定义单位球为
+	$$
+	B_n=B_1(\bs{0})=\{ \bs{z}\in\C^n:|\bs{z}|<1 \}
+	$$
+\end{definition}
+
+\begin{definition}{全纯函数}
+	对于域$\Omega\sub\C^n$，称函数$f:\Omega\to\C$为全纯函数，如果对于任意$\bs{a}\in\Omega$，存在多圆柱$P_{\bs{r}}(\bs{a})$，使得对于任意$\bs{z}\in P_{\bs{r}}(\bs{a})$，存在幂级数
+	$$
+	f(z)=\sum_{\bs{\alpha}\in\N^n}C_{\bs{\alpha}}(\bs{z}-\bs{a})^{\bs{\alpha}}
+	$$
+\end{definition}
+
+\begin{theorem}{Taylor展式}{Taylor展式}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，成立
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\N^n}\frac{f^{(\bs{\alpha})}(\bs{a})}{\bs{\alpha}!}(\bs{z}-\bs{a})^{\bs{\alpha}}
+	$$
+	其中
+	$$
+	f^{(\bs{\alpha})}=\frac{\partial^{\alpha_1+\cdots+\alpha_n}}{\partial z_1^{\alpha_1}\cdots \partial z_n^{\alpha_n}}f,\qquad 
+	\bs{\alpha}!=\alpha_1!\cdots\alpha_n!
+	$$
+\end{theorem}
+
+\subsection{唯一性定理}
+
+\begin{theorem}{唯一性定理}{唯一性定理}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，如果存在非空开集$G\sub\Omega$，使得成立$f|_G=0$，那么$f=0$。
+\end{theorem}
+
+\begin{proof}
+	对于$\bs{\alpha}\in\N^n$，定义
+	\begin{align*}
+		& K = \{ \bs{z}\in \Omega:\forall\bs{\alpha}\in\N^n,f^{(\bs{\alpha})}(\bs{z})=0 \}\\
+		& K_{\bs{\alpha}} = \{ \bs{z}\in \Omega:f^{(\bs{\alpha})}(\bs{z})=0 \}
+	\end{align*}
+	
+	由于$f^{(\bs{\alpha})}$为连续函数，且$\{0\}$为闭集，那么$K_{\bs{\alpha}}$为闭集。由于
+	$$
+	K=\bigcap_{\bs{\alpha}\in\N^n}K_{\bs{\alpha}}\\
+	$$
+	那么$K$为闭集。
+	
+	对于任意$\bs{a}\in K$，由于$f$在$\Omega$上全纯，那么存在$\bs{r}\in\R_{>0}^n$，使得对于任意$\bs{z}\in P_{\bs{r}}(\bs{a})$，成立幂级数展开
+	$$
+	f(z)
+	=\sum_{|\bs{\alpha}|=0}^{n}\frac{f^{(\bs{\alpha})}(\bs{a})}{\bs{\alpha}!}(\bs{z}-\bs{a})^{\bs{\alpha}}=0
+	$$
+	因此$P_{\bs{r}}(\bs{a})\sub K$。由$\bs{a}$的任意性，$K$为开集。
+	
+	由于$G$为非空开集，那么$G\sub K$，因此$K$非空。由于
+	$$
+	\Omega=K\cup (\Omega\setminus K)
+	$$
+	且$\Omega$连通，那么$\Omega=K$，进而在$\Omega$上成立$f=0$。
+\end{proof}
+
+\begin{theorem}{开映射定理}{开映射定理}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，或$f$为常函数，或$f$为开映射。
+\end{theorem}
+
+\begin{proof}
+	如果$f$不为常函数，对于任意$\bs{a}\in\Omega$，取$\bs{r}\in\R_{>0}^n$，使得成立$P_{\bs{r}}(\bs{a})\sub\Omega$。由唯一性定理\ref{thm:唯一性定理}，$f$在$P_{\bs{r}}(\bs{a})$不恒为$f(\bs{a})$，于是存在$\bs{b}\in P_{\bs{r}}(\bs{a})$，使得成立$f(\bs{a})\ne f(\bs{b})$。
+	
+	构造开集
+	$$
+	D=\{ \lambda\in\C:\bs{a}+\lambda(\bs{b}-\bs{a}\in P_{\bs{r}}(\bs{a}) \}
+	$$
+	构造全纯函数$g(\lambda)=f(\bs{a}+\lambda(\bs{b}-\bs{a})$，其中$\lambda\in D$。由于
+	$$
+	g(0)=f(\bs{a})\ne f(\bs{b})=g(1)
+	$$
+	那么$g$为$D$上的不为常函数，由开映射定理\ref{thm:开映射定理}，$g(D)$为$\C$中的开集，而$g(D)\sub f(P_{\bs{r}}(\bs{a}))$，因此$f(P_{\bs{r}}(\bs{a}))$为$\C$中的开集，进而$f$为开映射。
+\end{proof}
+
+\begin{theorem}{最大模原理}{最大模原理}
+	对于域$\Omega\sub\C^n$上的全纯非常函数$f:\Omega\to\C$，$|f|$不在$\Omega$的内部取到最大值。
+\end{theorem}
+
+\begin{proof}
+	如果$|f|$在$\Omega$内部取到最大值，那么存在$\bs{a}\in\Omega^\circ$，使得对于任意$\bs{z}\in\Omega$，成立$|f(\bs{z})|\le |f(\bs{a})|$，因此
+	$$
+	f(\Omega)\sub \{ z\in\C:|z|\le |f(\bs{a})| \}
+	$$
+	由开映射定理\ref{thm:开映射定理}，$f(\Omega)$为开集，因此
+	$$
+	f(\Omega)\sub \{ z\in\C:|z|< |f(\bs{a})| \}
+	$$
+	但是$|f(\bs{a})|\in f(\Omega)$，导出矛盾$|f(\bs{a})|<|f(\bs{a})|$！
+\end{proof}
+
+\section{多圆柱的Cauchy积分公式及其应用}
+
+\subsection{多圆柱的Cauchy积分公式}
+
+\begin{definition}{多圆柱的特征边界}
+	定义多圆柱
+	$$
+	P_{\bs{r}}(\bs{a})=\{ (z_1,\cdots,z_n)\in\C^n:|z_k-a_k|<r_k,1\le k\le n \}
+	$$
+	的特征边界为
+	$$
+	\partial_DP_{\bs{r}}(\bs{a})
+	=\{ (z_1,\cdots,z_n)\in\C^n:|z_k-a_k|=r_k,1\le k\le n \}
+	$$
+\end{definition}
+
+\begin{theorem}{多圆柱的Cauchy积分公式}{多圆柱的Cauchy积分公式}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，如果$\overline{P}_{\bs{r}}(\bs{a})\sub\Omega$，那么对于任意$\bs{z}\in P_{\bs{r}}(\bs{a})$，成立
+	$$
+	f(\bs{z})=
+	\frac{1}{(2\pi i)^n}\int_{\partial_DP_{\bs{r}}(\bs{a})}\frac{f(\bs{\zeta})}{\prod\limits_{k=1}^{n}(\zeta_k-z_k)}\dd\bs{\zeta}
+	$$
+\end{theorem}
+
+\begin{theorem}{多圆柱的Taylor展式}{多圆柱的Taylor展式}
+	如果函数$f$为多圆柱$P_{\bs{r}}(\bs{a})$上的全纯函数，那么对于任意$\bs{z}\in P_{\bs{r}}(\bs{a})$，成立
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\N^n}\frac{f^{(\bs{\alpha})}(\bs{a})}{\bs{\alpha}!}(\bs{z}-\bs{a})^{\bs{\alpha}}
+	$$
+\end{theorem}
+
+\begin{theorem}{Cauchy不等式}{Cauchy不等式}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，如果$\overline{P}_{\bs{r}}(\bs{a})\sub\Omega$，那么
+	$$
+	\left|f^{(\bs{\alpha})}(\bs{a})\right|
+	\le
+	\frac{\bs{\alpha}!}{\bs{r}^{\bs{\alpha}}}\sup_{\bs{z}\in \partial_DP_{\bs{r}}(\bs{a})}|f(\bs{z})|
+	$$
+\end{theorem}
+
+\begin{proof}
+	由多圆柱的Cauchy积分公式\ref{thm:多圆柱的Cauchy积分公式}
+	$$
+	f(\bs{z})=
+	\frac{1}{(2\pi i)^n}\int_{\partial_DP_{\bs{r}}(\bs{a})}\frac{f(\bs{\zeta})}{\prod\limits_{k=1}^{n}(\zeta_k-z_k)}\dd\bs{\zeta}
+	$$
+	那么
+	$$
+	f^{(\bs{\alpha})}(\bs{a})=\frac{\bs{\alpha}!}{(2\pi i )^n}
+	\int_{\partial_DP_{\bs{r}}(\bs{a})}
+	\frac{f(\bs{\zeta})}{\prod\limits_{k=1}^{n}(\zeta_k-z_k)^{\alpha_k-1}}\dd\bs{\zeta}
+	$$
+	记$\displaystyle M=\sup_{\bs{z}\in \partial_DP_{\bs{r}}(\bs{a})}|f(\bs{z})|$，进而
+	\begin{align*}
+		\left|f^{(\bs{\alpha})}(\bs{a})\right|
+		& \le \frac{\bs{\alpha}!}{(2\pi)^n}
+		\int_{\partial_DP_{\bs{r}}(\bs{a})}
+		\frac{|f(\bs{\zeta})|}{\prod\limits_{k=1}^{n}|\zeta_k-z_k|^{\alpha_k1}}|\dd\bs{\zeta}|\\
+		& \le \frac{\bs{\alpha}!}{(2\pi)^n}
+		\frac{M}{\prod\limits_{k=1}^{n}r_k^{\alpha_k-1}}(2\pi)^nr_1\cdots r_n\\
+		& = M\frac{\bs{\alpha}!}{\bs{r}^{\bs{\alpha}}}
+	\end{align*}
+\end{proof}
+
+\subsection{Weierstrass定理}
+
+\begin{definition}{相对紧集}
+	称$G$为相对于$\Omega$的紧集，并记作$G\sub\sub \Omega$，如果$\overline{G}\sub\Omega$，且$\overline{G}$为紧集。
+\end{definition}
+
+\begin{theorem}
+	对于域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，如果紧集$K$成立$K\sub G\sub\sub \Omega$，那么存在域$K,G$与$\bs{\alpha}$有关的常数$C_{\bs{\alpha}}$，使得成立
+	$$
+	\sup_{\bs{z}\in K}|f^{\bs{\alpha}}(\bs{z})|
+	\le C_{\bs{\alpha}}\sup_{\bs{z}\in G}|f(\bs{z})|
+	$$
+\end{theorem}
+
+\begin{proof}
+	
+\end{proof}
+
+\begin{theorem}{Weierstrass定理}{Weierstrass定理}
+	对于域$\Omega\sub\C^n$上的全纯函数序列$\{f_n:\Omega\to\C\}_{n=1}^{\infty}$，如果其在$\Omega$上内闭一致收敛于$f$，那么$f$为$\Omega$上的全纯函数，且$\{f_n^{(\bs{\alpha})}\}_{n=1}^{\infty}$在$\Omega$上内闭一致收敛于$f^{(\bs{\alpha})}$。
+\end{theorem}
+
+\subsection{Montel定理}
+
+\begin{definition}{正规族}
+	称域$\Omega\sub\C^n$上的全纯函数族$\mathscr{F}$为正规族，如果对于任意序列$\{f_n:\Omega\to\C\}_{n=1}^{\infty}\sub \mathscr{F}$，存在子列$\{f_{n_k}:\Omega\to\C\}_{k=1}^{\infty}$，使得其在$\Omega$上内闭一致收敛。
+\end{definition}
+
+\begin{definition}{局部一致有界性}
+	域$\Omega\sub\C^n$上的全纯函数族$\mathscr{F}$为局部一致有界的，如果对于任意紧集$K\sub\Omega$，存在常数$M$，使得对于任意$\bs{z}\in K$与$f\in\mathscr{F}$，成立$|f(\bs{z})|\le M$。
+\end{definition}
+
+\begin{theorem}{Montel定理}{Montel定理}
+	对于域$\Omega\sub\C^n$上的全纯函数族$\mathscr{F}$，成立
+	$$
+	\mathscr{F}\text{ 为正规族}
+	\iff 
+	\mathscr{F}\text{ 局部一直有界}
+	$$
+\end{theorem}
+
+\subsection{Hurwitz定理}
+
+\begin{theorem}{Hurwitz定理}{Hurwitz定理}
+	对于域$\Omega\sub\C^n$上的处处非零的全纯函数序列$\{f_n:\Omega\to\C\}_{n=1}^{\infty}$，如果其在$\Omega$上内闭一致收敛于$f$，那么或$f=0$，或$f$处处非零。
+\end{theorem}
+
+\section{Hartogs现象}
+
+\subsection{Hartogs现象}
+
+\begin{definition}{全纯延拓}
+	对于域$\Omega_0\subsetneq\Omega\sub\C^n$，称$\Omega$上的全纯函数$F$为$\Omega_0$上的全纯函数$f$的全纯延拓，如果$F|_{\Omega_0}=f$。
+\end{definition}
+
+\begin{theorem}{Hartogs现象}{Hartogs现象}
+	如果$n\ge 2$，那么存在域$\Omega\sub\C^n$，使得对于任意$\Omega$上的全纯函数存在全纯延拓。
+\end{theorem}
+
+\subsection{Reinhardt域上的展式}
+
+\begin{definition}{Reinhardt域}
+	称域$\Omega\sub\C^n$为Reinhardt域，如果对于任意$(z_1,\cdots,z_n)\in\Omega$与$(\theta_1,\cdots,\theta_n)\in\R^n$，成立$(\mathrm{e}^{i\theta_1}z_1,\cdots,\mathrm{e}^{i\theta_n}z_n)\in\Omega$。
+\end{definition}
+
+\begin{theorem}{Reinhardt域上的展式}{Reinhardt域上的展式}
+	如果函数$f$为Reinhardt域$\Omega\sub\C^n$上的全纯函数，那么对于任意$\bs{z}\in \Omega$，存在幂级数
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{z}^{\bs{\alpha}}
+	$$
+	且该级数在$\Omega$上内闭一致收敛。
+\end{theorem}
+
+\begin{theorem}{}{Reinhardt域上的幂级数}
+	对于Reinhardt域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$，如果对于任意$1\le k\le n$，$\Omega$中存在第$k$个坐标为$0$的点，那么存在幂级数
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{z}^{\bs{\alpha}},\qquad \bs{z}\in\Omega
+	$$
+	且该级数在$\Omega$上内闭一致收敛。
+\end{theorem}
+
+\begin{corollary}
+	单位球$B_n$上的全纯函数$f:B_n\to\C$存在幂级数
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{z}^{\bs{\alpha}},\qquad \bs{z}\in B_n
+	$$
+	且该级数在$B_n$上内闭一致收敛。
+\end{corollary}
+
+\begin{theorem}{全纯延拓定理}{全纯延拓定理}
+	对于Reinhardt域$\Omega\sub\C^n$，如果对于任意$1\le k\le n$，$\Omega$中存在第$k$个坐标为$0$的点，那么任意Reinhardt域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$均可延拓到域
+	$$
+	\Upsilon=\{ (\rho_1z_1,\cdots,\rho_nz_n):(z_1,\cdots,z_n)\in\Omega,0\le \rho_k \le 1,1\le k \le n \}
+	$$
+\end{theorem}
+
+\begin{proof}
+	由定理\ref{thm:Reinhardt域上的幂级数}，$f$在$\Omega$存在幂级数
+	$$
+	f(\bs{z})
+	=\sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{z}^{\bs{\alpha}},\qquad \bs{z}\in\Omega
+	$$
+	任取$\bs{w}=(w_1,\cdots,w_n)\in\Upsilon$，那么存在$\bs{z}=(z_1,\cdots,z_n)\in\Omega$与$0\le \rho_k \le 1$，使得成立$w_k=\rho_k z_k$，从而$|w_k|\le |z_k|$，其中$1\le k \le n$。由于$\displaystyle \sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{z}^{\bs{\alpha}}$收敛，那么$\displaystyle \sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{w}^{\bs{\alpha}}$收敛，且在$\Upsilon$中内闭一致收敛。定义函数
+	$$
+	F(\bs{w})=\sum_{\bs{\alpha}\in\Z^n}C_{\bs{\alpha}}\bs{w}^{\bs{\alpha}},\qquad \bs{w}\in\Upsilon
+	$$
+	那么$F$为$\Upsilon$上的全纯函数，且$F|_\Omega=f$，进而$F$为$f$在$\Upsilon$上的全纯延拓。
+\end{proof}
+
+\begin{corollary}{}{全纯延拓定理的推论}
+	对于$0<r<R$，域
+	$$
+	\Omega=\{ \bs{z}\in\C^n:r<|\bs{z}|<R \}
+	$$
+	上的全纯函数可延拓到球
+	$$
+	B_R(\bs{0})=\{ \bs{z}\in\C^n:|\bs{z}|<R \}
+	$$
+\end{corollary}
+
+\begin{proof}
+	由全纯延拓定理\ref{thm:全纯延拓定理}，命题显然！
+\end{proof}
+
+\begin{theorem}{}{零点的非孤立性}
+	如果$n\ge 2$，那么域$\Omega\sub\C^n$上的全纯函数$f:\Omega\to\C$的零点非孤立。
+\end{theorem}
+
+\begin{proof}
+	如果$\bs{a}\in\Omega$为$f$的孤立零点，那么存在$\varepsilon>0$，使得$f$在$B_\varepsilon(\bs{a})$中除$\bs{a}$外无零点。令
+	$$
+	g(z)=\frac{1}{f(z)}
+	$$
+	那么$g$在$B_\varepsilon(\bs{a})-\overline{B}_{\varepsilon/2}(\bs{a})$中全纯。由全纯延拓定理的推论\ref{cor:全纯延拓定理的推论}，$g$在$B_\varepsilon(\bs{a})$中全纯，从而$f(\bs{a})\ne 0$，导出矛盾！
+\end{proof}
+
+\chapter{全纯映射}
+
+\section{全纯映射的导数}
+
+\subsection{全纯映射的导数}
+
+\begin{definition}{全纯映射}
+	对于域$\Omega\sub\C^n$，称映射$F=(f_1,\cdots,f_m):\Omega\to\C^m$为全纯映射，如果对于任意$1\le k\le n$，$f_k:\Omega\to\C$为全纯函数。
+\end{definition}
+
+\begin{definition}{映射的导数}
+	对于域$\Omega\sub\C^n$上的映射$F=(f_1,\cdots,f_m):\Omega\to\C^m$，称$F$在$\bs{z}\in\Omega$处可微，如果存在线性算子$A:\C^n\to\C^m$，使得成立
+	$$
+	\lim_{\bs{h}\to \bs{0}}\frac{|F(\bs{z}+\bs{h})-F(\bs{z})-A(\bs{h})|}{|\bs{h}|}=0
+	$$
+\end{definition}
+
+\begin{theorem}{全纯映射的导数}
+	域$\Omega\sub\C^n$上的全纯映射$F=(f_1,\cdots,f_m):\Omega\to\C^m$在$\Omega$上处处可微，且
+	$$
+	F'(\bs{z}_0)=\begin{pmatrix}
+		\frac{\partial f_1(\bs{z})}{\partial z_1}|_{\bs{z}=\bs{z}_0} & \cdots & \frac{\partial f_1(\bs{z})}{\partial z_n}|_{\bs{z}=\bs{z}_0}\\
+		\vdots & \ddots & \vdots\\
+		\frac{\partial f_m(\bs{z})}{\partial z_1}|_{\bs{z}=\bs{z}_0} & \cdots & \frac{\partial f_m(\bs{z})}{\partial z_n}|_{\bs{z}=\bs{z}_0}
+	\end{pmatrix}
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于域$\Omega\sub \C^{l}$与$\Upsilon\sub \C^{m}$上的全纯映射$F:\Omega\to\Upsilon$与$G:\Upsilon\to\C^n$，其复合$H=G\circ F:\Omega\to\C^n$为全纯映射，且$H'(\bs{z})=G'(\bs{z})F'(\bs{z})$。
+\end{theorem}
+
+\subsection{复Jacobian和实Jacobian的关系}
+
+\begin{definition}{复Jacobian}
+	定义域$\Omega\sub\C^n$上的全纯映射$F:\Omega\to\C^n$在$\bs{z}_0$处的复Jacobian为%
+	$$
+	J_F^{(\C)}(\bs{z}_0)=\begin{vmatrix}
+		\frac{\partial f_1(\bs{z})}{\partial z_1}|_{\bs{z}=\bs{z}_0} & \cdots & \frac{\partial f_1(\bs{z})}{\partial z_n}|_{\bs{z}=\bs{z}_0}\\
+		\vdots & \ddots & \vdots\\
+		\frac{\partial f_m(\bs{z})}{\partial z_1}|_{\bs{z}=\bs{z}_0} & \cdots & \frac{\partial f_m(\bs{z})}{\partial z_n}|_{\bs{z}=\bs{z}_0}
+	\end{vmatrix}
+	$$
+\end{definition}
+
+\begin{definition}{实Jacobian}
+	定义域$\Omega\sub\C^n$上的全纯映射$F=(f_1,\cdots,f_n):\Omega\to\C^n$在$\bs{z}_0=(\bs{x}_0,\bs{y}_0)$处的实Jacobian为%
+	$$
+	J_F^{(\R)}(\bs{x}_0,\bs{y}_0)=\begin{vmatrix}
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}\\
+		\vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}\\
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_1(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}\\
+		\vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial u_n(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}\\
+		\frac{\partial v_1(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial v_1(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial v_1(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial v_1(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}\\
+		\vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+		\frac{\partial v_n(\bs{x},\bs{y})}{\partial x_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial v_n(\bs{x},\bs{y})}{\partial x_n}|_{(\bs{x}_0,\bs{y}_0)}
+		&
+		\frac{\partial v_n(\bs{x},\bs{y})}{\partial y_1}|_{(\bs{x}_0,\bs{y}_0)}
+		& \cdots &
+		\frac{\partial v_n(\bs{x},\bs{y})}{\partial y_n}|_{(\bs{x}_0,\bs{y}_0)}
+	\end{vmatrix}
+	$$
+	其中对于任意$1\le k\le n$，$f_k=u_k+iv_k$，且$z=x+iy$。
+\end{definition}
+
+\begin{theorem}{复Jacobian和实Jacobian的关系}
+	对于域$\Omega\sub\C^n$上的全纯映射$F:\Omega\to\C^n$，成立%
+	$$
+	J_F^{(\R)}(\bs{z})
+	=|J_F^{(\C)}(\bs{z})|^2
+	$$
+\end{theorem}
+
+\section{双全纯映射}
+
+\begin{definition}{单叶全纯映射}
+	称域$\Omega\sub \C^{n}$上的全纯映射$F:\Omega\to\C^m$为单叶全纯映射，如果成立
+	$$
+	F(\bs{z})=F(\bs{w})\implies
+	\bs{z}=\bs{w}
+	$$
+\end{definition}
+
+\begin{definition}{双全纯映射}
+	称域$\Omega\sub \C^{n}$上的全纯映射$F:\Omega\to\C^m$为双全纯映射，如果存在域$\Upsilon\sub\C^m$上的全纯映射$G:\Upsilon\to\C^n$，使得成立
+	$$
+	G\circ F=\mathbbm{1}_{\Omega},\qquad 
+	G\circ F=\mathbbm{1}_{\Upsilon}
+	$$
+\end{definition}
+
+\begin{definition}{全纯等价}
+	称域$\Omega\sub \C^{n}$与$\Upsilon\sub\C^m$全纯等价，如果存在双全纯映射$F:\Omega\to\Upsilon$。
+\end{definition}
+
+\begin{definition}{全纯自同构}
+	称域$\Omega\sub \C^{n}$上的双全纯映射$F:\Omega\to\Omega$为$\Omega$的全纯自同构映射。
+\end{definition}
+
+\section{H.Cartan定理与球的全纯自同构}
+
+\subsection{H.Cartan定理}
+
+\begin{definition}{圆型域}
+	称域$\Omega\sub\C^n$为圆型域，如果对于任意$\bs{z}\in\Omega$与$\theta\in\R$，成立$\mathrm{e}^{i\theta}\bs{z}\in \Omega$。
+\end{definition}
+
+\begin{theorem}{H.Cartan定理}{H.Cartan定理2}
+	对于有界域$\Omega\sub\C^n$上的全纯映射$F:\Omega\to\Omega$，如果存在$\bs{z}_0\in \Omega$，使得成立$F(\bs{z}_0)=\bs{z}_0$，且$F'(\bs{z}_0)=I_n$，那么$F=\mathbbm{1}_{\Omega}$。
+\end{theorem}
+
+\begin{remark}
+	域$\Omega$的有界性条件不可取消。例如，对于域
+	$$
+	\Omega=\{ (z_1,z_2)\in\C^2:|z_1z_2|<1 \}
+	$$
+	记$\mathbb{D}=\{ z\in\C:|z|<1 \}$，$h:\mathbb{D}\to\C$为无零点的全纯函数，且$h(0)=1$。构造映射
+	\function{F_h}{\Omega}{\Omega}{(z_1,z_2)}{\left(z_1h(z_1z_2),\frac{z_2}{h(z_1z_2)}\right)}
+	注意到
+	$$
+	F_h\circ F_{\frac{1}{h}}=F_{\frac{1}{h}}\circ F_h=\mathbbm{1}_\Omega
+	$$
+	因此$F_h$为双全纯映射。注意到$F_h(\bs{0})=\bs{0}$，且$F'_h(\bs{0})=I_2$，但是$F_h$不为线性映射。
+\end{remark}
+
+\begin{theorem}{H.Cartan定理}{H.Cartan定理2}
+	对于圆型域$\Omega\sub\C^n$与$\Upsilon\sub\C^m$，如果$\bs{0}\in \Omega\cap\Upsilon$，且$\Omega$为有界域，那么对于双全纯映射$F:\Omega\to\Upsilon$，若$F(\bs{0})=\bs{0}$，则$F$为线性映射。
+\end{theorem}
+
+\begin{corollary}
+	对于有界圆型域$\Omega\sub\C^n$，如果$\bs{0}\in \Omega$，那么对于双全纯映射$F:\Omega\to\Omega$，若$F(\bs{0})=\bs{0}$，则$F$为线性映射。
+\end{corollary}
+
+\begin{remark}
+	圆型域$\Omega$的有界性条件不可取消。例如，对于圆型域
+	$$
+	\Omega=\{ (z_1,z_2)\in\C^2:|z_1z_2|<1 \}
+	$$
+	记$\mathbb{D}=\{ z\in\C:|z|<1 \}$，$h:\mathbb{D}\to\C$为无零点的全纯函数。构造映射
+	\function{F_h}{\Omega}{\Omega}{(z_1,z_2)}{\left(z_1h(z_1z_2),\frac{z_2}{h(z_1z_2)}\right)}
+	注意到
+	$$
+	F_h\circ F_{\frac{1}{h}}=F_{\frac{1}{h}}\circ F_h=\mathbbm{1}_\Omega
+	$$
+	因此$F_h$为双全纯映射，但是$F_h$不为线性映射。
+\end{remark}
+
+\subsection{球的全纯自同构}
+
+\begin{theorem}{单位多圆柱上的全纯自同构映射}
+	对于任意单位多圆柱$U^n$上的全纯自同构映射$f:U^n\to U^n$，存在$(a_1,\cdots,a_n)\in U^n$，与$\theta_1,\cdots,\theta_n\in\R$，以及置换$\tau:\N^*\to\N^*$，使得成立
+	$$
+	f(z_1,\cdots,z_n)
+	=\left(
+	\mathrm{e}^{i\theta_1}\frac{z_{\tau(1)}-a_1}{1-\overline{a}_1z_{\tau(1)}},\cdots,\mathrm{e}^{i\theta_n}\frac{z_{\tau(n)}-a_n}{1-\overline{a}_nz_{\tau(n)}}
+	\right)
+	$$
+\end{theorem}
+
+\begin{theorem}{单位球上的全纯自同构映射}
+	对于单位球柱$B_n$上的全纯自同构映射$f:B_n\to B_n$，如果$f(\bs{0})=\bs{0}$，那么存在且存在唯一酉矩阵$\bs{U}$，使得成立
+	$$
+	f(\bs{z})=\bs{U}\bs{z},\qquad \bs{z}\in B_n
+	$$
+\end{theorem}
+
+\begin{theorem}
+	对于$\bs{a}\in B_n$，记$s^2=1-|\bs{a}|^2$，以及
+	$$
+	\bs{P}=\begin{cases}
+		\displaystyle \frac{1}{|\bs{a}|^2}\bs{a}\bs{a}^H,\qquad & \bs{a}\ne \bs{0}\\
+		\bs{0},\qquad & \bs{a}=\bs{0}
+	\end{cases},\qquad 
+	\bs{A}=s\bs{I}_n+(1-s)\bs{P}
+	$$
+	定义映射
+	$$
+	\varphi_{\bs{a}}(\bs{z})=\frac{\bs{a}-\bs{A}\bs{z}}{1-\bs{z}^T\overline{\bs{a}}}
+	$$
+	那么映射$\varphi_{\bs{a}}$具有如下性质。
+	\begin{enumerate}
+		\item $\varphi_{\bs{a}}(\bs{0})=\varphi_{\bs{a}}(\bs{a})=\bs{0}$
+		\item $\varphi_{\bs{a}}'(\bs{0})=\overline{\bs{a}}\bs{a}^T-\bs{A}^T,\varphi_{\bs{a}}'(\bs{a})=-\bs{A}^T/s^2$
+		\item 对于任意$\bs{z}\in\overline{B}_n$，成立
+		$$
+		1-|\varphi_{\bs{a}}(\bs{z})|^2
+		=\frac{(1-|\bs{a}|^2)(1-|\bs{z}|^2)}{|1-\bs{z}^T\overline{\bs{a}}|^2}
+		$$
+		\item $\varphi_{\bs{a}}\circ \varphi_{\bs{a}}=\mathbbm{1}_{B_n}$
+		\item $\varphi_{\bs{a}}$为双全纯函数。
+	\end{enumerate}
+\end{theorem}
+
+\begin{theorem}{单位球上的全纯自同构映射}
+	对于单位球柱$B_n$上的全纯自同构映射$f:B_n\to B_n$，如果$f(\bs{a})=\bs{0}$，那么存在且存在唯一酉矩阵$\bs{U}$，使得成立
+	$$
+	f(\bs{z})=\bs{U}\varphi_{\bs{a}}(\bs{z}),\qquad \bs{z}\in B_n
+	$$
+\end{theorem}
+
+\chapter{Cauchy积分公式}
+
+\section{球的Cauchy积分公式}
+
+\begin{definition}{Cauchy核}
+	定义函数$f:\C^n\times\C^n\to \C$在单位球$B_n$中的Cauchy核为%
+	$$
+	C(\bs{z},\bs{\zeta})=\frac{1}{(1-\bs{z}^T\overline{\bs{\zeta}})^n}
+	$$
+\end{definition}
+
+\begin{definition}{Cauchy积分}
+	对于$f\in L(\sigma)$，定义其Cauchy积分为%
+	$$
+	C_f(\bs{z})=\int_{\partial B_n}C(\bs{z},\bs{\zeta})f(\bs{\zeta})\dd \sigma(\bs{\zeta}),\qquad \bs{z}\in B_n
+	$$
+\end{definition}
+
+\begin{theorem}{球的Cauchy积分公式}
+	对于在$B_n$上全纯且在$\overline{B}_n$上连续的函数$f$，成立%
+	$$
+	f(\bs{z})=\int_{\partial B_n}\frac{f(\bs{\zeta})}{(1-\bs{z}^T\overline{\bs{\zeta}})^n}\dd \sigma(\bs{\zeta}),\qquad \bs{z}\in B_n
+	$$
+\end{theorem}
+
+\section{$\C$上的非齐次Cauchy积分公式及其应用}
+
+\subsection{非齐次Cauchy积分公式}
+
+\begin{theorem}
+	对于具有光滑定向边界的有界域$\Omega\sub\C$，如果$f$为$\overline{\Omega}$上的连续可微函数，那么对于任意$z\in\Omega$，成立%
+	$$
+	f(z)=\frac{1}{2\pi i}\int_{\partial\Omega}\frac{f(\zeta)}{\zeta-z}\dd\zeta+\frac{1}{2\pi i}\int_{\Omega}\frac{1}{\zeta-z}\frac{\partial f(\zeta)}{\partial \overline{\zeta}}\dd\zeta\wedge\dd\overline{\zeta}
+	$$
+\end{theorem}
+
+\subsection{平面上$\overline{\partial}$问题的解}
+
+\begin{theorem}
+	对于有界域$\Omega\sub\C$，如果$f$为$\Omega$上的有界连续可微函数，令%
+	$$
+	u(z)=\frac{1}{2\pi i}\int_{\Omega}\frac{1}{\zeta-z}\frac{\partial f(\zeta)}{\partial \overline{\zeta}}\dd\zeta\wedge\dd\overline{\zeta},\qquad z\in\Omega
+	$$
+	那么$u$在$\Omega$上连续可微，且存在$C\in\R$，使得成立%
+	$$
+	\frac{\partial u}{\partial \overline{z}}=f,\qquad 
+	\sup_{\Omega}|u|\le C\sup_{\Omega}|f|
+	$$
+\end{theorem}
+
+\appendix
+
+\chapter{单复变函数定理扩展}
+
+\begin{theorem}{Bieberbach定理}{Bieberbach定理}
+	对于单位圆盘$\mathbb{D}$上的单的全纯函数$f$，如果$f(0)=0$，且$f'(0)=1$，那么作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	成立%
+	$$
+	|a_n|\le n,\qquad n\in\N
+	$$
+\end{theorem}
+
+\begin{theorem}{Koebe定理 $1/4$掩盖定理}{Koebe定理}
+	对于单位圆盘$\mathbb{D}$上的单的全纯函数$f$，如果$f(0)=0$，且$f'(0)=1$，那么$f(\mathbb{D})\supset\mathbb{D}/4$。
+\end{theorem}
+
+\begin{proof}
+	作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	任取$w\notin f(\mathbb{D})$，令%
+	$$
+	g(z)
+	=\frac{wf(z)}{w-f(z)}
+	=\sum_{n=0}^{\infty}\frac{g^{(n)}(0)}{n!}z^n
+	=z+\left(a_2+\frac{1}{w}\right)z^2+\sum_{n=3}^{\infty}\frac{g^{(n)}(0)}{n!}z^n
+	$$
+	由Bieberbach定理\ref{thm:Bieberbach定理}，$|a_2|$且$|a_2+1/w|\le 2$，因此%
+	$$
+	\frac{1}{|w|}
+	\le\left|a_2+\frac{1}{w}\right|+|a_2|
+	\le 4
+	$$
+	从而$|w|\ge 1/4$，进而$f(\mathbb{D})\supset\mathbb{D}/4$。
+\end{proof}
+
+\begin{lemma}{Schwartz引理}{Schwartz引理}
+	对于单位开圆盘$\mathbb{D}$，如果$f:\mathbb{D}\to\mathbb{D}$为全纯函数，且$f(0)=0$，那么
+	$$
+	|f'(0)|\le 1,\qquad 
+	|f(z)|\le|z|,\qquad
+	z\in\mathbb{D}
+	$$
+	当且仅当存在$\theta\in\R$，使得$f(z)=\mathrm{e}^{i\theta}z$时等号成立。
+\end{lemma}
+
+\begin{proof}
+	构造%
+	$$
+	g(z)=\begin{cases}
+		f(z)/z,\qquad & z\in\mathbb{D}\setminus\{0\}\\
+		f'(0),\qquad & z=0
+	\end{cases}
+	$$
+	那么$g(z)$在$\mathbb{D}$内全纯。由最大模原理，对于任意$0<r<1$，成立
+	$$
+	\max_{|z|<r}|g(z)|\le \max_{\theta\in\R}|g(r\mathrm{e}^{i\theta})|
+	=\max_{\theta\in\R}\frac{|f(r\mathrm{e}^{i\theta})|}{r}\le\frac{1}{r}
+	$$
+	令$r\to 1$，那么$|g(z)|\le 1$，于是
+	$$
+	|f'(0)|\le 1,\qquad 
+	|f(z)|\le|z|,\qquad
+	z\in\mathbb{D}
+	$$
+	若存在$z\ne 0$，使得成立$|f(z)|=|z|$或$|f'(0)|=1$，则由最大模原理，$g$为常函数，因此存在$\theta\in\R$，使得$f(z)=\mathrm{e}^{i\theta}z$。
+\end{proof}
+
+\begin{lemma}{Schwartz-Pick引理}{Schwartz-Pick引理}
+	对于单位开圆盘$\mathbb{D}$，如果$f:\mathbb{D}\to\mathbb{D}$为全纯函数，那么
+	$$
+	\left| \frac{f(z)-f(w)}{1-\overline{f(z)}f(w)} \right|
+	\le
+	\left| \frac{z-w}{1-\overline{z}w} \right|,\qquad
+	z,w\in\mathbb{D}
+	$$
+\end{lemma}
+
+\begin{proof}
+	首先容易证明对于$z,w\in\overline{\mathbb{D}}$，当$\overline{w}z\ne1$时，成立
+	$$
+	\left|\frac{w-z}{1-\overline{w}z}\right|\le1
+	$$
+	当且仅当$|z|=1$或$|w|=1$时等号成立。
+	
+	对于$w\in\mathbb{D}$，定义映射
+	\function{\varphi_w}{\mathbb{D}}{\mathbb{D}}{z}{\frac{w-z}{1-\overline{w}z}}
+	我们来证明$\varphi_w$为全纯双射。注意到
+	$$
+	\lim_{h\to0}\frac{\varphi_w(z+h)-\varphi_w(z)}{h}=\lim_{h\to0}\frac{|w|^2-1}{(1-\overline{w}(z+h))(1-\overline{w}z)}=\frac{|w|^2-1}{(1-\overline{w}z)^2}
+	$$
+	因此$\varphi_w$为全纯映射。同时注意到
+	$$
+	(\varphi_w\circ\varphi_w)(z)=z
+	$$
+	因此$\varphi_w$为双射。
+	
+	由于$\varphi_w(w)=0$，那么$\varphi^{-1}_w(0)=w$。考察映射
+	$$
+	\psi_w=\varphi_{f(w)}\circ f \circ \varphi_w^{-1}
+	$$
+	由于$\varphi_w$和$f$均为$\mathbb{D}\to\mathbb{D}$上的全纯函数，那么$\psi_w$为为$\mathbb{D}\to\mathbb{D}$上的全纯函数，且
+	$$
+	\psi_w(0)=(\varphi_{f(w)}\circ f \circ \varphi_w^{-1})(0)=0
+	$$
+	于是由Schwartz引理\ref{lem:Schwartz引理}，对于任意$z\in\mathbb{D}$，成立
+	$$
+	|\psi_w(z)|\le|z|
+	$$
+	即
+	$$
+	|(\varphi_{f(w)}\circ f \circ \varphi_w^{-1})(z)|\le|z|
+	$$
+	而$\varphi_w$为双射，因此存在$z'\in\mathbb{D}$，使得成立$z=\varphi_w(z')$，因此
+	$$
+	|(\varphi_{f(w)}\circ f )(z')|\le|\varphi_w(z')|
+	$$
+	进而
+	$$
+	\left| \frac{f(w)-f(z')}{1-\overline{f(w)}f(z')} \right|
+	\le
+	\left| \frac{w-z'}{1-\overline{w}z'} \right|
+	$$
+	由$z'$与$w$的任意性，原命题得证！
+\end{proof}
+
+\begin{lemma}{}{Landou引理的引理1}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(\mathbb{D})\sub M\mathbb{D}$，$|f(0)|\ne 0$，那么当$|z|=r<|f(0)|<M$时，成立%
+	$$
+	|f(z)|\ge\frac{M(|f(0)|-Mr)}{M-r|f(0)|}
+	$$
+\end{lemma}
+
+\begin{proof}
+	当$M=1$时，由Schwartz-Pick引理\ref{lem:Schwartz-Pick引理}%
+	$$
+	|z|\ge \left| \frac{f(z)-f(0)}{1-\overline{f(z)}f(0)} \right|
+	,\qquad
+	z\in\mathbb{D}
+	$$
+	从而%
+	$$
+	1-|z|^2\le
+	1-\left| \frac{f(z)-f(0)}{1-\overline{f(z)}f(0)} \right|^2
+	=\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{|1-\overline{f(z)}f(0)|^2}
+	\le\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{(1-|f(z)||f(0)|)^2}
+	$$
+	因此%
+	$$
+	|z|^2\ge 
+	1-\frac{(1-|f(z)|^2)(1-|f(0)|^2)}{(1-|f(z)||f(0)|)^2}
+	=\frac{(|f(z)|-|f(0)|)^2}{(1-|f(z)||f(0)|)^2}
+	$$
+	进而%
+	$$
+	|z|\ge \frac{||f(z)|-|f(0)||}{1-|f(z)||f(0)|}
+	$$
+	解之%
+	$$
+	|f(z)|\ge\frac{|f(0)|-|z|}{1-|z||f(0)|}
+	=\frac{|f(0)|-r}{1-r|f(0)|}
+	$$
+	
+	当$M\ne 1$时，令$g=f/M$，从而由
+	$$
+	|g(z)|\ge\frac{|g(0)|-|z|}{1-|z||g(0)|}
+	=\frac{|g(0)|-r}{1-r|g(0)|}
+	$$
+	可得%
+	$$
+	\frac{|f(z)|}{M}\ge\frac{\frac{|f(0)|}{M}-|z|}{1-|z|\frac{|f(0)|}{M}}
+	=\frac{\frac{|f(0)|}{M}-r}{1-r\frac{|f(0)|}{M}}
+	\iff
+	|f(z)|\ge\frac{M(|f(0)|-Mr)}{M-r|f(0)|}
+	$$
+\end{proof}
+
+\begin{lemma}{}{Landou引理的引理2}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(\mathbb{D})\sub M\mathbb{D}$，且$f(0)=0$，$f'(0)=1$，那么$M\ge 1$，且$f$在$\eta\mathbb{D}$中为单射，其中$\eta=1/(M+\sqrt{M^2-1})$。
+\end{lemma}
+
+\begin{proof}
+	作Taylor展式%
+	$$
+	f(z)=\sum_{n=0}^{\infty}\frac{g^{(n)}(0)}{n!}z^n=\sum_{n=0}^{\infty}a_nz^n
+	$$
+	由Cauchy不等式%
+	$$
+	|f^{(n)}(0)| \le \frac{n!}{r^n}\sup_{|z|=r}|f(z)|
+	< \frac{n!}{r^n}M,\qquad r<1
+	$$
+	从而%
+	$$
+	|a_n|=\frac{|f^{(n)}(0)|}{n!}\le\frac{M}{r^n},\qquad n\in\N,r<1
+	$$
+	令$r\to 1^-$，从而%
+	$$
+	|a_n|\le M,\qquad n\in\N
+	$$
+	而$|a_1|=|f'(0)|=1$，从而$M\ge 1$。
+	
+	若$f$在$\eta\mathbb{D}$中不为单射，则存在$z_1\ne z_2\in\mathbb{D}$，使得成立$f(z_1)=f(z_2)=\beta$。不妨$|z_1|\le |z_2|=\rho<1/M$。令%
+	$$
+	g(z)=\frac{\frac{\beta}{M}-\frac{f(z)}{M}}{1-\frac{\rho}{M}\frac{f(z)}{M}}
+	=\frac{M(\beta-f(z))}{M^2-\beta f(z)}
+	$$
+	则$|g|<M$，且$g(z_1)=g(z_2)=0$。再令%
+	$$
+	h(z)=\frac{g(z)(1-\overline{z}_1z)(1-\overline{z}_2z)}{(z-z_1)(z-z_2)}
+	$$
+	则$h$在$\mathbb{D}$内全纯。断言：$|h|<M$。事实上，由最大模原理，$|h|$在$\partial\mathbb{D}$上取到；而$z\to\partial\mathbb{D}$，$|g(z)|<M$，从而$|h|<M$。因此
+	$$
+	|h(0)|=\frac{|g(0)|}{|z_1z_2|}<M
+	$$
+	而$|g(0)|\le \beta$，则$\beta<M|z_1z_2|<M\rho^2$。令%
+	$$
+	\varphi(z)=\begin{cases}
+		f(z)/z,\qquad & z\ne 0\\
+		f'(0)=1,\qquad & z=0
+	\end{cases}
+	$$
+	则$\varphi$在$\mathbb{D}$内全纯，且$|\varphi|<M$。由引理\ref{lem:Landou引理的引理1}，当$|z|=\rho<1/M$时%
+	$$
+	|\varphi(z)|\ge\frac{M(\varphi(0)-M\rho)}{M-\varphi(0)\rho}
+	=\frac{M(1-M\rho)}{M-\rho}\implies
+	|f(z)|\ge\frac{M(1-M\rho)}{M-\rho}|z|
+	$$
+	结合%
+	$$
+	\beta=|f(z_2)|\ge\frac{M(1-M\rho)}{M-\rho}|z_2|
+	=\frac{M(1-M\rho)}{M-\rho}\rho\implies
+	M\rho^2\ge \frac{M(1-M\rho)}{M-\rho}\rho
+	\implies
+	\rho\ge\frac{1}{M+\sqrt{M^2-1}}
+	$$
+	可得要使得$f$在$\rho\mathbb{D}$中不为单射，从而当$\rho<1/(M+\sqrt{M^2-1})$时，$f$在$\rho\mathbb{D}$中为单射。
+\end{proof}
+
+\begin{theorem}{Landou引理}{Landou引理}
+	对于单位圆盘$\mathbb{D}$上的全纯函数$f$，如果$f(0)=0$，$f(\mathbb{D})\sub\mathbb{D}$，$0<f'(0)=\alpha\le 1$，那么$f$在$\eta\mathbb{D}$上为单射，且$\eta^2\mathbb{D}\sub f\left(\eta\mathbb{D}\right)$，其中$\eta=\alpha/(1+\sqrt{1-\alpha^2})$。
+\end{theorem}
+
+\begin{proof}
+	令$F(z)=f(z)/\alpha$，则$F(0)=0$，$F'(0)=1$，且$F(\mathbb{D})\sub\mathbb{D}/\alpha$。由引理\ref{lem:Landou引理的引理2}，则$F$在$\eta\mathbb{D}$中为单射，其中%
+	$$
+	\eta=\frac{1}{M+\sqrt{M^2-1}}
+	=\frac{1}{\frac{1}{\alpha}+\sqrt{\frac{1}{\alpha^2}-1}}
+	=\frac{\alpha}{1+\sqrt{1-\alpha^2}}
+	$$
+	当$|z|=\eta$时，由引理\ref{lem:Landou引理的引理2}%
+	$$
+	|F(z)|\ge\frac{M(1-M\eta)}{M-\eta}|z|
+	$$
+	从而%
+	$$
+	|f(z)|\ge\frac{1-\frac{1}{\alpha}\eta}{\frac{1}{\alpha}-\eta}\eta=\frac{\alpha-\eta}{1-\alpha\eta}\eta\ge\eta^2
+	$$
+	由Rouché定理，$\eta^2\mathbb{D}\sub f\left(\eta\mathbb{D}\right)$。
+\end{proof}
+
+\end{document}

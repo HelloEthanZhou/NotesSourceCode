@@ -1,0 +1,263 @@
+\documentclass{beamer}
+
+% 导入metropolis主题
+\usetheme{metropolis}
+
+% 使用xeCJK宏包支持中文
+\usepackage{xeCJK}
+% 设置中文字体
+\setCJKmainfont{Microsoft YaHei}
+
+% 导入unicode-math宏包
+\usepackage{unicode-math}
+% 设置数学公式字体为Computer Modern
+\setmathfont{Latin Modern Math}
+
+% 引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref}
+
+
+% 定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\mathrm{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\dd}{\mathrm{d}}           % 微分d
+\newcommand{\pll}{\kern 0.56em/\kern -0.8em /\kern 0.56em} % 平行
+\newcommand{\function}[5]{
+	\begin{align*}
+		#1:\begin{aligned}[t]
+			#2 &\longrightarrow #3\\
+			#4 &\longmapsto #5
+		\end{aligned}
+	\end{align*}
+}                                     % 映射
+
+% 设置演示文稿标题、副标题、日期、作者和机构信息
+\title{范畴论介绍}
+\date{\today}
+\author{周梦轩}
+\institute{河北工业大学}
+
+\begin{document}
+
+% 创建标题页
+\maketitle
+
+% 创建目录页
+\begin{frame}{目录}
+	% 设置目录样式，显示章节编号
+	\setbeamertemplate{section in toc}[sections numbered]
+	% 显示目录，隐藏所有子章节
+	\tableofcontents[hideallsubsections]
+\end{frame}
+
+
+\section{引言}
+
+\begin{frame}{从{\bf 同构}讲起}
+	在分析学中，称Banach空间$X$与$Y$同构，并记作$X\cong Y$，如果存在双射$f:X\to Y$，使得$f$与$f^{-1}$均为有界线性映射。
+	
+	在代数学中，称群$X$与$Y$同构，并记作$X\cong Y$，如果存在双射$f:X\to Y$，使得对于任意$x,y\in X$，成立$f(xy)=f(x)f(y)$。
+	
+	在拓扑学中，称拓扑空间$X$与$Y$同构，并记作$X\cong Y$，如果存在双射$f:X\to Y$，使得$f$与$f^{-1}$均为连续映射。
+\end{frame}
+
+\section{范畴的定义与示例}
+
+\begin{frame}{范畴 category}
+	范畴$\mathsf{C}$包含：
+	\begin{itemize}
+		\item {\bf 对象(object)}：$\mathrm{Obj}(\mathsf{C})$
+		\item {\bf 态射(morphism)}：$\mathrm{Hom}_\mathsf{C}(A,B)$，其中称$A$为源(source)，$B$为目标(target)。
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	成立如下公理：
+	\begin{enumerate}
+		\item {\bf 态射复合}：对于任意对象$A,B,C\in\mathrm{Obj}(\mathsf{C})$，存在态射复合
+		\begin{align*}
+			\circ :\begin{aligned}[t]
+				\mathrm{Hom}_\mathsf{C}(A,B)\times \mathrm{Hom}_\mathsf{C}(B,C)&\longrightarrow \mathrm{Hom}_\mathsf{C}(A,C)\\
+				(f,g)&\longmapsto g\circ f
+			\end{aligned}
+		\end{align*}
+		\item {\bf 恒等态射}：对于任意对象$S\in\mathrm{Obj}(\mathsf{C})$，存在恒等态射$\mathbbm{1}_S\in\mathrm{Hom}_\mathsf{C}(S,S)$，使得对于任意态射$f\in \mathrm{Hom}_\mathsf{C}(A,B)$，成立
+		$$
+		f\circ\mathbbm{1}_A=\mathbbm{1}_B\circ f=f
+		$$
+		\item {\bf 结合律}：对于任意态射$f\in \mathrm{Hom}_\mathsf{C}(A,B),g\in \mathrm{Hom}_\mathsf{C}(B,C),h\in \mathrm{Hom}_\mathsf{C}(C,D)$，成立
+		$$
+		(h\circ g)\circ f=h\circ (g\circ f)
+		$$
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{范畴示例}
+	集合范畴$\mathsf{Set}$：
+	\begin{itemize}
+		\item $\mathrm{Obj}(\mathsf{Set})=\{ \text{集合} \}$
+		\item $\mathrm{Hom}_{\mathsf{Set}}(A,B)=\{ \text{映射 }f:A\to B \}$
+	\end{itemize}
+
+	矩阵范畴$\mathsf{V}$：
+	\begin{itemize}
+		\item $\mathrm{Obj}(\mathsf{V})=\N^*$
+		\item $\mathrm{Hom}_{\mathsf{V}}(m,n)=\{ \{a_{ij}\}_{m\times n}\mid a_{ij}\in\R \}$
+	\end{itemize}
+
+	群范畴$\mathsf{Grp}$：
+	\begin{itemize}
+		\item $\mathrm{Obj}(\mathsf{Grp})=\{ \text{群 }(G,*) \}$
+		\item $\mathrm{Hom}_{\mathsf{Grp}}((G,*),(H,\star))=\{ \text{映射 }\varphi:G\to H\mid \varphi(x*y)=\varphi(x)\star \varphi(y) \}$
+	\end{itemize}
+\end{frame}
+
+\section{态射的定义}
+
+\begin{frame}{左逆态射，右逆态射}
+	\textbf{左逆态射：}
+	对于范畴$\mathsf{C}$，以及对象$A,B\in\mathrm{Obj}(\mathsf{C})$，称态射$g\in\mathrm{Hom}_\mathsf{C}(B,A)$为态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$的左逆态射，如果成立$g\circ f=\mathbbm{1}_A$。
+	
+	\textbf{右逆态射：}
+	对于范畴$\mathsf{C}$，以及对象$A,B\in\mathrm{Obj}(\mathsf{C})$，称态射$g\in\mathrm{Hom}_\mathsf{C}(B,A)$为态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$的右逆态射，如果成立$f\circ g=\mathbbm{1}_B$。
+\end{frame}
+
+\begin{frame}{同构态射，同构}
+	\textbf{同构态射：}
+	对于范畴$\mathsf{C}$，以及对象$A,B\in\mathrm{Obj}(\mathsf{C})$，称态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$为同构态射，如果存在态射$g\in\mathrm{Hom}_\mathsf{C}(B,A)$，使得成立
+	$$
+	g\circ f=\mathbbm{1}_A,\qquad f\circ g=\mathbbm{1}_B
+	$$
+	
+	\textbf{同构：}
+	对于范畴$\mathsf{C}$，称对象$A,B\in\mathrm{Obj}(\mathsf{C})$是同构的，且记作$A\cong B$，如果存在同构态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$。
+\end{frame}
+
+\begin{frame}{单态射，满态射}
+	\textbf{单态射：}
+	对于范畴$\mathsf{C}$，以及对象$A,B\in\mathrm{Obj}(\mathsf{C})$，称态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$为单态射，如果对于任意对象$Z\in\mathrm{Obj}(\mathsf{C})$，以及任意态射$\alpha_1,\alpha\in\mathrm{Hom}_\mathsf{C}(Z,A)$，成立
+	$$
+	f\circ \alpha_1=f\circ \alpha_2
+	\implies
+	\alpha_1=\alpha_2
+	$$
+	
+	\textbf{满态射：}
+	对于范畴$\mathsf{C}$，以及对象$A,B\in\mathrm{Obj}(\mathsf{C})$，称态射$f\in\mathrm{Hom}_\mathsf{C}(A,B)$为满态射，如果对于任意对象$Z\in\mathrm{Obj}(\mathsf{C})$，以及任意态射$\beta_1,\beta\in\mathrm{Hom}_\mathsf{C}(B,Z)$，成立
+	$$
+	\beta_1\circ f=\beta_2\circ f
+	\implies
+	\beta_1=\beta_2
+	$$
+\end{frame}
+
+\section{集合范畴中的一个命题}
+
+\begin{frame}{一个命题}
+	对于映射$f:A\to B$，如下命题等价。
+	\begin{enumerate}
+		\item $f$为单射。
+		\item $f$存在左逆。
+		\item $f$为单态射。
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{单射$\implies$存在左逆}
+	定义映射
+	\function{g}{B}{A}{f(a)}{a}
+	
+	首先来验证$g$的定义是良好的。取$a_1,a_2\in A$，满足$f(a_1)=f(a_2)$，由$f$的单射性，$a_1=a_2$，于是$g$定义良好。
+	
+	其次来验证$g\circ f=\mathbbm{1}_A$。任取$a\in A$，注意到
+	$$
+	(g\circ f)(a)=g(f(a))=a
+	$$
+	那么$g\circ f=\mathbbm{1}_A$。
+	
+	综合这两点，$f$存在左逆$g$。
+\end{frame}
+
+\begin{frame}{存在左逆$\implies$单态射}
+	记$f$的左逆为$g$，那么$g\circ f=\mathbbm{1}_A$。
+	
+	任取$\alpha_1,\alpha_2$，满足$f\circ \alpha_1=f\circ \alpha_2$，那么
+	$$
+	\alpha_1=\mathbbm{1}_A\circ \alpha_1=g\circ f\circ \alpha_1=g\circ f\circ \alpha_2=\mathbbm{1}_A\circ \alpha_2=\alpha_2
+	$$
+	于是$f$是单态射。
+\end{frame}
+
+\begin{frame}{单态射$\implies$单射}
+	任取$a_1,a_2\in A$，满足$f(a_1)=f(a_2)$。
+	
+	定义$\alpha_1:Z\to \{a_1\}$和$\alpha_2:Z\to \{a_2\}$，任取$z\in Z$，注意到
+	$$
+	(f\circ \alpha_1)(z)=f(\alpha_1(z))=f(a_1)=f(a_2)=f(\alpha_2(z))=(f\circ \alpha_2)(z)
+	$$
+	因此$f\circ\alpha_1=f\circ\alpha_2$，于是$\alpha_1=\alpha_2$，即$a_1=a_2$，进而$f$是单射。
+\end{frame}
+
+\begin{frame}{总结}
+	\begin{columns}[T]
+		
+		\metroset{block=fill}
+		
+		\column{0.5\textwidth}
+		
+		\begin{block}{定理1}
+			对于映射$f:A\to B$，如下命题等价。
+			\begin{enumerate}
+				\item $f$为单射。
+				\item $f$存在左逆。
+				\item $f$为单态射。
+			\end{enumerate}
+		\end{block}
+		
+		\column{0.5\textwidth}
+		
+		\begin{block}{定理2}
+			对于映射$f:A\to B$，如下命题等价。
+			\begin{enumerate}
+				\item $f$为满射。
+				\item $f$存在右逆。
+				\item $f$为满态射。
+			\end{enumerate}
+		\end{block}
+		
+	\end{columns}
+
+\end{frame}
+
+\section{命题的反例}
+
+\begin{frame}{反例}
+	在群范畴$\mathsf{Grp}$中，群同态映射
+	\begin{align*}
+		\varphi:\begin{aligned}[t]
+			\Z/3\Z &\longrightarrow S_3\\
+			[0]_3 &\longmapsto (1)\\
+			[1]_3 &\longmapsto (132)\\
+			[2]_3 &\longmapsto (123)
+		\end{aligned}
+	\end{align*}
+	为单态射，但是不存在左逆，因为群同态映射$S_3\to \Z/3\Z$只能为平凡映射。
+\end{frame}
+
+\begin{frame}[standout]
+	Questions?
+\end{frame}
+
+\begin{frame}[standout]
+	Thank you!
+\end{frame}
+
+\end{document}
