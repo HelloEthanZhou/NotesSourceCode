@@ -1,0 +1,305 @@
+\documentclass[lang = cn, % 设置中文环境
+scheme = chinese          % 设置标题为中文
+% thmcnt = section,         % 设置计数器
+]
+{elegantbook}             % 设置elegantbook文档类
+
+
+%% 1.封面设置
+
+\title{Lectures in Harmonic Analysis-Thomas H. Wolf-Notebook}                % 文档标题
+
+\author{若水}               % 作者
+
+\myemail{ethanmxzhou@163.com} % 邮箱
+
+\homepage{helloethanzhou.github.io} % 主页
+
+\date{\today}               % 日期
+
+\extrainfo{上善若水任方圆}   % 箴言
+
+\logo{PiCreatures_happy.pdf}        % 设置Logo
+
+\cover{阿基米德螺旋曲线.pdf}          % 设置封面图片
+
+% 修改标题页的色带
+\definecolor{customcolor}{RGB}{135, 206, 250} 
+% 定义一个名为customcolor的颜色，RGB颜色值为(135, 206, 250)
+
+\colorlet{coverlinecolor}{customcolor}     % 将coverlinecolor颜色设置为customcolor颜色
+
+%% 2.目录设置
+\setcounter{tocdepth}{3}  % 目录深度为3
+
+%% 3.引入宏包
+\usepackage[all]{xy}
+\usepackage{bbm, svg, graphicx, float, extpfeil, amsmath, amssymb, mathrsfs, mathalpha, hyperref, centernot, physics}
+
+
+%% 4.定义命令
+\newcommand{\N}{\mathbb{N}}            % 自然数集合
+\newcommand{\R}{\mathbb{R}}            % 实数集合
+\newcommand{\C}{\mathbb{C}}  		   % 复数集合
+\newcommand{\Q}{\mathbb{Q}}            % 有理数集合
+\newcommand{\Z}{\mathbb{Z}}            % 整数集合
+\newcommand{\sub}{\subset}             % 包含
+\newcommand{\im}{\text{im }}           % 像
+\newcommand{\lang}{\langle}            % 左尖括号
+\newcommand{\rang}{\rangle}            % 右尖括号
+\newcommand{\bs}{\boldsymbol}          % 向量加黑
+\newcommand{\ee}[1]{\mathrm{e}^{#1}}           % 微分d
+\newcommand{\dis}{\displaystyle}
+\newcommand{\pll}{\kern 0.56em/\kern -0.8em /\kern 0.56em} % 平行
+\newcommand{\function}[5]{
+\begin{align*}
+	#1:\begin{aligned}[t]
+		#2 &\longrightarrow #3\\
+		#4 &\longmapsto #5
+	\end{aligned}
+\end{align*}
+}                                     % 函数
+
+\newcommand{\lhdneq}{%
+\mathrel{\ooalign{$\lneq$\cr\raise.22ex\hbox{$\lhd$}\cr}}} % 真正规子群
+
+\newcommand{\rhdneq}{%
+\mathrel{\ooalign{$\gneq$\cr\raise.22ex\hbox{$\rhd$}\cr}}} % 真正规子群
+
+%% 5.参考文献
+
+\addbibresource[location=local]{reference.bib} % 添加本地的参考文献文件reference.bib
+
+\begin{document}
+
+\maketitle       % 创建标题页
+
+\frontmatter     % 开始前言部分
+
+\chapter*{致谢}
+
+\markboth{致谢}{致谢}
+
+\vspace*{\fill}
+	\begin{center}
+		
+		\large{感谢 \textbf{ 勇敢的 } 自己}
+		
+	\end{center}
+\vspace*{\fill}
+
+\tableofcontents % 创建目录
+
+\mainmatter      % 开始正文部分
+
+\chapter{$L^1$ Fourier 变换}
+
+\begin{definition}{$L^1$ Fourier 变换 $L^1$ Fourier transform}
+	\begin{enumerate}
+		\item 对于$f\in L^1(\R^n)$，定义其 Fourier 变换为
+		\begin{align*}
+			\widehat{f}:\begin{aligned}[t]
+				\R^n &\longrightarrow \C\\
+				\xi &\longmapsto \int\ee{-2\pi i x \cdot \xi}f(x)\dd x
+			\end{aligned}
+		\end{align*}
+		其中$x \cdot \xi$表示内积。
+		\item 更一般的，对于$\R^n$上的赋有范数
+		\[
+		\|\mu\|=|\mu|(\R^n)
+		\]
+		的有限复值测度空间$M(\R^n)$，其中$|\mu|$为总变差，通过$f\to\mu,\dd\mu=f\dd x$，$L^1(\R^n)$包含在$M(\R^n)$中，此时推广 Fourier 变换为
+		\[
+		\widehat{\mu}(\xi)=\int\ee{-2\pi i x \cdot \xi}\dd\mu(x)
+		\]
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	对于$a\in\R^n$与$E\sub\R^n$，定义 Dirac 测度
+	\[
+	\delta_a(E)=\begin{cases}
+		1,\qquad & a\in E\\
+		0,\qquad & a\notin E
+	\end{cases}
+	\]
+	那么
+	\[
+	\widehat{\delta_a}(\xi)=\ee{-2\pi i a\cdot \xi}
+	\]
+\end{example}
+
+\begin{proof}
+	\[
+	\widehat{\delta_a}(\xi)
+	=\int\ee{-2\pi i x \cdot \xi}\dd \delta_a(x)
+	=\ee{-2\pi i a\cdot \xi}
+	\]
+\end{proof}
+
+\begin{example}
+	令$\Gamma(x)=\ee{-\pi|x|^2}$，则
+	\[
+	\widehat{\Gamma}(\xi)=\ee{-\pi|\xi|^2}
+	\]
+\end{example}
+
+\begin{proof}
+	由于
+	\[
+	\widehat{\Gamma}(\xi)
+	=\int\ee{-2\pi i x \cdot \xi}\Gamma(x)\dd x
+	=\int\ee{-2\pi i x \cdot \xi}\ee{-\pi|x|^2}\dd x
+	\]
+	注意到该积分的变量仅为一维变量，因此不妨考虑$n=1$。由 Gauss 积分$\dis \int_{-\infty}^{+\infty}\ee{-\pi x^2}\dd x=1$，则
+	\[
+	\int_{-\infty}^{+\infty}\ee{-2\pi i x \cdot \xi}\ee{-\pi|x|^2}\dd x
+	=\ee{-\pi|\xi|^2}
+	\]
+\end{proof}
+
+$L^1$ Fourier 变换存在一些基本的估计，我们罗列如下。
+
+\begin{proposition}
+	如果$\mu\in M(\R^n)$，那么$\widehat{\mu}$为有界函数，且
+	\[
+	\|\widehat{\mu}\|_{\infty}
+	\le\|\mu\|_{M(\R^n)}
+	\]
+\end{proposition}
+
+\begin{proof}
+	对于任意$\xi\in\R^n$，由于
+	\[
+	|\widehat{\mu}(\xi)|
+	=\left| \int\ee{-2\pi i x \cdot \xi}\dd\mu(x) \right|
+	\le\int|\ee{-2\pi i x \cdot \xi}|\dd|\mu|(x)
+	=\|\mu\|_{M(\R^n)}
+	\]
+	因此
+	\[
+	\|\widehat{\mu}\|_{\infty}
+	=\sup_{\xi\in\R^n}|\widehat{\mu}(\xi)|
+	\le\|\mu\|_{M(\R^n)}
+	\]
+\end{proof}
+
+\begin{proposition}
+	如果$\mu\in M(\R^n)$，那么$\widehat{\mu}$为连续函数。
+\end{proposition}
+
+\begin{proof}
+	固定$\xi\in\R^n$，考虑
+	\[
+	\widehat{\mu}(\xi+h)
+	=\int\ee{-2\pi i x \cdot (\xi+h)}\dd\mu(x)
+	\]
+	由于$|\ee{-2\pi i x \cdot (\xi+h)}|=1$且$|\mu|(\R^n)<\infty$，那么由控制收敛定理
+	\[
+	\lim_{h\to 0}\widehat{\mu}(\xi+h)
+	=\lim_{h\to 0}\int\ee{-2\pi i x \cdot (\xi+h)}\dd\mu(x)
+	=\int\lim_{h\to 0}\ee{-2\pi i x \cdot (\xi+h)}\dd\mu(x)
+	=\int\ee{-2\pi i x \cdot \xi}\dd\mu(x)
+	=\widehat{\mu}(\xi)
+	\]
+\end{proof}
+
+现在我们列出 Fourier 变换的一些基本性质，这些性质并不涉及微分和积分。
+
+\begin{proposition}{Fourier 变换的基本性质}{Fourier 变换的基本性质}
+	令$f\in L^1(\R^n),\tau\in\R^n$，且$T:\R^n\to\R^n$为可逆线性变换。
+	\begin{enumerate}
+		\item 令$f_{\tau}(x)=f(x-\tau)$，则
+		\[
+		\widehat{f_\tau}(\xi)
+		=\ee{-2\pi i \tau \cdot \xi}\widehat{f}(\xi)
+		\]
+		\item 令$e_\tau(x)=\ee{2\pi i x\cdot \tau}$，则
+		\[
+		\widehat{e_\tau f}(\xi)=\widehat{f}(\xi-\tau)
+		\]
+		\item 令$T^{-t}$表示$T$的逆转置，则
+		\[
+		\widehat{f\circ T}=|\det(T)|^{-1}\widehat{f}\circ T^{-t}
+		\]
+		\item 令$\tilde{f}(x)=\overline{f(-x)}$，则
+		\[
+		\widehat{\tilde{f}}=\overline{\widehat{f}}
+		\]
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 
+		\[
+		\widehat{f_\tau}(\xi)
+		=\int\ee{-2\pi i x \cdot \xi}f_\tau(x)\dd x
+		=\int\ee{-2\pi i x \cdot \xi}f(x-\tau)\dd x
+		=\ee{-2\pi i \tau}\int\ee{-2\pi i x \cdot \xi}f(x)\dd x
+		=\ee{-2\pi i \tau \cdot \xi}\widehat{f}(\xi)
+		\]
+		\item 
+		\[
+		\widehat{e_\tau f}(\xi)
+		=\int\ee{-2\pi i x \cdot \xi}e_\tau(x)f(x)\dd x
+		=\int\ee{-2\pi i x \cdot (\xi+\tau)}f(x)\dd x
+		=\int\ee{-2\pi i x \cdot \xi}f(x-\tau)\dd x
+		=\widehat{f}(\xi-\tau)
+		\]
+		\item 
+		\begin{align*}
+			\widehat{f\circ T}(\xi)
+			& = \int\ee{-2\pi i x \cdot \xi}f(Tx)\dd x \\
+			& = |\det(T)|^{-1}\int\ee{-2\pi i (T^{-1}x \cdot \xi)}f(x)\dd x \\
+			& = |\det(T)|^{-1}\int\ee{-2\pi i (x \cdot T^{-t}\xi)}f(x)\dd x \\
+			& = |\det(T)|^{-1}\widehat{f}\circ T^{-t}(\xi)
+		\end{align*}
+		\item 
+		\[
+		\widehat{\tilde{f}}(\xi)
+		= \int\ee{-2\pi i x \cdot \xi}\tilde{f}(x)\dd x
+		= \int\ee{-2\pi i x \cdot \xi}\overline{f(-x)}\dd x 
+		= \int\ee{-2\pi i x \cdot \xi}\overline{f(x)}\dd x 
+		= \overline{\int\ee{-2\pi i x \cdot \xi}f(x)\dd x}
+		= \overline{\widehat{f}(\xi)}
+		\]
+	\end{enumerate}
+\end{proof}
+
+进一步考察情况3。如果$T$为正交变换，那么$\widehat{f\circ T}=\widehat{f}\circ T$。特别的，如果$f$为径向函数(radial function)，那么$\widehat{f}$亦为径向函数。所谓径向函数$f:\R^n\to\R^n$，就是成立如下性质之一的函数：
+\begin{enumerate}
+	\item 存在函数$\varphi:\R\to\R^n$，使得对于任意$x\in\R^n$，成立$f(x)=\varphi(\|x\|)$。
+	\item 对于任意旋转$\rho\in\text{SO}_n(\R)$，成立$f\circ\rho=f$。
+\end{enumerate}
+如果$T$为膨胀(dilation)，即存在$r>0$，使得成立$Tx=rx$，那么$f(rx)$的 Fourier 变换为$r^{-n}\widehat{f}(r^{-1}\xi)$。反之，$r^{-n}f(r^{-1}x)$的 Fourier 变换为$\widehat{f}(r\xi)$。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

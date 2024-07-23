@@ -358,6 +358,8 @@
 \global\let\@date\@empty
 \newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}
 \newcommand{\institute}[1]{\gdef\@institute{#1}}
+\newcommand{\myemail}[1]{\gdef\@myemail{#1}}
+\newcommand{\homepage}[1]{\gdef\@homepage{#1}}
 \newcommand{\version}[1]{\gdef\@version{#1}}
 \newcommand{\extrainfo}[1]{\gdef\@extrainfo{#1}}
 
@@ -426,6 +428,8 @@
   \newcommand\tabref[1]{\textbf{表}~\ref{#1}}
   \newcommand{\authorname}{\citshape 作者：}
   \newcommand{\institutename}{\citshape 组织：}
+  \newcommand{\myemailname}{\citshape 邮箱：}
+  \newcommand{\homepagename}{\citshape 主页：}
   \newcommand{\datename}{\citshape 时间：}
   \newcommand{\versionname}{\citshape 版本：}
   \newcommand{\notename}{笔记}
@@ -437,9 +441,9 @@
   \newcommand{\lemmaname}{引理}
   \newcommand{\propositionname}{命题}
   \newcommand{\corollaryname}{推论}
-  \newcommand{\examplename}{例题} %
+  \newcommand{\examplename}{示例} %
   \newcommand{\instancename}{示例} %
-  \newcommand{\problemname}{问题} % 问题
+  \newcommand{\problemname}{例题} % 例题
   \newcommand{\exercisename}{练习} % 练习=习题
   \newcommand{\remarkname}{注}
   \newcommand{\assumptionname}{假设}
@@ -1320,6 +1324,8 @@
       % \ifcsname @author\endcsname \authorname \@author\\\fi
       \ifx\@author\empty\else\authorname\cnormal\@author\\ \fi
       \ifcsname @institute\endcsname \institutename \cnormal\@institute\\ \fi
+      \ifcsname @myemail\endcsname \myemailname \cnormal\@myemail\\ \fi
+      \ifcsname @homepage\endcsname \homepagename \cnormal\@homepage\\ \fi
       % \ifcsname @date\endcsname  \@date\\\fi
       \ifx\@date\empty\else\datename\cnormal\@date \\ \fi
       \ifcsname @version\endcsname \cnormal\versionname\@version\\ \fi
@@ -1372,7 +1378,7 @@
   commentstyle=\color{gray},
   emph={elegantpaper,fontenc,fontspec,xeCJK,citestyle,FiraMono,xunicode,figure,fig,image,img,table,itemize,enumerate,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament,addbibresource,printbibliography},
   emphstyle={\color{frenchplum}},
-  morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,section,hypersetup,mainmatter,frontmatter,tableofcontents,elegantpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf,elegantnewtheorem,thmcnt,colorlet,usesamecnt},
+  morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,myemail,homepage,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,section,hypersetup,mainmatter,frontmatter,tableofcontents,elegantpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf,elegantnewtheorem,thmcnt,colorlet,usesamecnt},
   frame=single,
   tabsize=2,
   rulecolor=\color{structurecolor},
