@@ -50,6 +50,7 @@ scheme = chinese          % 设置标题为中文
 \newcommand{\bs}{\boldsymbol}          % 向量加黑
 \newcommand{\ee}[1]{\mathrm{e}^{#1}}           % 微分d
 \newcommand{\dis}{\displaystyle}
+\newcommand{\supp}{\text{supp }}
 \newcommand{\pll}{\kern 0.56em/\kern -0.8em /\kern 0.56em} % 平行
 \newcommand{\function}[5]{
 \begin{align*}
@@ -160,12 +161,13 @@ scheme = chinese          % 设置标题为中文
 
 $L^1$ Fourier 变换存在一些基本的估计，我们罗列如下。
 
-\begin{proposition}
+\begin{proposition}{}{Fourier变换为有界变换}
 	如果$\mu\in M(\R^n)$，那么$\widehat{\mu}$为有界函数，且
-	\[
-	\|\widehat{\mu}\|_{\infty}
-	\le\|\mu\|_{M(\R^n)}
-	\]
+	\begin{gather}
+		\label{2式}
+		\|\widehat{\mu}\|_{\infty}
+		\le\|\mu\|_{M(\R^n)}
+	\end{gather}
 \end{proposition}
 
 \begin{proof}
@@ -184,7 +186,7 @@ $L^1$ Fourier 变换存在一些基本的估计，我们罗列如下。
 	\]
 \end{proof}
 
-\begin{proposition}
+\begin{proposition}{}{Fourier变换为光滑变换}
 	如果$\mu\in M(\R^n)$，那么$\widehat{\mu}$为连续函数。
 \end{proposition}
 
@@ -269,10 +271,299 @@ $L^1$ Fourier 变换存在一些基本的估计，我们罗列如下。
 
 进一步考察情况3。如果$T$为正交变换，那么$\widehat{f\circ T}=\widehat{f}\circ T$。特别的，如果$f$为径向函数(radial function)，那么$\widehat{f}$亦为径向函数。所谓径向函数$f:\R^n\to\R^n$，就是成立如下性质之一的函数：
 \begin{enumerate}
-	\item 存在函数$\varphi:\R\to\R^n$，使得对于任意$x\in\R^n$，成立$f(x)=\varphi(\|x\|)$。
+	\item 存在函数$\varphi:\R\to\R^n$，使得对于任意$x\in\R^n$，成立$f(x)=\varphi(|x|)$。
 	\item 对于任意旋转$\rho\in\text{SO}_n(\R)$，成立$f\circ\rho=f$。
 \end{enumerate}
 如果$T$为膨胀(dilation)，即存在$r>0$，使得成立$Tx=rx$，那么$f(rx)$的 Fourier 变换为$r^{-n}\widehat{f}(r^{-1}\xi)$。反之，$r^{-n}f(r^{-1}x)$的 Fourier 变换为$\widehat{f}(r\xi)$。
+
+Fourier 变换有一个性质：如果$f$在空间中是局域的(localized)，那么$\widehat{f}$是光滑的；如果$f$在空间中是光滑的，那么$\widehat{f}$是局域的。下面我们讨论这方面的一些简单表现。
+
+令$D(x_0,r)=\{ x\in\R^n:|x-x_0|<r \}$。对于多指标$\alpha\in\Z_{\ge 0}^n$，定义
+\[
+D^\alpha=\frac{\partial^{\alpha_1}}{\partial x_1^{\alpha_1}}\cdots \frac{\partial^{\alpha_n}}{\partial x_n^{\alpha_n}},\qquad
+x^\alpha=\prod_{j=1}^{n}x_j^{\alpha_j}
+\]
+$\alpha$的长度定义为
+\[
+|\alpha|=\sum_{j=1}^{n}\alpha_j
+\]
+在$\Z_{\ge 0}^n$上定义偏序
+\begin{align*}
+	& \alpha\le\beta \iff \alpha_j\le \beta_j,\forall j \\
+	& \alpha<\beta \iff \alpha\le\beta\text{且}\alpha\ne\beta
+\end{align*}
+
+\begin{proposition}
+	对于$\mu\in M(\R^n)$，如果$\supp \mu$为紧集，那么$\widehat{\mu}\in C^{\infty}(\R^n)$，且
+	\begin{gather}
+		\label{7式}
+		D^{\alpha}(\widehat{\mu})
+		=\widehat{(-2\pi i x)^{\alpha}\mu}
+	\end{gather}
+	进一步，若$\supp \mu\sub D(0,R)$，则
+	\begin{gather}
+		\label{8式}
+		\|D^{\alpha}(\widehat{\mu})\|_{\infty}
+		\le (2\pi R)^{|\alpha|}\|\mu\|
+	\end{gather}
+\end{proposition}
+
+\begin{proof}
+	注意到$(\ref{7式})\implies(\ref{8式})$。事实上，由命题\ref{pro:Fourier变换为有界变换}
+	\[
+	\|D^{\alpha}(\widehat{\mu})\|_{\infty}
+	=\|\widehat{(-2\pi i x)^{\alpha}\mu}\|_{\infty}
+	\le \|(-2\pi i x)^{\alpha}\mu\|
+	\le (2\pi R)^{|\alpha|}\|\mu\|
+	\]
+	
+	进一步，对于任意多指标$\alpha\in\Z_{\ge 0}^n$，$(2\pi i x)^\alpha\mu$为有限测度且具有紧支集，因此如果我们能证明当$|\alpha|=1$时，$\widehat{\mu}\in C^1$且成立$(\ref{7式})$，那么该命题可由此归纳证明。
+	
+	固定$1\le  j \le n$与$\xi\in\R^n$，令$e_j$为第$j$个标准基向量，考虑差商
+	\[
+	\Delta(h)
+	=\frac{\widehat{\mu}(\xi+he_j)-\widehat{\mu}(\xi)}{h}
+	=\int \frac{\ee{-2\pi i h x_j}-1}{h}\ee{-2\pi i \xi\cdot x}\dd \mu(x)
+	\]
+	由于
+	\[
+	\left| \frac{\ee{-2\pi i h x_j}-1}{h} \right|
+	\le 2\pi |x_j|
+	\]
+	因此由控制收敛定理
+	\begin{gather}
+		\label{77式}
+		\lim_{h\to 0}\Delta(h)
+		=\int \lim_{h\to 0}\frac{\ee{-2\pi i h x_j}-1}{h}\ee{-2\pi i \xi\cdot x}\dd \mu(x)
+		=\int -2\pi i x_j\ee{-2\pi i \xi\cdot x}\dd \mu(x)
+	\end{gather}
+	当$|\alpha|=1$时，$(\ref{77式})\implies(\ref{7式})$，且$(\ref{7式})$与命题\ref{pro:Fourier变换为光滑变换}$\implies \widehat{\mu}\in C^1$。
+\end{proof}
+
+估计$\ref{2式}$表明如果$\mu$在空间中是局域的，那么$\widehat{\mu}$是光滑的。现在我们考虑反问题，$\mu$光滑意味着$\widehat{\mu}$局域。
+
+我们首先考虑一个引理。令$\phi:\R^n\to\R$为$C^\infty$函数，满足如下性质：
+\begin{enumerate}
+	\item 若$|x|\le 1$，则$\phi(x)=1$。
+	\item 若$|x|\ge 2$，则$\phi(x)=0$。
+	\item $0\le \phi \le 1$
+	\item $\phi$为径向的。
+\end{enumerate}
+
+定义$\phi_k(x)=\phi(x/k)$。假设对于任意多指标$\alpha\in\Z_{\ge 0}^n$，存在不依赖于$k$的常数$C_\alpha$，使得成立$|D^\alpha(\phi_k)|\le C_\alpha/k^{|\alpha|}$。进一步假设若$\alpha\ne 0$，则$\supp D^\alpha(\phi)\sub \{ x\in\R^n:k\le |x|\le 2k \}$。
+
+\begin{lemma}{}{光滑则局域的引理}
+	对于$f\in C^N(\R^n)$，如果对于任意$0\le |\alpha| \le N$，成立$D^\alpha(f)\in L^1(\R^n)$，那么令$f_k=\phi_kf$，则当$0\le |\alpha| \le N$时，成立
+	\[
+	\lim_{k\to\infty}\|D^\alpha(f_k)-D^\alpha(f)\|_1=0
+	\]
+\end{lemma}
+
+\begin{proof}
+	注意到
+	\[
+	\lim_{k\to\infty}\|\phi_kD^\alpha(f)-D^\alpha(f)\|_1=0
+	\]
+	因此由 Minkowski 不等式
+	\[
+	\lim_{k\to\infty}\|D^\alpha(\phi_kf)-\phi_kD^\alpha(f)\|_1=0
+	\]
+	然而，由 Leibniz 法则
+	\[
+	D^\alpha(\phi_kf)-\phi_kD^\alpha(f)
+	=\sum_{0<\beta\le \alpha}c_{\beta}D^{\alpha-\beta}(f)D^\beta(\phi_k)
+	\]
+	其中$c_\beta$为常数。因此由 Hölder 不等式
+	\[
+	\|D^\alpha(\phi_kf)-\phi_kD^\alpha(f)\|_1
+	\le C\sum_{0<\beta\le \alpha}\|D^\beta(\phi_k)\|_{\infty}\|D^{\alpha-\beta}(f)\|_{L^1(\{ x:|x|\ge k \})}
+	\le \frac{C}{k}\sum_{0<\beta\le \alpha}\|D^{\alpha-\beta}(f)\|_{L^1(\{ x:|x|\ge k \})}
+	\]
+	从而
+	\[
+	\lim_{k\to\infty}\|D^\alpha(f_k)-D^\alpha(f)\|_1=0
+	\]
+\end{proof}
+
+我们回到反问题，证明的关键在于分部积分。
+
+\begin{proposition}{}{光滑则局域}
+	对于$f\in C^N(\R^n)$，如果对于任意$0\le |\alpha| \le N$，成立$D^\alpha(f)\in L^1(\R^n)$，那么当$0\le |\alpha| \le N$时，成立
+	\begin{gather}
+		\label{11式}
+		\widehat{D^\alpha(f)}(\xi)
+		=(2\pi i \xi)^{\alpha}\widehat{f}(\xi)
+	\end{gather}
+	且存在常数$C$，使得对于任意$\xi\in\R^n$，成立
+	\begin{gather}
+		\label{12式}
+		|\widehat{f}(\xi)|
+		\le C(1+|\xi|)^{-N}
+	\end{gather}
+\end{proposition}
+
+\begin{proof}
+	如果$f\in C^1$且具有紧支集，那么由分部积分
+	\[
+	\int \frac{\partial f(x)}{\partial x_j}\ee{-2\pi i x\cdot \xi}\dd x
+	=2\pi i \xi_j \int \ee{-2\pi i x\cdot \xi}f(x)\dd x
+	\]
+	当$|\alpha|=1$时，成立$(\ref{11式})$。由数学归纳，只要$f\in C^N(\R^n)$且具有紧支集，那么对于任意$0\le |\alpha| \le N$，成立$(\ref{11式})$。
+	
+	为了去掉紧支集的条件，由引理\ref{lem:光滑则局域的引理}，$f_k$成立$(\ref{11式})$。由引理\ref{lem:光滑则局域的引理}与命题\ref{pro:Fourier变换为有界变换}，当$k\to\infty$时，$\widehat{D^\alpha(f_k)}\rightrightarrows D^\alpha(f)$，$(2\pi i \xi)^{\alpha}\widehat{f_k}(\xi)\rightrightarrows (2\pi i \xi)^{\alpha}\widehat{f}(\xi)$，因此成立$(\ref{11式})$。
+	
+	为了证明$(\ref{12式})$，$(\ref{11式})$与命题\ref{pro:Fourier变换为有界变换}$\implies \xi^\alpha\widehat{f}\in L^\infty(\R^n)$。另一方面很容易估计
+	\begin{gather}
+		\label{14式}
+		C_N^{-1}(1+|\xi|)^N
+		\le \sum_{|\alpha|\le N}|\xi^\alpha|
+		\le C_N(1+|\xi|)^N
+	\end{gather}
+	因此成立$(\ref{12式})$。
+\end{proof}
+
+\chapter{Schwartz 空间}
+
+\begin{definition}{Schwartz 空间}
+	记 Schwartz 空间为$\mathcal{S}$，称$f:\R^n\to\C\in\mathcal{S}$，如果$f\in C^\infty$且成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^\infty$。
+		\item 对于任意$N,\beta$，成立$(1+|x|)^N D^\beta(f)\in L^\infty$。
+		\item 对于任意$\alpha,\beta$，成立$\dis\lim_{x\to\infty}x^\alpha D^\beta(f)=0$。
+	\end{enumerate}
+	引入范数
+	\[
+	\|f\|_{\alpha\beta}=\|x^\alpha D^\beta(f)\|_{\infty}
+	\]
+\end{definition}
+
+\begin{proof}
+	$1\implies 2$：由$(\ref{14式})$可得。
+\end{proof}
+
+\begin{definition}{收敛}
+	称序列$\{ f_k \}\sub\mathcal{S}$在$\mathcal{S}$中收敛于$f\in\mathcal{S}$，并记作$f_k\to f$，如果对于任意$\alpha,\beta\in\Z_{\ge 0}^n$，成立
+	\[
+	\lim_{k\to\infty}\|f_k-f\|_{\alpha\beta}=0
+	\]
+\end{definition}
+
+\begin{example}
+	令$C_0^\infty$表示$C^\infty$中具有紧支集的函数全体，则$C_0^\infty\sub\mathcal{S}$。
+\end{example}
+
+\begin{proof}
+	等价于证明$x^\alpha D^\beta(f)$为有界函数。事实上，如果$f\in C_0^\infty$，那么$D^\beta(f)$为具有紧支集的连续函数，因此为有界函数。而$x^\alpha$在$D^\beta(f)$的支集上为有界的，进而$x^\alpha D^\beta(f)$为有界函数。
+\end{proof}
+
+\begin{example}
+	令$f(x)=\ee{-\pi |x|^2}$，则$f\in \mathcal{S}$。
+\end{example}
+
+\begin{note}
+	我们先在$\R^1$中感受一下。当$f(x)=\ee{-\pi x^2}$时
+	\[
+	x^nf(x)=\frac{x^n}{\ee{\pi x^2}},\qquad
+	x^nf'(x)=\frac{-2 \pi x^{n+1}}{\ee{\pi x^2}},\qquad
+	x^nf''(x)=\frac{(4 \pi ^2 x^2-2 \pi) x^n}{\ee{\pi x^2}},\qquad
+	x^nf'''(x)=\frac{(12 \pi^2x-8 \pi^3 x^3) x^n}{\ee{\pi x^2}}
+	\]
+	因此存在多项式$p_m(x)$，使得成立
+	\[
+	x^nf^{(m)}(x)=\frac{p_m(x)}{\ee{\pi x^2}}
+	\]
+	这样$x^nf^{(m)}(x)$就有界了。
+	
+	下面回到$\R^n$中。
+\end{note}
+
+\begin{proof}
+	注意到对于多项式$p(x)$，任意偏导数
+	\[
+	\frac{\partial}{\partial x_j}(p(x)f(x))
+	\]
+	均为$q(x)f(x)$的形式，其中$q(x)$为多项式。由归纳，对于任意$\beta$，$D^\beta(f)$为多项式与$f$的积的形式，进而对于任意$\alpha,\beta$，$x^\alpha D^\beta(f)$为多项式与$f$的积的形式。由 L'Hospital 法则，$x^\alpha D^\beta(f)$为有界函数。
+\end{proof}
+
+\begin{example}
+	\begin{enumerate}
+		\item $f_N(x)=(1+|x|^2)^{-N}\notin \mathcal{S}$
+		\item $g(x)=\ee{-\pi|x|^2}\sin(\ee{\pi |x|^2})\notin \mathcal{S}$
+	\end{enumerate}
+\end{example}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 不妨在$\R^1$与$N=1$中考虑，此时
+		\[
+		f(x)=\frac{1}{1+x^2}
+		\]
+		那么
+		\[
+		x^3f(x)=\frac{x^3}{1+x^2}
+		\]
+		无界。
+		\item 不妨在$\R^1$与$N=1$中考虑，此时
+		\[
+		g(x)=\ee{-\pi x^2}\sin(\ee{\pi x^2})
+		\]
+		那么
+		\[
+		g'(x)=2 \pi  x \cos \left(e^{\pi  x^2}\right)-2 \pi  e^{-\pi  x^2} x
+		\sin \left(e^{\pi  x^2}\right)
+		\]
+		无界。
+	\end{enumerate}
+\end{proof}
+
+\begin{note}
+	通过这些例子，我们大概能感受到$\mathcal{S}$中的函数长什么样子，即其任意阶导数的衰减速度比任意阶多项式的增长速度快。
+\end{note}
+
+我们现在来讨论$\mathcal{S}$的一些简单性质，然后是一些稍微不那么简单的性质。
+
+\begin{proposition}
+	$\mathcal{S}$对于微分与多项式乘法封闭，且该运算连续。同时$\mathcal{S}$对于乘法封闭。
+	\begin{enumerate}
+		\item 如果$f\in\mathcal{S}$，那么对于任意多指标$\alpha\in\Z_{\ge 0}^n$，成立$D^\alpha(f)\in\mathcal{S}$。
+		\item 如果$f\in\mathcal{S}$，那么对于任意多指标$\alpha\in\Z_{\ge 0}^n$，成立$x^\alpha f\in\mathcal{S}$。
+		\item 如果$\{ f_k,f \}\sub\mathcal{S}$，且$f_k\to f$，那么对于任意多指标$\alpha\in\Z_{\ge 0}^n$，成立$D^\alpha(f_k)\to D^\alpha(f)$。
+		\item 如果$\{ f_k,f \}\sub\mathcal{S}$，且$f_k\to f$，那么对于任意多指标$\alpha\in\Z_{\ge 0}^n$，成立$x^\alpha f_k\to x^\alpha f$。
+		\item 如果$f,g\in\mathcal{S}$，那么$fg\in\mathcal{S}$。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\begin{enumerate}
+		\item 注意到$x^\alpha D^\beta (D^\gamma (f))=x^\alpha D^{\beta+\gamma}(f)$，则$D^\gamma (f)\in \mathcal{S}$。
+		\item 由 Leibniz 法则
+		\[
+		x^\alpha D^\beta(x^\gamma f)
+		=\sum_{0\le\delta\le\beta}c_\delta x^\alpha D^\delta(x^\gamma)D^{\beta-\delta}(f)
+		\]
+		因此$x^\alpha D^\beta(x^\gamma f)$为$x$的单项式与$f$的导数的线性组合，因此为有界的，进而$x^\gamma f\in\mathcal{S}$。
+		\item 由于$f_n\to f$，那么
+		\[
+		\lim_{k\to\infty}\|x^\alpha D^{\beta+\gamma}(f_k-f)\|_\infty=0
+		\]
+		等价于
+		\[
+		\lim_{k\to\infty}\|x^\alpha D^{\beta}(D^{\gamma}(f_k)-D^{\gamma}(f))\|_\infty=0
+		\]
+		因此$D^\gamma(f_k)\to D^\gamma(f)$。
+		\item 由 Leibniz 法则与 Minkowski 不等式
+		\begin{align*}
+			\| x^\alpha D^\beta(x^\gamma f_k-x^\gamma f) \|_\infty
+			& = \left\|\sum_{0\le\delta\le\beta}c_\delta x^\alpha D^\delta(x^\gamma)D^{\beta-\delta}(f_k-f) \right\|_\infty \\
+			& = \left\|\sum_{\delta}c'_\delta x^{\alpha+\gamma_\delta}D^{\beta_\delta}(f_k-f) \right\|_\infty \\
+			& \le \sum_{\delta}\left\|c'_\delta x^{\alpha+\gamma_\delta}D^{\beta_\delta}(f_k-f) \right\|_\infty \\
+		\end{align*}
+		而$f_k\to f$，则$x^\gamma f_k\to x^\gamma f$。
+		\item 显然$\mathcal{S}$对于乘法封闭。
+	\end{enumerate}
+\end{proof}
+
+
 
 
 
