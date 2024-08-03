@@ -293,7 +293,7 @@ $\alpha$的长度定义为
 	& \alpha<\beta \iff \alpha\le\beta\text{且}\alpha\ne\beta
 \end{align*}
 
-\begin{proposition}
+\begin{proposition}{}{命题1.3}
 	对于$\mu\in M(\R^n)$，如果$\supp \mu$为紧集，那么$\widehat{\mu}\in C^{\infty}(\R^n)$，且
 	\begin{gather}
 		\label{7式}
@@ -388,7 +388,7 @@ $\alpha$的长度定义为
 我们回到反问题，证明的关键在于分部积分。
 
 \begin{proposition}{}{光滑则局域}
-	对于$f\in C^N(\R^n)$，如果对于任意$0\le |\alpha| \le N$，成立$D^\alpha(f)\in L^1(\R^n)$，那么当$0\le |\alpha| \le N$时，成立
+	对于$f\in C^N$，如果对于任意$0\le |\alpha| \le N$，成立$D^\alpha(f)\in L^1$，那么当$0\le |\alpha| \le N$时，成立
 	\begin{gather}
 		\label{11式}
 		\widehat{D^\alpha(f)}(\xi)
@@ -438,11 +438,13 @@ $\alpha$的长度定义为
 \end{definition}
 
 \begin{proof}
-	$1\implies 2$：由$(\ref{14式})$可得。
+	$1\iff 3$：由$(\ref{14式})$可得。
+
+	$1\iff 4$：平凡！
 \end{proof}
 
 \begin{definition}{收敛}
-	称序列$\{ f_k \}\sub\mathcal{S}$在$\mathcal{S}$中收敛于$f\in\mathcal{S}$，并记作$f_k\to f$，如果对于任意$\alpha,\beta\in\Z_{\ge 0}^n$，成立
+	称序列$\{ f_k \}\sub\mathcal{S}$在$\mathcal{S}$中收敛于$f\in\mathcal{S}$，并记作$f_k\to f$，如果对于任意$\alpha,\beta$，成立
 	\[
 	\lim_{k\to\infty}\|f_k-f\|_{\alpha\beta}=0
 	\]
@@ -563,10 +565,173 @@ $\alpha$的长度定义为
 	\end{enumerate}
 \end{proof}
 
+\begin{proposition}{}{支集在S中稠密}
+	$C_0^\infty$在$\mathcal{S}$中稠密；换言之，对于任意$f\in\mathcal{S}$，存在$\{ f_k \}\sub C_0^\infty$，使得成立$f_k\to f$。
+\end{proposition}
 
+\begin{proof}
+	这和引理\ref{lem:光滑则局域的引理}的证明是类似的。令$f_k=\phi_k f$，显然$f_k\in C_0^\infty$。若要证明$f_k\to f$，即要证明
+	\[
+	\|  x^\alpha D^\beta(\phi_k f)- x^\alpha D^\beta(f) \|_\infty\to 0
+	\]
+	由 Minkowski 不等式
+	\[
+	\|  x^\alpha D^\beta(\phi_k f)- x^\alpha D^\beta(f) \|_\infty
+	\le \|  \phi_kx^\alpha D^\beta(f)- x^\alpha D^\beta(f) \|_\infty
+	+\|  x^\alpha(D^\beta(\phi_k f)- \phi_k D^\beta(f)) \|_\infty
+	\]
+	对于第一项
+	\[
+	\lim_{k\to\infty}\phi_kx^\alpha D^\beta(f)- x^\alpha D^\beta(f)=0
+	\]
+	对于第二项，由 Leibniz 法则
+	\[
+	\|  x^\alpha(D^\beta(\phi_k f)- \phi_k D^\beta(f)) \|_\infty
+	\le C\sum_{\gamma <\beta}\|x^\alpha D^\gamma (f) \|_\infty \|D^{\beta-\gamma}(\phi_k) \|_\infty
+	\]
+	由于$f\in\mathcal{S}$且$\|D^{\beta-\gamma}(\phi_k) \|_\infty\le C/k$，则第二项$\infty0$。
+\end{proof}
 
+我们可以加强命题\ref{pro:支集在S中稠密}。定义$C_0^\infty$张量函数
+\function{f}{\R^n}{\C}{x}{\prod_{j}\phi_j(x_j)}
+其中$\phi_j\in C_0^\infty(\R)$。
 
+\begin{proposition}{}{支集在S中稠密2}
+	$C_0^\infty$的张量函数的线性组合在$\mathcal{S}$中稠密。
+\end{proposition}
 
+\begin{proof}
+	由命题\ref{pro:支集在S中稠密}，可说明如果$f\in C_0^\infty$，那么存在序列$\{ g_k \}$，使得成立
+	\begin{enumerate}
+		\item 每个$g_k$为$C_0^\infty$张量函数。
+		\item $g_k$的支集包含在一个不依赖于$k$的固定的紧集$E$中。
+		\item 对于任意$\alpha$，$D^\alpha(g_k)\rightrightarrows D^\alpha(f)$。
+	\end{enumerate}
+	
+	为了构造$\{ g_k \}$，我们使用一个关于 Fourier 级数的基本事实：对于以$2\pi$为周期的$C^\infty(\R^n)$函数$f$，其可展开为
+	\[
+	f(\theta)=\sum_{\nu\in\Z^n}a_{\nu}\ee{i\nu\cdot\theta}
+	\]
+	其中$\{ a_\nu \}$成立
+	\[
+	\sum_{\nu\in\Z^n}(1+|\nu|)^N|a_\nu|<\infty,\qquad \forall N\in\N^*
+	\]
+	考虑 Fourier 级数的部分和，我们因此得到一个三角函数多项式序列$p_k$，使得对于任意$\alpha$，$D^\alpha(p_k)\rightrightarrows D^\alpha(f)$。
+	
+	在构造$\{g_k\}$时，我们可以不妨假设$x\in\supp f$意味着$|x_j|\le 1$，例如我们可以使用$f(Rx)$来替换$f(x)$。令$C_0^\infty$为$C_0^\infty$单变量函数，其中在$[-1,1]$上为$1$，在$[-2,2]^c$上为$0$。令$\tilde{f}$为在$[-\pi,\pi]^n$上等于$f$的$2\pi $周期的函数。然后我们有一个三角函数多项式序列$p_k$，使得对于任意$\alpha$，$D^\alpha(p_k)\rightrightarrows D^\alpha(\tilde{f})$。令$\dis g_k(x)=\prod_j \phi(x_j)p_k(x)$，则$g_k$满足1和2。由引理\ref{lem:光滑则局域的引理}与命题\ref{pro:支集在S中稠密}，3成立。
+\end{proof}
+
+在本章的最后，我们证明可以修改$\mathcal{S}$的定义为：称$f\in\mathcal{S}$，如果对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^1$，此时依$L^\infty$收敛$\iff$依$L^1$收敛。证明的必要性比较容易，为证明充分性，我们引入新的记号，并不加证明的引入一个引理。
+
+如果$f:\R^n\to\infty$为$C^k$函数且若$x\in \R^n$，则定义
+\[
+\Delta_k^f(x)=\sum_{|\alpha|=k}|D^\alpha(f(x))|
+\]
+引入记号$D(x_0,r)=\{ x:|x-x_0|\le r \}$。同时记$x\lesssim y\iff \exists C,x\le Cy$。
+
+\begin{lemma}{}{S等价定义引理}
+	假设$f$为$C^\infty$函数，则对于任意$x$，成立
+	\[
+	|f(x)| \lesssim \sum_{0\le j \le n+1}\|\Delta_j^f\|_{L^1(D(x,1))}
+	\]
+\end{lemma}
+
+\begin{theorem}{}{S等价定义}
+	称$f:\R^n\to\C\in\mathcal{S}$，如果$f\in C^\infty$且成立如下命题之一。
+	\begin{enumerate}
+		\item 对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^\infty$。
+		\item 对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^1$。
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	$1\implies 2$：假设$f$对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^\infty$。令$N=|\alpha|+n+1$，则由$(1+|x|)^{-n-1}$的可积性，结合 Hölder 不等式
+	\[
+	\|x^\alpha D^\beta(f) \|_1
+	\le \|(1+|x|)^ND^\beta(f) \|_\infty
+	\|x^\alpha(1+|x|)^{-N} \|_1
+	<\infty
+	\]
+	
+	$2\implies 1$：假设$f$对于任意$\alpha,\beta$，成立$x^\alpha D^\beta(f)\in L^1$。由引理\ref{lem:S等价定义引理}
+	\[
+	|D^\beta(f(x))| \lesssim \sum_{0\le j \le |\beta|+n+1}\int_{D(x,1)}|D^\gamma(f(y))|\dd y
+	\]
+	因此
+	\begin{align*}
+		(1+|x|)^N|D^\beta(f(x))|
+		& \lesssim (1+|x|)^N\sum_{0\le j \le |\beta|+n+1}\int_{D(x,1)}|D^\gamma(f(y))|\dd y \\
+		& \lesssim \sum_{0\le j \le |\beta|+n+1}\int_{D(x,1)}(1+|y|)^N|D^\gamma(f(y))|\dd y
+	\end{align*}
+	进而
+	\[
+	\|(1+|x|)^ND^\beta(f)\|_\infty
+	\lesssim \sum_{0\le j \le |\beta|+n+1}\|(1+|x|)^ND^\gamma(f)\|_1
+	\]
+\end{proof}
+
+下面我们给出 Fourier 变换实际上是$\mathcal{S}$上的连续变换。
+
+\begin{theorem}
+	若$f\in\mathcal{S}$，则$\widehat{f}\in\mathcal{S}$。进一步，映射$f\mapsto \widehat{f}$为$\mathcal{S}\to\mathcal{S}$的光滑映射。
+\end{theorem}
+
+\begin{proof}
+	我们仅给出第一个证明。
+	
+	如果$f\in\mathcal{S}$，那么由定理\ref{thm:S等价定义}，$f\in L^1$，进而$\widehat{f}\in L^\infty$。因此，若$f\in\mathcal{S}$，则$\widehat{D^\alpha (x^\beta f)}\in L^\infty$。然而，由命题\ref{pro:命题1.3}与\ref{pro:光滑则局域}
+	\[
+	\widehat{D^\alpha (x^\beta f)}(\xi)
+	=(2\pi i)^{|\alpha|}(-2\pi i)^{-|\beta|}\xi^\alpha D^\beta\widehat{f}(\xi)
+	\]
+	因此$\xi^\alpha D^\beta(f)\in L^\infty$，这说明$\widehat{f}\in S$。
+\end{proof}
+
+\chapter{Fourier 逆变换与 Plancherel 定理}
+
+\begin{definition}{卷积 convolution}
+	$\phi$与$f$的卷积为
+	\begin{gather}
+		\label{23式}
+		\phi*f(x)=\int \phi(y)f(x-y)\dd y
+	\end{gather}
+\end{definition}
+
+卷积有一些良好的性质，我们一并回顾，但并不给出证明。
+
+\begin{proposition}
+	\begin{enumerate}
+		\item 如果$\phi\in L^1$且$f\in L^p$，其中$1\le p \le\infty$，那么积分$(\ref{23式})$几乎处处绝对收敛，且
+		\[
+		\| \phi*f \|_p
+		\le \|\phi\|_1 \|f\|_p
+		\]
+		\item 如果$\phi$为具有紧支集的连续函数，且$f\in L^1_{\text{loc}}$，那么积分$(\ref{23式})$处处绝对收敛，且$\phi*f$为连续函数。
+		\item 如果$\phi\in L^p$，且$f\in L^q$，其中$1/p+1/q=1$，那么积分$(\ref{23式})$处处绝对收敛，且$\phi*f$为连续函数，同时
+		\[
+		\| \phi*f \|_\infty
+		\le \|\phi\|_p \|f\|_q 
+		\]
+	\end{enumerate}
+\end{proposition}
+
+除此之外，我们还应注意到卷积是可交换的：$f*\phi=\phi*f$。同时注意到
+\[
+\supp(\phi*f)\sub \supp(\phi)+\supp(f)
+\]
+其中$E+F=\{ x+y:x\in E,y\in F \}$为集合的加法。
+
+更多时候$\phi$是固定的，并且为性质非常好的函数。卷积更多作为一种算子
+\[
+f\longmapsto \phi*f
+\]
+
+\begin{lemma}
+	如果$\phi\in C_0^\infty$且$f\in L^1_{\text{loc}}$，那么$\phi*f\in C^\infty$且
+	\[
+	D^\alpha(\phi*f)=(D^\alpha (\phi))*f
+	\]
+\end{lemma}
 
 
 
